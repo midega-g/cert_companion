@@ -1,0 +1,439 @@
+{
+  "topic": "Snowflake Clustering Keys & Clustered Tables",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "What is the maximum recommended number of columns or expressions per clustering key for most Snowflake tables?",
+      "options": [
+        { "key": "A", "text": "1 or 2 columns" },
+        { "key": "B", "text": "3 or 4 columns" },
+        { "key": "C", "text": "5 or 6 columns" },
+        { "key": "D", "text": "There is no recommended maximum" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake recommends a maximum of 3 or 4 columns or expressions per clustering key for most tables, as adding more than 3–4 columns tends to increase costs more than it provides benefits.",
+        "distractors": {
+          "A": "1 or 2 columns is below the recommended maximum; the documentation allows up to 3 or 4 columns before costs begin to outweigh benefits.",
+          "C": "5 or 6 columns exceeds the recommended maximum; beyond 3–4 columns, costs tend to increase more than benefits.",
+          "D": "The documentation explicitly states a recommended maximum of 3 or 4 columns; there is a practical upper limit driven by the cost-benefit trade-off."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which data types are explicitly NOT supported as direct clustering key columns in Snowflake?",
+      "options": [
+        { "key": "A", "text": "DATE, TIMESTAMP, NUMBER" },
+        { "key": "B", "text": "VARCHAR, BOOLEAN, FLOAT" },
+        { "key": "C", "text": "GEOGRAPHY, VARIANT, OBJECT, ARRAY" },
+        { "key": "D", "text": "VARIANT, NUMBER, STRING, DATE" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The documentation explicitly states that clustering key columns cannot be of type GEOGRAPHY, VARIANT, OBJECT, or ARRAY. Note that VARIANT columns can be included via an expression specifying a path and target type.",
+        "distractors": {
+          "A": "DATE, TIMESTAMP, and NUMBER are all supported as direct clustering key column types and are commonly recommended choices.",
+          "B": "VARCHAR, BOOLEAN, and FLOAT are supported as clustering key column types and are not excluded by the documentation.",
+          "D": "NUMBER, STRING, and DATE are valid clustering key column types; only VARIANT is correctly identified in this option, but the full exclusion list is GEOGRAPHY, VARIANT, OBJECT, and ARRAY."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "reclustering",
+      "scenario": null,
+      "stem": "What happens to the original micro-partitions after a table is reclustered in Snowflake?",
+      "options": [
+        { "key": "A", "text": "They are immediately purged from the system to free storage." },
+        { "key": "B", "text": "They are marked as deleted but retained for Time Travel and Fail-safe." },
+        { "key": "C", "text": "They are archived to an external stage for long-term retention." },
+        { "key": "D", "text": "They are merged with the new micro-partitions to reduce storage costs." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "After reclustering, the original micro-partitions are marked as deleted but are not purged from the system; they are retained to support Time Travel and Fail-safe, and are only purged after both those periods have passed.",
+        "distractors": {
+          "A": "Immediate purging does not occur; the documentation explicitly states original micro-partitions are retained for Time Travel and Fail-safe before any purge can happen.",
+          "C": "Archival to an external stage is not described as a behavior; the micro-partitions remain within Snowflake's internal storage system.",
+          "D": "Original micro-partitions are not merged with new ones; they are kept separately as deleted records to support data recovery features."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "When a clustering key is defined using CREATE TABLE ... AS SELECT, what is the correct behavior?",
+      "options": [
+        { "key": "A", "text": "The clustering key is automatically inferred from the SELECT column list." },
+        { "key": "B", "text": "The clustering key can be defined inline within the AS SELECT clause." },
+        { "key": "C", "text": "An existing clustering key is not supported; it must be defined after table creation." },
+        { "key": "D", "text": "The clustering key from the source table is automatically inherited." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "An existing clustering key is not supported when a table is created using CREATE TABLE ... AS SELECT; the clustering key must be defined after the table has been created using ALTER TABLE.",
+        "distractors": {
+          "A": "Snowflake does not infer a clustering key from the SELECT column list; it must be explicitly defined.",
+          "B": "There is no syntax to embed a clustering key inline within an AS SELECT clause; it is a post-creation operation.",
+          "D": "Unlike CREATE TABLE ... CLONE, which copies an existing clustering key, CREATE TABLE ... AS SELECT does not inherit the source table's clustering key."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "What is the behavior of Automatic Clustering when a table is created using CREATE TABLE ... CLONE?",
+      "options": [
+        { "key": "A", "text": "Automatic Clustering is active on the cloned table immediately after cloning." },
+        { "key": "B", "text": "The clustering key is not copied to the cloned table." },
+        { "key": "C", "text": "The clustering key is copied, but Automatic Clustering is suspended and must be resumed." },
+        { "key": "D", "text": "The cloned table is automatically reclustered before Automatic Clustering starts." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "When a table is created using CREATE TABLE ... CLONE, the existing clustering key is copied to the cloned table; however, Automatic Clustering is suspended for the cloned table and must be manually resumed.",
+        "distractors": {
+          "A": "Automatic Clustering is suspended, not immediately active, after a clone operation; it must be explicitly resumed.",
+          "B": "The clustering key is copied during a CLONE operation; only Automatic Clustering status is affected, not the key definition itself.",
+          "D": "No automatic recluster before resuming is described; the documentation simply states Automatic Clustering must be resumed after cloning."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "reclustering",
+      "scenario": null,
+      "stem": "During reclustering, how does Snowflake physically reorganize data in a clustered table?",
+      "options": [
+        { "key": "A", "text": "Snowflake updates records in place within existing micro-partitions using the clustering key." },
+        { "key": "B", "text": "Snowflake deletes the affected records and re-inserts them grouped according to the clustering key." },
+        { "key": "C", "text": "Snowflake sorts records within existing micro-partitions without creating new micro-partitions." },
+        { "key": "D", "text": "Snowflake merges all micro-partitions into a single partition and then re-splits them by clustering key." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "During reclustering, Snowflake deletes the affected records and re-inserts them grouped according to the clustering key, which results in new micro-partitions being generated for the table.",
+        "distractors": {
+          "A": "Snowflake does not update records in place; the reclustering operation involves a delete and re-insert cycle that generates entirely new micro-partitions.",
+          "C": "Reclustering always creates new micro-partitions; it does not sort data within existing ones.",
+          "D": "Snowflake does not merge all micro-partitions into a single partition; it targets affected records and reorganizes them into new micro-partitions based on the clustering key."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "For a VARCHAR column used in a clustering key on a standard Snowflake table, how many bytes of the column value does the clustering implementation use?",
+      "options": [
+        { "key": "A", "text": "The first 3 bytes" },
+        { "key": "B", "text": "The first 5 bytes" },
+        { "key": "C", "text": "The first 10 bytes" },
+        { "key": "D", "text": "The full column value up to 16 MB" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "For each VARCHAR column in the clustering key on a standard table, the current implementation uses only the first 5 bytes of the column value.",
+        "distractors": {
+          "A": "3 bytes is fewer than the documented 5-byte limit for standard tables.",
+          "C": "10 bytes exceeds the documented 5-byte limit for VARCHAR columns in standard table clustering keys.",
+          "D": "The full column value is not used; only the first 5 bytes are considered, which can lead to insufficient cardinality if the first 5 bytes are identical across rows."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "What effect does changing the clustering key for a populated table have on existing records immediately after the ALTER TABLE command is executed?",
+      "options": [
+        { "key": "A", "text": "All existing records are immediately reorganized according to the new clustering key." },
+        { "key": "B", "text": "Existing records are not affected until the table has been reclustered by Snowflake." },
+        { "key": "C", "text": "Existing records are deleted and must be reloaded to reflect the new clustering key." },
+        { "key": "D", "text": "Existing records are locked until Snowflake completes background reclustering." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Changing the clustering key for a table does not affect existing records immediately; records are reorganized only after Snowflake has reclustered the table.",
+        "distractors": {
+          "A": "Immediate reorganization does not occur; the ALTER TABLE command changes the key definition, but physical reorganization happens during reclustering.",
+          "C": "Existing records are not deleted upon a clustering key change; they remain in place until reclustering reorganizes them.",
+          "D": "Records are not locked after a clustering key change; the table remains fully accessible while Snowflake performs reclustering asynchronously."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which Snowflake command can be used to verify whether a specific function is valid for use in a clustering key on a populated table?",
+      "options": [
+        { "key": "A", "text": "DESCRIBE FUNCTION" },
+        { "key": "B", "text": "SHOW FUNCTIONS" },
+        { "key": "C", "text": "SYSTEM$CLUSTERING_INFORMATION" },
+        { "key": "D", "text": "SHOW TABLES" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "SHOW FUNCTIONS returns output that includes a valid_for_clustering column, which indicates whether a specific function can be used in a clustering key for a populated table.",
+        "distractors": {
+          "A": "DESCRIBE FUNCTION is not mentioned in the documentation as a way to check clustering key validity for functions.",
+          "C": "SYSTEM$CLUSTERING_INFORMATION calculates clustering depth and details for a table; it does not validate whether a function is usable in a clustering key.",
+          "D": "SHOW TABLES displays table metadata including existing clustering keys, but does not validate function compatibility for clustering key definitions."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "When defining a multi-column clustering key, what is Snowflake's general recommendation for column ordering?",
+      "options": [
+        { "key": "A", "text": "Order columns from highest cardinality to lowest cardinality." },
+        { "key": "B", "text": "Order columns alphabetically by column name." },
+        { "key": "C", "text": "Order columns from lowest cardinality to highest cardinality." },
+        { "key": "D", "text": "Order columns by data type, placing numeric columns before string columns." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Snowflake recommends ordering columns in a multi-column clustering key from lowest cardinality to highest cardinality, as placing a higher cardinality column before a lower cardinality column generally reduces the effectiveness of clustering on the latter column.",
+        "distractors": {
+          "A": "Ordering from highest to lowest cardinality is explicitly discouraged; it reduces the effectiveness of clustering on subsequent lower-cardinality columns.",
+          "B": "Alphabetical ordering by column name is not a recommended strategy and has no bearing on clustering effectiveness.",
+          "D": "Data type ordering is not a documented recommendation; cardinality ordering is the key criterion."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO conditions make clustering most cost-effective for a Snowflake table, according to the documentation?",
+      "options": [
+        { "key": "A", "text": "The table is queried frequently." },
+        { "key": "B", "text": "The table changes frequently with high volumes of DML." },
+        { "key": "C", "text": "The table does not change frequently." },
+        { "key": "D", "text": "The table has fewer than 100 micro-partitions." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Clustering is generally most cost-effective for tables that are queried frequently (maximizing the performance benefit) and do not change frequently (minimizing the reclustering credit cost).",
+        "distractors": {
+          "B": "Frequent DML increases the cost of keeping a table clustered; the documentation explicitly states that the more frequently a table changes, the more expensive it is to maintain clustering.",
+          "D": "Tables with fewer than 100 micro-partitions are too small to benefit meaningfully from clustering; the documentation states clustering is intended for very large tables, typically with multiple terabytes of data."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO indicators suggest that defining a clustering key for a table may be beneficial?",
+      "options": [
+        { "key": "A", "text": "Queries on the table are running slower than expected or have noticeably degraded over time." },
+        { "key": "B", "text": "The table has a very low clustering depth close to 1." },
+        { "key": "C", "text": "The clustering depth for the table is large." },
+        { "key": "D", "text": "The table has fewer than 10 columns." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "The documentation explicitly lists two indicators that can help determine whether to define a clustering key: queries running slower than expected or degrading over time, and a large clustering depth for the table.",
+        "distractors": {
+          "B": "A low clustering depth close to 1 indicates the table is already well-clustered, which means adding a clustering key would provide little benefit and would incur unnecessary costs.",
+          "D": "The number of columns in a table is not listed as an indicator for clustering need; clustering decisions are driven by query patterns, table size, and clustering depth."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO benefits does defining a clustering key provide for very large Snowflake tables?",
+      "options": [
+        { "key": "A", "text": "Improved scan efficiency by skipping micro-partitions that do not match filtering predicates." },
+        { "key": "B", "text": "Elimination of all credit consumption for DML operations on the table." },
+        { "key": "C", "text": "Better column compression, especially when other columns are strongly correlated with the clustering key columns." },
+        { "key": "D", "text": "Automatic expansion of the virtual warehouse size to handle clustering workloads." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Clustering keys improve scan efficiency by enabling Snowflake to skip micro-partitions that don't match filter predicates, and they improve column compression — particularly for columns strongly correlated with the clustering key columns.",
+        "distractors": {
+          "B": "Clustering does not eliminate DML credit consumption; reclustering itself consumes credits, and regular DML operations continue to consume credits regardless of clustering.",
+          "D": "Snowflake does not automatically expand virtual warehouse size for clustering workloads; clustering is handled by Automatic Clustering as a separate background process."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which THREE criteria must a table meet for clustering to be considered beneficial, according to the documentation?",
+      "options": [
+        { "key": "A", "text": "The table contains a large number of micro-partitions, typically multiple terabytes of data." },
+        { "key": "B", "text": "The table must be stored in a dedicated database with no other objects." },
+        { "key": "C", "text": "Queries on the table are selective or sort the data." },
+        { "key": "D", "text": "A high percentage of queries can benefit from the same clustering key." },
+        { "key": "E", "text": "The table must use a multi-column primary key as its clustering key." }
+      ],
+      "correct": ["A", "C", "D"],
+      "explanation": {
+        "correct": "The documentation states that for clustering to be beneficial, the table should contain a large number of micro-partitions (typically multiple TBs), queries should be selective or sort data, and a high percentage of queries should benefit from the same clustering key.",
+        "distractors": {
+          "B": "There is no requirement for the table to be in a dedicated database; clustering decisions are based on table size, query patterns, and DML frequency.",
+          "E": "The clustering key does not need to match the primary key; it is chosen based on query filter and sort patterns, not primary key structure."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "reclustering",
+      "scenario": null,
+      "stem": "Which TWO types of costs are directly incurred by reclustering a Snowflake table?",
+      "options": [
+        { "key": "A", "text": "Compute credits consumed by the reclustering operation." },
+        { "key": "B", "text": "Network egress charges for transferring reclustered data to external storage." },
+        { "key": "C", "text": "Increased storage costs because original micro-partitions are retained for Time Travel and Fail-safe." },
+        { "key": "D", "text": "Licensing fees charged per clustering key column defined on the table." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Reclustering consumes compute credits (like all DML operations), and it increases storage costs because original micro-partitions are marked as deleted but retained for Time Travel and Fail-safe until both retention periods expire.",
+        "distractors": {
+          "B": "Reclustering is an internal Snowflake operation; no network egress charges apply because data is not transferred to external storage.",
+          "D": "There are no per-column licensing fees for clustering key definitions; costs are expressed in compute credits and storage, not licensing charges."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO column types are valid components of a clustering key expression on a VARIANT column?",
+      "options": [
+        { "key": "A", "text": "A direct reference to the VARIANT column itself (e.g. CLUSTER BY (variant_col))" },
+        { "key": "B", "text": "An expression specifying a path within the VARIANT column and a target cast type" },
+        { "key": "C", "text": "An expression on a path in a VARIANT column" },
+        { "key": "D", "text": "A GEOGRAPHY cast derived from the VARIANT column" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "While defining a clustering key directly on a VARIANT column is not supported, you can use an expression specifying a path within the VARIANT column along with a target type, or more generally an expression on a path in a VARIANT column.",
+        "distractors": {
+          "A": "Defining a clustering key directly on a VARIANT column is explicitly stated as unsupported; an expression on the column path must be used instead.",
+          "D": "GEOGRAPHY is one of the data types explicitly excluded from clustering keys; casting a VARIANT to GEOGRAPHY would not produce a valid clustering key expression."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO query operations most commonly benefit from clustering on the relevant table columns, according to Snowflake's documentation?",
+      "options": [
+        { "key": "A", "text": "Queries that filter on the clustering key columns (selective WHERE clause predicates)" },
+        { "key": "B", "text": "Queries that perform full table scans with no filtering predicates" },
+        { "key": "C", "text": "Queries that sort or join on the clustering key columns" },
+        { "key": "D", "text": "Queries that use LIMIT clauses to restrict result set size" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Queries typically benefit from clustering when they filter on the clustering key (enabling micro-partition pruning) or sort/join on the clustering key — including ORDER BY, GROUP BY, and join operations on those columns.",
+        "distractors": {
+          "B": "Full table scans with no filtering predicates cannot benefit from clustering because pruning requires a filter predicate to skip irrelevant micro-partitions.",
+          "D": "LIMIT clauses restrict the number of rows returned but do not in themselves cause Snowflake to prune micro-partitions; clustering benefits stem from filter and sort/join operations."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "scenario",
+      "domain": "clustering-keys",
+      "scenario": "A Snowflake developer is designing a clustering key for a 50 TB fact table that contains an order_timestamp column storing nanosecond-precision TIMESTAMP values. The table has hundreds of millions of distinct timestamp values — far more than the number of micro-partitions. Most queries filter by date ranges spanning one or a few days. The developer wants to define a clustering key on order_timestamp.",
+      "stem": "What is the most appropriate approach to define the clustering key on the order_timestamp column?",
+      "options": [
+        { "key": "A", "text": "Cluster directly on the order_timestamp column to preserve full precision for pruning." },
+        { "key": "B", "text": "Cluster on TO_DATE(order_timestamp) to reduce cardinality to the number of days, improving pruning effectiveness." },
+        { "key": "C", "text": "Cluster on a BOOLEAN expression derived from order_timestamp to achieve the lowest possible cardinality." },
+        { "key": "D", "text": "Avoid clustering entirely because TIMESTAMP columns cannot be used in clustering key expressions." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When a column has very high cardinality (many more distinct values than micro-partitions), Snowflake recommends defining the clustering key as an expression that reduces cardinality while preserving ordering — such as casting order_timestamp to a date using TO_DATE(), which reduces cardinality to the number of days and produces much better pruning results.",
+        "distractors": {
+          "A": "Clustering directly on a nanosecond TIMESTAMP column with extremely high cardinality is explicitly cited as a poor choice in the documentation because maintaining such a key is very expensive relative to its pruning benefit.",
+          "C": "A BOOLEAN expression would yield only two distinct values, representing extremely low cardinality that would provide minimal pruning — the documentation cautions against clustering on very low cardinality columns.",
+          "D": "TIMESTAMP columns can be used in clustering key expressions; the documentation only prohibits GEOGRAPHY, VARIANT, OBJECT, and ARRAY types as direct column references."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "scenario",
+      "domain": "reclustering",
+      "scenario": "A data engineering team manages a Snowflake table that receives millions of INSERT, UPDATE, and DELETE operations per hour from a real-time pipeline. The table is queried by analysts roughly 5 times per day for aggregate reporting. The team is considering defining a clustering key to improve analyst query performance. A senior engineer raises concerns about ongoing costs.",
+      "stem": "Which approach does the Snowflake documentation most strongly support for this use case?",
+      "options": [
+        { "key": "A", "text": "Define a clustering key immediately because query performance improvements always outweigh reclustering costs." },
+        { "key": "B", "text": "Avoid defining a clustering key or consider batching DML into large, infrequent operations before clustering, given the high DML frequency relative to query frequency." },
+        { "key": "C", "text": "Define a clustering key with a maximum of 1 column to minimize reclustering costs on high-DML tables." },
+        { "key": "D", "text": "Use SYSTEM$CLUSTERING_DEPTH to set a threshold that pauses reclustering when costs exceed a fixed amount." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation states that the more frequently a table changes, the more expensive it is to keep clustered. For tables with a high DML-to-query ratio, clustering is generally not cost-effective. If clustering is still desired, grouping DML into large, infrequent batches is the recommended mitigation strategy.",
+        "distractors": {
+          "A": "The documentation explicitly states that query performance improvements do not always outweigh costs; clustering should only be applied when the performance benefit offsets the credit cost, which is unlikely for a table with very high DML and low query frequency.",
+          "C": "Limiting to 1 column is not the specific recommendation for high-DML tables; the documentation recommends either avoiding clustering or batching DML, not simply reducing column count.",
+          "D": "SYSTEM$CLUSTERING_DEPTH is a monitoring function for measuring overlap; the documentation does not describe a mechanism to use it as a cost threshold to pause Automatic Clustering."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "scenario",
+      "domain": "clustering-keys",
+      "scenario": "A Snowflake architect is building a multi-column clustering key for a large e-commerce events table. The table has three candidate columns: event_category (10 distinct values), region_code (50 distinct values), and session_id (50 million distinct values). The architect wants to maximize clustering effectiveness across all three columns.",
+      "stem": "In what order should the columns be specified in the CLUSTER BY clause?",
+      "options": [
+        { "key": "A", "text": "session_id, region_code, event_category (highest to lowest cardinality)" },
+        { "key": "B", "text": "event_category, region_code, session_id (lowest to highest cardinality)" },
+        { "key": "C", "text": "region_code, event_category, session_id (alphabetical by column name)" },
+        { "key": "D", "text": "session_id, event_category, region_code (unique key first, then lowest cardinality)" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake recommends ordering columns in a multi-column clustering key from lowest cardinality to highest cardinality. event_category (10 values) should come first, then region_code (50 values), then session_id (50 million values). Placing a higher cardinality column before a lower cardinality column reduces the effectiveness of clustering on the latter column.",
+        "distractors": {
+          "A": "Highest to lowest cardinality is the opposite of Snowflake's recommendation and would significantly reduce clustering effectiveness for the lower-cardinality columns, which typically drive the most impactful pruning.",
+          "C": "Alphabetical ordering by column name has no relationship to clustering effectiveness; cardinality-based ordering is the governing principle.",
+          "D": "Placing session_id first (extremely high cardinality) before the lower cardinality columns is explicitly warned against in the documentation, as it reduces the effectiveness of clustering on the columns that follow."
+        }
+      }
+    }
+  ]
+}

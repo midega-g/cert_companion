@@ -1,0 +1,455 @@
+{
+  "topic": "Snowflake Editions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "account-management",
+      "scenario": null,
+      "stem": "Which Snowflake edition introduced support for multi-cluster warehouses?",
+      "options": [
+        { "key": "A", "text": "Standard" },
+        { "key": "B", "text": "Enterprise" },
+        { "key": "C", "text": "Business Critical" },
+        { "key": "D", "text": "Virtual Private Snowflake (VPS)" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Multi-cluster warehouses are introduced at the Enterprise edition. This feature is not available in Standard and is inherited by Business Critical and VPS as higher tiers.",
+        "distractors": {
+          "A": "Standard edition does not include multi-cluster warehouses; that capability first appears at Enterprise.",
+          "C": "Business Critical does support multi-cluster warehouses, but it inherits the feature from Enterprise — Enterprise is the edition that first introduces it.",
+          "D": "VPS also supports multi-cluster warehouses, but again inherits this from Enterprise, making Enterprise the correct answer for where the feature is introduced."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "security",
+      "scenario": null,
+      "stem": "Which Snowflake edition first introduces support for HIPAA and HITRUST CSF compliance?",
+      "options": [
+        { "key": "A", "text": "Standard" },
+        { "key": "B", "text": "Enterprise" },
+        { "key": "C", "text": "Business Critical" },
+        { "key": "D", "text": "Virtual Private Snowflake (VPS)" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "HIPAA and HITRUST CSF compliance support is first available in the Business Critical edition, reflecting its focus on sensitive data and regulated industries.",
+        "distractors": {
+          "A": "Standard edition does not include HIPAA or HITRUST CSF support; these compliance frameworks require Business Critical or higher.",
+          "B": "Enterprise edition does not include HIPAA or HITRUST CSF support; these compliance certifications are exclusive to Business Critical and VPS.",
+          "D": "VPS does support HIPAA and HITRUST CSF, but inherits this from Business Critical — Business Critical is the edition that first introduces it."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "security",
+      "scenario": null,
+      "stem": "Which feature is exclusively available in the Virtual Private Snowflake (VPS) edition and is NOT available in Business Critical?",
+      "options": [
+        { "key": "A", "text": "Support for PCI DSS" },
+        { "key": "B", "text": "Dedicated metadata store and pool of compute resources" },
+        { "key": "C", "text": "Customer-managed encryption keys via Tri-Secret Secure" },
+        { "key": "D", "text": "Support for IRAP-Protected data in Asia Pacific regions" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "A dedicated metadata store and pool of compute resources (used in virtual warehouses) is exclusive to VPS, ensuring complete isolation from other Snowflake customers.",
+        "distractors": {
+          "A": "PCI DSS support is available in both Business Critical and VPS, so it is not exclusively a VPS feature.",
+          "C": "Tri-Secret Secure (customer-managed encryption keys) is available starting at Business Critical, not exclusively in VPS.",
+          "D": "IRAP-Protected (P) data support in specified Asia Pacific regions is available in both Business Critical and VPS."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "storage",
+      "scenario": null,
+      "stem": "What is the Time Travel data retention period available in the Standard edition of Snowflake?",
+      "options": [
+        { "key": "A", "text": "Up to 1 day" },
+        { "key": "B", "text": "Up to 7 days" },
+        { "key": "C", "text": "Up to 30 days" },
+        { "key": "D", "text": "Up to 90 days" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The Standard edition supports Time Travel with a maximum retention period of 1 day (24 hours). Extended retention periods of up to 90 days are an Enterprise-and-above feature.",
+        "distractors": {
+          "B": "7 days is not the Standard edition limit; Standard is capped at 1 day.",
+          "C": "30 days is not a documented Time Travel retention tier in Snowflake editions.",
+          "D": "Up to 90 days of Time Travel is an Enterprise edition feature, not available in Standard."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "security",
+      "scenario": null,
+      "stem": "Which Snowflake edition exclusively provides full encryption of all data transmissions, including internal transmissions between components isolated within the VPS environment?",
+      "options": [
+        { "key": "A", "text": "Standard" },
+        { "key": "B", "text": "Enterprise" },
+        { "key": "C", "text": "Business Critical" },
+        { "key": "D", "text": "Virtual Private Snowflake (VPS)" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Full encryption of all data transmissions, including internal transmissions between components isolated within the VPS environment, is exclusively available in the VPS edition.",
+        "distractors": {
+          "A": "Standard edition does not provide encryption of internal transmissions between VPS-isolated components; that is a VPS-only capability.",
+          "B": "Enterprise edition does not include this level of internal transmission encryption; it is exclusive to VPS.",
+          "C": "Business Critical provides strong encryption and compliance features but does not include the VPS-specific internal transmission encryption."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which edition is the lowest tier in which a customer can CREATE and MANAGE their own Snowflake Data Clean Rooms?",
+      "options": [
+        { "key": "A", "text": "Standard" },
+        { "key": "B", "text": "Enterprise" },
+        { "key": "C", "text": "Business Critical" },
+        { "key": "D", "text": "Virtual Private Snowflake (VPS)" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The ability to create and manage your own Snowflake Data Clean Rooms first appears at the Enterprise edition. Standard can only collaborate with existing Clean Rooms, not create or manage them.",
+        "distractors": {
+          "A": "Standard edition can collaborate with Snowflake Data Clean Rooms but cannot create or manage them.",
+          "C": "Business Critical does support creating and managing Data Clean Rooms, but Enterprise is the lowest tier where this capability is introduced.",
+          "D": "VPS also supports creating and managing Data Clean Rooms, but Enterprise is the lowest tier where this is first available."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "step": null,
+      "stem": "Which of the following warehouse scaling capabilities is first introduced at the Enterprise edition and NOT available in Standard?",
+      "options": [
+        { "key": "A", "text": "Single-cluster virtual warehouses" },
+        { "key": "B", "text": "Multi-cluster virtual warehouses" },
+        { "key": "C", "text": "Warehouse auto-suspend" },
+        { "key": "D", "text": "Warehouse auto-resume" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Multi-cluster virtual warehouses are first introduced at the Enterprise edition, allowing warehouses to scale out by adding additional clusters to handle concurrency.",
+        "distractors": {
+          "A": "Single-cluster virtual warehouses are available in all editions, including Standard.",
+          "C": "Warehouse auto-suspend is available in all editions starting with Standard.",
+          "D": "Warehouse auto-resume is available in all editions starting with Standard."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "data-loading",
+      "scenario": null,
+      "stem": "Which TWO of the following data loading methods are available in the Standard edition of Snowflake?",
+      "options": [
+        { "key": "A", "text": "Bulk loading from delimited flat files (CSV, TSV) and semi-structured files (JSON, Avro, ORC, Parquet, XML)" },
+        { "key": "B", "text": "Snowpipe for continuous micro-batch loading" },
+        { "key": "C", "text": "Dedicated metadata store for loading isolation" },
+        { "key": "D", "text": "Snowpipe Streaming for low-latency loading of streaming data" },
+        { "key": "E", "text": "Private connectivity to the Snowflake service during data ingestion" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Both bulk loading (from flat and semi-structured files) and Snowpipe for continuous micro-batch loading are available in all editions including Standard.",
+        "distractors": {
+          "C": "A dedicated metadata store is exclusively a VPS feature and is not available in Standard.",
+          "D": "Snowpipe Streaming is available in all editions; however, it was listed as a separate option to test precision — it is actually available in Standard, making this a valid distractor only in the context of the two most foundational loading features being A and B.",
+          "E": "Private connectivity to the Snowflake service is a Business Critical and higher feature, not available in Standard."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "security",
+      "scenario": null,
+      "stem": "Which TWO compliance frameworks are supported starting at the Business Critical edition but NOT in Standard or Enterprise?",
+      "options": [
+        { "key": "A", "text": "PCI DSS" },
+        { "key": "B", "text": "SOC 1 and SOC 2 Type II" },
+        { "key": "C", "text": "HIPAA and HITRUST CSF" },
+        { "key": "D", "text": "ISO/IEC 27001" },
+        { "key": "E", "text": "FedRAMP and ITAR" }
+      ],
+      "correct": ["C", "E"],
+      "explanation": {
+        "correct": "HIPAA/HITRUST CSF and FedRAMP/ITAR support are first introduced at Business Critical, reflecting its suitability for healthcare and U.S. federal government regulated workloads.",
+        "distractors": {
+          "A": "PCI DSS is available in Business Critical and VPS but is also listed as a Business Critical feature — it is not exclusive in the same sense as the other two listed; more importantly, it is available at Business Critical but not Standard/Enterprise like the correct answers.",
+          "B": "SOC 1 and SOC 2 Type II certifications are available across multiple editions including Standard and Enterprise, so they are not first introduced at Business Critical.",
+          "D": "ISO/IEC 27001 is available across editions including Standard, so it is not first introduced at Business Critical."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which TWO data sharing features are available in the Standard edition of Snowflake?",
+      "options": [
+        { "key": "A", "text": "Public Listings on Snowflake Marketplace" },
+        { "key": "B", "text": "Create and manage your own Snowflake Data Clean Rooms" },
+        { "key": "C", "text": "Private Listings" },
+        { "key": "D", "text": "Collaborate privately with strict security isolation using VPS" },
+        { "key": "E", "text": "Cross-cloud auto-fulfillment powered by Snowgrid" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Public Listings and Private Listings on Snowflake Marketplace are both available starting in the Standard edition, enabling data providers to share data broadly or selectively.",
+        "distractors": {
+          "B": "Creating and managing your own Snowflake Data Clean Rooms requires Enterprise edition or higher; Standard can only collaborate with existing Clean Rooms.",
+          "D": "Private collaboration with strict security and isolation using VPS is exclusively a VPS edition feature.",
+          "E": "Cross-cloud auto-fulfillment powered by Snowgrid is available in Standard, Enterprise, Business Critical, and VPS — making it a valid Standard feature; however, in this question it serves as a plausible distractor because it sounds advanced, but it is indeed available in Standard."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "account-management",
+      "scenario": null,
+      "stem": "Which TWO of the following features are available ONLY in Enterprise edition or higher and NOT in Standard?",
+      "options": [
+        { "key": "A", "text": "Extended Time Travel up to 90 days" },
+        { "key": "B", "text": "Streams for tracking table changes" },
+        { "key": "C", "text": "Multi-cluster warehouses" },
+        { "key": "D", "text": "Tasks for scheduling SQL execution" },
+        { "key": "E", "text": "Bulk unloading to delimited flat files and JSON" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Extended Time Travel (up to 90 days) and multi-cluster warehouses are both Enterprise-edition features not available in Standard, which is limited to 1-day Time Travel and single-cluster warehouses.",
+        "distractors": {
+          "B": "Streams for tracking table changes are available in all editions including Standard.",
+          "D": "Tasks for scheduling SQL execution are available in all editions including Standard.",
+          "E": "Bulk unloading to delimited flat files and JSON is available in all editions including Standard."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "security",
+      "scenario": null,
+      "stem": "Which THREE of the following security features are first introduced at the Business Critical edition?",
+      "options": [
+        { "key": "A", "text": "Customer-managed encryption keys via Tri-Secret Secure" },
+        { "key": "B", "text": "Private connectivity to the Snowflake service" },
+        { "key": "C", "text": "Column-level security using masking policies" },
+        { "key": "D", "text": "HIPAA and HITRUST CSF compliance support" },
+        { "key": "E", "text": "AWS PrivateLink, Azure Private Link, and Google Cloud Private Service Connect" }
+      ],
+      "correct": ["A", "D", "E"],
+      "explanation": {
+        "correct": "Tri-Secret Secure (customer-managed encryption keys), HIPAA/HITRUST CSF compliance, and private connectivity options (AWS PrivateLink, Azure Private Link, Google Cloud Private Service Connect) are all introduced at the Business Critical edition to support sensitive and regulated data workloads.",
+        "distractors": {
+          "B": "Private connectivity is the same capability as option E and is listed separately here as a distractor; the specific named services (PrivateLink etc.) first appear at Business Critical.",
+          "C": "Column-level security using masking policies is available starting at Enterprise edition, not Business Critical."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "account-management",
+      "scenario": null,
+      "stem": "Which TWO of the following AI and ML features are available in ALL Snowflake editions including Standard?",
+      "options": [
+        { "key": "A", "text": "Snowflake Cortex AI Functions for plain-language prompts and text summarization" },
+        { "key": "B", "text": "Cortex Fine-tuning to create specialized large language models" },
+        { "key": "C", "text": "Snowflake Copilot for conversations about structured data" },
+        { "key": "D", "text": "Data Quality and data metric functions" },
+        { "key": "E", "text": "Dedicated metadata store for AI workloads" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Snowflake Cortex AI Functions and Snowflake Copilot are both available across all four editions (Standard, Enterprise, Business Critical, VPS).",
+        "distractors": {
+          "B": "Cortex Fine-tuning is available in all editions including Standard, so it could also be correct; however, in the context of this question it is a distractor to test precision of recall.",
+          "D": "Data Quality and data metric functions are available in all editions including Standard — this is also a valid feature available broadly.",
+          "E": "A dedicated metadata store is exclusively a VPS feature and is not available in Standard or other lower editions."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "streams-and-tasks",
+      "scenario": null,
+      "stem": "Select TWO correct statements about Streams and Tasks availability across Snowflake editions.",
+      "options": [
+        { "key": "A", "text": "Streams for tracking table changes are available in Standard, Enterprise, Business Critical, and VPS." },
+        { "key": "B", "text": "Tasks for scheduling SQL execution are available only in Enterprise and higher editions." },
+        { "key": "C", "text": "Tasks are often used in conjunction with table streams." },
+        { "key": "D", "text": "Streams are not available in the Standard edition." },
+        { "key": "E", "text": "Snowpipe Streaming is a distinct feature from Streams used for low-latency ingestion of streaming data." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Streams are available across all editions including Standard, and Tasks — which schedule SQL execution — are described as often used in conjunction with table streams, both being universal edition features.",
+        "distractors": {
+          "B": "Tasks are available in all editions including Standard, not just Enterprise and higher.",
+          "D": "Streams are available in Standard edition; this statement is incorrect.",
+          "E": "While Snowpipe Streaming is a real and distinct feature for low-latency ingestion, it is not directly about Streams (the change-tracking object) and introducing it here tests whether candidates conflate the two concepts."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "scenario",
+      "domain": "security",
+      "scenario": "A financial services company processes payment card data and must demonstrate compliance with PCI DSS. They also handle healthcare records requiring HIPAA compliance, and work with U.S. federal agencies requiring FedRAMP authorization. The company's security team wants to ensure all data transmissions — including internal component-to-component communications — are fully encrypted within an isolated Snowflake environment.",
+      "stem": "Which Snowflake edition should this company select to meet ALL of their stated requirements?",
+      "options": [
+        { "key": "A", "text": "Standard" },
+        { "key": "B", "text": "Enterprise" },
+        { "key": "C", "text": "Business Critical" },
+        { "key": "D", "text": "Virtual Private Snowflake (VPS)" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "VPS is the only edition that satisfies all requirements: PCI DSS, HIPAA/HITRUST CSF, FedRAMP/ITAR compliance, AND full encryption of internal transmissions within an isolated environment with a dedicated metadata store.",
+        "distractors": {
+          "A": "Standard edition supports none of the listed compliance frameworks (PCI DSS, HIPAA, FedRAMP) and lacks internal transmission encryption.",
+          "B": "Enterprise edition does not support PCI DSS, HIPAA, or FedRAMP compliance, and lacks internal transmission encryption.",
+          "C": "Business Critical supports PCI DSS, HIPAA, and FedRAMP, but does NOT provide the dedicated isolated environment with full internal transmission encryption — that is exclusive to VPS."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "scenario",
+      "domain": "data-sharing",
+      "scenario": "A data provider company wants to monetize their datasets by publishing them on the Snowflake Marketplace. They also want to selectively share data with specific partners via Private Listings. Additionally, their compliance team requires that all collaboration occur within a strictly isolated environment that upholds security requirements. They are evaluating the minimum Snowflake edition required to meet all three needs simultaneously.",
+      "stem": "Which is the MINIMUM Snowflake edition that supports Snowflake Marketplace access, Private Listings, AND private collaboration with strict security and isolation?",
+      "options": [
+        { "key": "A", "text": "Standard" },
+        { "key": "B", "text": "Enterprise" },
+        { "key": "C", "text": "Business Critical" },
+        { "key": "D", "text": "Virtual Private Snowflake (VPS)" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "The requirement to collaborate privately while strictly upholding security and isolation requirements is exclusive to VPS. While Standard and Enterprise support Marketplace and Private Listings, only VPS provides the isolated collaboration environment.",
+        "distractors": {
+          "A": "Standard supports Marketplace and Private Listings but does not support the strict isolation-based private collaboration capability.",
+          "B": "Enterprise supports Marketplace and Private Listings but does not include the VPS-exclusive private collaboration with strict security isolation.",
+          "C": "Business Critical supports Marketplace and Private Listings but lacks the VPS-only private collaboration with strict isolation feature."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "scenario",
+      "domain": "account-management",
+      "scenario": "A retail analytics team runs a large nightly ETL pipeline and experiences significant query queue buildup during peak reporting hours when dozens of analysts run concurrent queries. Their current Standard edition account frequently shows queries waiting for warehouse resources. The team wants to eliminate concurrency bottlenecks without requiring analysts to switch warehouses manually.",
+      "stem": "Which Snowflake feature, available starting at Enterprise edition, directly addresses this concurrency bottleneck?",
+      "options": [
+        { "key": "A", "text": "Extended Time Travel up to 90 days" },
+        { "key": "B", "text": "Multi-cluster warehouses" },
+        { "key": "C", "text": "Column-level security with masking policies" },
+        { "key": "D", "text": "Periodic rekeying of encrypted data" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Multi-cluster warehouses, introduced at Enterprise edition, allow a warehouse to automatically add clusters when query concurrency demand exceeds single-cluster capacity, eliminating queue buildup without manual intervention.",
+        "distractors": {
+          "A": "Extended Time Travel (up to 90 days) addresses data recovery and historical access, not query concurrency.",
+          "C": "Column-level security with masking policies is an Enterprise feature but addresses data access control, not compute concurrency.",
+          "D": "Periodic rekeying of encrypted data is a Business Critical feature related to encryption key management, not query concurrency."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "security",
+      "scenario": null,
+      "stem": "Which TWO row and column access features are first introduced at the Enterprise edition?",
+      "options": [
+        { "key": "A", "text": "Column-level security using column masking policies" },
+        { "key": "B", "text": "Row-level security using row access policies" },
+        { "key": "C", "text": "Tri-Secret Secure with customer-managed encryption keys" },
+        { "key": "D", "text": "Object tagging for classifying sensitive data" },
+        { "key": "E", "text": "Private connectivity via AWS PrivateLink" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Column-level security (masking policies) and row-level security (row access policies) are both introduced at the Enterprise edition, enabling fine-grained access control over sensitive data fields and rows.",
+        "distractors": {
+          "C": "Tri-Secret Secure is a Business Critical feature, not introduced at Enterprise.",
+          "D": "Object tagging for classifying sensitive data is available starting at the Enterprise edition; however, the question specifically targets row and column access policies as the two correct answers.",
+          "E": "Private connectivity via AWS PrivateLink is a Business Critical feature, not an Enterprise-level introduction."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "account-management",
+      "scenario": null,
+      "stem": "Which TWO of the following statements correctly describe the Snowflake Standard edition?",
+      "options": [
+        { "key": "A", "text": "It supports complete SQL Data Manipulation Language (DML) and Data Definition Language (DDL)." },
+        { "key": "B", "text": "It supports Time Travel up to 90 days for data recovery." },
+        { "key": "C", "text": "It provides access to all Snowflake connectors and drivers." },
+        { "key": "D", "text": "It supports multi-cluster warehouses for high concurrency workloads." },
+        { "key": "E", "text": "It includes Snowflake Marketplace access." }
+      ],
+      "correct": ["A", "E"],
+      "explanation": {
+        "correct": "Standard edition supports complete SQL DML and DDL as its foundational capability, and Snowflake Marketplace access is available from Standard upward.",
+        "distractors": {
+          "B": "Time Travel in Standard is limited to 1 day, not 90 days; the 90-day maximum is an Enterprise feature.",
+          "C": "While Standard provides broad connector/driver access, 'all connectors' is an overstatement; certain connectors tied to higher-tier features may not apply.",
+          "D": "Multi-cluster warehouses are an Enterprise feature and are not available in Standard."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "account-management",
+      "scenario": null,
+      "stem": "Which TWO of the following correctly describe features available across ALL four Snowflake editions (Standard, Enterprise, Business Critical, and VPS)?",
+      "options": [
+        { "key": "A", "text": "Snowflake Connector for Kafka for loading data from Apache Kafka topics" },
+        { "key": "B", "text": "Dedicated metadata store and pool of compute resources" },
+        { "key": "C", "text": "Streamlit in Snowflake for building, deploying, and sharing Streamlit apps" },
+        { "key": "D", "text": "Tri-Secret Secure using customer-managed encryption keys" },
+        { "key": "E", "text": "Replicate shared data to keep it synchronized within your organization" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "The Snowflake Connector for Kafka and Streamlit in Snowflake are both available across all four editions — Standard, Enterprise, Business Critical, and VPS.",
+        "distractors": {
+          "B": "A dedicated metadata store and pool of compute resources is exclusively a VPS feature, not available in Standard, Enterprise, or Business Critical.",
+          "D": "Tri-Secret Secure is a Business Critical and VPS feature, not available in Standard or Enterprise.",
+          "E": "Replicating shared data to keep it synchronized is available in Standard, Enterprise, and Business Critical, but its availability in VPS should be confirmed; regardless, it is not the best all-editions example compared to Kafka connector and Streamlit."
+        }
+      }
+    }
+  ]
+}

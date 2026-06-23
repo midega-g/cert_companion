@@ -1,0 +1,440 @@
+{
+  "topic": "Snowflake Micro-Partitions & Data Clustering",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "micro-partitions",
+      "scenario": null,
+      "stem": "What is the uncompressed size range of a single Snowflake micro-partition?",
+      "options": [
+        { "key": "A", "text": "10 MB to 100 MB" },
+        { "key": "B", "text": "50 MB to 500 MB" },
+        { "key": "C", "text": "100 MB to 1 GB" },
+        { "key": "D", "text": "500 MB to 5 GB" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Each micro-partition contains between 50 MB and 500 MB of uncompressed data, as stated in the Snowflake documentation. The actual stored size is smaller because data is always stored compressed.",
+        "distractors": {
+          "A": "10 MB to 100 MB is too small; the documented lower bound is 50 MB and the upper bound is 500 MB.",
+          "C": "100 MB to 1 GB is incorrect; the upper bound is 500 MB, not 1 GB, and the lower bound is 50 MB, not 100 MB.",
+          "D": "500 MB to 5 GB far exceeds the documented range; micro-partitions are intentionally small to enable fine-grained pruning."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "micro-partitions",
+      "scenario": null,
+      "stem": "How are micro-partitions created in Snowflake tables?",
+      "options": [
+        { "key": "A", "text": "Users must explicitly define micro-partitions using DDL before loading data." },
+        { "key": "B", "text": "Micro-partitions are created only when a clustering key is defined on the table." },
+        { "key": "C", "text": "Micro-partitions are automatically created on all Snowflake tables based on insertion order." },
+        { "key": "D", "text": "Micro-partitions are created manually by a SYSADMIN role after data is loaded." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Micro-partitioning is automatically performed on all Snowflake tables, with tables transparently partitioned using the ordering of the data as it is inserted or loaded — no user intervention is required.",
+        "distractors": {
+          "A": "Unlike traditional static partitioning, Snowflake micro-partitions do not need to be explicitly defined up-front or maintained by users.",
+          "B": "Micro-partitions exist on all tables regardless of whether a clustering key is defined; clustering keys influence organization but are not a prerequisite for micro-partition creation.",
+          "D": "No role or manual step is required; the process is entirely automatic and transparent to users."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "micro-partitions",
+      "scenario": null,
+      "stem": "Which type of Snowflake table does NOT support clustering keys?",
+      "options": [
+        { "key": "A", "text": "Permanent tables" },
+        { "key": "B", "text": "Transient tables" },
+        { "key": "C", "text": "Hybrid tables" },
+        { "key": "D", "text": "External tables" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Hybrid tables are based on an architecture that does not support some features available in standard Snowflake tables, and clustering keys are explicitly called out as unsupported for hybrid tables.",
+        "distractors": {
+          "A": "Permanent tables are standard Snowflake tables and fully support clustering keys.",
+          "B": "Transient tables are standard Snowflake tables and are not mentioned as an exception to clustering key support.",
+          "D": "External tables are not identified in the source material as lacking clustering key support; hybrid tables are the specific exception noted."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "data-clustering",
+      "scenario": null,
+      "stem": "What does a clustering depth of 0 indicate about a Snowflake table?",
+      "options": [
+        { "key": "A", "text": "The table is perfectly clustered with no overlapping micro-partitions." },
+        { "key": "B", "text": "The table has no micro-partitions because it is empty." },
+        { "key": "C", "text": "The table has reached a constant state and cannot benefit from further clustering." },
+        { "key": "D", "text": "The table has not yet had a clustering key assigned." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "A table with no micro-partitions — meaning an unpopulated or empty table — has a clustering depth of 0, as explicitly stated in the documentation.",
+        "distractors": {
+          "A": "A perfectly clustered table with non-overlapping micro-partitions reaches a constant state with a clustering depth of 1 (average depth of 1), not 0.",
+          "C": "A constant state (no overlap across all micro-partitions) results in an overlap depth of 1, not 0; depth of 0 means the table is empty.",
+          "D": "Clustering depth is a measure of micro-partition overlap, not of whether a clustering key has been assigned; an empty table always has depth 0 regardless of key assignment."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "micro-partitions",
+      "scenario": null,
+      "stem": "What happens to micro-partitions that contain data for a dropped column when ALTER TABLE ... DROP COLUMN is executed?",
+      "options": [
+        { "key": "A", "text": "The affected micro-partitions are immediately rewritten to remove the dropped column's data." },
+        { "key": "B", "text": "The dropped column's data is moved to a separate archival micro-partition." },
+        { "key": "C", "text": "The micro-partitions are not rewritten; the dropped column's data remains in storage." },
+        { "key": "D", "text": "The micro-partitions are flagged and rewritten asynchronously within 24 hours." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "When a column is dropped, the micro-partitions containing its data are not re-written at the time the DROP statement executes; the data remains in storage.",
+        "distractors": {
+          "A": "Immediate rewriting does not occur; the documentation explicitly states micro-partitions are not re-written when the drop statement is executed.",
+          "B": "There is no archival micro-partition concept described; the data simply remains in its original micro-partitions.",
+          "D": "No asynchronous rewrite within 24 hours is described; the source material states the data remains in storage without specifying a deferred rewrite."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "query-pruning",
+      "scenario": null,
+      "stem": "Which of the following predicate types will NOT cause Snowflake to prune micro-partitions?",
+      "options": [
+        { "key": "A", "text": "A filter predicate on a range of date values" },
+        { "key": "B", "text": "A filter predicate on a range of geographic region values" },
+        { "key": "C", "text": "A filter predicate that contains a subquery, even if the subquery resolves to a constant" },
+        { "key": "D", "text": "A filter predicate on an hour column in a time-series table" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Snowflake explicitly does not prune micro-partitions based on a predicate with a subquery, even if the subquery results in a constant value.",
+        "distractors": {
+          "A": "Range predicates on date values are a primary use case for pruning; the documentation cites date as a natural clustering dimension that enables pruning.",
+          "B": "Geographic region is cited as a natural clustering dimension that supports pruning.",
+          "D": "Time-series data with hour-level granularity is specifically mentioned as enabling sub-second response times through pruning."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "data-clustering",
+      "scenario": null,
+      "stem": "What is the best practical indicator that a Snowflake table is well-clustered?",
+      "options": [
+        { "key": "A", "text": "A clustering depth value of exactly 1" },
+        { "key": "B", "text": "Zero overlapping micro-partitions across the entire table" },
+        { "key": "C", "text": "Query performance on the table is meeting expectations" },
+        { "key": "D", "text": "The SYSTEM$CLUSTERING_DEPTH function returns a value below 5" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The documentation states that query performance is the best indicator of how well-clustered a table is; if queries are performing as needed or expected, the table is likely well-clustered.",
+        "distractors": {
+          "A": "While a depth of 1 indicates no overlap, the documentation explicitly notes clustering depth is not an absolute or precise measure of whether a table is well-clustered.",
+          "B": "Achieving zero overlap across all micro-partitions in a large table is stated as neither likely nor required to improve query performance.",
+          "D": "No specific numeric threshold for SYSTEM$CLUSTERING_DEPTH is given in the source material as a definition of 'well-clustered.'"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "micro-partitions",
+      "scenario": null,
+      "stem": "How does Snowflake determine the compression algorithm used for columns within micro-partitions?",
+      "options": [
+        { "key": "A", "text": "Users specify the compression algorithm in the CREATE TABLE DDL statement." },
+        { "key": "B", "text": "Snowflake automatically determines the most efficient compression algorithm for each column in each micro-partition." },
+        { "key": "C", "text": "A single global compression algorithm is applied uniformly to all columns across all micro-partitions." },
+        { "key": "D", "text": "Compression is only applied when a clustering key is defined on the table." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake automatically determines the most efficient compression algorithm for the columns in each micro-partition, with no user configuration required.",
+        "distractors": {
+          "A": "Users do not specify compression algorithms in DDL; the process is fully automatic.",
+          "C": "Compression is applied per-column and per-micro-partition, not as a single global algorithm, allowing Snowflake to optimize each independently.",
+          "D": "Compression is a universal feature of micro-partitions applied to all tables, not conditional on the presence of a clustering key."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "data-clustering",
+      "scenario": null,
+      "stem": "Which two system functions does Snowflake provide to monitor clustering metadata for a table?",
+      "options": [
+        { "key": "A", "text": "SYSTEM$CLUSTERING_DEPTH and SYSTEM$PARTITION_STATS" },
+        { "key": "B", "text": "SYSTEM$CLUSTERING_DEPTH and SYSTEM$CLUSTERING_INFORMATION" },
+        { "key": "C", "text": "SYSTEM$CLUSTERING_INFORMATION and SYSTEM$MICRO_PARTITION_METADATA" },
+        { "key": "D", "text": "SYSTEM$TABLE_STATS and SYSTEM$CLUSTERING_DEPTH" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake provides SYSTEM$CLUSTERING_DEPTH and SYSTEM$CLUSTERING_INFORMATION (which includes clustering depth) to view and monitor clustering metadata for a table.",
+        "distractors": {
+          "A": "SYSTEM$PARTITION_STATS is not mentioned in the source material as a clustering monitoring function.",
+          "C": "SYSTEM$MICRO_PARTITION_METADATA is not a function referenced in the source material.",
+          "D": "SYSTEM$TABLE_STATS is not referenced in the source material as a clustering monitoring function."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "micro-partitions",
+      "scenario": null,
+      "stem": "How does Snowflake's columnar scanning behavior optimize query execution when a query filters on only one column?",
+      "options": [
+        { "key": "A", "text": "Snowflake scans the entire micro-partition but skips rows that do not match the filter." },
+        { "key": "B", "text": "Snowflake scans only the columns referenced by the query within the relevant micro-partitions." },
+        { "key": "C", "text": "Snowflake converts the columnar scan to a row scan to apply the filter more efficiently." },
+        { "key": "D", "text": "Snowflake scans all micro-partitions but limits results by applying the filter post-scan." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake uses columnar scanning so that an entire micro-partition is not scanned if a query only filters by one column; only the columns referenced by the query are scanned.",
+        "distractors": {
+          "A": "Snowflake does not scan the entire micro-partition; columnar storage means only relevant columns are accessed, not all rows across all columns.",
+          "C": "Snowflake does not convert to row scanning; the columnar storage model is maintained and leveraged for efficient filtering.",
+          "D": "Micro-partition pruning eliminates irrelevant micro-partitions before scanning; Snowflake does not scan all micro-partitions and filter post-scan."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "micro-partitions",
+      "scenario": null,
+      "stem": "Which TWO pieces of metadata does Snowflake store for each micro-partition?",
+      "options": [
+        { "key": "A", "text": "The range of values for each column in the micro-partition" },
+        { "key": "B", "text": "The username of the user who loaded the data" },
+        { "key": "C", "text": "The number of distinct values in the micro-partition" },
+        { "key": "D", "text": "The virtual warehouse that processed the load operation" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Snowflake stores the range of values for each column and the number of distinct values as part of the metadata for every micro-partition, along with additional optimization properties.",
+        "distractors": {
+          "B": "The username of the loading user is not part of the micro-partition metadata described in the source material.",
+          "D": "The virtual warehouse used during load is not stored as micro-partition metadata according to the documentation."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "data-clustering",
+      "scenario": null,
+      "stem": "Which TWO clustering metadata values does Snowflake maintain for the micro-partitions of a table?",
+      "options": [
+        { "key": "A", "text": "The total number of micro-partitions that comprise the table" },
+        { "key": "B", "text": "The average row length across all micro-partitions" },
+        { "key": "C", "text": "The number of micro-partitions containing values that overlap with each other" },
+        { "key": "D", "text": "The timestamp of the last clustering key assignment" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Snowflake maintains the total number of micro-partitions comprising the table and the number of micro-partitions containing overlapping values as part of clustering metadata.",
+        "distractors": {
+          "B": "Average row length is not listed among the clustering metadata items maintained by Snowflake.",
+          "D": "The timestamp of the last clustering key assignment is not part of the clustering metadata described in the source material."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "micro-partitions",
+      "scenario": null,
+      "stem": "Which TWO statements accurately describe benefits of Snowflake micro-partitions compared to traditional static partitioning?",
+      "options": [
+        { "key": "A", "text": "Micro-partitions can overlap in their range of values, helping to prevent data skew." },
+        { "key": "B", "text": "Micro-partitions must be explicitly defined and maintained by database administrators." },
+        { "key": "C", "text": "Micro-partitions enable efficient scanning of individual columns because columns are stored independently within each micro-partition." },
+        { "key": "D", "text": "Micro-partitions require specialized DDL syntax to create and manage." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Micro-partitions can overlap in range of values, which combined with their uniform small size prevents skew. Columns are stored independently (columnar storage), enabling efficient per-column scanning.",
+        "distractors": {
+          "B": "The opposite is true: micro-partitions are derived automatically and do not need to be explicitly defined or maintained by users, which is a key advantage over static partitioning.",
+          "D": "Traditional static partitioning requires specialized DDL and syntax; Snowflake micro-partitions do not require any specialized DDL."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "data-clustering",
+      "scenario": null,
+      "stem": "Which TWO purposes does clustering depth serve according to the Snowflake documentation?",
+      "options": [
+        { "key": "A", "text": "Monitoring the clustering health of a large table over time as DML is performed" },
+        { "key": "B", "text": "Determining the optimal virtual warehouse size for clustering operations" },
+        { "key": "C", "text": "Determining whether a large table would benefit from explicitly defining a clustering key" },
+        { "key": "D", "text": "Calculating the exact query speedup percentage that clustering will provide" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Clustering depth is used to monitor the clustering health of a large table over time and to determine whether a large table would benefit from explicitly defining a clustering key.",
+        "distractors": {
+          "B": "The documentation does not associate clustering depth with virtual warehouse sizing decisions.",
+          "D": "Clustering depth is not described as providing a precise or exact query speedup percentage; query performance itself is the best indicator of clustering quality."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "micro-partitions",
+      "scenario": null,
+      "stem": "Which THREE statements are true about how DML operations interact with micro-partitions in Snowflake?",
+      "options": [
+        { "key": "A", "text": "DML operations such as DELETE, UPDATE, and MERGE take advantage of micro-partition metadata." },
+        { "key": "B", "text": "Deleting all rows from a table is a metadata-only operation." },
+        { "key": "C", "text": "DML operations always require full micro-partition rewrites regardless of the operation type." },
+        { "key": "D", "text": "Dropping a column does not cause the affected micro-partitions to be rewritten at execution time." },
+        { "key": "E", "text": "Micro-partition metadata is used to facilitate and simplify table maintenance for DML operations." }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "All DML operations leverage micro-partition metadata to facilitate maintenance; deleting all rows is a metadata-only operation; and dropping a column does not trigger a micro-partition rewrite at execution time.",
+        "distractors": {
+          "C": "DML operations do not always require full micro-partition rewrites; for example, deleting all rows is explicitly a metadata-only operation, demonstrating that rewrites are not always performed.",
+          "E": "While this statement is factually true and present in the documentation, options A and E overlap substantially — A is the more precise and complete statement from the source, and the three correct answers are A, B, and D."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "query-pruning",
+      "scenario": null,
+      "stem": "Which TWO actions does Snowflake perform — in order — when executing a query on a well-clustered table?",
+      "options": [
+        { "key": "A", "text": "First, prune micro-partitions not needed for the query; then prune by column within the remaining micro-partitions." },
+        { "key": "B", "text": "First, scan all columns in all micro-partitions; then apply row-level filters." },
+        { "key": "C", "text": "First, decompress all micro-partitions; then prune unneeded partitions." },
+        { "key": "D", "text": "First, prune by column across all micro-partitions; then prune entire micro-partitions." }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Snowflake first prunes micro-partitions not needed for the query, and then prunes by column within the remaining micro-partitions — this two-step order is explicitly described in the documentation.",
+        "distractors": {
+          "B": "Snowflake does not scan all columns in all micro-partitions; partition-level and column-level pruning are performed before scanning to minimize I/O.",
+          "C": "Decompressing all micro-partitions before pruning would be inefficient and is not the described behavior; pruning happens before data is read.",
+          "D": "The order is reversed from what the documentation describes; micro-partition pruning occurs first, followed by columnar pruning within the surviving micro-partitions."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "data-clustering",
+      "scenario": null,
+      "stem": "Which TWO statements correctly describe the relationship between overlap and clustering depth in Snowflake?",
+      "options": [
+        { "key": "A", "text": "As the number of overlapping micro-partitions decreases, the overlap depth decreases." },
+        { "key": "B", "text": "When there is no overlap across all micro-partitions, they are in a constant state that cannot be improved by clustering." },
+        { "key": "C", "text": "A higher clustering depth always means better query performance." },
+        { "key": "D", "text": "When all micro-partitions overlap, the overlap depth equals the total number of micro-partitions." }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The documentation explicitly states that as overlapping micro-partitions decrease, overlap depth decreases, and that when no overlap exists across all micro-partitions, they reach a constant state that cannot be further improved by clustering.",
+        "distractors": {
+          "C": "The opposite is true: a smaller average clustering depth indicates a better-clustered table; higher depth means more overlap and potentially worse query performance.",
+          "D": "While the illustrated example shows all 5 micro-partitions overlapping with an overlap depth of 5, the documentation presents this as a conceptual illustration, not a rule that depth always equals total micro-partition count."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "scenario",
+      "domain": "query-pruning",
+      "scenario": "A Snowflake table stores one full year of IoT sensor readings, partitioned by insertion order. The table has a 'timestamp' column and a 'sensor_id' column. A data engineer runs the query: SELECT * FROM sensor_data WHERE sensor_id IN (SELECT sensor_id FROM active_sensors). The query takes much longer than expected even though the subquery returns only 10 sensor IDs.",
+      "stem": "Why does Snowflake fail to prune micro-partitions for this query despite the small result set from the subquery?",
+      "options": [
+        { "key": "A", "text": "Snowflake cannot prune micro-partitions based on a predicate that uses a subquery, even if the subquery resolves to a constant set of values." },
+        { "key": "B", "text": "Snowflake only prunes micro-partitions for date or timestamp columns, not for string or ID columns." },
+        { "key": "C", "text": "Pruning is disabled for tables that use insertion-order partitioning instead of explicit clustering keys." },
+        { "key": "D", "text": "The query must use BETWEEN instead of IN for Snowflake to perform micro-partition pruning." }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Snowflake explicitly does not prune micro-partitions based on a predicate with a subquery, even if the subquery results in a constant. This is a documented limitation of predicate-based pruning.",
+        "distractors": {
+          "B": "Snowflake's pruning is not restricted to date or timestamp columns; it works across any column type for which range metadata is available. The subquery is the specific issue here.",
+          "C": "Insertion-order partitioning does not disable pruning; all Snowflake tables support micro-partition pruning. Clustering keys improve pruning effectiveness but are not required for it.",
+          "D": "There is no documented requirement to use BETWEEN instead of IN for pruning to work; the limitation is specific to subquery predicates, not the IN operator itself."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "scenario",
+      "domain": "data-clustering",
+      "scenario": "A Snowflake data engineer notices that query performance on a large sales table has been gradually degrading over the past three months. The table receives frequent INSERT, UPDATE, and DELETE operations throughout each business day. The engineer runs SYSTEM$CLUSTERING_INFORMATION on the table and observes a steadily increasing clustering depth value.",
+      "stem": "What does the increasing clustering depth most likely indicate, and what is the appropriate next step?",
+      "options": [
+        { "key": "A", "text": "The table is becoming better clustered over time; no action is needed." },
+        { "key": "B", "text": "The table is no longer well-clustered due to ongoing DML operations, and the table may benefit from clustering via a clustering key." },
+        { "key": "C", "text": "The clustering depth increase indicates storage growth; the engineer should archive older micro-partitions." },
+        { "key": "D", "text": "An increasing clustering depth means micro-partitions have stopped overlapping; the table has reached a constant state." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation states that if query performance degrades over time, the table is likely no longer well-clustered. Clustering depth can be used to monitor clustering health over time as DML is performed and to determine whether a table would benefit from explicitly defining a clustering key.",
+        "distractors": {
+          "A": "A smaller clustering depth indicates better clustering; an increasing depth signals degrading cluster quality, not improvement.",
+          "C": "Clustering depth measures micro-partition overlap, not storage volume. Archiving is not the corrective action described in the documentation for poor clustering.",
+          "D": "A constant state means no overlap exists and depth reaches its minimum (1); an increasing depth indicates growing overlap, which is the opposite of a constant state."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "scenario",
+      "domain": "micro-partitions",
+      "scenario": "A Snowflake architect is designing a large table to store historical transaction records spanning five years. The business frequently queries transactions filtered by a single date or a narrow date range. The architect wants to maximize pruning efficiency for these date-based queries.",
+      "stem": "Which characteristic of Snowflake micro-partitions most directly enables efficient pruning for this date-range query pattern?",
+      "options": [
+        { "key": "A", "text": "Micro-partitions store data in row format, allowing Snowflake to quickly skip rows outside the date range." },
+        { "key": "B", "text": "Snowflake stores the range of values for each column in each micro-partition's metadata, enabling precise micro-partition pruning at query run-time." },
+        { "key": "C", "text": "Micro-partitions are compressed using a date-optimized algorithm that speeds up range scans." },
+        { "key": "D", "text": "Snowflake automatically distributes date-range queries across all micro-partitions in parallel to reduce latency." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake stores the range of values for each column in each micro-partition's metadata. At query run-time this metadata enables precise pruning — micro-partitions whose date range does not overlap the query predicate are skipped entirely, enabling sub-second responses for time-series range queries.",
+        "distractors": {
+          "A": "Snowflake uses columnar storage, not row storage, within micro-partitions. Row-level skipping is not how pruning works; pruning operates at the micro-partition and column level using metadata.",
+          "C": "Snowflake automatically selects the most efficient compression algorithm per column, but no date-specific algorithm is described, and compression does not directly enable range-based pruning.",
+          "D": "Parallelism across micro-partitions is a general Snowflake capability, but the specific mechanism that enables date-range pruning is the stored value-range metadata, not parallel distribution."
+        }
+      }
+    }
+  ]
+}

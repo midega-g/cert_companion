@@ -1,0 +1,42 @@
+{
+  "providers": [
+    {
+      "id": "snowflake",
+      "label": "Snowflake",
+      "topics": [
+        {
+          "id": "editions",
+          "label": "Editions",
+          "tests": [
+            {
+              "id": "test_1",
+              "label": "Test 1",
+              "path": "snowflake/editions/test_1.json"
+            }
+          ]
+        },
+        {
+          "id": "micro_partition_and_clustering",
+          "label": "Micro Partition And Clustering",
+          "tests": [
+            {
+              "id": "test_1",
+              "label": "Test 1",
+              "path": "snowflake/micro_partition_and_clustering/test_1.json"
+            },
+            {
+              "id": "test_2",
+              "label": "Test 2",
+              "path": "snowflake/micro_partition_and_clustering/test_2.json"
+            },
+            {
+              "id": "test_3",
+              "label": "Test 3",
+              "path": "snowflake/micro_partition_and_clustering/test_3.json"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
