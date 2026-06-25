@@ -22,6 +22,8 @@ Do not output prose, markdown fences, explanations, comments, or notes outside t
     * 5 single-select
     * 5 multi-select
 * Definitional or straightforward recall questions are allowed but capped at 3 total and must come from the direct single-select pool.
+* Direct questions must set `scenario` to `null`.
+* Scenario-based questions must set `scenario` to a non-null string containing the realistic situation before the question stem.
 * All questions must be derived strictly from the provided source material.
 * Do not introduce concepts that do not appear in the source material.
 * Questions and answer options must not reference the source material directly (e.g., do not say "according to the documentation" or "as stated in the source"). Ask as if the facts are simply known.
@@ -105,9 +107,9 @@ The goal is for learners to understand why every option is right or wrong after 
   "questions": [
     {
       "id": 1,
-      "type": "single" | "multi" | "scenario",
+      "type": "single" | "multi",
       "domain": "string",
-      "scenario": "string or null",
+      "scenario": "string (required for scenario-based questions) | null (required for direct questions)",
       "stem": "string",
       "options": [
         { "key": "A", "text": "string" }
@@ -118,7 +120,9 @@ The goal is for learners to understand why every option is right or wrong after 
         "distractors": {
           "B": "string",
           "C": "string",
-          "D": "string"
+          "D": "string",
+          "E": "string (only for multi-select with 5 options)",
+          "F": "string (only for multi-select with 6 options)"
         }
       }
     }
@@ -149,17 +153,10 @@ If `order` is omitted, the manifest falls back to sorting by the numeric index i
 
 # OPTION COUNT RULES
 
-* Single-select:
+* Single-select (direct or scenario):
 
   * Exactly 4 options (A–D)
-* Scenario (single-select):
-
-  * Exactly 4 options (A–D)
-* Scenario (multi-select):
-
-  * 5 options (A–E) for Select TWO
-  * 6 options (A–F) for Select THREE
-* Multi-select:
+* Multi-select (direct or scenario):
 
   * 5 options (A–E) for Select TWO
   * 6 options (A–F) for Select THREE
