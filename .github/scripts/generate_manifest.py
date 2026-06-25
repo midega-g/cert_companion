@@ -5,8 +5,12 @@ Auto-generates manifest.json by walking the repository tree.
 Structure expected:
   <provider>/<topic>/test_N.json
 
-Each test_N.json may contain an optional top-level "label" field.
-If present, that label is used in the manifest. Otherwise falls back to "Test N".
+Each test_N.json may contain optional top-level fields:
+  "label": string  — display name shown in the UI (falls back to "Test N")
+  "order": int     — explicit sort position within the topic (falls back to N)
+
+When "order" is present, tests are sorted by that value rather than filename number.
+This allows Part A / Part B pairs to be grouped together regardless of filename.
 
 Outputs manifest.json at the repo root.
 """
@@ -46,6 +50,17 @@ def read_test_label(filepath: str, fallback: str) -> str:
         return fallback
 
 
+def read_test_order(filepath: str, fallback: int) -> int:
+    """Read the optional 'order' field from the JSON file; return fallback if absent."""
+    try:
+        with open(filepath, encoding="utf-8") as f:
+            data = json.load(f)
+        val = data.get("order")
+        return int(val) if val is not None else fallback
+    except Exception:
+        return fallback
+
+
 def build_manifest(root: str) -> dict:
     providers = []
 
@@ -81,11 +96,18 @@ def build_manifest(root: str) -> dict:
                 fallback_label = f"Test {n}"
                 filepath = os.path.join(topic_path, f)
                 label = read_test_label(filepath, fallback_label)
+                order = read_test_order(filepath, int(n))
                 tests.append({
                     "id": f.replace(".json", ""),
                     "label": label,
                     "path": f"{provider_id}/{topic_id}/{f}",
+                    "_order": order,
                 })
+
+            # Sort by explicit order field, falling back to filename number
+            tests.sort(key=lambda t: t["_order"])
+            for t in tests:
+                del t["_order"]
 
             topics.append({
                 "id": topic_id,
