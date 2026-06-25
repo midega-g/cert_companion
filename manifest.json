@@ -5,6 +5,17 @@
       "label": "Snowflake",
       "topics": [
         {
+          "id": "cloning",
+          "label": "Cloning",
+          "tests": [
+            {
+              "id": "test_1",
+              "label": "Snowflake Cloning Considerations \u2014 Part A",
+              "path": "snowflake/cloning/test_1.json"
+            }
+          ]
+        },
+        {
           "id": "editions",
           "label": "Editions",
           "tests": [
