@@ -5,6 +5,9 @@ Auto-generates manifest.json by walking the repository tree.
 Structure expected:
   <provider>/<topic>/test_N.json
 
+Each test_N.json may contain an optional top-level "label" field.
+If present, that label is used in the manifest. Otherwise falls back to "Test N".
+
 Outputs manifest.json at the repo root.
 """
 
@@ -12,31 +15,35 @@ import json
 import os
 import re
 
-SKIP_DIRS = {".git", ".github", "node_modules"}
-SKIP_FILES = {"index.html", "manifest.json"}
+SKIP_DIRS  = {".git", ".github", "node_modules"}
+SKIP_FILES = {"index.html", "style.css", "app.js", "manifest.json"}
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def to_label(name: str) -> str:
-    """Convert a folder/file id to a display label.
+    """Convert a folder id to a display label.
 
     Examples:
-        'snowflake'         -> 'Snowflake'
-        'virtual-machines'  -> 'Virtual Machines'
-        'test_1'            -> 'Test 1'
+        'snowflake'                    -> 'Snowflake'
+        'micro_partition_and_clustering' -> 'Micro Partition And Clustering'
+        'virtual-machines'             -> 'Virtual Machines'
     """
-    # Handle test_N pattern
-    match = re.fullmatch(r"test_(\d+)", name)
-    if match:
-        return f"Test {match.group(1)}"
-    # General: replace hyphens/underscores with spaces and title-case
     return name.replace("-", " ").replace("_", " ").title()
 
 
 def test_sort_key(filename: str) -> int:
-    """Return the numeric index from test_N.json, or 0 if not matched."""
     match = re.fullmatch(r"test_(\d+)\.json", filename)
     return int(match.group(1)) if match else 0
+
+
+def read_test_label(filepath: str, fallback: str) -> str:
+    """Read the optional 'label' field from the JSON file; return fallback if absent."""
+    try:
+        with open(filepath, encoding="utf-8") as f:
+            data = json.load(f)
+        return data.get("label") or fallback
+    except Exception:
+        return fallback
 
 
 def build_manifest(root: str) -> dict:
@@ -61,42 +68,37 @@ def build_manifest(root: str) -> dict:
         for topic_id in topic_dirs:
             topic_path = os.path.join(provider_path, topic_id)
             test_files = sorted(
-                [
-                    f
-                    for f in os.listdir(topic_path)
-                    if re.fullmatch(r"test_\d+\.json", f)
-                ],
+                [f for f in os.listdir(topic_path) if re.fullmatch(r"test_\d+\.json", f)],
                 key=test_sort_key,
             )
 
             if not test_files:
                 continue
 
-            tests = [
-                {
+            tests = []
+            for f in test_files:
+                n = re.fullmatch(r"test_(\d+)\.json", f).group(1)
+                fallback_label = f"Test {n}"
+                filepath = os.path.join(topic_path, f)
+                label = read_test_label(filepath, fallback_label)
+                tests.append({
                     "id": f.replace(".json", ""),
-                    "label": to_label(f.replace(".json", "")),
+                    "label": label,
                     "path": f"{provider_id}/{topic_id}/{f}",
-                }
-                for f in test_files
-            ]
+                })
 
-            topics.append(
-                {
-                    "id": topic_id,
-                    "label": to_label(topic_id),
-                    "tests": tests,
-                }
-            )
+            topics.append({
+                "id": topic_id,
+                "label": to_label(topic_id),
+                "tests": tests,
+            })
 
         if topics:
-            providers.append(
-                {
-                    "id": provider_id,
-                    "label": to_label(provider_id),
-                    "topics": topics,
-                }
-            )
+            providers.append({
+                "id": provider_id,
+                "label": to_label(provider_id),
+                "topics": topics,
+            })
 
     return {"providers": providers}
 
