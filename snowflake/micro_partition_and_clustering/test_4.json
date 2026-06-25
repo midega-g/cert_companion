@@ -1,5 +1,6 @@
 {
   "label": "Micro-Partitions & Clustering — Part B",
+  "order": 2,
   "topic": "Snowflake Micro-Partitions & Data Clustering",
   "questions": [
     {

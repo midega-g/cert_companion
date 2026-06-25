@@ -1,5 +1,6 @@
 {
   "label": "Automatic Clustering — Part B",
+  "order": 6,
   "topic": "Snowflake Automatic Clustering",
   "questions": [
     {

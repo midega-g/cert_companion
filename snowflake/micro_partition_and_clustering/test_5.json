@@ -1,5 +1,6 @@
 {
   "label": "Clustering Keys & Clustered Tables — Part B",
+  "order": 4,
   "topic": "Snowflake Clustering Keys & Clustered Tables",
   "questions": [
     {
