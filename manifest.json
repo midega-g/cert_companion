@@ -25,24 +25,24 @@
               "path": "snowflake/micro_partition_and_clustering/test_1.json"
             },
             {
-              "id": "test_2",
-              "label": "Clustering Keys & Clustered Tables \u2014 Part A",
-              "path": "snowflake/micro_partition_and_clustering/test_2.json"
-            },
-            {
-              "id": "test_3",
-              "label": "Automatic Clustering \u2014 Part A",
-              "path": "snowflake/micro_partition_and_clustering/test_3.json"
-            },
-            {
               "id": "test_4",
               "label": "Micro-Partitions & Clustering \u2014 Part B",
               "path": "snowflake/micro_partition_and_clustering/test_4.json"
             },
             {
+              "id": "test_2",
+              "label": "Clustering Keys & Clustered Tables \u2014 Part A",
+              "path": "snowflake/micro_partition_and_clustering/test_2.json"
+            },
+            {
               "id": "test_5",
               "label": "Clustering Keys & Clustered Tables \u2014 Part B",
               "path": "snowflake/micro_partition_and_clustering/test_5.json"
+            },
+            {
+              "id": "test_3",
+              "label": "Automatic Clustering \u2014 Part A",
+              "path": "snowflake/micro_partition_and_clustering/test_3.json"
             },
             {
               "id": "test_6",
