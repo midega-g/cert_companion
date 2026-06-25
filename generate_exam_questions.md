@@ -13,11 +13,15 @@ Do not output prose, markdown fences, explanations, comments, or notes outside t
 * Generate exactly 20 questions per session.
 * Distribution:
 
-  * 10 single-select
-  * 7 multi-select
-  * 3 scenario-based
-* Scenario-based questions may be either single-select or multi-select. They begin with a realistic scenario for the certification domain, followed by a single question stem and answer options. They count toward the single-select or multi-select totals above based on their type.
-* Definitional or straightforward recall questions are allowed but capped at 3 total and must come from the single-select pool.
+  * 10 direct questions (no scenario):
+
+    * 5 single-select
+    * 5 multi-select
+  * 10 scenario-based questions (begin with a realistic scenario):
+
+    * 5 single-select
+    * 5 multi-select
+* Definitional or straightforward recall questions are allowed but capped at 3 total and must come from the direct single-select pool.
 * All questions must be derived strictly from the provided source material.
 * Do not introduce concepts that do not appear in the source material.
 * Questions and answer options must not reference the source material directly (e.g., do not say "according to the documentation" or "as stated in the source"). Ask as if the facts are simply known.
