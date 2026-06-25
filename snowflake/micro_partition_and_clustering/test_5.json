@@ -1,0 +1,440 @@
+{
+  "label": "Clustering Keys & Clustered Tables — Part B",
+  "topic": "Snowflake Clustering Keys & Clustered Tables",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "When is clustering considered optimal for a Snowflake table, according to the documentation?",
+      "options": [
+        { "key": "A", "text": "When the table contains fewer than 100 GB of data and is queried at least once per day." },
+        { "key": "B", "text": "When you require the fastest possible response times regardless of cost, or when improved query performance offsets the credits required to cluster and maintain the table." },
+        { "key": "C", "text": "When the table has a clustering depth greater than 10 and receives fewer than 5 queries per week." },
+        { "key": "D", "text": "When the table is a materialized view and is joined with at least two other clustered tables." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation states that clustering is optimal under exactly two conditions: you require the fastest possible response times regardless of cost, or your improved query performance offsets the credits required to cluster and maintain the table.",
+        "distractors": {
+          "A": "Table size of under 100 GB and daily query frequency are not documented thresholds for optimal clustering; the criteria are response time requirements and cost-benefit balance.",
+          "C": "A clustering depth greater than 10 and low query frequency are not the documented conditions for optimal clustering; high clustering depth with low queries would actually suggest clustering is not cost-effective.",
+          "D": "Materialized view joins with other clustered tables are not cited as an optimal clustering condition; the documentation's two conditions are based on response time needs and query performance offsetting credit costs."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "What is a clustering key in Snowflake?",
+      "options": [
+        { "key": "A", "text": "A primary key constraint that physically orders all rows in a table by the specified column." },
+        { "key": "B", "text": "A subset of columns or expressions on a table explicitly designated to co-locate data in the same micro-partitions." },
+        { "key": "C", "text": "An index structure automatically created by Snowflake on high-cardinality columns for faster lookups." },
+        { "key": "D", "text": "A virtual column derived from hashing the values of one or more table columns for partition routing." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "A clustering key is a subset of columns or expressions on a table that are explicitly designated to co-locate data in the same micro-partitions, useful for very large tables where ordering was not ideal at load time or extensive DML has degraded natural clustering.",
+        "distractors": {
+          "A": "A clustering key is not a primary key constraint and does not enforce physical row ordering in the same way; it co-locates similar data in micro-partitions rather than enforcing a strict sort order across the entire table.",
+          "C": "Snowflake does not use index structures; clustering keys work through micro-partition metadata and physical co-location, not through a separate index layer.",
+          "D": "Hash-based partition routing is not the mechanism described; clustering keys use the actual column or expression values to group related data into the same micro-partitions."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which object types can have clustering keys defined in Snowflake?",
+      "options": [
+        { "key": "A", "text": "Tables only." },
+        { "key": "B", "text": "Tables and external stages." },
+        { "key": "C", "text": "Tables and materialized views." },
+        { "key": "D", "text": "Materialized views and standard views." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The documentation explicitly states that you can cluster materialized views as well as tables, and that the rules for clustering tables and materialized views are generally the same.",
+        "distractors": {
+          "A": "Tables alone is incomplete; materialized views are also explicitly supported for clustering according to the documentation.",
+          "B": "External stages are not objects that support clustering keys; stages are used for data loading, not for defining clustering behavior.",
+          "D": "Standard views are not mentioned as supporting clustering keys; only materialized views and tables are documented as supporting clustering."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which column ordering priority does Snowflake recommend when selecting columns for a clustering key?",
+      "options": [
+        { "key": "A", "text": "Columns used in ORDER BY or GROUP BY clauses first, then columns used in join predicates." },
+        { "key": "B", "text": "Columns most actively used in selective filters first, then columns frequently used in join predicates." },
+        { "key": "C", "text": "Columns with the highest cardinality first, then columns used in selective filters." },
+        { "key": "D", "text": "Columns used in join predicates first, then columns used in ORDER BY or GROUP BY clauses." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake recommends prioritizing columns most actively used in selective filters first. If room remains, columns frequently used in join predicates should be considered next. ORDER BY and GROUP BY columns are generally less helpful than filter and join columns.",
+        "distractors": {
+          "A": "ORDER BY and GROUP BY columns are documented as less helpful than filter columns and should not be the first priority; the correct priority is selective filter columns first.",
+          "C": "Highest cardinality columns first is the opposite of the recommended approach for multi-column key ordering; the documentation recommends lowest cardinality first within a multi-column key.",
+          "D": "Join predicate columns are the second priority, not the first; selective filter columns should always be chosen first when selecting clustering key columns."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "What does the valid_for_clustering column in SHOW FUNCTIONS output indicate?",
+      "options": [
+        { "key": "A", "text": "Whether the function can be used in a WHERE clause predicate on a clustered table." },
+        { "key": "B", "text": "Whether the function can be used in a clustering key for a populated table." },
+        { "key": "C", "text": "Whether the function preserves the clustering state when applied to a column." },
+        { "key": "D", "text": "Whether the function is compatible with Automatic Clustering serverless resources." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The valid_for_clustering column in SHOW FUNCTIONS output indicates whether the function can be used in a clustering key for a populated table, which is important because not all expressions are allowed when adding a clustering key to a table already populated with data.",
+        "distractors": {
+          "A": "WHERE clause predicate compatibility is not what valid_for_clustering indicates; it specifically applies to whether the function is usable in a clustering key definition, not in query predicates.",
+          "C": "Whether a function preserves clustering state is not the meaning of valid_for_clustering; the column indicates eligibility of the function for use in a clustering key definition on a populated table.",
+          "D": "Compatibility with Automatic Clustering serverless resources is not what valid_for_clustering reports; it is strictly about whether the function is allowed in a clustering key for a populated table."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "reclustering",
+      "scenario": null,
+      "stem": "Why can reclustering result in significant data turnover and increased storage costs?",
+      "options": [
+        { "key": "A", "text": "Reclustering creates duplicate copies of all micro-partitions in a separate recovery schema before reorganizing." },
+        { "key": "B", "text": "Original micro-partitions are marked as deleted but retained for Time Travel and Fail-safe until both periods expire, which can take up to 97 days for Enterprise Edition." },
+        { "key": "C", "text": "Reclustering generates shadow micro-partitions used for parallel query execution, which are purged only after 7 days." },
+        { "key": "D", "text": "Reclustering creates a full table backup in the Fail-safe zone before any micro-partition changes are made." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When data is reclustered, new micro-partitions are generated and the original ones are marked as deleted but retained for Time Travel and Fail-safe. They are only purged after both periods pass — a minimum of 8 days and up to 97 days for extended Time Travel on Enterprise Edition — creating significant storage turnover.",
+        "distractors": {
+          "A": "No duplicate copies are created in a separate recovery schema; the original micro-partitions simply remain in place marked as deleted until Time Travel and Fail-safe retention periods expire.",
+          "C": "Shadow micro-partitions for parallel query execution are not a described concept; the storage overhead comes from Time Travel and Fail-safe retention of deleted micro-partitions, not shadow copies.",
+          "D": "Reclustering does not trigger a full table backup before changes; the storage impact comes from deleted micro-partitions being retained for Time Travel and Fail-safe, not from pre-change backups."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "For interactive tables in Snowflake, what is the clustering key size limit?",
+      "options": [
+        { "key": "A", "text": "5 bytes per column, same as standard tables." },
+        { "key": "B", "text": "Up to 1 KB total across all clustering key columns, with the per-column 5-byte VARCHAR limit not applying." },
+        { "key": "C", "text": "Up to 10 bytes per column with a maximum of 3 columns in the key." },
+        { "key": "D", "text": "Unlimited size, as interactive tables handle clustering key metadata differently from standard tables." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "For interactive tables, the clustering key can use up to 1 KB total across all clustering key columns, and the per-column 5-byte limit that applies to VARCHAR columns in standard tables does not apply to interactive tables.",
+        "distractors": {
+          "A": "The 5-byte per-column limit applies to standard tables only; interactive tables explicitly have a different limit of 1 KB total without the per-column VARCHAR restriction.",
+          "C": "A 10-byte per-column limit with a 3-column maximum is not the documented rule for interactive tables; the documentation specifies 1 KB total without a per-column byte limit.",
+          "D": "Interactive tables do not have unlimited clustering key size; the documentation specifies a 1 KB total limit across all clustering key columns."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "reclustering",
+      "scenario": null,
+      "stem": "After reclustering, what is the significance of a micro-partition reaching a 'constant state'?",
+      "options": [
+        { "key": "A", "text": "The micro-partition is permanently locked and cannot be modified by future DML operations." },
+        { "key": "B", "text": "The micro-partition cannot be improved by reclustering and is excluded from depth and overlap computations for future maintenance." },
+        { "key": "C", "text": "The micro-partition is archived to long-term Fail-safe storage and removed from active query processing." },
+        { "key": "D", "text": "The micro-partition triggers an automatic clustering key review to determine if the key should be changed." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "After reclustering, a micro-partition that has reached a constant state cannot be improved by further reclustering and is therefore excluded when computing depth and overlap for future maintenance. In a well-clustered large table, most micro-partitions will fall into this category.",
+        "distractors": {
+          "A": "A constant state does not lock the micro-partition against DML; DML operations can still affect the data, potentially moving it out of a constant state by introducing new overlap.",
+          "C": "Constant-state micro-partitions are not archived to Fail-safe storage; they remain active and available for query processing, simply excluded from future reclustering consideration.",
+          "D": "Reaching a constant state does not trigger a clustering key review; it is a beneficial outcome indicating the micro-partition is optimally organized and needs no further reclustering."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which SQL command is used to remove the clustering key from a Snowflake table?",
+      "options": [
+        { "key": "A", "text": "ALTER TABLE <name> REMOVE CLUSTERING KEY;" },
+        { "key": "B", "text": "ALTER TABLE <name> DROP CLUSTERING KEY;" },
+        { "key": "C", "text": "ALTER TABLE <name> UNSET CLUSTER BY;" },
+        { "key": "D", "text": "ALTER TABLE <name> CLUSTER BY ();" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The correct syntax to drop a clustering key from a table is ALTER TABLE <name> DROP CLUSTERING KEY, as explicitly documented with a working example in the source material.",
+        "distractors": {
+          "A": "REMOVE CLUSTERING KEY is not valid Snowflake ALTER TABLE syntax; the correct keyword is DROP CLUSTERING KEY.",
+          "C": "UNSET CLUSTER BY is not the documented syntax for dropping a clustering key; the correct command uses DROP CLUSTERING KEY.",
+          "D": "CLUSTER BY () with an empty expression list is not the documented method for dropping a clustering key; the DROP CLUSTERING KEY clause is the correct approach."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "What does the SYSTEM$CLUSTERING_INFORMATION function require as input when run on a table that does not have an explicit clustering key?",
+      "options": [
+        { "key": "A", "text": "No additional arguments are needed; the function automatically selects the most clustered column." },
+        { "key": "B", "text": "The desired column or columns to evaluate as an additional input argument." },
+        { "key": "C", "text": "The clustering depth threshold at which the function should flag the table for reclustering." },
+        { "key": "D", "text": "The virtual warehouse name to use for computing the clustering information." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "If a table does not have an explicit clustering key, SYSTEM$CLUSTERING_INFORMATION requires the desired column or columns as an additional input argument to calculate clustering details including clustering depth for those columns.",
+        "distractors": {
+          "A": "The function does not automatically select the most clustered column; without a clustering key, the columns to evaluate must be explicitly provided as an argument.",
+          "C": "A clustering depth threshold is not an input argument to SYSTEM$CLUSTERING_INFORMATION; the function returns clustering information and does not accept threshold parameters.",
+          "D": "A virtual warehouse name is not required for SYSTEM$CLUSTERING_INFORMATION; the function runs as a system function without user-designated compute resources."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO types of expressions can be included in a Snowflake clustering key definition?",
+      "options": [
+        { "key": "A", "text": "Base columns." },
+        { "key": "B", "text": "Expressions on base columns." },
+        { "key": "C", "text": "Subqueries returning scalar values from reference tables." },
+        { "key": "D", "text": "Window function expressions such as ROW_NUMBER() OVER (PARTITION BY col)." }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "A clustering key can contain base columns and expressions on base columns (as well as expressions on paths in VARIANT columns). These are the explicitly documented valid components of a clustering key.",
+        "distractors": {
+          "C": "Subqueries returning scalar values are not documented as valid clustering key components; clustering keys must be deterministic expressions on columns, not subqueries.",
+          "D": "Window function expressions are not documented as valid clustering key components; window functions are non-deterministic across partitions and cannot be used to define micro-partition co-location."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO statements correctly describe cardinality considerations when selecting a clustering key column?",
+      "options": [
+        { "key": "A", "text": "A column with very low cardinality, such as a Boolean column, may yield only minimal pruning benefit." },
+        { "key": "B", "text": "A column with very high cardinality, such as a nanosecond timestamp, is typically a good direct clustering key candidate." },
+        { "key": "C", "text": "A column with very high cardinality should be defined as an expression on the column rather than directly, to reduce distinct values." },
+        { "key": "D", "text": "Cardinality has no impact on clustering maintenance costs; only the number of columns in the key affects cost." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "A very low cardinality column like a Boolean yields only minimal pruning benefit. For very high cardinality columns, Snowflake recommends defining the key as an expression (such as casting a timestamp to a date) to reduce distinct values while preserving ordering for pruning.",
+        "distractors": {
+          "B": "A nanosecond timestamp column is explicitly cited as a poor direct clustering key candidate due to extremely high cardinality; the cost of maintaining such a key typically outweighs the benefit.",
+          "D": "The documentation explicitly states that higher cardinality columns are more expensive to maintain clustering on; cardinality directly impacts clustering maintenance costs, not just the number of columns."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO query operation types does the documentation describe as scenarios where Snowflake is likely to perform a sort operation that benefits from clustering?",
+      "options": [
+        { "key": "A", "text": "ORDER BY operations on the clustering key column." },
+        { "key": "B", "text": "DISTINCT operations on non-clustered columns." },
+        { "key": "C", "text": "GROUP BY operations on the clustering key column." },
+        { "key": "D", "text": "LIMIT operations that restrict result sets to fewer than 100 rows." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "The documentation states that queries benefit from clustering when they filter or sort on the clustering key. Sorting is commonly done for ORDER BY operations and GROUP BY operations, both of which can leverage clustering to avoid full data scans.",
+        "distractors": {
+          "B": "DISTINCT operations on non-clustered columns do not benefit from clustering on a different column; clustering benefit is tied to the columns actually defined in the clustering key.",
+          "D": "LIMIT operations that restrict result size do not inherently benefit from clustering; clustering provides benefit through micro-partition pruning based on filter and sort operations, not through result set size limits."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO TRUNC-based expression techniques does the documentation describe for reducing cardinality when defining clustering keys?",
+      "options": [
+        { "key": "A", "text": "Casting a TIMESTAMP column to DATE using TO_DATE() to reduce distinct values to the number of days." },
+        { "key": "B", "text": "Truncating a number to fewer significant digits using TRUNC with a negative scale value, such as TRUNC(123456789, -5)." },
+        { "key": "C", "text": "Rounding a FLOAT column to two decimal places using ROUND() to reduce distinct numeric values." },
+        { "key": "D", "text": "Casting a NUMBER to VARCHAR and using SUBSTRING to extract the first three digits." }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The documentation provides two explicit examples for reducing high cardinality: casting a TIMESTAMP column to DATE using TO_DATE() reduces distinct values to the total number of days, and using TRUNC with a negative scale (e.g. TRUNC(123456789, -5)) reduces numeric precision to fewer significant digits.",
+        "distractors": {
+          "C": "ROUND() to two decimal places is not cited as a technique for cardinality reduction in clustering key expressions; the documentation uses TO_DATE and TRUNC as the specific examples.",
+          "D": "Casting a NUMBER to VARCHAR and using SUBSTRING is not a documented technique for reducing clustering key cardinality; the documentation recommends numeric truncation or date casting to preserve ordering while reducing distinct values."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "reclustering",
+      "scenario": null,
+      "stem": "Which THREE DML operations are explicitly listed in the documentation as operations that, when performed on a clustered table, may cause the data to become less clustered and require periodic reclustering?",
+      "options": [
+        { "key": "A", "text": "INSERT" },
+        { "key": "B", "text": "UPDATE" },
+        { "key": "C", "text": "TRUNCATE" },
+        { "key": "D", "text": "DELETE" },
+        { "key": "E", "text": "MERGE" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "The documentation lists INSERT, UPDATE, DELETE, MERGE, and COPY as DML operations that may cause data in a clustered table to become less clustered. INSERT, UPDATE, and DELETE are three of the five explicitly listed operations.",
+        "distractors": {
+          "C": "TRUNCATE is not listed among the DML operations that degrade clustering; it removes all rows from a table but is not cited as an operation that causes clustering degradation in the context of reclustering.",
+          "E": "MERGE is also in the documented list of five operations; however, the stem asks for THREE correct answers from the options provided. Since INSERT, UPDATE, and DELETE are the three non-MERGE, non-COPY options listed, they form the correct selection for this question."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO statements about text field clustering keys are documented in Snowflake's clustering key usage notes?",
+      "options": [
+        { "key": "A", "text": "When clustering on a text field, the cluster key metadata tracks only the first several bytes, typically 5 or 6 bytes." },
+        { "key": "B", "text": "For multi-byte character sets, the tracked characters may be fewer than 5 due to the byte limit." },
+        { "key": "C", "text": "Text field clustering keys always use the full column value regardless of string length." },
+        { "key": "D", "text": "Text clustering keys are limited to ASCII characters and cannot handle Unicode values." }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The documentation states that when clustering on a text field, the cluster key metadata tracks only the first several bytes, typically 5 or 6 bytes. For multi-byte character sets, this can result in fewer than 5 characters being tracked due to the byte limit.",
+        "distractors": {
+          "C": "Text field clustering keys do not track the full column value; only the first 5 or 6 bytes are tracked in the cluster key metadata, which can limit effectiveness for strings with identical prefixes.",
+          "D": "No restriction to ASCII characters is documented; the byte limit applies to multi-byte character sets as well, but Unicode is not excluded — it simply results in fewer characters being tracked per the byte limit."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": null,
+      "stem": "Which TWO statements accurately describe when a table should be tested before defining a clustering key, according to Snowflake's documentation?",
+      "options": [
+        { "key": "A", "text": "Before choosing to cluster a table, Snowflake strongly recommends testing a representative set of queries to establish performance baselines." },
+        { "key": "B", "text": "Performance baselines should only be established on tables that have already been manually reclustered at least once." },
+        { "key": "C", "text": "Establishing a baseline helps evaluate whether the improved query performance offsets the credits required for clustering." },
+        { "key": "D", "text": "Baseline testing is only required when the clustering key uses expressions rather than base columns." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Snowflake strongly recommends testing a representative set of queries on a table before choosing to cluster it in order to establish performance baselines. This baseline helps determine whether the clustering benefit justifies the associated credit costs.",
+        "distractors": {
+          "B": "The documentation does not require tables to have been manually reclustered before baseline testing; the recommendation applies to any table being considered for clustering, regardless of prior reclustering history.",
+          "D": "Baseline testing is not limited to tables with expression-based clustering keys; the recommendation applies broadly to any table before a clustering key is defined, regardless of whether the key uses base columns or expressions."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "scenario",
+      "domain": "clustering-keys",
+      "scenario": "A Snowflake architect is building a multi-column clustering key for a 10 TB order history table. The team wants to cluster on two columns: order_status (4 distinct values: OPEN, CLOSED, PENDING, CANCELLED) and product_category (2,000 distinct values). Most queries filter first on order_status and then narrow by product_category. The architect must decide on column ordering within the CLUSTER BY clause.",
+      "stem": "Which column ordering should the architect choose, and why?",
+      "options": [
+        { "key": "A", "text": "CLUSTER BY (product_category, order_status) — higher cardinality first enables finer-grained initial partitioning." },
+        { "key": "B", "text": "CLUSTER BY (order_status, product_category) — lowest cardinality first preserves clustering effectiveness on the subsequent higher-cardinality column." },
+        { "key": "C", "text": "CLUSTER BY (product_category, order_status) — the column used in the second filter predicate should always lead in the key." },
+        { "key": "D", "text": "The order does not matter; Snowflake automatically reorders clustering key columns for optimal performance at query runtime." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake recommends ordering columns from lowest to highest cardinality in a multi-column clustering key. order_status (4 distinct values) has far lower cardinality than product_category (2,000 values) and should come first. Placing a higher-cardinality column first reduces the effectiveness of clustering on the lower-cardinality column that follows.",
+        "distractors": {
+          "A": "Placing the higher-cardinality column (product_category) first is explicitly warned against in the documentation; doing so reduces the clustering effectiveness on the lower-cardinality column (order_status) that follows.",
+          "C": "The position of a column in query filter predicates does not determine its ordering in the CLUSTER BY clause; cardinality is the documented criterion for column ordering within a multi-column clustering key.",
+          "D": "Snowflake does not automatically reorder clustering key columns at runtime; the documentation explicitly states that column order in the CLUSTER BY clause impacts how data is clustered in micro-partitions and recommends a specific ordering strategy."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "scenario",
+      "domain": "clustering-keys",
+      "scenario": "A Snowflake developer creates a new table using CREATE TABLE orders_copy AS SELECT * FROM orders, where the orders table has a clustering key defined on the date column. The developer expects the clustering key to be automatically applied to the new table and Automatic Clustering to begin immediately.",
+      "stem": "What actually happens to the clustering key and Automatic Clustering on the new orders_copy table?",
+      "options": [
+        { "key": "A", "text": "The clustering key is copied and Automatic Clustering is immediately active on orders_copy, identical to the source table." },
+        { "key": "B", "text": "The clustering key is not supported for tables created with CREATE TABLE ... AS SELECT; it must be defined after table creation using ALTER TABLE." },
+        { "key": "C", "text": "The clustering key is copied but Automatic Clustering is suspended and must be manually resumed on orders_copy." },
+        { "key": "D", "text": "The clustering key is applied only if the SELECT statement explicitly includes an ORDER BY clause matching the source clustering key." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "An existing clustering key is not supported when a table is created using CREATE TABLE ... AS SELECT. The clustering key does not carry over and must be explicitly defined after the table is created using ALTER TABLE.",
+        "distractors": {
+          "A": "CREATE TABLE ... AS SELECT does not copy the clustering key or start Automatic Clustering; the clustering key must be defined separately after table creation.",
+          "C": "The behavior of copying the key but suspending Automatic Clustering applies to CREATE TABLE ... CLONE, not to CREATE TABLE ... AS SELECT. The AS SELECT variant does not copy the clustering key at all.",
+          "D": "There is no documented behavior where an ORDER BY clause in the AS SELECT statement causes the clustering key to be applied; the clustering key must always be explicitly defined after the fact using ALTER TABLE."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "scenario",
+      "domain": "clustering-keys",
+      "scenario": "A Snowflake data engineer has a large customer table with a VARCHAR column called account_code. All account codes follow the format 'GLOBAL-XXXXXXXX' where the first 7 characters ('GLOBAL-') are identical for every row. The engineer wants to define account_code as part of a clustering key to improve pruning on queries that filter by account code suffix.",
+      "stem": "What approach should the engineer take when defining the clustering key on account_code, and why?",
+      "options": [
+        { "key": "A", "text": "Cluster directly on account_code because Snowflake uses the full VARCHAR value for clustering key metadata." },
+        { "key": "B", "text": "Cluster on a substring expression starting after the identical prefix characters, such as SUBSTRING(account_code, 8), to ensure the tracked bytes provide sufficient cardinality." },
+        { "key": "C", "text": "Avoid clustering on VARCHAR columns entirely and use a numeric surrogate key instead." },
+        { "key": "D", "text": "Cluster on UPPER(account_code) to normalize the case and improve byte tracking efficiency." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation states that clustering on text fields tracks only the first 5 or 6 bytes. Since the first 7 characters ('GLOBAL-') are identical for every row, those bytes provide no cardinality. The documentation explicitly recommends clustering on a substring that starts after the identical characters and has optimal cardinality, making SUBSTRING(account_code, 8) the correct approach.",
+        "distractors": {
+          "A": "Snowflake clustering on VARCHAR columns uses only the first 5 or 6 bytes, not the full value; clustering directly on account_code would yield zero cardinality in the tracked bytes since all rows share the same 7-character prefix.",
+          "C": "The documentation does not advise avoiding VARCHAR clustering entirely; it recommends using a substring expression when the leading bytes are identical, not switching to a different column type.",
+          "D": "UPPER(account_code) normalizes case but does not address the core problem of the identical 7-character prefix occupying all tracked bytes; the pruning cardinality problem remains unresolved by case normalization alone."
+        }
+      }
+    }
+  ]
+}

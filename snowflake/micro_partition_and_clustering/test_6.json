@@ -1,0 +1,440 @@
+{
+  "label": "Automatic Clustering — Part B",
+  "topic": "Snowflake Automatic Clustering",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "What is the primary purpose of Automatic Clustering in Snowflake?",
+      "options": [
+        { "key": "A", "text": "To automatically select the optimal clustering key columns for any table based on query history." },
+        { "key": "B", "text": "To seamlessly and continually manage all reclustering of clustered tables as needed, without user intervention." },
+        { "key": "C", "text": "To compress micro-partitions more efficiently by reorganizing columnar data on a fixed schedule." },
+        { "key": "D", "text": "To automatically resize virtual warehouses when reclustering workloads exceed available compute capacity." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Automatic Clustering is defined as the Snowflake service that seamlessly and continually manages all reclustering, as needed, of clustered tables — requiring no user scheduling, warehouse designation, or monitoring.",
+        "distractors": {
+          "A": "Automatic Clustering does not select clustering key columns; that remains a user responsibility. It only manages reclustering of tables that already have a clustering key defined.",
+          "C": "Automatic Clustering reorganizes data into optimally-clustered micro-partitions based on the clustering key; it is not a compression optimization service and does not run on a fixed schedule.",
+          "D": "Automatic Clustering uses internally managed serverless compute resources, not user virtual warehouses, and does not trigger warehouse resizing."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "How does Automatic Clustering handle DML statements issued against a table while it is being reclustered?",
+      "options": [
+        { "key": "A", "text": "DML statements are queued and executed only after the reclustering operation completes." },
+        { "key": "B", "text": "DML statements are blocked until reclustering finishes to prevent data consistency issues." },
+        { "key": "C", "text": "Automatic Clustering is transparent and does not block DML statements issued against tables during reclustering." },
+        { "key": "D", "text": "DML statements are permitted only for INSERT operations; UPDATE and DELETE are blocked during reclustering." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Automatic Clustering is non-blocking — it is transparent and does not block DML statements issued against tables while they are being reclustered, allowing normal read and write operations to continue uninterrupted.",
+        "distractors": {
+          "A": "DML statements are not queued; Automatic Clustering operates transparently in the background without delaying or sequencing DML operations.",
+          "B": "Blocking DML during reclustering is explicitly contradicted by the documentation, which describes Automatic Clustering as non-blocking and transparent.",
+          "D": "No partial DML restriction exists during reclustering; all DML statement types are permitted without blocking while Automatic Clustering runs."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "What happens to Automatic Clustering reclustering activity once a clustered table reaches an optimally-clustered state?",
+      "options": [
+        { "key": "A", "text": "Automatic Clustering is permanently disabled on the table until the clustering key is redefined." },
+        { "key": "B", "text": "Reclustering activity drops off once the table is optimally clustered, but resumes as new data changes clustering state." },
+        { "key": "C", "text": "Automatic Clustering continues reclustering at the same rate to maintain the optimal state indefinitely." },
+        { "key": "D", "text": "Snowflake sends an alert to the account administrator when optimal clustering is reached and pauses reclustering for 30 days." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation states that once a table is optimally clustered, the reclustering activity will drop off. Automatic Clustering only triggers reclustering when the table would benefit from the operation, so activity naturally decreases after optimal clustering is achieved.",
+        "distractors": {
+          "A": "Automatic Clustering is not permanently disabled when optimal clustering is reached; it remains active and will resume reclustering if the table's clustering state degrades due to DML.",
+          "C": "Automatic Clustering does not continue at the same rate after optimal clustering is reached; reclustering activity drops off and is only triggered when the table would benefit.",
+          "D": "No alert or 30-day pause mechanism is described in the documentation; reclustering simply drops off naturally once optimal clustering is achieved."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "automatic-clustering-costs",
+      "scenario": null,
+      "stem": "How does Snowflake bill for Automatic Clustering credit usage?",
+      "options": [
+        { "key": "A", "text": "A flat monthly fee is charged per clustered table regardless of actual reclustering activity." },
+        { "key": "B", "text": "Credits are billed based on the size of the virtual warehouse designated for reclustering operations." },
+        { "key": "C", "text": "The account is billed only for the actual credits consumed by automatic clustering operations on clustered tables." },
+        { "key": "D", "text": "Credits are billed per micro-partition reclustered, with a fixed rate per partition regardless of compute time." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Snowflake bills the account only for the actual credits consumed by automatic clustering operations on clustered tables, using serverless compute resources. There are no flat fees or pre-provisioned warehouse costs.",
+        "distractors": {
+          "A": "No flat monthly fee per table is documented; billing is based on actual serverless compute credits consumed during reclustering operations.",
+          "B": "Automatic Clustering does not use a user-designated virtual warehouse; it uses Snowflake-managed serverless compute, so warehouse size does not determine billing.",
+          "D": "Billing is not per micro-partition at a fixed rate; it is based on actual compute credits consumed by the serverless reclustering operations over time."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "automatic-clustering-costs",
+      "scenario": null,
+      "stem": "What is an important caveat about the cost estimates returned by SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS?",
+      "options": [
+        { "key": "A", "text": "The estimates are guaranteed to be within 10% of actual realized costs." },
+        { "key": "B", "text": "The estimates are best efforts and actual realized costs can vary by up to 100%, or in rare cases several times, from the estimated costs." },
+        { "key": "C", "text": "The estimates are only valid for the first 30 days after a clustering key is defined." },
+        { "key": "D", "text": "The estimates apply only to initial clustering costs and cannot predict ongoing maintenance costs." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation explicitly states that cost estimates from SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS are best efforts, and actual realized costs can vary by up to 100% — or in rare cases several times — from the estimated costs.",
+        "distractors": {
+          "A": "No guarantee of within 10% accuracy is documented; the estimates are described as best efforts with potentially significant variance up to 100% or more.",
+          "C": "No 30-day validity window is documented for the cost estimates; the caveat is about accuracy variance, not a time-limited applicability window.",
+          "D": "The function can also be used to predict the compute cost of changing the cluster key of a table, not just initial clustering costs; the documentation does not limit its scope to initial clustering only."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "What must a user do to enable Automatic Clustering on a standard (non-cloned) Snowflake table?",
+      "options": [
+        { "key": "A", "text": "Run ALTER TABLE <name> ENABLE AUTOMATIC CLUSTERING after the clustering key is defined." },
+        { "key": "B", "text": "Contact Snowflake Support to activate Automatic Clustering for the account." },
+        { "key": "C", "text": "Simply define a clustering key for the table; no additional tasks are required in most cases." },
+        { "key": "D", "text": "Designate a virtual warehouse for reclustering using ALTER TABLE <name> SET CLUSTERING_WAREHOUSE." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "In most cases, no additional tasks are required to enable Automatic Clustering for a standard table. Simply defining a clustering key for the table is sufficient for Automatic Clustering to manage reclustering automatically.",
+        "distractors": {
+          "A": "ALTER TABLE ... ENABLE AUTOMATIC CLUSTERING is not a valid Snowflake command; no separate enable step is needed beyond defining the clustering key.",
+          "B": "Contacting Snowflake Support is not required to enable Automatic Clustering on individual tables; it is available to accounts without special activation for individual tables.",
+          "D": "No warehouse designation command is required or supported for Automatic Clustering; Snowflake manages compute resources internally using serverless infrastructure."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "automatic-clustering-costs",
+      "scenario": null,
+      "stem": "Where can users navigate in Snowsight to view Automatic Clustering cost information?",
+      "options": [
+        { "key": "A", "text": "Admin » Warehouses » Clustering Activity" },
+        { "key": "B", "text": "Admin » Cost Management" },
+        { "key": "C", "text": "Data » Databases » Clustering History" },
+        { "key": "D", "text": "Monitoring » Query History » Serverless Operations" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation specifies that users with proper privileges can view Automatic Clustering costs in Snowsight by navigating to Admin » Cost Management.",
+        "distractors": {
+          "A": "Admin » Warehouses » Clustering Activity is not the documented path; Automatic Clustering cost visibility is under Admin » Cost Management, not within the Warehouses section.",
+          "C": "Data » Databases » Clustering History is not a documented Snowsight navigation path for viewing Automatic Clustering costs.",
+          "D": "Monitoring » Query History » Serverless Operations is not the documented path; Automatic Clustering cost information is accessed via Admin » Cost Management in Snowsight."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "Which ALTER TABLE clause is used to suspend Automatic Clustering for a specific table?",
+      "options": [
+        { "key": "A", "text": "ALTER TABLE t1 PAUSE RECLUSTER;" },
+        { "key": "B", "text": "ALTER TABLE t1 DISABLE RECLUSTER;" },
+        { "key": "C", "text": "ALTER TABLE t1 SUSPEND RECLUSTER;" },
+        { "key": "D", "text": "ALTER TABLE t1 STOP CLUSTERING;" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The correct syntax to suspend Automatic Clustering is ALTER TABLE <name> SUSPEND RECLUSTER, as explicitly documented with an example in the source material.",
+        "distractors": {
+          "A": "PAUSE RECLUSTER is not a valid Snowflake ALTER TABLE clause; the correct keyword is SUSPEND RECLUSTER.",
+          "B": "DISABLE RECLUSTER is not documented as a valid ALTER TABLE clause; the correct syntax uses SUSPEND RECLUSTER.",
+          "D": "STOP CLUSTERING is not a valid Snowflake ALTER TABLE clause; the correct command to halt reclustering is SUSPEND RECLUSTER."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "Which column in the SHOW TABLES output displays the column or columns defined as the clustering key for each table?",
+      "options": [
+        { "key": "A", "text": "AUTO_CLUSTERING_ON" },
+        { "key": "B", "text": "CLUSTERING_KEY" },
+        { "key": "C", "text": "CLUSTER_BY" },
+        { "key": "D", "text": "PARTITION_KEY" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The documentation specifies that the CLUSTER_BY column in SHOW TABLES output displays the columns defined as the clustering key for each table, while AUTO_CLUSTERING_ON separately displays whether Automatic Clustering is enabled.",
+        "distractors": {
+          "A": "AUTO_CLUSTERING_ON displays the Automatic Clustering status (enabled or suspended) for each table, not the clustering key column definitions.",
+          "B": "CLUSTERING_KEY is the column name used in the TABLES view (Information Schema and Account Usage), not in SHOW TABLES output; the SHOW TABLES equivalent is CLUSTER_BY.",
+          "D": "PARTITION_KEY is not a documented column in SHOW TABLES output; Snowflake uses CLUSTER_BY to display clustering key definitions."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "automatic-clustering-costs",
+      "scenario": null,
+      "stem": "Which Snowflake resource describes how many credits per compute-hour are consumed by Automatic Clustering?",
+      "options": [
+        { "key": "A", "text": "The AUTOMATIC_CLUSTERING_HISTORY view in Account Usage." },
+        { "key": "B", "text": "The Serverless Feature Credit Table in the Snowflake Service Consumption Table." },
+        { "key": "C", "text": "The SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS function output." },
+        { "key": "D", "text": "The Resource Monitor dashboard in Snowsight Admin settings." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation directs users to the 'Serverless Feature Credit Table' in the Snowflake Service Consumption Table to learn how many credits per compute-hour are consumed by Automatic Clustering.",
+        "distractors": {
+          "A": "The AUTOMATIC_CLUSTERING_HISTORY view shows historical credits consumed by specific tables over time, not the per-compute-hour credit rate for the service.",
+          "C": "SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS provides estimated future costs for enabling clustering on a specific table, not the per-compute-hour credit rate.",
+          "D": "The Resource Monitor dashboard controls and monitors virtual warehouse credit usage; it cannot control or report the per-compute-hour rate for Automatic Clustering serverless resources."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "Which TWO statements accurately describe the 'optimal efficiency' benefit of Automatic Clustering?",
+      "options": [
+        { "key": "A", "text": "Snowflake internally manages the state of clustered tables and dynamically allocates resources for reclustering operations." },
+        { "key": "B", "text": "Automatic Clustering uses a pre-allocated fixed pool of compute resources shared across all clustered tables in the account." },
+        { "key": "C", "text": "Automatic Clustering does not perform any unnecessary reclustering; reclustering is triggered only when the table would benefit." },
+        { "key": "D", "text": "Optimal efficiency is achieved by scheduling reclustering during off-peak hours defined by the account administrator." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Snowflake internally manages the state of clustered tables and dynamically allocates resources as needed, resulting in the most efficient and effective reclustering. Additionally, Automatic Clustering avoids unnecessary reclustering by triggering it only when the table would benefit.",
+        "distractors": {
+          "B": "Automatic Clustering uses dynamically allocated serverless resources, not a fixed pre-allocated pool; resources are allocated as needed per table and operation.",
+          "D": "No off-peak scheduling mechanism defined by an administrator is described; Automatic Clustering manages its own timing and resource allocation internally without user-defined scheduling."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "Which TWO actions permanently prevent future reclustering on a clustered Snowflake table?",
+      "options": [
+        { "key": "A", "text": "Dropping the clustering key on the table." },
+        { "key": "B", "text": "Suspending Automatic Clustering using ALTER TABLE ... SUSPEND RECLUSTER." },
+        { "key": "C", "text": "Cloning the table using CREATE TABLE ... CLONE." },
+        { "key": "D", "text": "Dropping the clustering key prevents future reclustering, and so does running ALTER TABLE ... DROP CLUSTERING KEY." }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Dropping the clustering key on a clustered table prevents all future reclustering on the table. Suspending Automatic Clustering ensures the table is never automatically reclustered while suspended. Both are explicitly documented as ways to stop reclustering from occurring.",
+        "distractors": {
+          "C": "Cloning a table only suspends Automatic Clustering on the clone — it does not permanently prevent reclustering, as Automatic Clustering can be resumed on the cloned table at any time.",
+          "D": "Options A and D describe the same action (dropping the clustering key) with different phrasing; they are not two distinct actions. The two correct and distinct mechanisms are dropping the clustering key and suspending Automatic Clustering."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "automatic-clustering-costs",
+      "scenario": null,
+      "stem": "Which TWO SQL objects are available for querying Automatic Clustering cost history via SQL?",
+      "options": [
+        { "key": "A", "text": "AUTOMATIC_CLUSTERING_HISTORY table function in the Snowflake Information Schema." },
+        { "key": "B", "text": "SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS function." },
+        { "key": "C", "text": "AUTOMATIC_CLUSTERING_HISTORY view in Account Usage." },
+        { "key": "D", "text": "TABLES view in the Snowflake Information Schema filtered by AUTO_CLUSTERING_ON = TRUE." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "The documentation specifies two SQL objects for viewing Automatic Clustering cost history: the AUTOMATIC_CLUSTERING_HISTORY table function in the Snowflake Information Schema and the AUTOMATIC_CLUSTERING_HISTORY view in Account Usage.",
+        "distractors": {
+          "B": "SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS is a forward-looking cost estimation function, not a historical cost reporting object.",
+          "D": "The TABLES view in the Information Schema exposes clustering key and AUTO_CLUSTERING_ON metadata for tables but does not contain credits_used or cost history data."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "Which THREE views or commands can be used to determine whether Automatic Clustering is currently enabled for a specific table?",
+      "options": [
+        { "key": "A", "text": "SHOW TABLES command." },
+        { "key": "B", "text": "TABLES view in the Snowflake Information Schema." },
+        { "key": "C", "text": "AUTOMATIC_CLUSTERING_HISTORY view in Account Usage." },
+        { "key": "D", "text": "TABLES view in the Account Usage shared database." },
+        { "key": "E", "text": "SYSTEM$CLUSTERING_INFORMATION function." }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "The documentation identifies three ways to view Automatic Clustering status: the SHOW TABLES command (AUTO_CLUSTERING_ON column), the TABLES view in the Snowflake Information Schema, and the TABLES view in the Account Usage shared database — all of which expose the AUTO_CLUSTERING_ON and clustering key columns.",
+        "distractors": {
+          "C": "The AUTOMATIC_CLUSTERING_HISTORY view reports on historical credit consumption per table, not on whether Automatic Clustering is currently enabled or suspended for a given table.",
+          "E": "SYSTEM$CLUSTERING_INFORMATION returns clustering depth and overlap metadata for specified columns; it does not indicate whether Automatic Clustering is enabled or suspended on the table."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "automatic-clustering-costs",
+      "scenario": null,
+      "stem": "Which TWO sample queries are described in the documentation for analyzing Automatic Clustering cost data in Account Usage?",
+      "options": [
+        { "key": "A", "text": "A query showing Automatic Clustering cost history broken out by day and by object over the last 30 days." },
+        { "key": "B", "text": "A query projecting future weekly Automatic Clustering costs based on current DML rates." },
+        { "key": "C", "text": "A query showing average daily credits consumed by Automatic Clustering grouped by week over the last year." },
+        { "key": "D", "text": "A query comparing Automatic Clustering costs against virtual warehouse compute costs for the same tables." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "The documentation describes two sample queries: one showing Automatic Clustering cost history by day and by object over the last 30 days to flag irregularities, and another showing the m-day average — average daily credits consumed grouped by week over the last year to identify anomalies in daily averages.",
+        "distractors": {
+          "B": "No query projecting future weekly costs based on DML rates is documented; forward-looking cost estimation uses SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS, not Account Usage queries.",
+          "D": "No query comparing Automatic Clustering costs against virtual warehouse costs is described in the documentation; the two sample queries focus exclusively on Automatic Clustering credit history."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "Which TWO conditions, when present before resuming Automatic Clustering, may cause immediate reclustering activity and credit charges?",
+      "options": [
+        { "key": "A", "text": "The table is not optimally clustered, such as when significant DML has been performed since it was last reclustered." },
+        { "key": "B", "text": "The table has more than 1 TB of data regardless of its current clustering state." },
+        { "key": "C", "text": "The clustering key on the table has changed." },
+        { "key": "D", "text": "The table has been queried more than 100 times since Automatic Clustering was last suspended." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "The documentation warns that before resuming Automatic Clustering, two conditions may cause immediate reclustering activity and credit charges: the table is not optimally clustered (e.g., significant DML has occurred since last reclustering), and the clustering key on the table has changed.",
+        "distractors": {
+          "B": "Table size exceeding 1 TB is not documented as a condition that triggers immediate reclustering upon resuming; the triggers are clustering state and key changes.",
+          "D": "Query frequency since suspension is not documented as a trigger for reclustering activity; reclustering is driven by the table's clustering state and key definition, not by query count."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "automatic-clustering",
+      "scenario": null,
+      "stem": "Which TWO statements correctly describe how Automatic Clustering handles resource management for reclustering operations?",
+      "options": [
+        { "key": "A", "text": "Snowflake performs automatic reclustering in the background without requiring users to specify a warehouse." },
+        { "key": "B", "text": "Automatic Clustering uses serverless compute that Snowflake dynamically allocates, including servers and memory." },
+        { "key": "C", "text": "Automatic Clustering requires a dedicated X-Large warehouse to be provisioned and kept running for reclustering." },
+        { "key": "D", "text": "Users must grant the AUTOMATIC_CLUSTERING service role access to their compute pool before reclustering can begin." }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Snowflake performs automatic reclustering entirely in the background without users needing to specify a warehouse. It internally manages serverless compute resources — including servers and memory — and dynamically allocates them as needed for reclustering operations.",
+        "distractors": {
+          "C": "No dedicated warehouse of any size is required for Automatic Clustering; it uses Snowflake-managed serverless resources, completely decoupled from user virtual warehouses.",
+          "D": "No service role grant or compute pool access is documented as a requirement for Automatic Clustering; the service runs autonomously with Snowflake-managed resources."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "scenario",
+      "domain": "automatic-clustering",
+      "scenario": "A Snowflake administrator clones an entire database containing 12 tables, several of which have clustering keys and active Automatic Clustering. The administrator expects Automatic Clustering to be active on all cloned tables immediately after the clone operation completes.",
+      "stem": "What is the actual state of Automatic Clustering on the cloned tables immediately after the database clone completes?",
+      "options": [
+        { "key": "A", "text": "Automatic Clustering is immediately active on all cloned tables because the source tables had active Automatic Clustering." },
+        { "key": "B", "text": "Automatic Clustering is suspended on all cloned tables that had clustering keys, regardless of the status on the source tables, and must be manually resumed on each table." },
+        { "key": "C", "text": "Automatic Clustering is active on cloned tables whose source tables had a clustering depth below 2 and suspended on all others." },
+        { "key": "D", "text": "Clustering keys are not copied during a database clone; they must be redefined on each table individually." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation states that tables created by cloning — whether the table, schema, or database is cloned — start with Automatic Clustering suspended, even if Automatic Clustering for the source table is not suspended. This applies to all cloned tables with clustering keys regardless of the clone scope.",
+        "distractors": {
+          "A": "Active Automatic Clustering on source tables does not carry over to cloned tables; the documentation explicitly states Automatic Clustering starts suspended on all cloned tables.",
+          "C": "No clustering depth threshold determines the Automatic Clustering suspension state on cloned tables; all cloned tables with clustering keys start with Automatic Clustering suspended without exception.",
+          "D": "Clustering keys are copied during a clone operation; only the Automatic Clustering status is affected — it starts suspended on all cloned tables, but the key definitions themselves are preserved."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "scenario",
+      "domain": "automatic-clustering-costs",
+      "scenario": "A Snowflake account manager notices that Automatic Clustering credit consumption has been unexpectedly high over the past two weeks for a specific table. They want to investigate whether the spike is an anomaly or part of a longer trend, and also need to identify which tables are consuming the most credits each day.",
+      "stem": "Which combination of queries against the AUTOMATIC_CLUSTERING_HISTORY view in Account Usage would best address both investigation needs?",
+      "options": [
+        { "key": "A", "text": "Query 1: Filter by the specific table and GROUP BY day with SUM(credits_used). Query 2: GROUP BY all tables with SUM(credits_used) for the last 30 days ordered descending by credits." },
+        { "key": "B", "text": "Query 1: Use SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS to project future costs. Query 2: Use SHOW TABLES LIKE to list tables with AUTO_CLUSTERING_ON = TRUE." },
+        { "key": "C", "text": "Query 1: Use SYSTEM$CLUSTERING_INFORMATION to check clustering depth per table. Query 2: Filter AUTOMATIC_CLUSTERING_HISTORY by credits_used > 100." },
+        { "key": "D", "text": "Query 1: Query the Resource Monitor dashboard in Snowsight. Query 2: Use SHOW WAREHOUSES to view AUTOMATIC_CLUSTERING warehouse usage." }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The documentation describes exactly these two query patterns against AUTOMATIC_CLUSTERING_HISTORY: a daily breakdown by object over the last 30 days to flag irregularities and consistently high consumption (addressing the spike investigation), and a summary of tables with their credit totals ordered descending (identifying which tables consume the most credits).",
+        "distractors": {
+          "B": "SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS is forward-looking and cannot investigate historical spikes; SHOW TABLES does not contain credit consumption data.",
+          "C": "SYSTEM$CLUSTERING_INFORMATION measures clustering depth, not credit costs; filtering AUTOMATIC_CLUSTERING_HISTORY by a fixed credits_used threshold does not reveal trends or daily breakdowns.",
+          "D": "Resource monitors cannot control or report on the AUTOMATIC_CLUSTERING warehouse credit usage, and SHOW WAREHOUSES does not expose Automatic Clustering serverless credit consumption data."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "scenario",
+      "domain": "automatic-clustering",
+      "scenario": "A data engineering team is planning to enable Automatic Clustering on 15 tables simultaneously at the start of the next quarter. Several of the tables have not been reclustered in over six months and have experienced heavy daily DML throughout that period. The team is concerned about budget predictability for the first month.",
+      "stem": "What does the Snowflake documentation recommend to manage this situation, and what financial risk should the team be aware of?",
+      "options": [
+        { "key": "A", "text": "Enable all 15 tables simultaneously to distribute the initial reclustering load evenly; costs will be predictable because SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS guarantees estimates within 10% of actual costs." },
+        { "key": "B", "text": "Start with one or two tables and observe credit charges to establish a baseline before expanding; be aware that enabling clustering on tables not reclustered in a while can cause a significant reclustering spike and corresponding credit charges as Snowflake brings them to an optimal state." },
+        { "key": "C", "text": "Apply resource monitors to the AUTOMATIC_CLUSTERING warehouse before enabling clustering on any tables to cap maximum credit consumption." },
+        { "key": "D", "text": "Enable all 15 tables and suspend Automatic Clustering immediately after the first recluster cycle completes to avoid ongoing charges." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The documentation recommends starting with one or two selected tables to observe credit charges and establish a baseline before expanding to other tables. It also explicitly warns that enabling or resuming Automatic Clustering on tables not recently reclustered can cause a spike in reclustering activity and credit charges as Snowflake brings them to an optimal state — after which activity drops off.",
+        "distractors": {
+          "A": "Enabling all 15 tables simultaneously is the opposite of Snowflake's recommendation. Additionally, SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS does not guarantee 10% accuracy; actual costs can vary by up to 100% or more from estimates.",
+          "C": "Resource monitors cannot control credit usage for the AUTOMATIC_CLUSTERING warehouse, which is a Snowflake-provided serverless resource; applying resource monitors to it is ineffective for cost capping.",
+          "D": "Suspending Automatic Clustering immediately after the first recluster cycle would cause clustering to degrade again as DML resumes, requiring repeated costly initial reclustering cycles; this is not a recommended or cost-effective strategy."
+        }
+      }
+    }
+  ]
+}
