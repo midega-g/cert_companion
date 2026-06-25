@@ -96,6 +96,7 @@ The goal is for learners to understand why every option is right or wrong after 
 ```json
 {
   "label": "string or omit if not needed",
+  "order": "number",
   "topic": "string",
   "questions": [
     {
@@ -129,7 +130,16 @@ Examples:
 * `"label": "Clustering Keys & Clustered Tables — Part B"`
 * `"label": "Automatic Clustering — Part A"`
 
-If the topic is standalone and no series context exists, the `label` field may be omitted. The interface will fall back to displaying "Test N".
+If the topic is standalone and no series context exists, the `label` field may be omitted. The interface will fall back to displaying "Test N". But it is good to have it.
+
+The `order` field controls the display sequence within a topic. When Part A / Part B pairs exist, assign consecutive integers so pairs appear together:
+
+* `test_1.json` (Micro-Partitions Part A) → `"order": 1`
+* `test_4.json` (Micro-Partitions Part B) → `"order": 2`
+* `test_2.json` (Clustering Keys Part A)  → `"order": 3`
+* `test_5.json` (Clustering Keys Part B)  → `"order": 4`
+
+If `order` is omitted, the manifest falls back to sorting by the numeric index in the filename. But it is good to have it.
 
 ---
 
