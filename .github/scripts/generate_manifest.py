@@ -19,7 +19,7 @@ import json
 import os
 import re
 
-SKIP_DIRS  = {".git", ".github", "node_modules"}
+SKIP_DIRS = {".git", ".github", "node_modules"}
 SKIP_FILES = {"index.html", "style.css", "app.js", "manifest.json"}
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -75,15 +75,17 @@ def build_manifest(root: str) -> dict:
         topics = []
 
         topic_dirs = sorted(
-            entry.name
-            for entry in os.scandir(provider_path)
-            if entry.is_dir()
+            entry.name for entry in os.scandir(provider_path) if entry.is_dir()
         )
 
         for topic_id in topic_dirs:
             topic_path = os.path.join(provider_path, topic_id)
             test_files = sorted(
-                [f for f in os.listdir(topic_path) if re.fullmatch(r"test_\d+\.json", f)],
+                [
+                    f
+                    for f in os.listdir(topic_path)
+                    if re.fullmatch(r"test_\d+\.json", f)
+                ],
                 key=test_sort_key,
             )
 
@@ -97,30 +99,36 @@ def build_manifest(root: str) -> dict:
                 filepath = os.path.join(topic_path, f)
                 label = read_test_label(filepath, fallback_label)
                 order = read_test_order(filepath, int(n))
-                tests.append({
-                    "id": f.replace(".json", ""),
-                    "label": label,
-                    "path": f"{provider_id}/{topic_id}/{f}",
-                    "_order": order,
-                })
+                tests.append(
+                    {
+                        "id": f.replace(".json", ""),
+                        "label": label,
+                        "path": f"{provider_id}/{topic_id}/{f}",
+                        "_order": order,
+                    }
+                )
 
             # Sort by explicit order field, falling back to filename number
             tests.sort(key=lambda t: t["_order"])
             for t in tests:
                 del t["_order"]
 
-            topics.append({
-                "id": topic_id,
-                "label": to_label(topic_id),
-                "tests": tests,
-            })
+            topics.append(
+                {
+                    "id": topic_id,
+                    "label": to_label(topic_id),
+                    "tests": tests,
+                }
+            )
 
         if topics:
-            providers.append({
-                "id": provider_id,
-                "label": to_label(provider_id),
-                "topics": topics,
-            })
+            providers.append(
+                {
+                    "id": provider_id,
+                    "label": to_label(provider_id),
+                    "topics": topics,
+                }
+            )
 
     return {"providers": providers}
 
