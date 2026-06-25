@@ -45,7 +45,8 @@ function countCorrect(question, selected) {
 
 function requiredCount(question) {
   // parse "Select TWO" / "Select THREE" from stem
-  if (question.type !== 'multi') return 1;
+  // applies to both type='multi' and type='scenario' with multi-select stems
+  if (question.type === 'single') return 1;
   const m = question.stem.match(/select\s+(two|three)/i);
   if (!m) return question.correct.length;
   return m[1].toLowerCase() === 'two' ? 2 : 3;
@@ -66,6 +67,7 @@ async function renderHome() {
   el.innerHTML = `
     <h1 class="page-title">Certification Practice</h1>
     <p class="page-subtitle">Select a certification to begin</p>
+    <p class="disclaimer">These questions are based on official documentation that may change over time. Some answers may not reflect the latest documentation when you use them.</p>
     <div class="state-msg">Loading...</div>`;
 
   try {
@@ -73,6 +75,7 @@ async function renderHome() {
   } catch (e) {
     el.innerHTML = `
       <h1 class="page-title">Certification Practice</h1>
+      <p class="disclaimer">These questions are based on official documentation that may change over time. Some answers may not reflect the latest documentation when you use them.</p>
       <div class="state-msg error">Could not load manifest.json.<br>${e.message}</div>`;
     return;
   }
@@ -88,6 +91,7 @@ async function renderHome() {
   el.innerHTML = `
     <h1 class="page-title">Certification Practice</h1>
     <p class="page-subtitle">Select a certification to begin</p>
+    <p class="disclaimer">These questions are based on official documentation that may change over time. Some answers may not reflect the latest documentation when you use them.</p>
     <div class="card-grid">
       ${providers.map(p => `
         <div class="card" onclick="selectProvider('${p.id}')">
@@ -208,10 +212,14 @@ function renderQuestion(idx) {
     ? `<div class="scenario-block">${q.scenario}</div>`
     : '';
 
-  // Multi-select instruction
-  const instruction = q.type === 'multi'
+  // Multi-select instruction (multi type, or scenario with multiple correct answers)
+  const isMulti = q.type === 'multi' || (q.type === 'scenario' && req > 1);
+  const instruction = isMulti
     ? `<div class="select-instruction">Select ${req === 2 ? 'TWO' : 'THREE'}</div>`
     : '';
+
+  // Input type: checkbox for any question requiring multiple selections
+  const inputType = isMulti ? 'checkbox' : 'radio';
 
   // Options
   const optionsHTML = q.options.map(opt => {
@@ -232,7 +240,6 @@ function renderQuestion(idx) {
       }
     }
 
-    const inputType = q.type === 'multi' ? 'checkbox' : 'radio';
     const changeHandler = ans.submitted ? '' :
       `onchange="handleSelect(${idx}, '${opt.key}', this)"`;
 
@@ -332,8 +339,9 @@ function clickOption(idx, key) {
 function handleSelect(idx, key, inputEl) {
   const q = state.exam.questions[idx];
   const ans = state.answers[idx];
+  const req = requiredCount(q);
 
-  if (q.type === 'multi') {
+  if (req > 1) {
     if (inputEl.checked) {
       if (!ans.selected.includes(key)) ans.selected.push(key);
     } else {
@@ -344,7 +352,6 @@ function handleSelect(idx, key, inputEl) {
   }
 
   // Update submit button state
-  const req = requiredCount(q);
   const btn = document.getElementById('submit-btn');
   if (btn) btn.disabled = ans.selected.length !== req;
 }
