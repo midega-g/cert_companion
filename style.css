@@ -166,6 +166,24 @@ body {
   margin-top: 4px;
 }
 
+/* Resume prompt */
+.resume-prompt {
+  width: 100%;
+  padding: 14px 18px;
+}
+
+.resume-msg {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.resume-actions {
+  display: flex;
+  gap: 10px;
+}
+
 /* ─── Buttons ───────────────────────────────────────────────────── */
 .btn {
   display: inline-flex;

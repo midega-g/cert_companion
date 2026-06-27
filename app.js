@@ -10,6 +10,46 @@ const state = {
   feedbackOpen: [], // [bool]
 };
 
+/* ─── Session Persistence (localStorage) ────────────────────────── */
+function sessionKey() {
+  // Unique key per test: provider/topic/testId
+  if (!state.provider || !state.topic || !state.testMeta) return null;
+  return `cert_session_${state.provider.id}_${state.topic.id}_${state.testMeta.id}`;
+}
+
+function saveSession() {
+  const key = sessionKey();
+  if (!key) return;
+  const data = {
+    answers: state.answers,
+    current: state.current,
+    feedbackOpen: state.feedbackOpen,
+    timestamp: Date.now(),
+  };
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {
+    /* quota exceeded — ignore */
+  }
+}
+
+function loadSession() {
+  const key = sessionKey();
+  if (!key) return null;
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}
+
+function clearSession() {
+  const key = sessionKey();
+  if (key) localStorage.removeItem(key);
+}
+
 /* ─── Helpers ───────────────────────────────────────────────────── */
 function $(id) {
   return document.getElementById(id);
@@ -198,7 +238,45 @@ async function startTest(id) {
     return;
   }
 
-  // Init exam state
+  // Check for saved session
+  const saved = loadSession();
+  if (saved && saved.answers && saved.answers.some((a) => a.submitted)) {
+    // Show resume prompt
+    showView("tests");
+    const answeredCount = saved.answers.filter((a) => a.submitted).length;
+    const total = state.exam.questions.length;
+    row.innerHTML = `
+      <div class="resume-prompt">
+        <p class="resume-msg">You have a saved session (${answeredCount}/${total} answered). Resume where you left off?</p>
+        <div class="resume-actions">
+          <button class="btn btn-primary btn-sm" onclick="resumeTest()">Resume</button>
+          <button class="btn btn-secondary btn-sm" onclick="startFresh()">Start Fresh</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // Init fresh exam state
+  initFreshExam();
+}
+
+function resumeTest() {
+  const saved = loadSession();
+  if (saved) {
+    state.answers = saved.answers;
+    state.current = saved.current;
+    state.feedbackOpen =
+      saved.feedbackOpen || new Array(state.exam.questions.length).fill(false);
+  }
+  renderExam();
+}
+
+function startFresh() {
+  clearSession();
+  initFreshExam();
+}
+
+function initFreshExam() {
   const n = state.exam.questions.length;
   state.answers = Array.from({ length: n }, () => ({
     selected: [],
@@ -206,6 +284,7 @@ async function startTest(id) {
   }));
   state.feedbackOpen = new Array(n).fill(false);
   state.current = 0;
+  saveSession();
   renderExam();
 }
 
@@ -403,6 +482,7 @@ function handleSelect(idx, key, inputEl) {
 function submitAnswer(idx) {
   state.answers[idx].submitted = true;
   state.feedbackOpen[idx] = true; // open by default on fresh submit
+  saveSession();
   renderQuestion(idx);
   // scroll to top of question card
   $("view-exam").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -422,6 +502,7 @@ function toggleFeedback(idx) {
 function goNext() {
   if (state.current < state.exam.questions.length - 1) {
     state.current++;
+    saveSession();
     renderQuestion(state.current);
     $("view-exam").scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -430,6 +511,7 @@ function goNext() {
 function goPrev() {
   if (state.current > 0) {
     state.current--;
+    saveSession();
     renderQuestion(state.current);
     $("view-exam").scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -437,6 +519,7 @@ function goPrev() {
 
 /* ─── REPORT VIEW ───────────────────────────────────────────────── */
 function renderReport() {
+  clearSession(); // Test complete — no need to resume
   showView("report");
   setBreadcrumb([
     { label: "Home", action: "renderHome()" },
@@ -555,6 +638,7 @@ function renderReport() {
 }
 
 function retakeTest() {
+  clearSession();
   const n = state.exam.questions.length;
   state.answers = Array.from({ length: n }, () => ({
     selected: [],
