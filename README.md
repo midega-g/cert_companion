@@ -120,6 +120,103 @@ Use `areas_not_covered` to guide the next batch of questions from the same sourc
 
 The app is deployed via GitHub Pages from the `main` branch. Since source PDFs are gitignored and recall questions don't reproduce copyrighted text, the public repo is safe.
 
+## Contributing Workflow (Branching & Pull Requests)
+
+All changes go through pull requests (PRs) rather than pushing directly to `main`. This keeps the deployed site stable and gives you a chance to review before changes go live.
+
+### Why PRs?
+
+- **Protects `main`**: Direct pushes to `main` immediately trigger CI/CD and deploy to GitHub Pages. A broken JSON file or bad code pushed directly would break the live site.
+- **Review checkpoint**: Even for solo projects, PRs give you a moment to review the diff, catch typos, and verify the manifest will generate correctly.
+- **CI validation**: GitHub Actions can run checks on PR branches before merging (if configured).
+- **History**: PRs create a clean record of what changed and why, grouped logically rather than as scattered commits.
+
+### Workflow
+
+```
+1. Create a branch → 2. Make changes → 3. Push branch → 4. Open PR → 5. Review → 6. Merge → 7. CI runs on main
+```
+
+### Creating a PR via CLI (GitHub CLI)
+
+```bash
+# 1. Create and switch to a new branch
+git checkout -b feat/my-new-feature
+
+# 2. Make your changes, stage, and commit
+git add snowflake/new_topic/test_1.json
+git commit -m "feat: add new topic questions"
+
+# 3. Push the branch (first time: set upstream tracking)
+git push -u origin feat/my-new-feature
+
+# 4. Create the PR
+gh pr create --title "feat: add new topic questions" --body "Summary of changes"
+
+# 5. After review, merge from CLI
+gh pr merge --squash    # squash all commits into one
+# or
+gh pr merge --merge     # regular merge commit
+# or
+gh pr merge --rebase    # rebase onto main
+```
+
+Useful PR commands:
+
+```bash
+gh pr list              # list open PRs
+gh pr view              # view current branch's PR
+gh pr checks            # see CI status
+gh pr diff              # view the diff
+```
+
+### Creating a PR via GitHub Console
+
+1. Push your branch to the remote (`git push -u origin branch-name`).
+2. Go to the repository on GitHub — you'll see a banner: "Compare & pull request".
+3. Click it, fill in the title and description, then click **Create pull request**.
+4. Review the "Files changed" tab to verify the diff.
+5. When ready, click **Merge pull request** (choose squash, merge, or rebase).
+6. Delete the branch after merge (GitHub offers a button for this).
+
+### How PRs Affect CI/CD
+
+This project's CI pipeline (`.github/workflows/generate-manifest.yml`) is configured as follows:
+
+| Event | What happens |
+|-------|-------------|
+| **Push to `main`** | Manifest regenerates automatically, commits the updated `manifest.json`, and GitHub Pages redeploys |
+| **Push to a feature branch** | Nothing happens (workflow only triggers on `main`) |
+| **PR merged to `main`** | Same as push to `main` — manifest regenerates and site redeploys |
+
+This means:
+
+- Your PR branch won't trigger manifest regeneration — safe to iterate.
+- Once merged, the manifest auto-updates and the live site reflects changes within a minute or two.
+- If you want to validate locally before merging, run `python3 .github/scripts/generate_manifest.py` on your branch.
+
+### Branch Naming Conventions
+
+| Prefix | Use for |
+|--------|---------|
+| `feat/` | New features, new question sets, UI changes |
+| `fix/` | Bug fixes |
+| `docs/` | Documentation-only changes |
+| `chore/` | Maintenance (dependency updates, config tweaks) |
+
+Examples: `feat/ch2-recall-questions`, `fix/manifest-sort-order`, `docs/update-readme`
+
+### After Merging
+
+```bash
+# Switch back to main and pull the latest (includes CI's manifest commit)
+git checkout main
+git pull
+
+# Delete the local feature branch
+git branch -d feat/my-new-feature
+```
+
 ## Pre-commit
 
 Linting is handled via pre-commit hooks (see `.pre-commit-config.yaml`). Run:
