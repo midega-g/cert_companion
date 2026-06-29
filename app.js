@@ -651,131 +651,32 @@ function retakeTest() {
 
 /* ─── PDF EXPORT ────────────────────────────────────────────────── */
 function downloadPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: "mm", format: "a4" });
-  const pw = doc.internal.pageSize.getWidth();
-  const ph = doc.internal.pageSize.getHeight();
-  const margin = 15;
-  const usable = pw - margin * 2;
-  let y = margin;
+  const reportEl = $("view-report");
+  const filename = `${state.exam.topic.replace(/\s+/g, "_")}_report.pdf`;
 
-  function checkPage(needed = 8) {
-    if (y + needed > ph - margin) {
-      doc.addPage();
-      y = margin;
-    }
-  }
+  // Temporarily hide the action buttons so they don't appear in the PDF
+  const actions = reportEl.querySelector(".report-actions");
+  if (actions) actions.style.display = "none";
 
-  function text(str, x, size = 10, style = "normal", color = [30, 30, 30]) {
-    doc.setFontSize(size);
-    doc.setFont("helvetica", style);
-    doc.setTextColor(...color);
-    const lines = doc.splitTextToSize(String(str), usable - (x - margin));
-    checkPage(lines.length * (size * 0.4));
-    doc.text(lines, x, y);
-    y += lines.length * (size * 0.45) + 2;
-  }
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: filename,
+    image: { type: "jpeg", quality: 0.95 },
+    html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+  };
 
-  function heading(str, size = 13) {
-    checkPage(12);
-    y += 3;
-    doc.setFontSize(size);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(37, 99, 235);
-    doc.text(str, margin, y);
-    y += size * 0.5 + 2;
-    doc.setDrawColor(200, 200, 200);
-    doc.line(margin, y, pw - margin, y);
-    y += 4;
-  }
-
-  const questions = state.exam.questions;
-  const total = questions.length;
-  let score = 0;
-  questions.forEach((q, i) => {
-    if (countCorrect(q, state.answers[i].selected)) score++;
-  });
-  const pct = Math.round((score / total) * 100);
-
-  // ── Summary
-  heading(`${state.exam.topic} — Results`, 14);
-  text(`Score: ${score} / ${total}  (${pct}%)`, margin, 12, "bold");
-  y += 4;
-
-  // ── Domain Analysis
-  heading("Domain Analysis");
-  const domainMap = {};
-  questions.forEach((q, i) => {
-    if (!domainMap[q.domain]) domainMap[q.domain] = { correct: 0, total: 0 };
-    domainMap[q.domain].total++;
-    if (countCorrect(q, state.answers[i].selected))
-      domainMap[q.domain].correct++;
-  });
-  Object.entries(domainMap).forEach(([d, v]) => {
-    const missed = v.correct < v.total;
-    text(
-      `${d}: ${v.correct} / ${v.total}${missed ? "  ✗" : "  ✓"}`,
-      margin,
-      10,
-      "normal",
-      missed ? [180, 83, 9] : [22, 163, 74],
-    );
-  });
-  y += 4;
-
-  // ── Question Review
-  heading("Question Review");
-  questions.forEach((q, i) => {
-    const ans = state.answers[i];
-    const isCorrect = countCorrect(q, ans.selected);
-    checkPage(20);
-
-    text(
-      `Q${i + 1} [${q.domain}]  —  ${isCorrect ? "CORRECT" : "INCORRECT"}`,
-      margin,
-      10,
-      "bold",
-      isCorrect ? [22, 163, 74] : [220, 38, 38],
-    );
-
-    if (q.scenario) {
-      text(`Scenario: ${q.scenario}`, margin + 4, 9, "italic", [107, 114, 128]);
-    }
-
-    text(q.stem, margin + 4, 10);
-
-    q.options.forEach((opt) => {
-      const isUserSel = ans.selected.includes(opt.key);
-      const isAnsCorrect = q.correct.includes(opt.key);
-      let color = [80, 80, 80];
-      let style = "normal";
-      if (isAnsCorrect) {
-        color = [22, 163, 74];
-        style = "bold";
-      } else if (isUserSel) {
-        color = [220, 38, 38];
-      }
-      text(`${opt.key}. ${opt.text}`, margin + 8, 9, style, color);
-
-      const expl = isAnsCorrect
-        ? q.explanation.correct
-        : q.explanation.distractors[opt.key] || "";
-      if (expl) text(`→ ${expl}`, margin + 12, 8, "normal", [107, 114, 128]);
+  html2pdf()
+    .set(opt)
+    .from(reportEl)
+    .save()
+    .then(() => {
+      if (actions) actions.style.display = "";
+    })
+    .catch(() => {
+      if (actions) actions.style.display = "";
     });
-
-    text(
-      `Your answer: ${
-        ans.selected.join(", ") || "—"
-      }   Correct: ${q.correct.join(", ")}`,
-      margin + 4,
-      9,
-      "normal",
-      [80, 80, 80],
-    );
-    y += 4;
-  });
-
-  doc.save(`${state.exam.topic.replace(/\s+/g, "_")}_report.pdf`);
 }
 
 /* ─── Boot ──────────────────────────────────────────────────────── */

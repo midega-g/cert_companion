@@ -479,6 +479,8 @@ body {
   padding: 18px 20px;
   margin-bottom: 14px;
   box-shadow: var(--shadow);
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .review-item.correct {
