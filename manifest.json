@@ -27,6 +27,18 @@
           ]
         },
         {
+          "id": "maturing_data_cloud",
+          "label": "Maturing Data Cloud",
+          "tests": [
+            {
+              "id": "test_1",
+              "label": "Maturing the Snowflake Data Cloud \u2014 Ch.1 Part A",
+              "path": "snowflake/maturing_data_cloud/test_1.json",
+              "questionType": "recall"
+            }
+          ]
+        },
+        {
           "id": "micro_partition_and_clustering",
           "label": "Micro Partition And Clustering",
           "tests": [

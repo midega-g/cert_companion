@@ -61,6 +61,16 @@ def read_test_order(filepath: str, fallback: int) -> int:
         return fallback
 
 
+def read_test_question_type(filepath: str) -> str | None:
+    """Read the optional 'questionType' field from the JSON file."""
+    try:
+        with open(filepath, encoding="utf-8") as f:
+            data = json.load(f)
+        return data.get("questionType") or None
+    except Exception:
+        return None
+
+
 def build_manifest(root: str) -> dict:
     providers = []
 
@@ -99,14 +109,16 @@ def build_manifest(root: str) -> dict:
                 filepath = os.path.join(topic_path, f)
                 label = read_test_label(filepath, fallback_label)
                 order = read_test_order(filepath, int(n))
-                tests.append(
-                    {
-                        "id": f.replace(".json", ""),
-                        "label": label,
-                        "path": f"{provider_id}/{topic_id}/{f}",
-                        "_order": order,
-                    }
-                )
+                question_type = read_test_question_type(filepath)
+                entry = {
+                    "id": f.replace(".json", ""),
+                    "label": label,
+                    "path": f"{provider_id}/{topic_id}/{f}",
+                    "_order": order,
+                }
+                if question_type:
+                    entry["questionType"] = question_type
+                tests.append(entry)
 
             # Sort by explicit order field, falling back to filename number
             tests.sort(key=lambda t: t["_order"])
