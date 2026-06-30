@@ -1,1 +1,4 @@
 .vscode/
+
+# Source PDFs (private learning material — never commit)
+*.pdf
