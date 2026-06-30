@@ -10,7 +10,7 @@ Structure supported (any depth):
 
 The first directory level is always the provider (e.g., snowflake, aws).
 Any leaf directory containing test_N.json files becomes a "topic" in the manifest.
-The topic label is built from all intermediate folder names joined with " > ".
+The topic label uses only the leaf folder name (not the full path).
 
 Each test_N.json may contain optional top-level fields:
   "label": string         — display name shown in the UI (falls back to "Test N")
@@ -29,29 +29,29 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 TEST_PATTERN = re.compile(r"test_(\d+)\.json")
 
 
-def to_label(name: str) -> str:
-    """Convert a folder id to a display label.
+# Words that should remain fully uppercased
+ACRONYMS = {
+    "ai",
+    "aws",
+    "gcp",
+    "iam",
+    "sql",
+    "api",
+    "vpc",
+    "scd",
+    "dr",
+    "ui",
+    "csv",
+    "json",
+}
 
-    Handles acronyms (AI, AWS, GCP, etc.) by uppercasing known words.
-    """
-    ACRONYMS = {
-        "ai",
-        "aws",
-        "gcp",
-        "iam",
-        "vpc",
-        "ec2",
-        "s3",
-        "rds",
-        "sql",
-        "api",
-        "dr",
-        "ui",
-        "cd",
-        "ci",
-    }
+
+def to_label(name: str) -> str:
+    """Convert a folder id to a display label, preserving known acronyms."""
     words = name.replace("-", " ").replace("_", " ").split()
-    return " ".join(w.upper() if w.lower() in ACRONYMS else w.title() for w in words)
+    return " ".join(
+        w.upper() if w.lower() in ACRONYMS else w.capitalize() for w in words
+    )
 
 
 def test_sort_key(filename: str) -> int:
@@ -124,10 +124,9 @@ def build_manifest(root: str) -> dict:
         for dir_path, rel_parts in test_dirs:
             # Build topic id from relative path parts
             topic_id = "/".join(rel_parts) if rel_parts else provider_id
-            # Topic label uses only the leaf (deepest) folder name
-            topic_label = (
-                to_label(rel_parts[-1]) if rel_parts else to_label(provider_id)
-            )
+            # Topic label uses only the leaf folder name (last part)
+            leaf_name = rel_parts[-1] if rel_parts else provider_id
+            topic_label = to_label(leaf_name)
 
             # Collect test files
             test_files = sorted(
