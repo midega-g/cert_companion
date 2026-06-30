@@ -138,6 +138,13 @@ body {
   color: var(--text-muted);
 }
 
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+  line-height: 1.45;
+}
+
 /* ─── Test List ─────────────────────────────────────────────────── */
 .test-list {
   display: flex;

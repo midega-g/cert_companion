@@ -148,6 +148,9 @@ async function renderHome() {
           <div class="card-meta">${countTests(p)} test${
             countTests(p) !== 1 ? "s" : ""
           }</div>
+          ${
+            p.description ? `<div class="card-desc">${p.description}</div>` : ""
+          }
         </div>`,
         )
         .join("")}
@@ -231,6 +234,7 @@ function renderNode() {
         <div class="card-meta">${countTests(c)} test${
           countTests(c) !== 1 ? "s" : ""
         }</div>
+        ${c.description ? `<div class="card-desc">${c.description}</div>` : ""}
       </div>`,
       )
       .join("");

@@ -76,6 +76,23 @@ def read_test_metadata(filepath: str) -> dict:
         return {}
 
 
+def read_dir_metadata(dir_path: str) -> dict:
+    """Read optional _meta.json from a directory for display metadata.
+
+    Supports:
+      "label": override for the folder name (used in breadcrumb + tile)
+      "description": longer text shown on the card tile below the label
+    """
+    meta_path = os.path.join(dir_path, "_meta.json")
+    if not os.path.isfile(meta_path):
+        return {}
+    try:
+        with open(meta_path, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
 def build_node(
     dir_path: str, node_id: str, node_label: str, rel_root: str
 ) -> dict | None:
@@ -91,6 +108,11 @@ def build_node(
         entries = sorted(os.scandir(dir_path), key=lambda e: e.name)
     except PermissionError:
         return None
+
+    # Read optional directory metadata
+    dir_meta = read_dir_metadata(dir_path)
+    if dir_meta.get("label"):
+        node_label = dir_meta["label"]
 
     # Check for test files in this directory
     test_files = sorted(
@@ -150,6 +172,10 @@ def build_node(
         "id": node_id,
         "label": node_label,
     }
+
+    # Add description if present in _meta.json
+    if dir_meta.get("description"):
+        node["description"] = dir_meta["description"]
 
     if children:
         node["children"] = children
