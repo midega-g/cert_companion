@@ -30,8 +30,28 @@ TEST_PATTERN = re.compile(r"test_(\d+)\.json")
 
 
 def to_label(name: str) -> str:
-    """Convert a folder id to a display label."""
-    return name.replace("-", " ").replace("_", " ").title()
+    """Convert a folder id to a display label.
+
+    Handles acronyms (AI, AWS, GCP, etc.) by uppercasing known words.
+    """
+    ACRONYMS = {
+        "ai",
+        "aws",
+        "gcp",
+        "iam",
+        "vpc",
+        "ec2",
+        "s3",
+        "rds",
+        "sql",
+        "api",
+        "dr",
+        "ui",
+        "cd",
+        "ci",
+    }
+    words = name.replace("-", " ").replace("_", " ").split()
+    return " ".join(w.upper() if w.lower() in ACRONYMS else w.title() for w in words)
 
 
 def test_sort_key(filename: str) -> int:
@@ -104,11 +124,9 @@ def build_manifest(root: str) -> dict:
         for dir_path, rel_parts in test_dirs:
             # Build topic id from relative path parts
             topic_id = "/".join(rel_parts) if rel_parts else provider_id
-            # Build topic label from folder names
+            # Topic label uses only the leaf (deepest) folder name
             topic_label = (
-                " > ".join(to_label(p) for p in rel_parts)
-                if rel_parts
-                else to_label(provider_id)
+                to_label(rel_parts[-1]) if rel_parts else to_label(provider_id)
             )
 
             # Collect test files
