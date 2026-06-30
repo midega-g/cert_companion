@@ -1,0 +1,458 @@
+{
+  "label": "AI & ML Fundamentals — Part A",
+  "order": 1,
+  "topic": "Domain 1: Fundamentals of AI and ML",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "ai-definition",
+      "scenario": null,
+      "stem": "What is artificial intelligence?",
+      "options": [
+        { "key": "A", "text": "The field of computer science dedicated to solving cognitive problems commonly associated with human intelligence, such as learning, creation, and image recognition" },
+        { "key": "B", "text": "A specific programming language used exclusively for data analysis" },
+        { "key": "C", "text": "A hardware specification for building faster computers" },
+        { "key": "D", "text": "A database management system for storing large datasets" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AI is the field of computer science dedicated to solving cognitive problems associated with human intelligence. Its goal is to create self-learning systems that derive meaning from data.",
+        "distractors": {
+          "B": "AI is a field of study and technology, not a programming language. Many languages (Python, Java) are used to build AI systems.",
+          "C": "AI is a computational approach, not a hardware specification. It runs on various hardware including GPUs and CPUs.",
+          "D": "AI processes and learns from data but is not a database system. Databases store data; AI derives insights from it."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "ml-definition",
+      "scenario": null,
+      "stem": "What is machine learning?",
+      "options": [
+        { "key": "A", "text": "A branch of AI that focuses on using data and algorithms to imitate the way humans learn, gradually improving accuracy" },
+        { "key": "B", "text": "A method of manually programming explicit rules for every possible scenario" },
+        { "key": "C", "text": "A technique for physically building robots" },
+        { "key": "D", "text": "A way to store data in the cloud" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Machine learning is a branch of AI and computer science that uses data and algorithms to imitate how humans learn, gradually improving accuracy. ML models are trained on large datasets to identify patterns and make predictions.",
+        "distractors": {
+          "B": "ML learns patterns from data without explicit programming for each scenario. That's its key advantage over rule-based systems.",
+          "C": "ML is about algorithms learning from data, not physical robotics construction.",
+          "D": "Cloud storage is infrastructure. ML is a computational technique for learning patterns."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "inference",
+      "scenario": null,
+      "stem": "What is an inference in machine learning?",
+      "options": [
+        { "key": "A", "text": "A prediction or educated guess made by a trained model, giving a probabilistic result" },
+        { "key": "B", "text": "The process of labeling training data" },
+        { "key": "C", "text": "The hardware used to train the model" },
+        { "key": "D", "text": "A guaranteed correct answer from the model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Predictions that AI makes are called inferences. An inference is basically an educated guess — the model gives a probabilistic result, not a certainty.",
+        "distractors": {
+          "B": "Labeling is data preparation, not inference. Inference is the output prediction from a trained model.",
+          "C": "Hardware is infrastructure. Inference is the model's prediction on new data.",
+          "D": "Inferences are probabilistic, not guaranteed correct. They are educated guesses based on learned patterns."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "data-types",
+      "scenario": null,
+      "stem": "Which type of data is stored as rows in a table with columns that can serve as features for an ML model?",
+      "options": [
+        { "key": "A", "text": "Structured data" },
+        { "key": "B", "text": "Unstructured data" },
+        { "key": "C", "text": "Semi-structured data" },
+        { "key": "D", "text": "Time series data" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Structured data is stored as rows in a table with columns, which can serve as features for an ML model. It can be CSV files or stored in relational databases like Amazon RDS or Amazon Redshift.",
+        "distractors": {
+          "B": "Unstructured data (images, video, text) doesn't conform to table format. Features must be derived through processing.",
+          "C": "Semi-structured data (JSON, key-value pairs) doesn't fully follow tabular rules. Elements can have different or missing attributes.",
+          "D": "Time series data is sequential with timestamps. While it can be tabular, its defining characteristic is temporal ordering."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "model-training",
+      "scenario": null,
+      "stem": "What are model parameters in the context of a linear regression model?",
+      "options": [
+        { "key": "A", "text": "Internal values (like slope and intercept) that are adjusted iteratively during training to find the best-fitting model" },
+        { "key": "B", "text": "The input data features like height and weight" },
+        { "key": "C", "text": "The hardware specifications of the training server" },
+        { "key": "D", "text": "The labels assigned to training data by human annotators" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Model parameters (like slope m and intercept b in linear regression) are internal values adjusted iteratively during training to minimize errors and find the best-fitting model.",
+        "distractors": {
+          "B": "Input features are the data fed to the model, not the parameters being optimized during training.",
+          "C": "Hardware specs are infrastructure. Parameters are the mathematical values the model learns.",
+          "D": "Labels are the expected outputs in supervised learning. Parameters are the model's internal learned values."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "data-types",
+      "scenario": null,
+      "stem": "Which are types of data used for training ML models? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Structured data — tabular data in rows and columns (CSV, relational databases)" },
+        { "key": "B", "text": "Semi-structured data — key-value pairs with potentially different or missing attributes (JSON)" },
+        { "key": "C", "text": "Unstructured data — images, video, text that doesn't conform to a specific data model" },
+        { "key": "D", "text": "Quantum data — information stored in quantum bits" },
+        { "key": "E", "text": "Analog data — continuous signals from vinyl records" },
+        { "key": "F", "text": "Hypothetical data — theoretical datasets that don't exist yet" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "ML models use structured data (tables/CSV/RDS), semi-structured data (JSON/key-value pairs with varying attributes), and unstructured data (images, video, text). Time series data is also used for temporal predictions.",
+        "distractors": {
+          "D": "Quantum data is a theoretical computing concept, not a standard ML training data type.",
+          "E": "Analog signals would be digitized before ML processing. They are not a distinct ML data category.",
+          "F": "ML requires real data. Hypothetical or non-existent data cannot train models."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "ai-applications",
+      "scenario": null,
+      "stem": "Which are practical applications of AI in business? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Real-time fraud detection by recognizing anomalous patterns in transactions" },
+        { "key": "B", "text": "Demand forecasting using regression analysis on historical time series data" },
+        { "key": "C", "text": "Computer vision for quality monitoring on manufacturing assembly lines" },
+        { "key": "D", "text": "Physically assembling products on the assembly line" },
+        { "key": "E", "text": "Generating electricity for data centers" },
+        { "key": "F", "text": "Mining raw materials for hardware production" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "AI applications include fraud detection (pattern recognition), demand forecasting (regression on time series), and computer vision (quality monitoring/inspection). These leverage AI's pattern recognition and prediction capabilities.",
+        "distractors": {
+          "D": "Physical assembly requires robotics hardware. AI provides the intelligence but doesn't physically build products.",
+          "E": "Power generation is an energy industry operation, not an AI application.",
+          "F": "Mining is physical extraction. AI can optimize mining operations but doesn't perform the physical work."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "ml-training",
+      "scenario": null,
+      "stem": "What happens during the machine learning training process? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The algorithm finds correlations between input data features and the expected output" },
+        { "key": "B", "text": "Internal parameter values are adjusted until the model reliably produces the expected output" },
+        { "key": "C", "text": "The model memorizes every training example for exact recall" },
+        { "key": "D", "text": "The training data is permanently stored inside the model's code" },
+        { "key": "E", "text": "The model receives its final accuracy score before any data is processed" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "During training, the algorithm finds correlations between input features and expected outputs. Parameters are adjusted iteratively until the model reliably produces expected output, minimizing errors.",
+        "distractors": {
+          "C": "Memorizing all examples would cause overfitting. The model learns patterns, not individual records.",
+          "D": "Training data stays in storage (S3). The model learns parameters/patterns, not the raw data.",
+          "E": "Accuracy is measured during and after training. It cannot be determined before processing data."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "amazon-s3",
+      "scenario": null,
+      "stem": "Why is Amazon S3 the primary source for ML training data? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "It can store any type of data (structured, semi-structured, unstructured)" },
+        { "key": "B", "text": "It has virtually unlimited storage capacity at lower cost" },
+        { "key": "C", "text": "It automatically trains ML models on stored data" },
+        { "key": "D", "text": "It only stores structured tabular data" },
+        { "key": "E", "text": "It provides built-in model inference endpoints" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Amazon S3 is the primary training data source because it can store any type of data and has virtually unlimited storage capacity at lower cost. All data types (structured, semi-structured, unstructured) can be exported to S3 for training.",
+        "distractors": {
+          "C": "S3 stores data; it doesn't train models. SageMaker handles training using data from S3.",
+          "D": "S3 stores all data types as objects — images, videos, JSON, CSV, and more.",
+          "E": "S3 is storage. Inference endpoints are provided by SageMaker or Bedrock."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "time-series",
+      "scenario": null,
+      "stem": "What are characteristics of time series data for ML? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Each data record is labeled with a timestamp and stored sequentially" },
+        { "key": "B", "text": "It is important for training models that predict future trends" },
+        { "key": "C", "text": "It can only contain numerical values, never text" },
+        { "key": "D", "text": "It must be stored in Amazon DynamoDB exclusively" },
+        { "key": "E", "text": "It cannot be stored in Amazon S3" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Time series data has timestamps on each record, stored sequentially. It's important for models predicting future trends (demand forecasting, infrastructure scaling). Using regression analysis, AI can predict future values from historical patterns.",
+        "distractors": {
+          "C": "Time series can contain various data types — performance metrics, text events, transactions — not just numbers.",
+          "D": "Time series can be stored in various systems. For ML training, it's typically exported to Amazon S3.",
+          "E": "Time series data is commonly stored in S3 for model training, especially when captured over long periods."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "ai-applications",
+      "scenario": "A financial institution processes millions of credit card transactions daily. They need to identify transactions that deviate from normal patterns and flag them for review within milliseconds.",
+      "stem": "Which AI capability enables this use case?",
+      "options": [
+        { "key": "A", "text": "Anomaly detection — AI recognizes patterns in data and detects deviations from expected patterns in real time" },
+        { "key": "B", "text": "Text translation — AI converts transaction descriptions between languages" },
+        { "key": "C", "text": "Image generation — AI creates images of suspicious transactions" },
+        { "key": "D", "text": "Speech recognition — AI listens to customer calls to detect fraud" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AI recognizes patterns in data and detects when there is a deviation from expected patterns (anomaly). Financial institutions use this for real-time fraud detection by identifying anomalous transaction activity.",
+        "distractors": {
+          "B": "Translation converts language. The use case requires detecting unusual patterns in transaction data, not translating text.",
+          "C": "Image generation creates visual content. Fraud detection analyzes transaction data patterns.",
+          "D": "While call analysis exists, this scenario describes real-time transaction pattern monitoring, not speech processing."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "ml-definition",
+      "scenario": "A retail company wants to recommend products to online shoppers based on their browsing and purchase history. The system should improve its recommendations over time as it processes more customer interactions.",
+      "stem": "Which technology enables this continuously improving recommendation capability?",
+      "options": [
+        { "key": "A", "text": "Machine learning — algorithms that learn from data patterns and gradually improve accuracy without explicit programming" },
+        { "key": "B", "text": "A static rules engine that never changes its recommendations" },
+        { "key": "C", "text": "A random number generator that suggests products arbitrarily" },
+        { "key": "D", "text": "A database query that always returns the same products for everyone" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Machine learning uses data and algorithms to identify patterns (shopping history) and make predictions (product recommendations), gradually improving accuracy as it processes more data.",
+        "distractors": {
+          "B": "Static rules can't improve. ML's advantage is learning from data and getting better over time.",
+          "C": "Random selection wouldn't be personalized. ML identifies meaningful patterns for relevant recommendations.",
+          "D": "A fixed query gives everyone the same results. ML personalizes based on individual patterns."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "nlp",
+      "scenario": "A hotel chain deploys a chatbot that understands customer requests in natural language and can book reservations, answer questions about amenities, and handle complaints conversationally.",
+      "stem": "Which AI technology allows machines to understand, interpret, and generate human language naturally?",
+      "options": [
+        { "key": "A", "text": "Natural language processing (NLP)" },
+        { "key": "B", "text": "Computer vision" },
+        { "key": "C", "text": "Reinforcement learning" },
+        { "key": "D", "text": "Linear regression" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Natural language processing (NLP) allows machines to understand, interpret, and generate human language in a natural-sounding way. It powers chatbots, virtual assistants like Alexa, and conversational booking systems.",
+        "distractors": {
+          "B": "Computer vision processes images and video, not natural language text conversations.",
+          "C": "Reinforcement learning trains agents through rewards. NLP specifically handles language understanding.",
+          "D": "Linear regression predicts numerical values. NLP handles understanding and generating human language."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "computer-vision",
+      "scenario": "A manufacturer needs an AI system that can inspect products on an assembly line, identify defects like scratches and missing components, and flag them for removal.",
+      "stem": "Which AI technology processes images for object identification and defect detection?",
+      "options": [
+        { "key": "A", "text": "Computer vision — AI that processes images and video for identification, classification, and detection" },
+        { "key": "B", "text": "Natural language processing — AI that processes text and speech" },
+        { "key": "C", "text": "Regression analysis — AI that forecasts numerical trends" },
+        { "key": "D", "text": "Clustering — AI that groups similar data points" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Computer vision applications use AI to process images and video for object identification, classification, monitoring, and detection. It can detect scratches on surfaces or missing components on circuit boards.",
+        "distractors": {
+          "B": "NLP handles text and speech, not image inspection for physical defects.",
+          "C": "Regression predicts numerical values from trends. Visual defect detection requires image processing.",
+          "D": "Clustering groups similar data. Defect detection needs image analysis to identify visual anomalies."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "data-types",
+      "scenario": "A social media analytics company needs to process customer posts, photos, and videos to understand brand sentiment. Their ML engineer classifies the data before building the training pipeline.",
+      "stem": "What type of data are social media posts, photos, and videos?",
+      "options": [
+        { "key": "A", "text": "Unstructured data — it doesn't conform to a specific data model and can't be stored in table format" },
+        { "key": "B", "text": "Structured data — it fits neatly into rows and columns" },
+        { "key": "C", "text": "Semi-structured data — it follows JSON key-value format" },
+        { "key": "D", "text": "Time series data — it is always sequential with timestamps" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Social media posts, images, and video are unstructured data — they don't conform to a specific data model and can't be stored in table format. Unstructured data is typically stored as objects in Amazon S3.",
+        "distractors": {
+          "B": "Images and videos cannot be meaningfully stored in rows and columns. They are unstructured.",
+          "C": "Semi-structured is JSON/key-value data with flexible schemas. Social media content is unstructured.",
+          "D": "While posts have timestamps, images and videos are fundamentally unstructured, not defined by temporal ordering."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "ai-capabilities",
+      "scenario": "A business leader is evaluating AI capabilities for their organization and wants to understand what AI excels at.",
+      "stem": "What are key strengths of AI systems? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Quickly processing vast quantities of data to solve complex problems" },
+        { "key": "B", "text": "Finding patterns in data and forecasting trends for smarter decisions" },
+        { "key": "C", "text": "Performing repetitive tasks to increase efficiency and free employees for creative work" },
+        { "key": "D", "text": "Replacing all human judgment in every situation" },
+        { "key": "E", "text": "Generating physical products from raw materials" },
+        { "key": "F", "text": "Eliminating the need for data entirely" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "AI excels at processing vast data quickly (fraud detection), finding patterns and forecasting (demand prediction), and performing repetitive tasks (increasing efficiency while freeing humans for creative work).",
+        "distractors": {
+          "D": "AI augments human judgment; it doesn't replace all human decision-making in every situation.",
+          "E": "AI is computational. Physical manufacturing requires robotics and machinery.",
+          "F": "AI requires data to function. It derives insights from data, not eliminates the need for it."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "semi-structured-data",
+      "scenario": "A data engineer is choosing AWS databases for their ML application. Some data is in JSON format with varying attributes per record.",
+      "stem": "Which AWS databases are built specifically for semi-structured data? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Amazon DynamoDB" },
+        { "key": "B", "text": "Amazon DocumentDB (with MongoDB compatibility)" },
+        { "key": "C", "text": "Amazon Redshift" },
+        { "key": "D", "text": "Amazon RDS for MySQL" },
+        { "key": "E", "text": "Amazon Glacier" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Amazon DynamoDB and Amazon DocumentDB (with MongoDB compatibility) are two transactional databases built specifically for semi-structured data like JSON with varying key-value attributes.",
+        "distractors": {
+          "C": "Redshift is a data warehouse for structured analytical queries, not semi-structured document storage.",
+          "D": "Amazon RDS for MySQL is a relational database for structured tabular data, not semi-structured JSON.",
+          "E": "Glacier is archival storage for rarely accessed data, not a database for semi-structured data."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "inference-types",
+      "scenario": "A data science team is deciding how to deploy their trained model. Some use cases need instant responses while others can wait hours for batch results.",
+      "stem": "What are the two general options for hosting a model for inference? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Real-time inference — a persistent endpoint always available for low-latency, high-throughput requests" },
+        { "key": "B", "text": "Batch inference — processing large amounts of data offline without a persistent endpoint" },
+        { "key": "C", "text": "Manual inference — humans review and approve each prediction before delivery" },
+        { "key": "D", "text": "Quantum inference — using quantum computing for instant results" },
+        { "key": "E", "text": "Scheduled inference — predictions only available at pre-set times of day" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Two options: real-time (persistent endpoint for low-latency, high-throughput) and batch (offline processing of large data without persistent endpoint — resources run only during processing, then shut down).",
+        "distractors": {
+          "C": "Human review is an optional quality step (A2I), not a deployment hosting model.",
+          "D": "Quantum inference is not a standard deployment option for ML models.",
+          "E": "Both real-time (always available) and batch (on-demand runs) are the standard options, not time-restricted access."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "model-training",
+      "scenario": "An ML engineer is training a linear regression model to predict house prices. After several iterations, the model's predictions are still far from actual values. The engineer checks whether the parameter values have been sufficiently optimized.",
+      "stem": "How does the training process determine when parameters have been adequately adjusted?",
+      "options": [
+        { "key": "A", "text": "By minimizing the errors (distances between predicted values and actual data points) through iterative parameter adjustment" },
+        { "key": "B", "text": "By running the model exactly once and accepting whatever output it produces" },
+        { "key": "C", "text": "By manually selecting parameter values based on intuition" },
+        { "key": "D", "text": "By using the same parameters for every model regardless of data" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The best fit is found by iteratively adjusting parameters to minimize errors — the distances between data points and predicted values. Training continues until the model reliably produces expected output.",
+        "distractors": {
+          "B": "Training is iterative. A single pass is insufficient to find optimal parameters.",
+          "C": "Parameters are adjusted algorithmically based on error minimization, not human intuition.",
+          "D": "Parameters are data-specific. Different datasets require different optimized parameter values."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "model-artifacts",
+      "scenario": "A model has completed training and needs to be deployed. The engineer needs to package the trained model for deployment.",
+      "stem": "What does the training process produce that gets packaged for deployment?",
+      "options": [
+        { "key": "A", "text": "Model artifacts — trained parameters, model definition, and metadata — packaged with inference code to make a deployable model" },
+        { "key": "B", "text": "Only the raw training data, which is sent to the endpoint" },
+        { "key": "C", "text": "A copy of the training infrastructure configuration" },
+        { "key": "D", "text": "The original algorithm code without any learned values" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Training produces model artifacts: trained parameters, a model definition describing how to compute inferences, and metadata. These are stored in S3 and packaged with inference code to create a deployable model.",
+        "distractors": {
+          "B": "Raw training data stays in S3. The model deploys learned parameters, not the source data.",
+          "C": "Infrastructure config is separate from model artifacts. The model carries its learned weights and inference logic.",
+          "D": "The trained model includes learned parameter values. The algorithm alone without trained values can't make predictions."
+        }
+      }
+    }
+  ]
+}

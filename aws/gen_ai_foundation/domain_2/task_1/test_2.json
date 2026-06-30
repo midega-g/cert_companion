@@ -1,0 +1,459 @@
+{
+  "label": "Modalities, Diffusion Models & Use Cases — Part A",
+  "order": 2,
+  "topic": "Domain 2: Fundamentals of Generative AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "unimodal-multimodal",
+      "scenario": null,
+      "stem": "What is the difference between unimodal and multimodal generative AI?",
+      "options": [
+        { "key": "A", "text": "Unimodal works with one data modality (e.g., text only); multimodal processes multiple types such as text, image, video, and audio" },
+        { "key": "B", "text": "Unimodal uses one GPU; multimodal uses multiple GPUs" },
+        { "key": "C", "text": "Unimodal generates content; multimodal only classifies content" },
+        { "key": "D", "text": "There is no difference; all generative AI is multimodal" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Unimodal models work with one data modality (LLMs are unimodal — text in, text out). Multimodal models process and generate multiple data types (text, image, video, audio), even in combination with each other.",
+        "distractors": {
+          "B": "Modality refers to data types, not hardware count. Both unimodal and multimodal can use multiple GPUs.",
+          "C": "Both unimodal and multimodal can generate content. The distinction is in how many data types they handle.",
+          "D": "Not all generative AI is multimodal. LLMs are specifically unimodal (text only)."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "diffusion-models",
+      "scenario": null,
+      "stem": "How do diffusion models generate content?",
+      "options": [
+        { "key": "A", "text": "They start with random noise and iteratively de-noise it to produce coherent output, predicting the noise added at each step" },
+        { "key": "B", "text": "They retrieve and combine existing images from a database" },
+        { "key": "C", "text": "They use decision trees to classify pixel values" },
+        { "key": "D", "text": "They copy and modify existing copyrighted images directly" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Diffusion models learn to reverse a gradual noising process. They start with random noise and iteratively de-noise it to produce coherent output (like a high-quality image), predicting noise added at each step conditioned on partially denoised output.",
+        "distractors": {
+          "B": "Diffusion models generate new content from noise, not retrieve existing images from databases.",
+          "C": "Decision trees are simple ML classifiers. Diffusion models use neural networks to learn the reverse noising process.",
+          "D": "Diffusion models generate novel content through learned de-noising, not by copying existing images."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "stable-diffusion",
+      "scenario": null,
+      "stem": "How does stable diffusion differ from standard diffusion models?",
+      "options": [
+        { "key": "A", "text": "It operates in a reduced-dimension latent space rather than the full pixel space of the image" },
+        { "key": "B", "text": "It only generates text, not images" },
+        { "key": "C", "text": "It requires the user to draw the image first" },
+        { "key": "D", "text": "It uses the full pixel space for faster processing" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Stable diffusion doesn't use the pixel space of the image. Instead, it uses a reduced-dimension latent space, making the process more computationally efficient while maintaining quality.",
+        "distractors": {
+          "B": "Stable diffusion is specifically for image generation from text prompts, not text-only output.",
+          "C": "Stable diffusion generates images from text descriptions or noise. No user drawing is required.",
+          "D": "Standard diffusion uses pixel space. Stable diffusion's innovation is using reduced latent space instead, which is more efficient."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "gen-ai-use-cases",
+      "scenario": null,
+      "stem": "Which statement correctly describes the code generation use case for generative AI?",
+      "options": [
+        { "key": "A", "text": "Models can generate functional code from natural language descriptions, automate routine tasks like code completion, and translate between languages" },
+        { "key": "B", "text": "Models can only generate pseudocode, never functional executable code" },
+        { "key": "C", "text": "Code generation requires fine-tuning a model for each programming language separately" },
+        { "key": "D", "text": "Models can generate code but cannot understand natural language descriptions of what to build" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Code generation models can generate functional code snippets and entire programs from natural language descriptions, automate routine tasks like code completion, and translate code between different languages.",
+        "distractors": {
+          "B": "Modern code generation models produce functional, executable code, not just pseudocode.",
+          "C": "General-purpose LLMs handle multiple programming languages without per-language fine-tuning.",
+          "D": "The core strength of code generation AI is understanding natural language descriptions and converting them to code."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "gen-ai-architectures",
+      "scenario": null,
+      "stem": "Why should you evaluate the objective and dataset before selecting a generative AI architecture?",
+      "options": [
+        { "key": "A", "text": "Different architectures (GANs, VAEs, transformers) have unique advantages and limitations suited to different tasks" },
+        { "key": "B", "text": "All architectures produce identical results regardless of the task" },
+        { "key": "C", "text": "Only one architecture exists for generative AI" },
+        { "key": "D", "text": "Architecture choice only affects the model's color output, not its capability" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Various architectures exist including GANs, VAEs, and transformers. Each has unique advantages and limitations, so you must evaluate your objective and dataset before selecting the appropriate architecture.",
+        "distractors": {
+          "B": "Architectures produce very different results. GANs excel at image generation, transformers at text, VAEs at structured latent spaces.",
+          "C": "Multiple architectures exist with different strengths. The choice depends on your task requirements.",
+          "D": "Architecture fundamentally determines what tasks the model can handle and how well it performs."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "diffusion-models",
+      "scenario": null,
+      "stem": "What are the three main components of diffusion models? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Forward diffusion — gradually adding noise to data" },
+        { "key": "B", "text": "Reverse diffusion — learning to de-noise and reconstruct the data" },
+        { "key": "C", "text": "Stable diffusion — operating in a reduced latent space" },
+        { "key": "D", "text": "Lateral diffusion — spreading data across multiple GPUs" },
+        { "key": "E", "text": "Backward diffusion — reversing the model's training" },
+        { "key": "F", "text": "Circular diffusion — rotating the noise pattern" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The three components are forward diffusion (adding Gaussian noise to encode an image), reverse diffusion (using a noise predictor to recreate the image), and stable diffusion (operating in reduced-dimension latent space rather than pixel space).",
+        "distractors": {
+          "D": "Lateral diffusion is not a component of diffusion models. Multi-GPU distribution is an infrastructure concern.",
+          "E": "Backward diffusion is not a recognized component. Reverse diffusion is the correct term for the de-noising process.",
+          "F": "Circular diffusion is not a real component. The three components are forward, reverse, and stable."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "diffusion-advantages",
+      "scenario": null,
+      "stem": "What advantages do diffusion models have over other generative approaches like GANs and VAEs? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "They tend to produce higher quality outputs with more diversity and consistency" },
+        { "key": "B", "text": "They are more stable and easier to train" },
+        { "key": "C", "text": "They require zero training data" },
+        { "key": "D", "text": "They can only generate one type of content (text)" },
+        { "key": "E", "text": "They run exclusively on CPUs without GPU requirements" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Diffusion models produce higher quality outputs with more diversity and consistency compared to GANs and VAEs. They are also more stable and easier to train.",
+        "distractors": {
+          "C": "Diffusion models require training data to learn the noise distribution. They don't operate without data.",
+          "D": "Diffusion models generate images, audio, and other modalities. Examples include Stable Diffusion (images), Whisper (speech), and AudioLM (audio).",
+          "E": "Diffusion models require significant GPU compute for both training and inference."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "multimodal-tasks",
+      "scenario": null,
+      "stem": "Which are examples of multimodal generative AI tasks? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Image captioning — generating text descriptions of images" },
+        { "key": "B", "text": "Visual question answering — answering questions about image content" },
+        { "key": "C", "text": "Text-to-image synthesis — generating images from textual descriptions" },
+        { "key": "D", "text": "Sorting numbers in ascending order" },
+        { "key": "E", "text": "Calculating compound interest" },
+        { "key": "F", "text": "Measuring network bandwidth" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Multimodal tasks include image captioning (text from images), visual question answering (text answers about images), and text-to-image synthesis (images from text). These cross data modality boundaries.",
+        "distractors": {
+          "D": "Sorting numbers is a basic algorithm, not a multimodal AI task.",
+          "E": "Interest calculation is arithmetic, not a generative AI multimodal task.",
+          "F": "Network measurement is an infrastructure operation, not an AI task."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "gen-ai-use-cases",
+      "scenario": null,
+      "stem": "Which are common use cases for generative AI models? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Text summarization of documents, financial reports, and legal documents" },
+        { "key": "B", "text": "Code generation and completion from natural language descriptions" },
+        { "key": "C", "text": "Translation between languages and content adaptation for different audiences" },
+        { "key": "D", "text": "Physical product manufacturing on assembly lines" },
+        { "key": "E", "text": "Electrical wiring of data center servers" },
+        { "key": "F", "text": "Manual testing of keyboard hardware" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Common gen AI use cases include text summarization (reports, legal docs), code generation/completion, and translation/content adaptation. Other use cases include question answering, classification, and chatbots.",
+        "distractors": {
+          "D": "Physical manufacturing requires robotics, not generative text/image AI.",
+          "E": "Electrical wiring is physical labor unrelated to generative AI capabilities.",
+          "F": "Hardware testing is a physical process, not a generative AI application."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "project-lifecycle",
+      "scenario": null,
+      "stem": "What are the stages of the foundation model lifecycle as listed in the exam guide? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Data selection and model selection" },
+        { "key": "B", "text": "Pre-training and fine-tuning" },
+        { "key": "C", "text": "Evaluation, deployment, and feedback" },
+        { "key": "D", "text": "Hardware procurement and data center construction" },
+        { "key": "E", "text": "Marketing and sales of the model" },
+        { "key": "F", "text": "Patent filing and legal review" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The exam guide lists the lifecycle as: data selection, model selection, pre-training, fine-tuning, evaluation, deployment, and feedback. These represent the end-to-end process from conception to production.",
+        "distractors": {
+          "D": "Hardware is infrastructure. The lifecycle is about the model development process, not physical construction.",
+          "E": "Marketing is a business function outside the model development lifecycle.",
+          "F": "Legal activities are separate from the technical model lifecycle stages."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "gen-ai-use-cases",
+      "scenario": "A law firm needs to process hundreds of pages of case documents and extract key facts, dates, and parties involved. They want an AI solution that can understand context and pull relevant information from unstructured text.",
+      "stem": "Which generative AI use case does this represent?",
+      "options": [
+        { "key": "A", "text": "Information extraction — using AI to identify and extract structured data from unstructured documents" },
+        { "key": "B", "text": "Image generation — creating visual representations of legal cases" },
+        { "key": "C", "text": "Code generation — writing legal software" },
+        { "key": "D", "text": "Audio generation — creating podcast summaries of cases" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Information extraction is a generative AI use case where AI identifies and extracts structured data (facts, dates, entities) from unstructured documents, making it directly applicable to legal document processing.",
+        "distractors": {
+          "B": "Image generation creates visual content. The task requires extracting information from text documents.",
+          "C": "Code generation produces software. The firm needs to extract data from documents, not write programs.",
+          "D": "Audio generation creates sound. The requirement is text understanding and extraction."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "aws-gen-ai-services",
+      "scenario": "A development team needs an AI-powered coding assistant that provides real-time code suggestions ranging from snippets to full functions based on comments and existing code.",
+      "stem": "Which AWS service provides this code generation capability?",
+      "options": [
+        { "key": "A", "text": "Amazon Q Developer (formerly Amazon CodeWhisperer)" },
+        { "key": "B", "text": "Amazon SageMaker Model Monitor" },
+        { "key": "C", "text": "AWS CloudFormation" },
+        { "key": "D", "text": "Amazon Bedrock Guardrails" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon Q Developer (formerly CodeWhisperer) generates real-time code suggestions ranging from snippets to full functions based on comments and existing code.",
+        "distractors": {
+          "B": "Model Monitor tracks model quality in production. It does not generate code suggestions.",
+          "C": "CloudFormation deploys infrastructure as code. It doesn't provide AI-powered code generation.",
+          "D": "Guardrails filter content for safety. They don't generate code."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "project-lifecycle",
+      "scenario": "An AI team has fine-tuned their model and it performs well on test data. Before deploying to production, they want to ensure the model is well-aligned with human preferences and doesn't produce harmful content.",
+      "stem": "According to the generative AI project lifecycle, what should they do at this stage?",
+      "options": [
+        { "key": "A", "text": "Apply RLHF to align the model with human preferences, then evaluate with metrics and benchmarks before deploying" },
+        { "key": "B", "text": "Deploy immediately since test performance is sufficient" },
+        { "key": "C", "text": "Return to the data selection stage and start over" },
+        { "key": "D", "text": "Skip evaluation and go directly to monitoring" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "After fine-tuning, include RLHF to ensure the model aligns with human preferences. Evaluation with metrics and benchmarks should verify performance and alignment before deployment. This stage is iterative.",
+        "distractors": {
+          "B": "Test performance alone isn't sufficient. Human preference alignment and safety evaluation are needed before production.",
+          "C": "Starting over is unnecessary. The lifecycle includes alignment and evaluation stages between fine-tuning and deployment.",
+          "D": "Evaluation cannot be skipped. It determines whether the model meets performance needs and is safe to deploy."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "diffusion-models",
+      "scenario": "A creative agency wants to generate high-quality marketing images from text descriptions. They're evaluating different generative model types and want one that offers a high degree of control over image quality and diversity.",
+      "stem": "Which type of generative model offers a higher degree of control in quality and diversity of generated images?",
+      "options": [
+        { "key": "A", "text": "Diffusion-based architectures" },
+        { "key": "B", "text": "Recurrent neural networks" },
+        { "key": "C", "text": "Decision trees" },
+        { "key": "D", "text": "K-nearest neighbors" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Diffusion-based architectures offer a higher degree of control in quality and diversity of images generated. Models like DALL-E, Stable Diffusion, and Midjourney create realistic, diverse images from text prompts.",
+        "distractors": {
+          "B": "RNNs are sequence models for text. They don't offer the image generation quality control that diffusion models provide.",
+          "C": "Decision trees are simple ML classifiers, not generative image models.",
+          "D": "KNN is a classification algorithm. It doesn't generate images."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "project-lifecycle",
+      "scenario": "A startup is deciding whether to train a foundation model from scratch or use an existing pre-trained model for their text summarization product. They have limited budget and need to ship quickly.",
+      "stem": "According to the project lifecycle, what is the most important first step?",
+      "options": [
+        { "key": "A", "text": "Define the scope as accurately and narrowly as possible — determine what the model needs to do for your specific application" },
+        { "key": "B", "text": "Immediately start training the largest possible model" },
+        { "key": "C", "text": "Deploy a random model and iterate based on user feedback" },
+        { "key": "D", "text": "Build the user interface before selecting a model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The most important step in any project is to define the scope as accurately and narrowly as possible. Determine whether you need multi-task capability or single-task focus. Getting specific saves time and compute costs.",
+        "distractors": {
+          "B": "Starting without scoping wastes resources. Define needs first, then decide whether to train from scratch or use existing models.",
+          "C": "Deploying without evaluation is risky. The lifecycle starts with scoping, not deployment.",
+          "D": "Model selection should precede UI development. The model's capabilities determine what the interface can offer."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "aws-gen-ai-services",
+      "scenario": "A team is building various generative AI applications on AWS. They want to understand which services support different content generation tasks.",
+      "stem": "Which AWS services support generative AI content creation? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Amazon Bedrock and Amazon Titan — pre-trained models for text and image generation" },
+        { "key": "B", "text": "Amazon Q Developer — code generation and completion" },
+        { "key": "C", "text": "Amazon Route 53 — AI-powered DNS resolution" },
+        { "key": "D", "text": "AWS CloudTrail — AI-generated audit reports" },
+        { "key": "E", "text": "Amazon VPC — AI-powered network configuration" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Amazon Bedrock/Titan provide pre-trained models for text and image generation that can be fine-tuned. Amazon Q Developer supports code generation and completion with real-time suggestions.",
+        "distractors": {
+          "C": "Route 53 is a DNS service. It does not use AI for content generation.",
+          "D": "CloudTrail logs API calls for auditing. It does not generate AI content.",
+          "E": "VPC is networking infrastructure. It does not provide AI-powered configuration."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "diffusion-examples",
+      "scenario": "A team is researching which diffusion models exist for different content types.",
+      "stem": "Which are examples of diffusion models and their capabilities? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Stable Diffusion — for image generation from text descriptions" },
+        { "key": "B", "text": "Whisper — for speech recognition and translation" },
+        { "key": "C", "text": "PostgreSQL — for relational database queries" },
+        { "key": "D", "text": "Kubernetes — for container orchestration" },
+        { "key": "E", "text": "Terraform — for infrastructure as code" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Stable Diffusion is a diffusion model for image generation. Whisper is a diffusion-related model for speech recognition and translation. AudioLM is another example for audio generation.",
+        "distractors": {
+          "C": "PostgreSQL is a relational database, not a generative AI model.",
+          "D": "Kubernetes orchestrates containers, not AI content generation.",
+          "E": "Terraform manages infrastructure, not generative content."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "multimodal-use-cases",
+      "scenario": "A marketing team wants to understand which business use cases benefit from multimodal generative AI capabilities.",
+      "stem": "Which are multimodal generative AI use cases? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Marketing — creating combined text and image campaigns" },
+        { "key": "B", "text": "Customer service chatbots and avatars — combining text, voice, and visual elements" },
+        { "key": "C", "text": "Spreadsheet formula calculation" },
+        { "key": "D", "text": "File system defragmentation" },
+        { "key": "E", "text": "Email server configuration" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Multimodal use cases include marketing (combined text/image), customer service chatbots/avatars (text/voice/visual), product design, and image captioning — all leveraging multiple data types together.",
+        "distractors": {
+          "C": "Spreadsheet calculations are deterministic operations, not multimodal AI tasks.",
+          "D": "File defragmentation is an OS operation, not a generative AI use case.",
+          "E": "Email server configuration is IT operations, not multimodal AI."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "project-lifecycle",
+      "scenario": "An AI team's LLM performs well on most tasks but struggles with complex mathematical reasoning and sometimes hallucinates facts. They've tried fine-tuning but these issues persist.",
+      "stem": "According to the generative AI lifecycle, what should the team consider for these fundamental LLM limitations?",
+      "options": [
+        { "key": "A", "text": "Consider additional infrastructure like RAG for factual grounding, since hallucination and limited math reasoning can be difficult to overcome through training alone" },
+        { "key": "B", "text": "Keep fine-tuning indefinitely until the problems disappear" },
+        { "key": "C", "text": "Accept that the model cannot be used for any purpose" },
+        { "key": "D", "text": "Reduce the model size to eliminate hallucinations" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Some fundamental LLM limitations (hallucinations, limited math reasoning) can be difficult to overcome through training alone. Additional infrastructure (like RAG for factual grounding) should be considered to address these issues.",
+        "distractors": {
+          "B": "Infinite fine-tuning won't fix fundamental architectural limitations. External solutions like RAG are needed for factual grounding.",
+          "C": "The model can still be useful. Architectural solutions (RAG, tools, guardrails) address limitations without abandoning the model.",
+          "D": "Reducing model size typically worsens hallucination. The solution is external augmentation, not model reduction."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "gen-ai-architectures",
+      "scenario": "A data science team is selecting a generative model architecture. They need to understand the key types available.",
+      "stem": "Which three architectures should be evaluated when selecting a generative AI model?",
+      "options": [
+        { "key": "A", "text": "Generative adversarial networks (GANs), variational autoencoders (VAEs), and transformers" },
+        { "key": "B", "text": "Linear regression, logistic regression, and decision trees" },
+        { "key": "C", "text": "K-means clustering, DBSCAN, and hierarchical clustering" },
+        { "key": "D", "text": "Random forests, gradient boosting, and support vector machines" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The main generative AI architectures are GANs, VAEs, and transformers. Each has unique advantages and limitations. You should evaluate your objective and dataset before selecting the appropriate one.",
+        "distractors": {
+          "B": "These are traditional supervised learning models, not generative architectures. They predict or classify rather than generate.",
+          "C": "These are clustering algorithms for unsupervised learning, not generative model architectures.",
+          "D": "These are ensemble and traditional ML methods for classification/regression, not generative content creation."
+        }
+      }
+    }
+  ]
+}

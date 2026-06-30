@@ -1,0 +1,457 @@
+{
+  "label": "Generative AI Fundamentals — Gap Coverage",
+  "order": 3,
+  "topic": "Domain 2: Fundamentals of Generative AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "context-window",
+      "scenario": null,
+      "stem": "What is the context window in a generative AI model?",
+      "options": [
+        { "key": "A", "text": "The finite number of tokens the model can accept as input and process during a single inference call" },
+        { "key": "B", "text": "The physical display window where model output is shown to users" },
+        { "key": "C", "text": "The time window during which the model is available for inference" },
+        { "key": "D", "text": "The portion of training data the model memorizes permanently" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The context window is the finite number of tokens the model can process in a single call. It limits how much input (prompt + examples + context) the model can consider when generating a completion.",
+        "distractors": {
+          "B": "The context window is a model architecture constraint on token count, not a visual display element.",
+          "C": "The context window refers to token capacity, not availability time or scheduling.",
+          "D": "The context window is an inference-time limit. The model doesn't permanently memorize context between calls."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "next-token-prediction",
+      "scenario": null,
+      "stem": "What is the fundamental output mechanism of a generative language model?",
+      "options": [
+        { "key": "A", "text": "The model's output is a guess of what the next word or token should be, generated one at a time based on the input and previously generated tokens" },
+        { "key": "B", "text": "The model retrieves a pre-written paragraph from its database and returns it" },
+        { "key": "C", "text": "The model generates all tokens simultaneously in a single computation step" },
+        { "key": "D", "text": "The model selects the response from a finite set of pre-approved answers" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The model takes input and provides output that is a guess of what the next word or token should be. This autoregressive generation happens one token at a time, each conditioned on prior context.",
+        "distractors": {
+          "B": "Models generate novel content from learned patterns. They don't have a database of pre-written responses to retrieve.",
+          "C": "Generation is sequential (token by token). Each token depends on the full context including previously generated tokens.",
+          "D": "Models generate from a vocabulary of tokens with probabilities, not from a fixed set of approved complete answers."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "prompt-structure",
+      "scenario": null,
+      "stem": "What does a prompt to a generative AI model consist of?",
+      "options": [
+        { "key": "A", "text": "Instruction and content, optionally augmented with in-context learning examples (few-shot, zero-shot, one-shot)" },
+        { "key": "B", "text": "Only the model's hyperparameters encoded as text" },
+        { "key": "C", "text": "The model's training data compressed into a single message" },
+        { "key": "D", "text": "Only a single keyword with no additional context" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A prompt consists of instruction and content. You can add in-context learning with few-shot, zero-shot, and one-shot inference to help guide the model's completion.",
+        "distractors": {
+          "B": "Hyperparameters are set separately from the prompt. The prompt contains the task instruction and content for the model.",
+          "C": "Training data cannot fit in a prompt. The prompt provides specific instructions and context for a single inference call.",
+          "D": "Effective prompts include instruction, content, and optionally examples. A single keyword rarely produces quality results."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "data-curation",
+      "scenario": null,
+      "stem": "Approximately what percentage of collected tokens are typically used for pre-training after data quality curation?",
+      "options": [
+        { "key": "A", "text": "1% to 3% — the vast majority is filtered out during quality processing" },
+        { "key": "B", "text": "90% to 95% — nearly all collected data is usable" },
+        { "key": "C", "text": "50% — exactly half is used for training and half for testing" },
+        { "key": "D", "text": "100% — all collected data is used without filtering" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Only 1-3% of tokens are used for pre-training after the data quality curation step. This estimate is important when determining how much data to collect for pre-training.",
+        "distractors": {
+          "B": "Most internet data is low quality, biased, or harmful. Extensive filtering retains only 1-3%.",
+          "C": "The 50/50 split describes train/test methodology, not the quality filtering ratio. Quality curation removes far more data.",
+          "D": "Raw internet data requires heavy processing. Using it unfiltered would introduce bias, low quality, and harmful content."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "pre-trained-models-advantage",
+      "scenario": null,
+      "stem": "What is a key advantage of using pre-trained foundation models?",
+      "options": [
+        { "key": "A", "text": "They can be fine-tuned for specific tasks with relatively little additional data because they already have a broad knowledge base from pre-training" },
+        { "key": "B", "text": "They require no data at all to perform any task" },
+        { "key": "C", "text": "They are always smaller and faster than custom-trained models" },
+        { "key": "D", "text": "They can only be used for the exact task they were pre-trained on" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Pre-trained models build up a broad knowledge base during pre-training on massive text data. They can be fine-tuned for specific tasks with relatively little additional data, saving time and resources.",
+        "distractors": {
+          "B": "Pre-trained models still need prompts or fine-tuning data for specific tasks. They aren't zero-data solutions.",
+          "C": "Pre-trained foundation models are typically very large (billions of parameters). Their advantage is knowledge, not small size.",
+          "D": "Foundation models are general-purpose. Their key value is adaptability to many tasks through prompting or fine-tuning."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "transformer-components",
+      "scenario": null,
+      "stem": "Which techniques does the transformer architecture use to facilitate training and prevent overfitting? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Residual connections between layers" },
+        { "key": "B", "text": "Layer normalization" },
+        { "key": "C", "text": "Random deletion of entire layers during inference" },
+        { "key": "D", "text": "Replacing attention with simple averaging" },
+        { "key": "E", "text": "Removing all positional information from tokens" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The transformer uses residual connections and layer normalization to facilitate training and prevent overfitting. These techniques help gradients flow through deep networks and stabilize the learning process.",
+        "distractors": {
+          "C": "Dropout randomly zeroes activations during training. Removing entire layers would break the architecture.",
+          "D": "Self-attention is a core innovation of transformers. Replacing it with averaging would remove the architecture's key advantage.",
+          "E": "Positional encodings are essential for transformers to understand word order. Removing them would lose sequence information."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "diffusion-tasks",
+      "scenario": null,
+      "stem": "Which tasks can diffusion models support for multimodal applications? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Image generation from text prompts" },
+        { "key": "B", "text": "Image upscaling — increasing resolution of existing images" },
+        { "key": "C", "text": "Inpainting — filling in missing or damaged portions of images" },
+        { "key": "D", "text": "Database schema design" },
+        { "key": "E", "text": "Network firewall configuration" },
+        { "key": "F", "text": "File system formatting" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Diffusion models support image generation, upscaling (increasing resolution), and inpainting (filling damaged/missing portions). These are key multimodal tasks that diffusion architectures excel at.",
+        "distractors": {
+          "D": "Database design is a data engineering task, not a diffusion model capability.",
+          "E": "Firewall configuration is a security operations task, not AI content generation.",
+          "F": "File system operations are OS-level tasks unrelated to generative AI."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "multimodal-capabilities",
+      "scenario": null,
+      "stem": "What collaborative capabilities do multimodal models provide beyond single-modality models? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Cross-modal reasoning — understanding relationships between different data types" },
+        { "key": "B", "text": "Cross-modal translation, search, and creation that mirrors human intelligence" },
+        { "key": "C", "text": "Replacing the need for any single-modality models" },
+        { "key": "D", "text": "Automatic hardware optimization based on content type" },
+        { "key": "E", "text": "Self-replicating new models without human intervention" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Multimodal models process and generate multiple data types in combination, enabling cross-modal reasoning, translation, search, and creation that more closely mirrors human intelligence.",
+        "distractors": {
+          "C": "Multimodal models complement single-modality models. Specialized models may still outperform on specific tasks.",
+          "D": "Hardware optimization is handled by infrastructure, not the model's multimodal capabilities.",
+          "E": "Models cannot self-replicate. Multimodal capability is about understanding multiple data types, not self-creation."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "sagemaker-jumpstart",
+      "scenario": null,
+      "stem": "What does Amazon SageMaker JumpStart provide for generative AI? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Publicly available pre-trained foundation models ready to use or fine-tune" },
+        { "key": "B", "text": "The ability to deploy models like Stable Diffusion with just a few lines of code" },
+        { "key": "C", "text": "Physical GPU hardware shipped to your data center" },
+        { "key": "D", "text": "Automatic creation of training data from nothing" },
+        { "key": "E", "text": "Replacement for all custom model development" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker JumpStart provides pre-trained foundation models that can be used directly or fine-tuned. AWS offers models like Stable Diffusion that can be deployed with just a few lines of code through JumpStart.",
+        "distractors": {
+          "C": "JumpStart is a cloud service. It provides model access, not physical hardware shipment.",
+          "D": "JumpStart provides models, not training data generation. You still need data for fine-tuning.",
+          "E": "JumpStart provides starting points. Custom development may still be needed for specific requirements."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "aws-frameworks",
+      "scenario": null,
+      "stem": "Which deep learning frameworks does Amazon SageMaker support for building multimodal and generative AI models? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "TensorFlow" },
+        { "key": "B", "text": "PyTorch" },
+        { "key": "C", "text": "Microsoft Excel" },
+        { "key": "D", "text": "Adobe Photoshop" },
+        { "key": "E", "text": "WordPress" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker supports deep learning frameworks such as TensorFlow and PyTorch, which have prebuilt modules for working with multimodal data and building generative AI models.",
+        "distractors": {
+          "C": "Excel is a spreadsheet application, not a deep learning framework.",
+          "D": "Photoshop is an image editing application, not an ML framework.",
+          "E": "WordPress is a content management system, not a deep learning framework."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "context-window",
+      "scenario": "A developer is building a document summarization system. They need to summarize a 50-page report, but the model can only process 4,096 tokens at a time.",
+      "stem": "What model limitation is constraining this use case?",
+      "options": [
+        { "key": "A", "text": "The context window — the finite token limit prevents processing the entire 50-page document in a single call" },
+        { "key": "B", "text": "The model's vocabulary doesn't contain words used in reports" },
+        { "key": "C", "text": "The model can only generate summaries in one language" },
+        { "key": "D", "text": "The model's temperature is too low for summarization tasks" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The context window limits how many tokens can be processed per call. A 50-page document likely exceeds 4,096 tokens, requiring chunking strategies or models with larger context windows.",
+        "distractors": {
+          "B": "LLM vocabularies are large and cover standard language. The constraint is token count, not vocabulary.",
+          "C": "Most LLMs support multiple languages. The constraint is context window size, not language support.",
+          "D": "Temperature affects randomness, not the ability to process long documents. Context window is the limiting factor."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "next-token-prediction",
+      "scenario": "A product manager asks why their chatbot sometimes produces grammatically perfect sentences that contain factual errors. The ML engineer needs to explain the fundamental generation mechanism.",
+      "stem": "Why can models produce fluent but factually incorrect text?",
+      "options": [
+        { "key": "A", "text": "The model predicts the next token based on statistical likelihood from training patterns — it generates fluent text without verifying factual accuracy" },
+        { "key": "B", "text": "The model has a separate fact-checking module that occasionally fails" },
+        { "key": "C", "text": "The model intentionally inserts errors to test users" },
+        { "key": "D", "text": "The model's tokenizer corrupts factual information during encoding" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The model's output is a guess of what the next token should be based on statistical patterns. It generates fluent language because it learned grammar patterns, but has no mechanism to verify whether generated facts are accurate.",
+        "distractors": {
+          "B": "LLMs don't have separate fact-checking modules. They generate based on token probability distributions.",
+          "C": "Models don't have intentions. Errors occur because generation is based on statistical likelihood, not truth verification.",
+          "D": "The tokenizer faithfully converts text to token IDs. Factual errors come from the generation process, not encoding."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "iterative-development",
+      "scenario": "An AI team deploys a chatbot that doesn't produce ideal responses. Their team lead suggests a systematic approach: first try prompt engineering, evaluate, then fine-tune if needed, evaluate again, and iterate.",
+      "stem": "What development approach does this systematic process represent?",
+      "options": [
+        { "key": "A", "text": "The iterative lifecycle — start with prompt engineering, evaluate, use fine-tuning if needed, then continuously evaluate and revise" },
+        { "key": "B", "text": "A single-pass deployment where the model ships after the first attempt" },
+        { "key": "C", "text": "A waterfall approach where each stage happens exactly once" },
+        { "key": "D", "text": "A random experimentation approach with no systematic evaluation" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The recommended approach is iterative: start with prompt engineering, evaluate outputs, use fine-tuning to improve if needed, then continuously revisit and evaluate prompts to achieve the required performance.",
+        "distractors": {
+          "B": "Single-pass rarely works. The lifecycle is highly iterative with adapting and aligning stages.",
+          "C": "The process is iterative, not waterfall. You may revisit prompt engineering multiple times between fine-tuning iterations.",
+          "D": "The approach is systematic — evaluate after each change — not random experimentation."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "vocabulary",
+      "scenario": "A new engineer asks what determines which words a language model can understand. Their mentor explains that the model has a fixed set of tokens it was trained to recognize.",
+      "stem": "What is a model's vocabulary in generative AI?",
+      "options": [
+        { "key": "A", "text": "The complete set of tokens that the model was trained to recognize, where each token maps to a unique ID used by the tokenizer" },
+        { "key": "B", "text": "A dictionary file that users must upload before each inference call" },
+        { "key": "C", "text": "The set of topics the model is allowed to discuss" },
+        { "key": "D", "text": "The languages the model can translate between" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A model's vocabulary is the complete set of tokens it was trained to recognize. The tokenizer converts input text into token IDs from this vocabulary. Each ID represents one token in the model's vocabulary.",
+        "distractors": {
+          "B": "The vocabulary is built into the model during training. Users don't upload dictionaries.",
+          "C": "Vocabulary refers to the token set, not topic permissions. Topic restrictions are handled by guardrails.",
+          "D": "Language support is broader than vocabulary. Vocabulary is the specific token set the model processes."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "diffusion-models",
+      "scenario": "A music streaming company wants to use AI to generate background audio tracks for their podcasts. They're exploring which type of generative model supports audio creation.",
+      "stem": "Which diffusion-based model example supports audio generation?",
+      "options": [
+        { "key": "A", "text": "AudioLM — a diffusion-related model for audio generation" },
+        { "key": "B", "text": "Stable Diffusion — which generates audio from text prompts" },
+        { "key": "C", "text": "DALL-E — which converts audio descriptions to sound" },
+        { "key": "D", "text": "Whisper — which generates music from text descriptions" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AudioLM is an example of a diffusion-related model specifically for audio generation. It demonstrates that diffusion approaches extend beyond images to audio content creation.",
+        "distractors": {
+          "B": "Stable Diffusion is for image generation from text, not audio generation.",
+          "C": "DALL-E generates images from text descriptions, not audio.",
+          "D": "Whisper is for speech recognition and translation (audio to text), not music/audio generation from text."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "context-window",
+      "scenario": "A developer is designing an in-context learning prompt with examples. They need to balance the number of examples with the available space for the model to generate its response.",
+      "stem": "What constraints does the context window impose on in-context learning? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The total tokens for prompt (instructions + examples + input) plus the completion must fit within the context window" },
+        { "key": "B", "text": "More examples in the prompt means less space available for the model's generated completion" },
+        { "key": "C", "text": "The context window automatically expands to fit any number of examples" },
+        { "key": "D", "text": "Examples in the prompt don't consume any tokens" },
+        { "key": "E", "text": "The context window only limits the output, not the input" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The context window is finite — prompt plus completion must fit within it. More examples mean more input tokens consumed, leaving less space for the model's generated output. This tradeoff must be managed.",
+        "distractors": {
+          "C": "Context windows are fixed by model architecture. They don't dynamically expand.",
+          "D": "All text in the prompt consumes tokens, including examples. Nothing is free in the context window.",
+          "E": "The context window limits the total — both input (prompt) and output (completion) together."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "gen-ai-use-cases",
+      "scenario": "A consulting firm wants to understand the full range of generative AI applications they could build for clients.",
+      "stem": "Which are use cases for generative AI beyond text generation? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Recommendation engines and personalized marketing" },
+        { "key": "B", "text": "Chatbots and customer service agents" },
+        { "key": "C", "text": "Identifying harmful content and classification" },
+        { "key": "D", "text": "Manual data entry by human typists" },
+        { "key": "E", "text": "Physical product shipping and logistics handling" },
+        { "key": "F", "text": "Plumbing and electrical installation" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Generative AI use cases include recommendation engines/personalized marketing, chatbots/customer service agents, and identifying harmful content/classification. These leverage the model's language understanding capabilities.",
+        "distractors": {
+          "D": "Manual data entry is human labor that AI aims to automate, not a generative AI application itself.",
+          "E": "Physical shipping is logistics operations, not a generative AI capability.",
+          "F": "Installation work is physical skilled labor, not AI-driven content generation."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "model-scaling",
+      "scenario": "A CTO is deciding between a 7B parameter model and a 70B parameter model for their application. They want to understand the tradeoffs.",
+      "stem": "What has driven the development of increasingly larger foundation models? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Model capability increases with size — larger models perform better without additional training" },
+        { "key": "B", "text": "Access to enormous amounts of training data and development of more powerful compute resources" },
+        { "key": "C", "text": "Larger models are always cheaper to run in production" },
+        { "key": "D", "text": "Regulations require models to have a minimum parameter count" },
+        { "key": "E", "text": "Smaller models cannot process any text at all" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Two factors drive larger models: capability increases with size (more likely to work without additional training), and the availability of enormous training data plus more powerful compute resources (highly scalable transformer architecture).",
+        "distractors": {
+          "C": "Larger models cost more to run due to higher compute requirements. Their advantage is capability, not cost.",
+          "D": "No regulations mandate minimum parameter counts. Model size is driven by performance research.",
+          "E": "Smaller models can process text. They simply may require more fine-tuning or in-context learning to match larger model performance."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "encoder-decoder",
+      "scenario": "An ML student is learning about the transformer. They understand that it has two main parts but are confused about what each does during text generation.",
+      "stem": "What role does the encoder play versus the decoder in the transformer architecture?",
+      "options": [
+        { "key": "A", "text": "The encoder generates embedding representations for input tokens; the decoder generates the output completion using attention mechanisms" },
+        { "key": "B", "text": "The encoder generates the final output; the decoder processes the input" },
+        { "key": "C", "text": "The encoder and decoder perform identical functions" },
+        { "key": "D", "text": "The encoder encrypts data; the decoder decrypts it" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The encoder generates an embedding or vector representation for each input token. The decoder uses attention mechanisms (including cross-attention to encoder outputs) to generate the completion sequence.",
+        "distractors": {
+          "B": "This reverses the roles. The encoder processes input into representations; the decoder generates output.",
+          "C": "They have distinct functions — encoding input representations vs generating output sequences.",
+          "D": "Encoder/decoder in transformers refer to neural network components for understanding and generation, not encryption/decryption."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "prompt-structure",
+      "scenario": "A prompt engineer is constructing a prompt for a text generation model. They want to clearly separate the task instruction from the content the model should process, and include two examples of desired output format.",
+      "stem": "What are the components being assembled in this prompt?",
+      "options": [
+        { "key": "A", "text": "Instruction (the task), content (the input to process), and in-context learning examples (few-shot) — all within the context window" },
+        { "key": "B", "text": "Training data, validation data, and test data for model evaluation" },
+        { "key": "C", "text": "Encoder weights, decoder weights, and attention matrices" },
+        { "key": "D", "text": "IAM policy, VPC configuration, and endpoint URL" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A prompt can contain instruction (task to perform), content (input text), and in-context learning examples (few-shot). All components must fit within the context window along with space for the completion.",
+        "distractors": {
+          "B": "Train/validation/test splits are for model development. Prompts are inference-time inputs, not training datasets.",
+          "C": "Weights and matrices are internal model parameters. Prompts are external inputs provided by users.",
+          "D": "IAM, VPC, and endpoints are infrastructure. Prompts contain natural language instructions and content."
+        }
+      }
+    }
+  ]
+}

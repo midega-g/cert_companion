@@ -1,0 +1,459 @@
+{
+  "label": "Gap Coverage — Supplemental",
+  "order": 3,
+  "topic": "Domain 3: Applications of Foundation Models",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "customization-cost-tradeoffs",
+      "scenario": null,
+      "stem": "Which foundation model customization approach is the most expensive and resource-intensive?",
+      "options": [
+        { "key": "A", "text": "Pre-training — training a model from scratch on a large dataset" },
+        { "key": "B", "text": "Fine-tuning — updating model weights with domain-specific examples" },
+        { "key": "C", "text": "In-context learning — providing examples in the prompt" },
+        { "key": "D", "text": "RAG — retrieving external knowledge at inference time" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Pre-training trains a model from scratch on massive datasets, requiring enormous compute resources, time, and cost. It is the most expensive customization approach by a wide margin.",
+        "distractors": {
+          "B": "Fine-tuning updates existing weights with smaller domain-specific data. It is less expensive than pre-training because it starts from a trained model.",
+          "C": "In-context learning has zero training cost — it only uses prompt tokens at inference time. It is the cheapest approach.",
+          "D": "RAG retrieves data at inference time without any model modification. Its cost is in building and maintaining the knowledge base, not in training."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "customization-cost-tradeoffs",
+      "scenario": null,
+      "stem": "Which customization approach requires no modification to model weights and works entirely within the prompt at inference time?",
+      "options": [
+        { "key": "A", "text": "In-context learning" },
+        { "key": "B", "text": "Fine-tuning" },
+        { "key": "C", "text": "Pre-training" },
+        { "key": "D", "text": "Continued pre-training" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "In-context learning provides examples and instructions directly in the prompt to guide model behavior. It requires no weight updates — everything happens within the context window at inference time.",
+        "distractors": {
+          "B": "Fine-tuning updates model weights with task-specific data. It modifies the model itself.",
+          "C": "Pre-training trains model weights from scratch. It is the most intensive modification.",
+          "D": "Continued pre-training extends training on additional data, modifying weights further."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "model-size",
+      "scenario": null,
+      "stem": "What have researchers found about the relationship between model size and capability?",
+      "options": [
+        { "key": "A", "text": "Larger models are more likely to perform tasks well without additional in-context learning or further training" },
+        { "key": "B", "text": "Smaller models always outperform larger models on all tasks" },
+        { "key": "C", "text": "Model size has no relationship to performance" },
+        { "key": "D", "text": "Larger models can only perform a single task type" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Researchers have found that larger models of any architecture are typically more capable — the larger a model, the more likely it is to work without additional in-context learning or further training.",
+        "distractors": {
+          "B": "Larger models generally perform better due to more parameters capturing more patterns. Smaller models trade capability for efficiency.",
+          "C": "Size strongly correlates with capability. Larger models handle more complex tasks and require less customization.",
+          "D": "Larger models are general-purpose and handle multiple task types. Their size gives them broader capabilities, not narrower."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "input-output-length",
+      "scenario": null,
+      "stem": "Why is input and output length an important selection criterion when choosing a pre-trained model?",
+      "options": [
+        { "key": "A", "text": "Models have context window limits that determine the maximum input and output they can process, which must match the application's requirements" },
+        { "key": "B", "text": "All models support unlimited input and output lengths" },
+        { "key": "C", "text": "Input length only matters for image models, not text models" },
+        { "key": "D", "text": "Output length is determined by the user's internet speed, not the model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Input and output length is a selection criterion because models have finite context windows. Applications requiring long documents or detailed outputs must select models whose context limits accommodate their requirements.",
+        "distractors": {
+          "B": "No model supports unlimited length. All have context window constraints determined by architecture and training.",
+          "C": "Input length matters for all modalities. Text models have token limits; image models have resolution limits.",
+          "D": "Output length is constrained by model architecture and inference parameters, not network connectivity."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "opensearch-serverless",
+      "scenario": null,
+      "stem": "What does the vector engine for Amazon OpenSearch Serverless provide?",
+      "options": [
+        { "key": "A", "text": "Vector storage and search capabilities without having to manage the vector database infrastructure" },
+        { "key": "B", "text": "A fully managed model training pipeline for creating embedding models" },
+        { "key": "C", "text": "An IAM policy generator for vector database access control" },
+        { "key": "D", "text": "A visualization dashboard for monitoring model accuracy metrics" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The vector engine for Amazon OpenSearch Serverless provides vector storage and search capabilities, helping build ML-augmented search and generative AI applications without managing vector database infrastructure.",
+        "distractors": {
+          "B": "OpenSearch Serverless stores and searches vectors. Model training for creating embeddings is done by separate ML services.",
+          "C": "IAM policies are managed through AWS IAM. OpenSearch Serverless handles vector operations, not policy generation.",
+          "D": "Monitoring dashboards are provided by CloudWatch or OpenSearch Dashboards. The vector engine focuses on storage and search."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "customization-cost-tradeoffs",
+      "scenario": null,
+      "stem": "Rank the following foundation model customization approaches from most expensive to least expensive in terms of compute resources. Which two are the most expensive? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Pre-training from scratch" },
+        { "key": "B", "text": "Fine-tuning an existing pre-trained model" },
+        { "key": "C", "text": "In-context learning within prompts" },
+        { "key": "D", "text": "RAG with an external knowledge base" },
+        { "key": "E", "text": "Using the model as-is with no customization" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Pre-training from scratch is the most expensive (massive compute for weeks/months). Fine-tuning is next (updates weights with domain data, requiring GPU compute). In-context learning and RAG have no training cost — they work at inference time.",
+        "distractors": {
+          "C": "In-context learning has zero training cost. It only uses tokens in the prompt at inference time.",
+          "D": "RAG has infrastructure cost (knowledge base, vector DB) but no model training cost. It retrieves, not retrains.",
+          "E": "Using a model as-is has zero customization cost. It's the baseline with no additional compute."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "vector-databases-services",
+      "scenario": null,
+      "stem": "Which AWS services support storing vector embeddings for AI applications? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Amazon Neptune" },
+        { "key": "B", "text": "Amazon DocumentDB (with MongoDB compatibility)" },
+        { "key": "C", "text": "Redis (on AWS)" },
+        { "key": "D", "text": "AWS CloudFormation" },
+        { "key": "E", "text": "Amazon SNS" },
+        { "key": "F", "text": "AWS Step Functions" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "AWS services that store embeddings within vector databases include Amazon Neptune, Amazon DocumentDB with MongoDB compatibility, and Redis, in addition to OpenSearch, Aurora, and RDS for PostgreSQL.",
+        "distractors": {
+          "D": "CloudFormation is an infrastructure-as-code service. It deploys resources but does not store vector embeddings.",
+          "E": "SNS is a messaging/notification service, not a data storage or vector database.",
+          "F": "Step Functions orchestrates workflows. It does not store vector embeddings."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "inference-bedrock",
+      "scenario": null,
+      "stem": "With which types of models can you run inference in Amazon Bedrock? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Base foundation models" },
+        { "key": "B", "text": "Custom models (fine-tuned)" },
+        { "key": "C", "text": "Provisioned throughput models" },
+        { "key": "D", "text": "Models deployed on Amazon EC2 instances" },
+        { "key": "E", "text": "Models hosted on on-premises servers" },
+        { "key": "F", "text": "Models running in AWS Lambda functions" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "You can run inference with base models, custom models, or provisioned models in Amazon Bedrock to test foundation model responses with different prompts and inference parameters.",
+        "distractors": {
+          "D": "EC2-hosted models are managed through SageMaker or custom deployments, not through Bedrock's inference API.",
+          "E": "On-premises models are outside the Bedrock service. Bedrock manages its own hosted models.",
+          "F": "Lambda-hosted models are separate from Bedrock. Bedrock provides its own managed inference infrastructure."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "inference-parameters",
+      "scenario": null,
+      "stem": "What is the recommended approach for managing inference parameters in production? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Experiment to find the optimal balance between diversity, coherence, and resource efficiency" },
+        { "key": "B", "text": "Continuously monitor and adjust parameters in production to maintain performance and align with evolving requirements" },
+        { "key": "C", "text": "Set parameters once at deployment and never change them" },
+        { "key": "D", "text": "Always use the maximum value for all parameters" },
+        { "key": "E", "text": "Copy parameter settings from another company's successful model" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "You should experiment to find optimal parameter balance and continuously monitor and adjust in production. Requirements evolve, so parameters need ongoing attention to maintain performance.",
+        "distractors": {
+          "C": "Fixed parameters will not adapt to changing needs. Continuous monitoring and adjustment is recommended.",
+          "D": "Maximum values for all parameters would produce incoherent, overly random outputs. Balance is essential.",
+          "E": "Optimal parameters depend on your specific use case, data, and requirements. Another company's settings likely won't match yours."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "model-selection-criteria",
+      "scenario": null,
+      "stem": "Which are additional considerations beyond accuracy when selecting a pre-trained model? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Hardware constraints for deployment" },
+        { "key": "B", "text": "Maintenance and update requirements" },
+        { "key": "C", "text": "Data privacy implications" },
+        { "key": "D", "text": "The model developer's preferred IDE" },
+        { "key": "E", "text": "The model's version control system (Git vs SVN)" },
+        { "key": "F", "text": "The timezone of the model's training cluster" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Additional considerations include hardware constraints (can your infrastructure run the model), maintenance updates (will the model stay current), and data privacy (does using the model expose sensitive data). Transfer learning is also a factor.",
+        "distractors": {
+          "D": "The developer's IDE is irrelevant to model selection. What matters is your framework compatibility.",
+          "E": "Version control system choice does not affect model quality or suitability for your task.",
+          "F": "Training cluster timezone has no bearing on model performance or deployment compatibility."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "customization-cost-tradeoffs",
+      "scenario": "A startup with limited budget needs to add domain-specific knowledge about their product catalog to a foundation model. They cannot afford GPU compute for training or fine-tuning but have access to their product database.",
+      "stem": "Which customization approach fits their budget constraints while providing domain-specific knowledge?",
+      "options": [
+        { "key": "A", "text": "RAG — connect the foundation model to a knowledge base built from their product database, retrieving information at inference time without training" },
+        { "key": "B", "text": "Pre-train a new foundation model on their product catalog" },
+        { "key": "C", "text": "Fine-tune the model with millions of product examples" },
+        { "key": "D", "text": "Build a custom model architecture from scratch optimized for their catalog" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "RAG retrieves external knowledge at inference time without modifying model weights or requiring GPU training compute. The cost is in building the knowledge base and vector database, not in model training.",
+        "distractors": {
+          "B": "Pre-training requires the most compute resources and is the most expensive approach — far beyond a limited budget.",
+          "C": "Fine-tuning requires GPU compute for training. With a limited budget, this may not be feasible.",
+          "D": "Building custom architecture from scratch is the most resource-intensive approach possible."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "model-size",
+      "scenario": "An ML team evaluates two versions of the same model architecture: a 7-billion parameter version and a 70-billion parameter version. The 70B version performs better on benchmarks but costs significantly more to run.",
+      "stem": "According to research on model size and capability, what advantage does the larger model provide?",
+      "options": [
+        { "key": "A", "text": "The larger model is more likely to perform tasks well without requiring additional in-context learning or further training" },
+        { "key": "B", "text": "The larger model is immune to hallucination" },
+        { "key": "C", "text": "The larger model requires less storage space due to compression" },
+        { "key": "D", "text": "The larger model can only handle shorter input sequences" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Research shows that larger models are typically more capable — more likely to work well without additional in-context learning or training. This scaling property means the 70B model handles diverse tasks more reliably out of the box.",
+        "distractors": {
+          "B": "No model is immune to hallucination regardless of size. Larger models still generate plausible-sounding fiction.",
+          "C": "Larger models require more storage, not less. 70B parameters require significantly more disk space than 7B.",
+          "D": "Context window depends on architecture design, not parameter count. Many larger models have equal or longer context windows."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "input-output-length",
+      "scenario": "A legal AI company needs a model that can process entire 200-page contracts as input and generate comprehensive 50-page summaries as output.",
+      "stem": "Which model selection criterion is most critical for this use case?",
+      "options": [
+        { "key": "A", "text": "Input and output length — the model must have a context window large enough to accommodate 200 pages of input and 50 pages of output" },
+        { "key": "B", "text": "Model latency — the response must complete in under 100 milliseconds" },
+        { "key": "C", "text": "Multilingual support — the model must handle multiple languages simultaneously" },
+        { "key": "D", "text": "Model cost per parameter — the cheapest model should always be selected" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Input and output length is critical here. The model must support a context window large enough for 200 pages of input plus 50 pages of output generation. Models with small context windows cannot handle this use case.",
+        "distractors": {
+          "B": "Sub-100ms latency is unrealistic for processing 200 pages. The primary constraint is context window size.",
+          "C": "The scenario involves long documents, not multilingual needs. Context length is the limiting factor.",
+          "D": "The cheapest model likely has a small context window insufficient for this task. Requirements drive selection, not cost alone."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "opensearch-serverless",
+      "scenario": "A startup wants to build a semantic search feature for their generative AI application but does not have infrastructure expertise to manage database clusters, scaling, or patching.",
+      "stem": "Which AWS service provides vector storage and search without requiring infrastructure management?",
+      "options": [
+        { "key": "A", "text": "The vector engine for Amazon OpenSearch Serverless" },
+        { "key": "B", "text": "Amazon RDS for PostgreSQL with manual pgvector installation" },
+        { "key": "C", "text": "Self-managed OpenSearch on Amazon EC2 instances" },
+        { "key": "D", "text": "Amazon S3 with custom search Lambda functions" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The vector engine for Amazon OpenSearch Serverless provides vector storage and search capabilities to build ML-augmented search and generative AI applications without having to manage the vector database infrastructure.",
+        "distractors": {
+          "B": "RDS for PostgreSQL with pgvector requires managing the database instance, patches, and scaling.",
+          "C": "Self-managed OpenSearch on EC2 requires full infrastructure management including instances, scaling, and patching.",
+          "D": "Custom Lambda with S3 would require building search logic from scratch without the optimized vector search capabilities."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "vector-databases",
+      "scenario": "A machine learning engineer explains to their team that a vector database requires a machine learning model as a prerequisite for its creation. A junior engineer asks why.",
+      "stem": "Why is a machine learning model a prerequisite to create a vector database?",
+      "options": [
+        { "key": "A", "text": "Because a vector database is filled with dense vectors produced by processing input data through an embedding model" },
+        { "key": "B", "text": "Because vector databases can only be accessed through ML model APIs" },
+        { "key": "C", "text": "Because vector databases run inside ML model containers" },
+        { "key": "D", "text": "Because vector databases require a trained model to manage their own scaling" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A vector database is filled with dense vectors by processing input data (generally text) through an ML model (generally an embedding model). The ML model converts raw data into the numerical embeddings stored in the database.",
+        "distractors": {
+          "B": "Vector databases have their own query APIs independent of ML model APIs. The ML model is needed for creating embeddings, not for access.",
+          "C": "Vector databases are separate infrastructure from ML model containers. The model creates embeddings that are then stored in the database.",
+          "D": "Vector databases manage their own scaling independently. The ML model's role is to generate the embeddings, not manage infrastructure."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "customization-cost-tradeoffs",
+      "scenario": "A CTO is evaluating four approaches to customize a foundation model for their customer service application. They need to understand the tradeoffs between cost, customization depth, and maintenance.",
+      "stem": "Which statements correctly compare foundation model customization approaches? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Fine-tuning modifies model weights and costs less than pre-training but more than RAG or in-context learning" },
+        { "key": "B", "text": "RAG avoids model retraining by retrieving external knowledge at inference time, with cost focused on knowledge base infrastructure" },
+        { "key": "C", "text": "In-context learning is the most expensive because it requires the longest prompts" },
+        { "key": "D", "text": "Pre-training is cheaper than fine-tuning because it uses less data" },
+        { "key": "E", "text": "All four approaches have identical costs and capabilities" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Fine-tuning updates weights at moderate cost (less than pre-training, more than RAG). RAG retrieves knowledge without retraining, with cost in building/maintaining the knowledge base and vector database rather than compute for training.",
+        "distractors": {
+          "C": "In-context learning is the cheapest approach. Longer prompts cost tokens but have zero training compute cost.",
+          "D": "Pre-training is far more expensive than fine-tuning. It trains from scratch on massive data requiring enormous compute.",
+          "E": "The approaches have dramatically different costs and capabilities — from zero training cost (in-context) to millions of dollars (pre-training)."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "model-selection-criteria",
+      "scenario": "A data science team is creating a model selection rubric for their organization. They want to ensure all critical dimensions are evaluated.",
+      "stem": "Which are selection criteria identified for choosing pre-trained models? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Model size and number of parameters" },
+        { "key": "B", "text": "Input and output length capabilities" },
+        { "key": "C", "text": "Customization options available for the model" },
+        { "key": "D", "text": "The original training team's educational backgrounds" },
+        { "key": "E", "text": "The number of academic papers citing the model" },
+        { "key": "F", "text": "The model's marketing tagline" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Selection criteria include model size (affects capability and compute requirements), input/output length (must match application needs), and customization options (ability to modify for your task). Other criteria include cost, latency, modality, and complexity.",
+        "distractors": {
+          "D": "Team backgrounds are irrelevant to model quality. Published benchmarks and documentation matter for evaluation.",
+          "E": "Academic citations indicate research interest but not necessarily practical suitability for your specific task.",
+          "F": "Marketing taglines do not indicate model capabilities, limitations, or fitness for purpose."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "model-selection-modality",
+      "scenario": "An AI product team is building a system that needs to process both text conversations and product images. They're considering using ensemble methods to combine specialized models.",
+      "stem": "Why might ensemble methods be beneficial for multi-modal AI systems? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Ensemble methods combine several models to achieve better performance than a single model" },
+        { "key": "B", "text": "Each modality has a specific embedding, so specialized models for each modality can be combined" },
+        { "key": "C", "text": "Ensemble methods eliminate the need for training data entirely" },
+        { "key": "D", "text": "Ensemble methods always reduce inference latency" },
+        { "key": "E", "text": "Ensemble methods make models fully interpretable" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Ensemble methods combine several models to achieve better performance. In multi-modal systems, each modality typically has specific embeddings, so specialized models for text and images can be combined for superior results.",
+        "distractors": {
+          "C": "Ensemble methods still require trained component models. They combine existing models, not eliminate training needs.",
+          "D": "Ensembles typically increase latency because multiple models must process input. The benefit is accuracy, not speed.",
+          "E": "Combining multiple models increases complexity, making the system harder to interpret, not easier."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "knowledge-bases",
+      "scenario": "A company already has their data stored in Amazon S3 and wants to implement RAG without continuously retraining their foundation model. They want a fully managed solution that handles embedding creation and vector storage.",
+      "stem": "Which AWS capability provides this end-to-end managed RAG solution?",
+      "options": [
+        { "key": "A", "text": "Knowledge bases for Amazon Bedrock — securely connects FMs to company data stored as embeddings without re-training" },
+        { "key": "B", "text": "Amazon SageMaker Autopilot — automatically builds and trains custom models" },
+        { "key": "C", "text": "AWS Glue — transforms and catalogs data for analytics" },
+        { "key": "D", "text": "Amazon Kinesis — streams real-time data for processing" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Knowledge bases for Amazon Bedrock provide fully managed RAG, securely connecting foundation models to company data. Data is stored as embeddings in the vector engine for relevant, context-specific responses without continuously re-training the FM.",
+        "distractors": {
+          "B": "SageMaker Autopilot trains custom models. It does not provide managed RAG or connect existing FMs to knowledge bases.",
+          "C": "Glue handles ETL and data cataloging. It does not provide RAG or connect foundation models to external knowledge.",
+          "D": "Kinesis handles real-time data streaming. It does not provide RAG or vector-based knowledge retrieval."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "rds-pgvector",
+      "scenario": "A team already uses Amazon RDS for PostgreSQL for their application database. They want to add vector search capabilities for their AI features without introducing a separate database service.",
+      "stem": "How can they add vector storage and search to their existing PostgreSQL database?",
+      "options": [
+        { "key": "A", "text": "Enable the pgvector extension on Amazon RDS for PostgreSQL to store embeddings and perform efficient similarity searches" },
+        { "key": "B", "text": "Migrate entirely to Amazon OpenSearch Service since PostgreSQL cannot store vectors" },
+        { "key": "C", "text": "Store vectors as plain text strings in a VARCHAR column" },
+        { "key": "D", "text": "Use AWS Lambda to simulate vector search on top of PostgreSQL" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon RDS for PostgreSQL supports the pgvector extension to store embeddings and perform efficient searches. This lets teams add vector capabilities to their existing database without introducing new infrastructure.",
+        "distractors": {
+          "B": "PostgreSQL with pgvector can store vectors. Migration to a different service is unnecessary if they want to keep their existing database.",
+          "C": "Storing vectors as text strings prevents efficient similarity search. The pgvector extension provides proper vector data types and search operations.",
+          "D": "Custom Lambda-based search would be slow and complex. The pgvector extension provides optimized native vector operations."
+        }
+      }
+    }
+  ]
+}

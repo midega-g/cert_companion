@@ -1,0 +1,457 @@
+{
+  "label": "Learning Styles, Deep Learning & Bias — Part A",
+  "order": 2,
+  "topic": "Domain 1: Fundamentals of AI and ML",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "supervised-learning",
+      "scenario": null,
+      "stem": "What defines supervised learning?",
+      "options": [
+        { "key": "A", "text": "Training with pre-labeled data where both the input and desired output are specified" },
+        { "key": "B", "text": "Training without any labels, discovering patterns independently" },
+        { "key": "C", "text": "Training through trial and error with rewards for correct actions" },
+        { "key": "D", "text": "Training by copying the outputs of another existing model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "With supervised learning, you train the model with pre-labeled data. The training data specifies both the input and the desired output, and the model learns to map inputs to correct outputs.",
+        "distractors": {
+          "B": "Training without labels is unsupervised learning. Supervised learning requires labeled examples.",
+          "C": "Trial and error with rewards is reinforcement learning, not supervised learning.",
+          "D": "Copying another model's output is knowledge distillation, not the definition of supervised learning."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "unsupervised-learning",
+      "scenario": null,
+      "stem": "What is unsupervised learning used for?",
+      "options": [
+        { "key": "A", "text": "Pattern recognition, anomaly detection, and automatically grouping data into clusters without labeled training data" },
+        { "key": "B", "text": "Classifying data into pre-defined labeled categories" },
+        { "key": "C", "text": "Teaching autonomous vehicles to navigate roads through rewards" },
+        { "key": "D", "text": "Generating new text content from prompts" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Unsupervised learning trains on unlabeled data to spot patterns, group data into clusters, and detect anomalies. It's useful for pattern recognition, anomaly detection, and automatic categorization.",
+        "distractors": {
+          "B": "Pre-defined labeled categories require supervised learning with labeled training data.",
+          "C": "Navigation through rewards is reinforcement learning, not unsupervised learning.",
+          "D": "Text generation from prompts is generative AI using pre-trained models, not unsupervised learning."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "reinforcement-learning",
+      "scenario": null,
+      "stem": "What characterizes reinforcement learning?",
+      "options": [
+        { "key": "A", "text": "An agent takes actions within an environment to achieve goals, learning through trial and error with rewards for actions that move toward the goal" },
+        { "key": "B", "text": "A model is trained on labeled examples with known correct outputs" },
+        { "key": "C", "text": "A model groups unlabeled data into clusters based on similarity" },
+        { "key": "D", "text": "A model generates text by predicting the next token" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Reinforcement learning focuses on autonomous decision-making by an agent that takes actions in an environment to achieve goals. It learns through trial and error — actions moving toward the goal are rewarded.",
+        "distractors": {
+          "B": "Labeled examples with known outputs is supervised learning.",
+          "C": "Grouping unlabeled data into clusters is unsupervised learning (clustering).",
+          "D": "Next-token prediction is the mechanism of autoregressive language models, not the definition of reinforcement learning."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "overfitting",
+      "scenario": null,
+      "stem": "What is overfitting in machine learning?",
+      "options": [
+        { "key": "A", "text": "When a model performs better on training data than on new data because it fits the training data too closely and doesn't generalize well" },
+        { "key": "B", "text": "When a model cannot learn any patterns from the training data" },
+        { "key": "C", "text": "When a model produces the same output for all inputs" },
+        { "key": "D", "text": "When the training data is too large to fit in memory" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Overfitting occurs when the model performs better on training data than new data — it fits training data too closely and doesn't generalize. It may overemphasize noise or fail to recognize variations not seen in training.",
+        "distractors": {
+          "B": "Inability to learn patterns is underfitting, the opposite problem of overfitting.",
+          "C": "Producing the same output for all inputs indicates a collapsed model, not overfitting.",
+          "D": "Memory size is an infrastructure constraint, not the definition of overfitting."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "underfitting",
+      "scenario": null,
+      "stem": "What causes underfitting and how does it manifest?",
+      "options": [
+        { "key": "A", "text": "The model cannot determine meaningful relationships between input and output, giving inaccurate results for both training and new data" },
+        { "key": "B", "text": "The model memorizes all training examples perfectly" },
+        { "key": "C", "text": "The model only works well on new data, not training data" },
+        { "key": "D", "text": "The model has too many parameters for the available data" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Underfitting occurs when the model cannot determine meaningful relationships between input and output. It gives inaccurate results for both training data and new data. This can happen from insufficient training time or data.",
+        "distractors": {
+          "B": "Memorizing training examples describes overfitting, not underfitting.",
+          "C": "Working only on new data (not training) is not a standard ML pattern. Underfitting fails on both.",
+          "D": "Too many parameters for available data can cause overfitting. Underfitting is typically from insufficient complexity or training."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "deep-learning",
+      "scenario": null,
+      "stem": "What are characteristics of deep learning neural networks? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Composed of layers of nodes (input, hidden, output) that simulate neuron behavior" },
+        { "key": "B", "text": "Each node autonomously assigns weights to features during training" },
+        { "key": "C", "text": "Weights are repeatedly adjusted to minimize error between predicted and actual output" },
+        { "key": "D", "text": "They require manual feature selection by humans for every task" },
+        { "key": "E", "text": "They can only process structured tabular data" },
+        { "key": "F", "text": "They use fewer compute resources than traditional ML models" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Neural networks have layers of nodes (input, hidden, output) simulating neurons. Each node assigns weights to features, and weights are adjusted iteratively to minimize the error between predicted and actual outputs.",
+        "distractors": {
+          "D": "A key advantage of deep learning is that it can identify features automatically without human selection.",
+          "E": "Deep learning excels at unstructured data (images, text, video). Traditional ML is better for structured data.",
+          "F": "Deep learning requires significantly more compute than traditional ML, which is why cloud computing enabled its adoption."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "deep-learning-advantages",
+      "scenario": null,
+      "stem": "What are advantages of deep learning over traditional ML? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Deep learning models can identify patterns and extract important features on their own without human feature engineering" },
+        { "key": "B", "text": "Deep learning is more suitable for unstructured data like images, videos, and text" },
+        { "key": "C", "text": "Deep learning always costs less than traditional ML" },
+        { "key": "D", "text": "Deep learning requires smaller datasets than traditional ML" },
+        { "key": "E", "text": "Deep learning doesn't need any compute infrastructure" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Deep learning doesn't need relevant features given to it — it identifies patterns and extracts features automatically. It's more suitable for unstructured data (images, video, text) where complex relationships exist between data elements.",
+        "distractors": {
+          "C": "Deep learning infrastructure costs are significantly higher than traditional ML due to GPU requirements.",
+          "D": "Deep learning often needs millions of examples (e.g., millions of fish images). Traditional ML can work with smaller labeled datasets.",
+          "E": "Deep learning requires powerful compute infrastructure (GPUs). Cloud computing made it viable for most businesses."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "bias",
+      "scenario": null,
+      "stem": "How should bias in ML models be addressed? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Identify fairness constraints (age, sex discrimination) before creating the model" },
+        { "key": "B", "text": "Inspect and evaluate training data for potential bias" },
+        { "key": "C", "text": "Continually evaluate model results for fairness after deployment" },
+        { "key": "D", "text": "Ignore bias since ML models are always objective" },
+        { "key": "E", "text": "Only check for bias once during initial training" },
+        { "key": "F", "text": "Remove all demographic features and assume the model will be fair" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Address bias by identifying fairness constraints upfront, inspecting training data for bias, and continually evaluating results for fairness. Data scientists can also directly adjust weights of features introducing noise.",
+        "distractors": {
+          "D": "ML models can learn biased patterns from data. They are not inherently objective.",
+          "E": "Bias must be monitored continuously, not just once. Model behavior can drift over time.",
+          "F": "Simply removing features doesn't guarantee fairness. Other correlated features can still encode bias indirectly."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "generative-ai",
+      "scenario": null,
+      "stem": "What characterizes generative AI and large language models? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "They use transformer neural networks that process sequences in parallel, enabling training on much bigger datasets" },
+        { "key": "B", "text": "Large language models contain billions of features capturing a wide range of human knowledge" },
+        { "key": "C", "text": "They process elements one word at a time sequentially like traditional neural networks" },
+        { "key": "D", "text": "They require only hundreds of training examples to learn language" },
+        { "key": "E", "text": "They can only generate text, never images or code" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Generative AI uses transformer networks that process sequences in parallel (speeding up training for bigger datasets). LLMs contain billions of features capturing wide human knowledge, making them flexible across many tasks.",
+        "distractors": {
+          "C": "Traditional neural networks process sequentially. Transformers process in parallel — that's their key innovation.",
+          "D": "LLMs require extremely large datasets (internet-scale text). Hundreds of examples is insufficient for pre-training.",
+          "E": "Generative AI creates text, images, video, audio, and code. LLMs excel at text but generative AI spans modalities."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "traditional-vs-deep",
+      "scenario": null,
+      "stem": "When should traditional ML be preferred over deep learning? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "When working with structured data and labeled data for tasks like classification and recommendations" },
+        { "key": "B", "text": "When compute infrastructure costs need to be lower" },
+        { "key": "C", "text": "When processing unstructured data like images and natural language" },
+        { "key": "D", "text": "When millions of training examples are readily available" },
+        { "key": "E", "text": "When complex non-linear relationships need to be captured" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Traditional ML performs well on structured/labeled data (classification, recommendations) and has significantly lower infrastructure costs. Deep learning is better for unstructured data but costs more.",
+        "distractors": {
+          "C": "Unstructured data (images, NLP) is where deep learning excels, not traditional ML.",
+          "D": "Large datasets favor deep learning which can leverage massive data. Traditional ML can work with smaller datasets.",
+          "E": "Complex non-linear relationships are deep learning's strength. Traditional ML typically handles simpler patterns."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "overfitting",
+      "scenario": "A company trains a fish recognition model on images of fish swimming in clear water. In production, the model fails to identify fish in murky water, fish out of water, or dried fish on a plate.",
+      "stem": "What problem does this model exhibit and what is the recommended solution?",
+      "options": [
+        { "key": "A", "text": "Overfitting — the model fits training data too well and doesn't generalize; the solution is to train with more diverse data" },
+        { "key": "B", "text": "Underfitting — the model hasn't trained enough; the solution is to train longer" },
+        { "key": "C", "text": "Bias — the model discriminates against certain fish species" },
+        { "key": "D", "text": "The model architecture is wrong; switch to a different algorithm" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "This is overfitting — the model only performs well on inputs resembling training data (fish in clear water). The best correction is training with more diverse data (different backgrounds, conditions, presentations).",
+        "distractors": {
+          "B": "The model performs well on training data. Underfitting would fail on both training and new data.",
+          "C": "This isn't demographic bias. It's overfitting to specific visual conditions in training images.",
+          "D": "The architecture may be fine. The issue is training data lacking diversity, not algorithm choice."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "bias",
+      "scenario": "A bank uses ML to approve loans. Analysis reveals the model rejects all applications from 25-year-old women in Wisconsin despite their strong income and job history qualifying them. Investigation shows no approved applications from this demographic exist in the training data.",
+      "stem": "What type of ML problem does this represent?",
+      "options": [
+        { "key": "A", "text": "Bias — the model learned a biased pattern from training data that lacked diverse representation, discriminating against a specific group" },
+        { "key": "B", "text": "Overfitting — the model memorized the training data" },
+        { "key": "C", "text": "Underfitting — the model hasn't trained enough" },
+        { "key": "D", "text": "Normal model behavior — the model is working correctly" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "This is bias — disparities in model performance across groups. The training data lacked approved applications from this demographic, so the model learned a biased pattern against them despite qualifying features.",
+        "distractors": {
+          "B": "Overfitting would affect all predictions, not specifically discriminate against one demographic group.",
+          "C": "Underfitting would produce poor results across all groups, not targeted rejection of one group.",
+          "D": "Discriminatory rejection of qualified applicants based on demographics is a bias problem, not correct behavior."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "reinforcement-learning",
+      "scenario": "A company uses AWS DeepRacer to teach developers about reinforcement learning. The car must learn to stay on the track and finish the course efficiently.",
+      "stem": "In this DeepRacer example, what are the agent, environment, and goal?",
+      "options": [
+        { "key": "A", "text": "Agent: the car; Environment: the track; Goal: stay on track and finish efficiently" },
+        { "key": "B", "text": "Agent: the track; Environment: the car; Goal: move as slowly as possible" },
+        { "key": "C", "text": "Agent: the developer; Environment: the computer; Goal: write code faster" },
+        { "key": "D", "text": "Agent: AWS; Environment: the cloud; Goal: reduce costs" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "In DeepRacer, the car is the agent, the track is the environment, actions are the car moving forward, and the goal is to stay on track and finish as efficiently as possible. Rewards guide learning.",
+        "distractors": {
+          "B": "The car takes actions (agent), the track provides the environment. The roles are not reversed.",
+          "C": "DeepRacer teaches RL concepts through the car/track, not through a developer-computer interaction.",
+          "D": "This describes a business goal, not the RL components of the DeepRacer learning exercise."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "supervised-learning",
+      "scenario": "A company needs to classify customer support tickets into categories (billing, technical, account). They have 50,000 previously categorized tickets to use as training data.",
+      "stem": "Which ML learning style is appropriate given the pre-categorized training data?",
+      "options": [
+        { "key": "A", "text": "Supervised learning — the training data is already labeled with categories (billing, technical, account)" },
+        { "key": "B", "text": "Unsupervised learning — let the model discover its own categories" },
+        { "key": "C", "text": "Reinforcement learning — reward the model when it classifies correctly" },
+        { "key": "D", "text": "No ML is needed — simple keyword matching will work" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "With 50,000 pre-labeled tickets (input + known category output), supervised learning is appropriate. The model learns to map ticket features to the correct labeled category.",
+        "distractors": {
+          "B": "When labels already exist, supervised learning leverages them directly. Unsupervised would ignore the existing labels.",
+          "C": "RL is for sequential decision-making. Classification of labeled data is a standard supervised learning task.",
+          "D": "Keyword matching is brittle and misses context. ML with labeled data produces more robust classification."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "unsupervised-learning",
+      "scenario": "A cybersecurity team wants to identify different types of network traffic to predict potential security incidents. They have large volumes of network data but no pre-defined categories for the traffic patterns.",
+      "stem": "Which ML learning style should they use to discover traffic groupings?",
+      "options": [
+        { "key": "A", "text": "Unsupervised learning — clustering algorithms can group unlabeled network traffic into patterns without pre-defined categories" },
+        { "key": "B", "text": "Supervised learning — classify traffic into known attack categories" },
+        { "key": "C", "text": "Reinforcement learning — reward the model when it blocks malicious traffic" },
+        { "key": "D", "text": "Deep learning is required — no other approach can process network data" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "With no pre-defined categories, unsupervised learning (clustering) can identify different types of network traffic by grouping similar patterns. It's useful for discovering unknown categories in unlabeled data.",
+        "distractors": {
+          "B": "They don't have pre-defined categories (labels). Supervised learning requires labeled examples of each category.",
+          "C": "RL is for sequential decision-making agents. Discovering traffic groupings is a clustering task.",
+          "D": "Various approaches can process network data. Unsupervised clustering doesn't require deep learning."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "labeling",
+      "scenario": "A team building an image classification model needs thousands of labeled images but their internal team cannot handle the volume.",
+      "stem": "How does AWS help with large-scale data labeling? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Amazon SageMaker Ground Truth manages labeling workflows" },
+        { "key": "B", "text": "Amazon Mechanical Turk provides access to a large pool of affordable labor for labeling" },
+        { "key": "C", "text": "Amazon S3 automatically labels all uploaded images" },
+        { "key": "D", "text": "AWS Lambda functions can visually inspect and label images" },
+        { "key": "E", "text": "Amazon CloudWatch monitors label quality metrics" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Ground Truth manages labeling workflows, and it can leverage Amazon Mechanical Turk for access to a large pool of affordable global labor for tasks like image labeling.",
+        "distractors": {
+          "C": "S3 stores data but does not automatically label it. Labeling requires human annotation or Ground Truth.",
+          "D": "Lambda runs code but doesn't provide human visual labeling capability.",
+          "E": "CloudWatch monitors metrics and logs, not label quality specifically."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "deep-learning",
+      "scenario": "A team is deciding whether to use traditional ML or deep learning for their sentiment analysis project on social media text.",
+      "stem": "Why is deep learning more suitable for this text analysis task? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Deep learning excels at identifying complex relationships in unstructured data like text" },
+        { "key": "B", "text": "Deep learning models self-learn patterns without requiring manual feature extraction" },
+        { "key": "C", "text": "Deep learning is always cheaper to run than traditional ML" },
+        { "key": "D", "text": "Deep learning doesn't require any training data for text tasks" },
+        { "key": "E", "text": "Deep learning can only process text, making it specialized for this task" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Deep learning excels at complex relationships in unstructured data (text). It self-learns patterns (word relationships, sentiment indicators) without manual feature engineering.",
+        "distractors": {
+          "C": "Deep learning costs significantly more due to GPU requirements. Its advantage is capability, not cost.",
+          "D": "Deep learning still needs training data — often millions of examples for best performance.",
+          "E": "Deep learning handles images, video, audio, and text. It's not limited to text."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "overfitting-underfitting",
+      "scenario": "A data scientist is monitoring their model's training progress. They want to find the sweet spot where the model neither underfits nor overfits.",
+      "stem": "What can cause overfitting and how is it typically corrected? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Training for too long can cause overfitting by overemphasizing unimportant features (noise)" },
+        { "key": "B", "text": "The best correction for overfitting is training with more diverse data" },
+        { "key": "C", "text": "Overfitting is always beneficial and should be maximized" },
+        { "key": "D", "text": "Overfitting is corrected by removing all training data" },
+        { "key": "E", "text": "Overfitting only occurs with unsupervised learning" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Training too long can cause overfitting by overemphasizing noise. The best correction is more diverse training data. Data scientists seek the sweet spot where training time avoids both underfitting and overfitting.",
+        "distractors": {
+          "C": "Overfitting reduces generalization to new data. It is a problem to be corrected, not maximized.",
+          "D": "Removing data would prevent any learning. The solution is better (more diverse) data, not no data.",
+          "E": "Overfitting can occur in any learning style — supervised, unsupervised, or deep learning."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "generative-ai",
+      "scenario": "A content team uses Amazon Bedrock to generate marketing copy. They provide a prompt describing the product and tone, and receive original marketing text in response.",
+      "stem": "What makes this generative AI rather than traditional ML?",
+      "options": [
+        { "key": "A", "text": "It generates new original content (marketing text) from a prompt rather than classifying or predicting from existing data" },
+        { "key": "B", "text": "It uses a database to look up pre-written marketing copy" },
+        { "key": "C", "text": "It classifies the product into a marketing category" },
+        { "key": "D", "text": "It predicts which existing marketing text will perform best" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Generative AI creates new original content (text, images, code) from prompts. Traditional ML classifies existing content or makes predictions. The key distinction is content creation vs classification/prediction.",
+        "distractors": {
+          "B": "Generative AI creates novel content, not retrieves pre-written text from a database.",
+          "C": "Classification assigns labels to existing content. Generative AI creates new content.",
+          "D": "Prediction selects from existing options. Generative AI produces original content that didn't exist before."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "learning-styles-comparison",
+      "scenario": "An ML engineer is explaining to a junior colleague the key difference between unsupervised and reinforcement learning, since both work without labeled data.",
+      "stem": "What distinguishes reinforcement learning from unsupervised learning?",
+      "options": [
+        { "key": "A", "text": "Reinforcement learning has a predetermined end goal and uses rewards to validate actions, while unsupervised learning discovers patterns with no specified output" },
+        { "key": "B", "text": "They are identical — both find patterns without goals" },
+        { "key": "C", "text": "Unsupervised learning uses rewards while reinforcement learning uses labels" },
+        { "key": "D", "text": "Reinforcement learning requires labeled data while unsupervised does not" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Both work without labeled data, but reinforcement learning has a predetermined end goal with actions validated through rewards. Unsupervised learning discovers patterns with no specified outputs during training.",
+        "distractors": {
+          "B": "They are different. RL has explicit goals and rewards; unsupervised has no goal-directed feedback.",
+          "C": "This reverses them. RL uses rewards; unsupervised uses neither rewards nor labels.",
+          "D": "Neither requires labeled data. RL uses rewards (not labels), and unsupervised uses neither."
+        }
+      }
+    }
+  ]
+}

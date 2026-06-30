@@ -1,0 +1,459 @@
+{
+  "label": "Training & Fine-Tuning Foundation Models — Part A",
+  "order": 1,
+  "topic": "Domain 3: Applications of Foundation Models",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "pre-training",
+      "scenario": null,
+      "stem": "What type of learning is used during the pre-training phase of a foundation model?",
+      "options": [
+        { "key": "A", "text": "Self-supervised learning using huge amounts of unstructured data" },
+        { "key": "B", "text": "Supervised learning using labeled datasets" },
+        { "key": "C", "text": "Reinforcement learning using human feedback" },
+        { "key": "D", "text": "Semi-supervised learning using partially labeled data" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Pre-training trains the LLM by using huge amounts of unstructured data with self-supervised learning. During this phase, the model learns the fundamentals of language from massive datasets without explicit labels.",
+        "distractors": {
+          "B": "Supervised learning with labeled data describes fine-tuning, not pre-training. Pre-training uses self-supervised learning.",
+          "C": "Reinforcement learning from human feedback (RLHF) is a fine-tuning technique applied after pre-training.",
+          "D": "Semi-supervised learning uses a mix of labeled and unlabeled data. Pre-training uses self-supervised learning on unstructured data."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "fine-tuning",
+      "scenario": null,
+      "stem": "What type of learning is used during fine-tuning of a foundation model?",
+      "options": [
+        { "key": "A", "text": "Supervised learning using a dataset of labeled examples to update model weights" },
+        { "key": "B", "text": "Unsupervised learning using unlabeled data" },
+        { "key": "C", "text": "Self-supervised learning on the entire internet" },
+        { "key": "D", "text": "Transfer learning that replaces all original weights" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Fine-tuning is a supervised learning process that uses a dataset of labeled examples to update the weights of the LLM, adapting it to specific tasks or domains.",
+        "distractors": {
+          "B": "Unsupervised learning on unlabeled data describes pre-training. Fine-tuning requires labeled examples.",
+          "C": "Self-supervised learning on large data is pre-training. Fine-tuning uses specific labeled datasets for tasks.",
+          "D": "Fine-tuning updates weights but doesn't replace all original weights. It extends training, not restarts it."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "catastrophic-forgetting",
+      "scenario": null,
+      "stem": "What is catastrophic forgetting in the context of fine-tuning?",
+      "options": [
+        { "key": "A", "text": "When fine-tuning modifies the original LLM weights, improving single-task performance but degrading performance on other tasks" },
+        { "key": "B", "text": "When the model loses all its weights due to a hardware failure" },
+        { "key": "C", "text": "When the training data is accidentally deleted during fine-tuning" },
+        { "key": "D", "text": "When the model forgets the prompt provided by the user" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Catastrophic forgetting happens when fine-tuning modifies the weights of the original LLM, improving performance on the single fine-tuned task but degrading performance on other tasks the model could previously handle.",
+        "distractors": {
+          "B": "Hardware failure is an infrastructure issue, not catastrophic forgetting. The term specifically refers to knowledge loss from weight updates.",
+          "C": "Data deletion is operational, not catastrophic forgetting. The issue is about model weights being overwritten during training.",
+          "D": "Forgetting prompts would be a context window issue. Catastrophic forgetting is about the model losing previously learned capabilities."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "peft",
+      "scenario": null,
+      "stem": "What is the key advantage of Parameter-Efficient Fine-Tuning (PEFT)?",
+      "options": [
+        { "key": "A", "text": "It freezes the original model weights and fine-tunes only a small number of task-specific adapter layers, reducing compute and memory requirements" },
+        { "key": "B", "text": "It trains every parameter in the model simultaneously for maximum accuracy" },
+        { "key": "C", "text": "It eliminates the need for any training data" },
+        { "key": "D", "text": "It doubles the model size by adding a complete copy of all parameters" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "PEFT freezes the original LLM parameters and fine-tunes only a small number of task-specific adapter layers. This significantly reduces the compute and memory needed compared to full fine-tuning.",
+        "distractors": {
+          "B": "Training every parameter is full fine-tuning, not PEFT. PEFT specifically avoids updating all parameters.",
+          "C": "PEFT still requires training data for the adapter layers. It reduces compute, not data requirements.",
+          "D": "PEFT adds only small adapter layers, not a complete parameter copy. The efficiency comes from training few parameters."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "lora",
+      "scenario": null,
+      "stem": "How does Low-Rank Adaptation (LoRA) work as a PEFT technique?",
+      "options": [
+        { "key": "A", "text": "It preserves the original model weights and creates new trainable low-rank matrices injected into each layer of the transformer architecture" },
+        { "key": "B", "text": "It reduces the model's layers by half to speed up training" },
+        { "key": "C", "text": "It replaces all attention mechanisms with simple linear layers" },
+        { "key": "D", "text": "It compresses the entire model into a single dense layer" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "LoRA preserves (freezes) the original foundation model weights and creates new trainable low-rank matrices that are injected into each layer of the transformer architecture. Only these small matrices are trained.",
+        "distractors": {
+          "B": "LoRA does not remove layers. It adds small trainable matrices alongside existing layers while keeping the original intact.",
+          "C": "LoRA does not replace attention mechanisms. It adds low-rank matrices to existing transformer layers.",
+          "D": "LoRA does not compress the model. It adds minimal trainable parameters while keeping the full architecture."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "fine-tuning-types",
+      "scenario": null,
+      "stem": "Which are types or approaches to fine-tuning a foundation model? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Instruction-based fine-tuning using labeled examples for specific tasks" },
+        { "key": "B", "text": "Domain adaptation fine-tuning using limited domain-specific data" },
+        { "key": "C", "text": "Multitask fine-tuning using examples of inputs and outputs for multiple tasks" },
+        { "key": "D", "text": "Deletion fine-tuning that removes unwanted knowledge from the model" },
+        { "key": "E", "text": "Compression fine-tuning that reduces model parameters by 90%" },
+        { "key": "F", "text": "Reverse fine-tuning that undoes previous training" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Fine-tuning approaches include instruction-based (labeled examples for specific tasks), domain adaptation (adapting to domain-specific language/data), and multitask (training on examples for multiple tasks simultaneously to mitigate catastrophic forgetting).",
+        "distractors": {
+          "D": "There is no 'deletion fine-tuning.' Once trained, you cannot selectively delete knowledge from model weights.",
+          "E": "Model compression is a separate technique (pruning, quantization). It is not a fine-tuning approach.",
+          "F": "Reverse fine-tuning is not a recognized technique. You cannot undo training by running it in reverse."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "data-preparation",
+      "scenario": null,
+      "stem": "How is the training dataset divided for the fine-tuning process? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Training split — used to update model weights through supervised learning" },
+        { "key": "B", "text": "Validation split — used to measure performance during fine-tuning" },
+        { "key": "C", "text": "Test split — used for final performance evaluation after fine-tuning is complete" },
+        { "key": "D", "text": "Production split — used to serve real-time inference in production" },
+        { "key": "E", "text": "Archive split — stored in S3 Glacier for compliance only" },
+        { "key": "F", "text": "Deletion split — data that is removed after training completes" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The dataset is divided into training (updates weights), validation (measures performance during training to provide validation accuracy), and test (final evaluation after fine-tuning to provide test accuracy).",
+        "distractors": {
+          "D": "Production serving is a deployment concern. Dataset splits are for training and evaluation, not inference serving.",
+          "E": "Archive storage is a lifecycle concern. The three splits are for training, validation, and testing during fine-tuning.",
+          "F": "There is no deletion split. All three splits serve specific roles in the training and evaluation process."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "data-preparation-aws",
+      "scenario": null,
+      "stem": "Which AWS services can be used for data preparation when fine-tuning a model? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Amazon SageMaker Canvas for low-code data flows and feature engineering" },
+        { "key": "B", "text": "Amazon SageMaker Clarify to detect potential biases in training data" },
+        { "key": "C", "text": "Amazon SageMaker Ground Truth to manage data labeling workflows" },
+        { "key": "D", "text": "Amazon CloudFront to cache training data at edge locations" },
+        { "key": "E", "text": "Amazon Route 53 to route data to the nearest training cluster" },
+        { "key": "F", "text": "AWS WAF to filter malicious training examples" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "SageMaker Canvas provides low-code data preparation and feature engineering. SageMaker Clarify detects bias in training data (imbalanced representations, labeling biases). Ground Truth manages labeling workflows for training datasets.",
+        "distractors": {
+          "D": "CloudFront is a CDN for content delivery, not a data preparation tool for ML training.",
+          "E": "Route 53 is a DNS service. It does not prepare or route data for model training.",
+          "F": "WAF is a web application firewall. It protects web applications, not training data preparation."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "continuous-pre-training",
+      "scenario": null,
+      "stem": "Why is continuous pre-training important for foundation models? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Models become more powerful over time by accumulating wider knowledge and adaptability from diverse topics, genres, and contexts" },
+        { "key": "B", "text": "It helps models learn to use out-of-domain data better, creating value for organizations" },
+        { "key": "C", "text": "It eliminates the need for any evaluation metrics or benchmarks" },
+        { "key": "D", "text": "It guarantees the model will never produce harmful outputs" },
+        { "key": "E", "text": "It replaces the need for fine-tuning entirely" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Continuous pre-training makes models more powerful by accumulating wider knowledge from diverse data (topics, genres, contexts). Models learn to use out-of-domain data better, creating value through adaptability.",
+        "distractors": {
+          "C": "Continuous pre-training makes validation harder (non-deterministic output). Metrics and benchmarks remain essential.",
+          "D": "No training approach guarantees zero harmful outputs. Guardrails and monitoring are still needed.",
+          "E": "Continuous pre-training and fine-tuning serve different purposes. Fine-tuning for specific tasks is still needed."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "full-fine-tuning",
+      "scenario": null,
+      "stem": "What are the compute requirements when fully fine-tuning a foundation model? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "You must load model parameters plus additional memory for optimizer, gradients, forward activations, and temporal memory" },
+        { "key": "B", "text": "These components can add additional bytes of GPU memory for each model parameter, increasing costs" },
+        { "key": "C", "text": "Full fine-tuning requires only CPU compute with no GPU memory needed" },
+        { "key": "D", "text": "Full fine-tuning uses less memory than inference because fewer computations are needed" },
+        { "key": "E", "text": "The optimizer and gradients are stored on disk only, not in GPU memory" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Full fine-tuning requires loading model parameters plus additional GPU memory for optimizer states, gradients, forward activations, and temporal memory. These add multiple bytes per parameter, significantly increasing compute costs.",
+        "distractors": {
+          "C": "Fine-tuning foundation models requires GPUs. The massive matrix operations cannot be efficiently performed on CPUs alone.",
+          "D": "Fine-tuning uses more memory than inference because it needs to store gradients, optimizer states, and activations in addition to weights.",
+          "E": "Optimizer and gradients must be in GPU memory for efficient computation. Disk access would be far too slow for training."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "catastrophic-forgetting",
+      "scenario": "A company fine-tunes a general-purpose LLM exclusively on medical terminology and clinical notes. After fine-tuning, the model excels at medical tasks but can no longer handle basic customer support conversations it previously managed well.",
+      "stem": "What caused this loss of general capability?",
+      "options": [
+        { "key": "A", "text": "Catastrophic forgetting — fine-tuning on medical data modified the weights in ways that improved medical performance but degraded other capabilities" },
+        { "key": "B", "text": "The model ran out of storage space for new knowledge" },
+        { "key": "C", "text": "Medical data is incompatible with language models" },
+        { "key": "D", "text": "The model was accidentally deleted and replaced with a medical-only model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "This is catastrophic forgetting — fine-tuning modified the original LLM weights to optimize for medical tasks, which degraded performance on other previously learned tasks like customer support.",
+        "distractors": {
+          "B": "Models don't have a fixed 'storage space' for knowledge. Catastrophic forgetting occurs because weight updates for one task can overwrite patterns needed for others.",
+          "C": "Medical data is perfectly compatible with language models. The issue is that single-task fine-tuning can override general knowledge.",
+          "D": "The model wasn't replaced. Its weights were modified through fine-tuning, causing it to lose general capabilities."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "multitask-fine-tuning",
+      "scenario": "An AI team wants to fine-tune their foundation model to handle reviews, summarization, and code translation simultaneously. They're concerned about catastrophic forgetting if they fine-tune for each task separately.",
+      "stem": "Which fine-tuning approach helps mitigate catastrophic forgetting when adapting to multiple tasks?",
+      "options": [
+        { "key": "A", "text": "Multitask fine-tuning — training on examples of inputs and outputs for multiple tasks simultaneously" },
+        { "key": "B", "text": "Sequential single-task fine-tuning on each task one at a time" },
+        { "key": "C", "text": "Removing all pre-trained weights before fine-tuning" },
+        { "key": "D", "text": "Using only zero-shot prompting without any fine-tuning" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Multitask fine-tuning uses training datasets with examples for multiple tasks (reviews, summarization, translation, etc.) simultaneously. This produces an instruction-tuned model that learns multiple tasks and helps mitigate catastrophic forgetting.",
+        "distractors": {
+          "B": "Sequential single-task fine-tuning can cause catastrophic forgetting — each subsequent task may overwrite patterns from the previous one.",
+          "C": "Removing pre-trained weights loses all learned knowledge. You want to preserve general capability while adding task-specific skills.",
+          "D": "Zero-shot avoids fine-tuning entirely. The question asks about a fine-tuning approach that handles multiple tasks."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "peft",
+      "scenario": "A startup with limited GPU budget needs to fine-tune a 70-billion parameter model for their customer service application. Full fine-tuning would exceed their compute budget by 5x.",
+      "stem": "Which technique allows them to adapt the model within their budget constraints?",
+      "options": [
+        { "key": "A", "text": "Parameter-Efficient Fine-Tuning (PEFT) — freezes original weights and trains only small adapter layers, reducing compute and memory requirements" },
+        { "key": "B", "text": "Pre-training the model from scratch on a smaller dataset" },
+        { "key": "C", "text": "Increasing the GPU budget by requesting more funding" },
+        { "key": "D", "text": "Deploying the model without any customization" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "PEFT reduces compute and memory requirements by freezing original model parameters and training only a small number of task-specific adapter layers. This makes fine-tuning large models feasible with limited GPU budgets.",
+        "distractors": {
+          "B": "Pre-training from scratch is far more expensive than full fine-tuning. It would far exceed the budget.",
+          "C": "Requesting more budget is a business decision, not a technical technique. PEFT solves the technical constraint.",
+          "D": "No customization means the model won't be adapted for customer service. PEFT provides customization within budget."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "domain-adaptation",
+      "scenario": "A pharmaceutical company needs their foundation model to understand drug names, molecular structures, and clinical trial terminology that wasn't well represented in the model's original training data.",
+      "stem": "Which fine-tuning approach adapts the model to this specialized vocabulary?",
+      "options": [
+        { "key": "A", "text": "Domain adaptation fine-tuning — adapting the pre-trained model to specific tasks using limited domain-specific data including industry jargon and technical terms" },
+        { "key": "B", "text": "Reducing the model's temperature to improve medical accuracy" },
+        { "key": "C", "text": "Adding guardrails to block non-medical responses" },
+        { "key": "D", "text": "Increasing the model's context window to fit more medical text" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Domain adaptation fine-tuning adapts pre-trained foundation models to specific tasks using limited domain-specific data. It helps the model work with industry jargon, technical terms, and specialized data like pharmaceutical terminology.",
+        "distractors": {
+          "B": "Temperature controls randomness, not domain knowledge. The model needs to learn medical vocabulary through fine-tuning.",
+          "C": "Guardrails filter content but don't teach the model new domain knowledge. The model needs training on medical terms.",
+          "D": "Context window size is an architecture constraint. The model needs to learn the meaning of medical terms, not just fit more text."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "continuous-pre-training",
+      "scenario": "A company using Amazon Bedrock wants to customize Amazon Titan Text models with their proprietary unlabeled data without the cost and complexity of full fine-tuning with labeled examples.",
+      "stem": "Which Amazon Bedrock capability allows customization using unlabeled data?",
+      "options": [
+        { "key": "A", "text": "Continued pre-training in Amazon Bedrock — customizes Titan Text models using unlabeled data in a secure managed environment" },
+        { "key": "B", "text": "RAG with knowledge bases — retrieves data at inference time" },
+        { "key": "C", "text": "Guardrails — filters inappropriate content from responses" },
+        { "key": "D", "text": "Amazon Bedrock Agents — orchestrates multi-step tasks" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Continued pre-training in Amazon Bedrock lets you customize Amazon Titan Text Express and Titan Text Lite using your own unlabeled data in a secure, managed environment without needing labeled examples.",
+        "distractors": {
+          "B": "RAG retrieves information at inference time but doesn't modify the model's weights or knowledge.",
+          "C": "Guardrails filter content but don't add domain knowledge to the model.",
+          "D": "Agents orchestrate actions with external systems. They don't customize the model's internal knowledge."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "fine-tuning-process",
+      "scenario": "A machine learning engineer is performing fine-tuning on a foundation model and wants to understand the training loop.",
+      "stem": "What happens during each iteration of the fine-tuning training loop? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Prompts from the training dataset are passed to the LLM to generate completions" },
+        { "key": "B", "text": "The distribution of completions is compared to training labels to calculate a loss between token distributions" },
+        { "key": "C", "text": "The model architecture is automatically restructured based on loss values" },
+        { "key": "D", "text": "New layers are permanently added to the model after each batch" },
+        { "key": "E", "text": "The training data is automatically augmented with synthetic examples" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "During fine-tuning, prompts are selected from training data and passed to the LLM to generate completions. Then the distribution of completions is compared to training labels to calculate a loss, which is used to update weights.",
+        "distractors": {
+          "C": "Model architecture remains fixed during fine-tuning. Only weights are updated, not the structure.",
+          "D": "Layers are not added during fine-tuning (except in PEFT adapter layers which are added once, not per batch).",
+          "E": "Automatic data augmentation is not part of the standard fine-tuning loop described. Data is prepared before training begins."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "data-preparation-aws",
+      "scenario": "A data engineering team needs to prepare data for fine-tuning. They need scalable processing, feature storage, and data labeling capabilities.",
+      "stem": "Which AWS services match these three specific data preparation needs? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Amazon EMR or AWS Glue interactive sessions for scalable data processing with Apache Spark" },
+        { "key": "B", "text": "Amazon SageMaker Feature Store for feature discovery and centralized storage" },
+        { "key": "C", "text": "Amazon SageMaker Ground Truth for managing data labeling workflows" },
+        { "key": "D", "text": "Amazon CloudWatch for processing large datasets" },
+        { "key": "E", "text": "AWS IAM for labeling training examples" },
+        { "key": "F", "text": "Amazon S3 Glacier for real-time feature serving" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Amazon EMR/Glue provides scalable Apache Spark-based processing. Feature Store provides centralized feature discovery and storage. Ground Truth manages data labeling workflows for training datasets.",
+        "distractors": {
+          "D": "CloudWatch monitors metrics and logs. It does not process training data at scale.",
+          "E": "IAM manages access permissions. It does not provide data labeling capabilities.",
+          "F": "S3 Glacier is archival storage with slow retrieval. It is not suitable for real-time feature serving."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "lora",
+      "scenario": "An ML team is comparing LoRA to full fine-tuning for adapting a large language model. They want to understand the technical differences.",
+      "stem": "Which statements about LoRA are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "LoRA preserves the original model weights and only trains new low-rank matrices" },
+        { "key": "B", "text": "PEFT and LoRA modify the weights of the model but not the representations" },
+        { "key": "C", "text": "LoRA replaces the original model weights with new random weights" },
+        { "key": "D", "text": "LoRA requires more GPU memory than full fine-tuning" },
+        { "key": "E", "text": "LoRA can only be applied to the final layer of the model" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "LoRA preserves (freezes) original weights and trains only new low-rank matrices injected into transformer layers. PEFT techniques including LoRA modify the model's weights (through adapters) but not its representations (semantic encodings).",
+        "distractors": {
+          "C": "LoRA freezes original weights. It does not replace them. The original model remains intact.",
+          "D": "LoRA requires significantly less GPU memory than full fine-tuning because only small matrices are trained.",
+          "E": "LoRA injects trainable matrices into each layer of the transformer, not just the final layer."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "sagemaker-jumpstart",
+      "scenario": "A company wants to fine-tune a text generation model on their domain-specific dataset. They want a managed service that provides pre-trained models and fine-tuning infrastructure.",
+      "stem": "Which AWS service provides the capability to fine-tune large language models on domain-specific datasets?",
+      "options": [
+        { "key": "A", "text": "Amazon SageMaker JumpStart" },
+        { "key": "B", "text": "Amazon Bedrock Guardrails" },
+        { "key": "C", "text": "AWS CloudFormation" },
+        { "key": "D", "text": "Amazon CloudWatch" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon SageMaker JumpStart provides the capability to fine-tune large language models, particularly text generation models, on domain-specific datasets to improve performance in specific domains.",
+        "distractors": {
+          "B": "Guardrails filter content at inference time. They don't provide fine-tuning infrastructure.",
+          "C": "CloudFormation deploys infrastructure as code. It doesn't fine-tune language models.",
+          "D": "CloudWatch monitors metrics and logs. It doesn't provide model training or fine-tuning."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "reft",
+      "scenario": "A research team explores a fine-tuning approach that preserves the base model weights entirely and only intervenes on the hidden representations at specific layers. They want to leverage the linear representation hypothesis.",
+      "stem": "Which fine-tuning technique operates on hidden representations rather than model weights?",
+      "options": [
+        { "key": "A", "text": "Representation Fine-Tuning (ReFT) — freezes the base model and learns task-specific interventions on hidden representations" },
+        { "key": "B", "text": "LoRA — injects trainable low-rank matrices into transformer layers" },
+        { "key": "C", "text": "Full fine-tuning — updates every model parameter" },
+        { "key": "D", "text": "Prompt tuning — optimizes a continuous embedding in the prompt space" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "ReFT freezes the base model and learns task-specific interventions on hidden representations. It leverages the linear representation hypothesis — that concepts are encoded in linear subspaces of representations in neural networks.",
+        "distractors": {
+          "B": "LoRA modifies weights through low-rank matrices, not representations. PEFT/LoRA modify weights but not representations.",
+          "C": "Full fine-tuning updates all model parameters (weights), not specifically targeting hidden representations.",
+          "D": "Prompt tuning optimizes an input embedding, not hidden representations within the model layers."
+        }
+      }
+    }
+  ]
+}

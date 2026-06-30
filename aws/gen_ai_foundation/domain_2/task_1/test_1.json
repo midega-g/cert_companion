@@ -1,0 +1,457 @@
+{
+  "label": "Generative AI Core Concepts — Part A",
+  "order": 1,
+  "topic": "Domain 2: Fundamentals of Generative AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "generative-ai-definition",
+      "scenario": null,
+      "stem": "What is generative AI?",
+      "options": [
+        { "key": "A", "text": "A subset of deep learning that generates new original content such as text, images, audio, video, and code" },
+        { "key": "B", "text": "A type of AI that only classifies existing content into categories" },
+        { "key": "C", "text": "A hardware architecture for running machine learning workloads" },
+        { "key": "D", "text": "A database system for storing large datasets" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Generative AI is a subset of deep learning that generates new original content — text, images, audio, video, and code — rather than finding or classifying existing content.",
+        "distractors": {
+          "B": "Classification is traditional AI/ML. Generative AI focuses on creating new content, not categorizing existing content.",
+          "C": "Generative AI is a technique, not hardware. It runs on hardware (GPUs) but is not a hardware architecture itself.",
+          "D": "Generative AI is a model-based technology that produces content, not a database system for storage."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "transformers",
+      "scenario": null,
+      "stem": "What is the current core element of generative AI architecture?",
+      "options": [
+        { "key": "A", "text": "The transformer network, introduced in the 2017 paper 'Attention Is All You Need'" },
+        { "key": "B", "text": "The recurrent neural network (RNN)" },
+        { "key": "C", "text": "The convolutional neural network (CNN)" },
+        { "key": "D", "text": "The decision tree algorithm" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The current core element of generative AI is the transformer network, introduced in the 2017 paper 'Attention Is All You Need.' LLMs like ChatGPT are built on this architecture.",
+        "distractors": {
+          "B": "RNNs were the previous architecture for sequence tasks. Transformers outperform them by enabling parallelized computation and capturing long-range dependencies.",
+          "C": "CNNs excel at image processing. The transformer is the core architecture for generative AI language models.",
+          "D": "Decision trees are simple ML models for classification. They are not the foundation of generative AI."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "self-attention",
+      "scenario": null,
+      "stem": "What does the self-attention mechanism in transformers accomplish?",
+      "options": [
+        { "key": "A", "text": "It helps the model weigh the importance of different parts of the input when generating each output token, capturing long-range dependencies and contextual relationships" },
+        { "key": "B", "text": "It removes irrelevant tokens from the input to reduce computation" },
+        { "key": "C", "text": "It encrypts the input data for security purposes" },
+        { "key": "D", "text": "It converts text into audio for speech generation" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Self-attention weighs the importance of different parts of the input when generating each output token. It captures long-range dependencies and contextual relationships that were difficult with previous architectures like RNNs.",
+        "distractors": {
+          "B": "Self-attention doesn't remove tokens. It computes attention weights to determine how much each token should influence the output.",
+          "C": "Self-attention is a computation mechanism for understanding language context, not a security feature.",
+          "D": "Self-attention processes relationships between tokens. Text-to-speech is a separate task handled by different components."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "embeddings",
+      "scenario": null,
+      "stem": "What are embeddings in the context of generative AI?",
+      "options": [
+        { "key": "A", "text": "Numerical vectorized representations that capture the semantic meaning of tokens such as text, image, video, or audio" },
+        { "key": "B", "text": "Physical hardware chips embedded in GPU cards" },
+        { "key": "C", "text": "Configuration files embedded in the model deployment package" },
+        { "key": "D", "text": "User comments embedded in source code" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Embeddings are numerical vectorized representations of entities that capture semantic meaning of tokens. The closer tokens are in vector space, the more similar they are in meaning.",
+        "distractors": {
+          "B": "Embeddings are mathematical representations, not physical hardware components.",
+          "C": "Embeddings are learned representations of data, not deployment configuration files.",
+          "D": "Embeddings are model-internal mathematical objects, not code comments."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "tokenizer",
+      "scenario": null,
+      "stem": "What is the role of a tokenizer in a language-based generative AI model?",
+      "options": [
+        { "key": "A", "text": "It converts human text into a vector containing token IDs, where each ID represents a token in the model's vocabulary" },
+        { "key": "B", "text": "It generates the final text output that the user sees" },
+        { "key": "C", "text": "It trains the model by adjusting weights during backpropagation" },
+        { "key": "D", "text": "It stores the model's parameters in a database" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Every language-based generative AI model has a tokenizer that converts human text into a vector containing token IDs (input IDs). Each input ID represents a token in the model's vocabulary.",
+        "distractors": {
+          "B": "The tokenizer handles input conversion. Output generation is handled by the decoder and softmax layers.",
+          "C": "Training and weight adjustment is done through the optimization process (backpropagation), not by the tokenizer.",
+          "D": "Model parameters are stored in model files/weights, not managed by the tokenizer."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "in-context-learning",
+      "scenario": null,
+      "stem": "Which are types of in-context learning that can be included in a prompt? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Zero-shot inference — no examples provided" },
+        { "key": "B", "text": "One-shot inference — a single example provided" },
+        { "key": "C", "text": "Few-shot inference — a few examples provided" },
+        { "key": "D", "text": "Infinite-shot inference — all training data provided in the prompt" },
+        { "key": "E", "text": "Negative-shot inference — providing counter-examples only" },
+        { "key": "F", "text": "Batch-shot inference — processing multiple prompts simultaneously" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "In-context learning includes zero-shot (no examples), one-shot (single example), and few-shot (multiple examples) inference. These help LLMs learn about the task through examples in the prompt.",
+        "distractors": {
+          "D": "You cannot fit all training data in a prompt. Context windows have limited size. In-context learning uses minimal examples.",
+          "E": "Negative-shot is not a recognized type. The three levels are zero, one, and few-shot.",
+          "F": "Batch-shot is not a recognized inference type. Batch processing is an infrastructure concept, not an in-context learning method."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "vectors",
+      "scenario": null,
+      "stem": "What do vectors represent in generative AI? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "An ordered list of numbers that represent features or attributes of an entity or concept" },
+        { "key": "B", "text": "They encode relationships between items and capture meaningful associations, analogies, and hierarchies" },
+        { "key": "C", "text": "Physical arrows drawn on a whiteboard during model design" },
+        { "key": "D", "text": "Binary on/off switches in the GPU hardware" },
+        { "key": "E", "text": "User interface elements in the model deployment dashboard" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Vectors are ordered lists of numbers representing features of entities. Their power is in encoding relationships between items and capturing meaningful associations, analogies, and hierarchies.",
+        "distractors": {
+          "C": "Vectors in AI are mathematical objects (lists of numbers), not physical diagrams.",
+          "D": "Vectors are mathematical representations computed by the model, not hardware switches.",
+          "E": "Vectors are internal model representations, not user interface components."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "transformers",
+      "scenario": null,
+      "stem": "What does the transformer architecture consist of? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "An encoder that generates embedding representations for each input token" },
+        { "key": "B", "text": "A decoder that generates completions using attention and softmax output" },
+        { "key": "C", "text": "A physical transformer that converts AC to DC power for GPUs" },
+        { "key": "D", "text": "A classifier that assigns fixed labels to all inputs" },
+        { "key": "E", "text": "A reinforcement learning agent that explores the environment" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The transformer consists of an encoder (generates embeddings/representations for input tokens) and a decoder (generates output completions). Each has multiple layers with self-attention sublayers.",
+        "distractors": {
+          "C": "The transformer is a neural network architecture, not electrical hardware.",
+          "D": "Transformers generate sequences, not just fixed labels. Classification is one possible task but not the architecture's structure.",
+          "E": "RL agents are separate from transformer architecture. RLHF is a training technique, not a transformer component."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "self-attention",
+      "scenario": null,
+      "stem": "How does the self-attention mechanism work? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "It computes query, key, and value vectors for each input token and uses dot products to determine attention weights" },
+        { "key": "B", "text": "The output for each token is a weighted sum of the value vectors where weights come from attention scores" },
+        { "key": "C", "text": "It randomly assigns importance to each token" },
+        { "key": "D", "text": "It processes tokens one at a time sequentially like RNNs" },
+        { "key": "E", "text": "It removes tokens that have low frequency in the vocabulary" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Self-attention computes query, key, and value vectors for each token, using dot products between them to determine attention weights. The output is a weighted sum of value vectors where weights come from attention scores.",
+        "distractors": {
+          "C": "Attention weights are computed mathematically from dot products, not assigned randomly.",
+          "D": "A key advantage of transformers over RNNs is parallelized computation. Self-attention processes all tokens simultaneously.",
+          "E": "Self-attention doesn't remove tokens. It determines how much each token should attend to every other token."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "position-embeddings",
+      "scenario": null,
+      "stem": "What is the purpose of positional embeddings in transformers? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "They encode the relative position of each token in the sequence" },
+        { "key": "B", "text": "They help the model distinguish between identical tokens appearing in different positions" },
+        { "key": "C", "text": "They store the physical location of the GPU running the model" },
+        { "key": "D", "text": "They determine the AWS Region where the model is deployed" },
+        { "key": "E", "text": "They encode the file path where the model weights are stored" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Positional embeddings encode the relative position of each token in the sequence, helping the model distinguish between identical tokens in different positions. This is important for understanding sentence structure and word order.",
+        "distractors": {
+          "C": "Positional embeddings encode token positions in a sequence, not hardware locations.",
+          "D": "Deployment Region is infrastructure configuration, unrelated to token position encoding in the model.",
+          "E": "Positional embeddings are mathematical encodings of sequence positions, not file system paths."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "in-context-learning",
+      "scenario": "A developer is building a sentiment classifier using Amazon Bedrock. They don't want to fine-tune the model but want to improve its classification accuracy by showing it labeled examples of positive and negative reviews within the prompt.",
+      "stem": "What is this technique of including examples in the prompt called?",
+      "options": [
+        { "key": "A", "text": "In-context learning — providing examples inside the context window to help the LLM learn more about the task" },
+        { "key": "B", "text": "Fine-tuning — updating model weights with labeled examples" },
+        { "key": "C", "text": "Pre-training — teaching the model language from scratch" },
+        { "key": "D", "text": "RAG — retrieving examples from a vector database" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Providing examples inside the context window is called in-context learning. It helps LLMs learn about the task without modifying model weights, working entirely within the prompt at inference time.",
+        "distractors": {
+          "B": "Fine-tuning modifies model weights through training. In-context learning works within the prompt without weight updates.",
+          "C": "Pre-training is the initial massive training phase. Including examples in a prompt is inference-time learning.",
+          "D": "RAG retrieves from external databases. In-context learning provides examples directly in the prompt text."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "foundation-models",
+      "scenario": "A company evaluates a foundation model with 175 billion parameters. They notice it outperforms a 7 billion parameter model across multiple tasks without any additional training or prompting.",
+      "stem": "What explains this performance difference based on model size research?",
+      "options": [
+        { "key": "A", "text": "The more parameters a model has, the more memory it has, enabling it to perform more advanced tasks — larger models are more likely to work without additional in-context learning" },
+        { "key": "B", "text": "Larger models always use less compute because they are more efficient" },
+        { "key": "C", "text": "Parameter count has no relationship to model performance" },
+        { "key": "D", "text": "Smaller models are always more accurate because they don't overfit" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "More parameters means more memory and capability. Researchers found that larger models are more likely to work without additional in-context learning or further training. Model capability increases with size.",
+        "distractors": {
+          "B": "Larger models require more compute, not less. They need more GPU memory and training time.",
+          "C": "Parameter count strongly correlates with performance. This scaling property has driven the development of increasingly larger models.",
+          "D": "Larger models generally outperform smaller ones on diverse tasks, though they can overfit with limited fine-tuning data."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "embeddings",
+      "scenario": "A search engineer is building a semantic search system. They need to understand why two sentences with different words but similar meanings would be matched as similar.",
+      "stem": "How do embeddings enable semantic similarity matching?",
+      "options": [
+        { "key": "A", "text": "Embeddings encode meaning so that tokens with similar semantic meaning are close to each other in vector space" },
+        { "key": "B", "text": "Embeddings match sentences by counting identical words between them" },
+        { "key": "C", "text": "Embeddings only work for exact keyword matches" },
+        { "key": "D", "text": "Embeddings compare the length of sentences to determine similarity" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Embeddings capture semantic meaning. The closer tokens are in vector space, the more similar they are semantically. This enables matching sentences with different words but similar meanings.",
+        "distractors": {
+          "B": "Counting identical words is keyword matching, not semantic search. Embeddings understand meaning beyond exact words.",
+          "C": "Embeddings go beyond keywords. They encode relationships and meaning, enabling semantic matching of different-worded concepts.",
+          "D": "Sentence length is irrelevant to semantic meaning. Embeddings encode contextual meaning regardless of length."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "prompt-inference",
+      "scenario": "A new AI engineer is confused about the relationship between prompts, inference, and completions. Their team lead explains the flow.",
+      "stem": "What is the correct flow from user input to model output?",
+      "options": [
+        { "key": "A", "text": "The prompt (input) is passed to the model during inference to generate a completion (output)" },
+        { "key": "B", "text": "The completion is passed to the model to generate a new prompt" },
+        { "key": "C", "text": "Inference happens during training, and prompts are only used for evaluation" },
+        { "key": "D", "text": "The model generates prompts automatically without user input" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The prompt (user input) is passed into the model during inference time to generate an output called a completion. This is the fundamental flow of generative AI interaction.",
+        "distractors": {
+          "B": "The flow is prompt → model → completion, not the reverse. Users provide prompts, models generate completions.",
+          "C": "Inference is the production/prediction phase, separate from training. Prompts are used during inference, not just evaluation.",
+          "D": "Users (or applications) provide prompts. Models generate completions in response, they don't create their own prompts."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "transformers",
+      "scenario": "A machine learning researcher is explaining why transformers outperform RNNs for language tasks. Their colleague asks what specific limitation of RNNs the transformer overcomes.",
+      "stem": "What key advantage does the transformer's self-attention have over RNNs?",
+      "options": [
+        { "key": "A", "text": "It captures long-range dependencies and enables parallelized computation, overcoming RNNs' difficulty with long sequences" },
+        { "key": "B", "text": "It uses less memory than RNNs for all tasks" },
+        { "key": "C", "text": "It processes tokens sequentially for better accuracy" },
+        { "key": "D", "text": "It eliminates the need for any training data" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Self-attention captures long-range dependencies and contextual relationships that were difficult for RNNs. It also enables parallelized computation since all positions are processed simultaneously rather than sequentially.",
+        "distractors": {
+          "B": "Transformers can use more memory due to attention matrices. Their advantage is in capability and parallelism, not always less memory.",
+          "C": "Sequential processing is what RNNs do. Transformers process all positions in parallel, which is their advantage.",
+          "D": "Transformers still require massive training data. Their advantage is in architecture efficiency, not data requirements."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "generative-ai-definition",
+      "scenario": "A product manager asks their ML team to explain what makes generative AI different from traditional AI and what concepts they should understand.",
+      "stem": "Which are key concepts that define how generative AI works? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Models learn patterns from large amounts of training data and generate outputs that resemble the training data" },
+        { "key": "B", "text": "Foundation models are large neural networks with billions of parameters learned during pre-training" },
+        { "key": "C", "text": "Models use statistics and linear algebra including probability modeling, loss functions, and matrix multiplication" },
+        { "key": "D", "text": "Models require no data and generate content from randomness alone" },
+        { "key": "E", "text": "Models work by looking up pre-written answers in a database" },
+        { "key": "F", "text": "Models operate using physical neurons identical to the human brain" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Generative AI models learn patterns from training data to generate similar outputs. Foundation models have billions of parameters learned during pre-training. They rely on statistics and linear algebra (probability, loss functions, matrix multiplication) for computations.",
+        "distractors": {
+          "D": "Models require massive training data. They generate based on learned patterns, not pure randomness.",
+          "E": "Models generate new content based on patterns, not by retrieving pre-written answers from a lookup database.",
+          "F": "Neural networks are inspired by biological neurons but are mathematical functions, not physical neurons."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "pre-training",
+      "scenario": "An ML team is explaining to stakeholders what happens during the pre-training phase of a foundation model.",
+      "stem": "What occurs during the pre-training phase? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The model internalizes patterns and structures in language through self-supervised learning on vast unstructured data" },
+        { "key": "B", "text": "Model weights get updated to minimize the loss of the training objective" },
+        { "key": "C", "text": "The model is deployed to production endpoints for real-time inference" },
+        { "key": "D", "text": "Human reviewers label every example in the training dataset" },
+        { "key": "E", "text": "The model is fine-tuned for a specific customer's use case" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "During pre-training, the model internalizes language patterns through self-supervised learning on vast unstructured data (gigabytes to petabytes). Model weights are updated to minimize the loss of the training objective.",
+        "distractors": {
+          "C": "Deployment happens after training is complete. Pre-training is the learning phase, not deployment.",
+          "D": "Pre-training uses self-supervised learning on unlabeled data. Human labeling is for supervised fine-tuning.",
+          "E": "Fine-tuning for specific use cases happens after pre-training. Pre-training gives the model general language understanding."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "data-processing",
+      "scenario": "A data engineering team is preparing internet-sourced data for pre-training a language model. They need to understand why they can't use the raw data directly.",
+      "stem": "Why must internet-sourced training data be processed before pre-training? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "To increase data quality and remove low-quality content" },
+        { "key": "B", "text": "To address bias and remove harmful content" },
+        { "key": "C", "text": "To convert all data to a single language since models only support English" },
+        { "key": "D", "text": "To add copyright protection to all collected data" },
+        { "key": "E", "text": "To encrypt all text so the model cannot memorize it" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Internet data must be processed to increase quality and to address bias or remove harmful content. Only 1-3% of collected tokens are typically used after quality curation, showing how much filtering is needed.",
+        "distractors": {
+          "C": "Multilingual models support many languages. Not all data needs to be converted to English.",
+          "D": "Adding copyright is not a data processing goal. The goal is quality improvement and bias removal.",
+          "E": "Encryption is a security measure, not a training data preparation step. The model needs to read and learn from the data."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "tokenizer",
+      "scenario": "A developer sends the text 'The manatee swims gracefully' to a language model. Before the model can process it, the text must be converted to a format the model understands.",
+      "stem": "What happens to this text before the model processes it?",
+      "options": [
+        { "key": "A", "text": "The tokenizer converts it into a vector of token IDs from the model's vocabulary, which are then converted to embedding vectors" },
+        { "key": "B", "text": "The text is stored directly in the model's weights as a new parameter" },
+        { "key": "C", "text": "Each character is assigned a random number that the model uses" },
+        { "key": "D", "text": "The text is translated to binary code and stored on disk" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The tokenizer converts input text into token IDs (a vector). The embedding vector (set of input IDs) is then used to obtain each token's high-dimensional representation, which is passed to self-attention layers.",
+        "distractors": {
+          "B": "Input text is processed, not stored as weights. Weights are model parameters learned during training.",
+          "C": "Token IDs are deterministic mappings from the vocabulary, not random numbers. Each token maps to a specific ID.",
+          "D": "While computers use binary internally, the tokenizer produces meaningful token IDs that map to the model's vocabulary."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "prompt-inference",
+      "scenario": "A QA engineer tests a generative AI model by sending the same prompt multiple times. They notice that responses vary slightly each time despite using the same input.",
+      "stem": "What component influences the variation in model completions for the same prompt?",
+      "options": [
+        { "key": "A", "text": "Inference configuration parameters that influence the model's completion to the prompt (such as temperature)" },
+        { "key": "B", "text": "The model retrains itself between each request" },
+        { "key": "C", "text": "Different AWS Regions provide different responses" },
+        { "key": "D", "text": "The tokenizer changes its vocabulary between requests" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Inference configuration parameters influence the model's completion to the prompt. Parameters like temperature introduce randomness in token selection, causing variation in responses to the same prompt.",
+        "distractors": {
+          "B": "Models don't retrain between inference requests. Weights remain fixed during serving.",
+          "C": "The same model produces the same distribution of responses regardless of Region. Variation comes from inference parameters.",
+          "D": "The tokenizer's vocabulary is fixed. It doesn't change between requests."
+        }
+      }
+    }
+  ]
+}

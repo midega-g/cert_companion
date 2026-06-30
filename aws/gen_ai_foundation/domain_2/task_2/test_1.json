@@ -1,0 +1,459 @@
+{
+  "label": "Capabilities & Limits of Gen AI for Business — Part A",
+  "order": 1,
+  "topic": "Domain 2: Fundamentals of Generative AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "gen-ai-advantages",
+      "scenario": null,
+      "stem": "What is a key business advantage of generative AI compared to traditional AI systems?",
+      "options": [
+        { "key": "A", "text": "It makes many AI applications more straightforward to build at lower costs and faster" },
+        { "key": "B", "text": "It eliminates the need for any human involvement in business processes" },
+        { "key": "C", "text": "It guarantees 100% accuracy on all tasks" },
+        { "key": "D", "text": "It replaces all traditional software systems immediately" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Generative AI makes many AI applications much more straightforward to build, helping businesses build valuable applications at lower costs and faster. It is a general-purpose technology with many uses across the economy.",
+        "distractors": {
+          "B": "Gen AI augments human work but doesn't eliminate the need for people. Human oversight remains important.",
+          "C": "Gen AI is not 100% accurate. Hallucination and errors are known limitations.",
+          "D": "Gen AI is an additional tool, not a replacement for all software. It excels at specific content generation tasks."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "llm-limitations",
+      "scenario": null,
+      "stem": "What is a fundamental limitation of LLMs regarding memory between interactions?",
+      "options": [
+        { "key": "A", "text": "Every time you prompt the LLM, it does not remember earlier conversations — each call is independent" },
+        { "key": "B", "text": "LLMs permanently remember every conversation and learn from each interaction" },
+        { "key": "C", "text": "LLMs share memory between all users globally" },
+        { "key": "D", "text": "LLMs remember conversations but only within the same AWS Region" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Every time you prompt an LLM, it does not remember earlier conversations. Each inference call is independent — like asking a different person for every task. This is why fine-tuning or RAG is needed for persistent knowledge.",
+        "distractors": {
+          "B": "LLMs have no persistent memory between calls. They process each prompt independently without learning from previous interactions.",
+          "C": "There is no shared memory between users. Each call is stateless and independent.",
+          "D": "Memory is not Region-dependent. LLMs simply don't retain conversational memory between inference calls."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "hallucination",
+      "scenario": null,
+      "stem": "What should users do when an LLM provides a confident-sounding response on a factual topic?",
+      "options": [
+        { "key": "A", "text": "Double-check the answer with an authoritative source before relying on it, since LLMs can hallucinate" },
+        { "key": "B", "text": "Accept it as truth because LLMs never make factual errors" },
+        { "key": "C", "text": "Ignore the response because all LLM outputs are unreliable" },
+        { "key": "D", "text": "Report the LLM to AWS for providing incorrect information" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "LLMs can give confident but incorrect responses (hallucination). You should double-check answers with authoritative sources before counting on them, especially for factual or critical information.",
+        "distractors": {
+          "B": "LLMs frequently make factual errors. They generate based on statistical patterns, not verified truth.",
+          "C": "LLM outputs are often useful and correct. The point is to verify critical facts, not discard all output.",
+          "D": "Hallucination is a known characteristic of LLMs, not a service fault to report."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "evaluation-metrics",
+      "scenario": null,
+      "stem": "What is the ROUGE metric used to evaluate?",
+      "options": [
+        { "key": "A", "text": "The quality of automatically-generated summaries by comparing them to human-generated reference summaries" },
+        { "key": "B", "text": "The quality of machine-translated text against human translations" },
+        { "key": "C", "text": "The speed of model inference in milliseconds" },
+        { "key": "D", "text": "The cost efficiency of model deployment" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "ROUGE (Recall-Oriented Understudy for Gisting Evaluation) assesses the quality of automatically-generated summaries by comparing them to human-generated reference summaries.",
+        "distractors": {
+          "B": "This describes BLEU, not ROUGE. BLEU evaluates machine translation quality against human translations.",
+          "C": "Inference speed is measured in latency metrics, not ROUGE.",
+          "D": "Cost efficiency is a business metric. ROUGE measures text summarization quality."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "evaluation-metrics",
+      "scenario": null,
+      "stem": "What is the BLEU metric designed to evaluate?",
+      "options": [
+        { "key": "A", "text": "The quality of machine-translated texts by comparing them to human-generated translations" },
+        { "key": "B", "text": "The quality of text summaries against reference summaries" },
+        { "key": "C", "text": "The toxicity level of model responses" },
+        { "key": "D", "text": "The GPU memory usage during model training" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "BLEU (Bilingual Evaluation Understudy) evaluates the quality of machine-translated texts by comparing them to human-generated translations.",
+        "distractors": {
+          "B": "Summary quality evaluation is ROUGE, not BLEU. BLEU is specifically for translation quality.",
+          "C": "Toxicity is evaluated through content safety metrics, not BLEU.",
+          "D": "GPU memory is an infrastructure metric unrelated to translation quality."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "interpretability-tradeoff",
+      "scenario": null,
+      "stem": "What is the tradeoff between model performance and model interpretability? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Higher interpretability (simple models) can lead to lower performance because algorithms cannot capture complex non-linear interactions" },
+        { "key": "B", "text": "Complex models like neural networks capture non-linear interactions but are harder to interpret" },
+        { "key": "C", "text": "All models are equally interpretable regardless of complexity" },
+        { "key": "D", "text": "Higher interpretability always improves model accuracy" },
+        { "key": "E", "text": "Complex models are always more interpretable than simple ones" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "High interpretability (simple models) can mean lower performance because they can't capture complex patterns. Complex models (neural networks) capture non-linear interactions for better performance but are harder to interpret.",
+        "distractors": {
+          "C": "Interpretability varies greatly by model complexity. Simple linear models are interpretable; neural networks are not.",
+          "D": "Interpretability and accuracy are inversely related. Higher interpretability often means simpler models with lower accuracy.",
+          "E": "The opposite is true. Simple models are more interpretable; complex models are less interpretable."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "interpretability-methods",
+      "scenario": null,
+      "stem": "What are the two methods for model interpretability analysis? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Intrinsic analysis — applied to models with low complexity or simple input-output relationships" },
+        { "key": "B", "text": "Post hoc analysis — model-agnostic methods applied after training, can work on both simple and complex models" },
+        { "key": "C", "text": "Random analysis — randomly selecting predictions to review" },
+        { "key": "D", "text": "Quantum analysis — using quantum computing for interpretation" },
+        { "key": "E", "text": "Temporal analysis — measuring how interpretability changes over time" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Intrinsic analysis interprets models with low complexity (simple input-output relationships). Post hoc analysis is model-agnostic and can interpret both simple and complex models based on inputs and output predictions, at local or global level.",
+        "distractors": {
+          "C": "Random review is not a recognized interpretability method. Both intrinsic and post hoc are systematic approaches.",
+          "D": "Quantum analysis is not a model interpretability method. The two methods are intrinsic and post hoc.",
+          "E": "Temporal analysis is not a recognized interpretability classification. The two types are intrinsic and post hoc."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "business-metrics",
+      "scenario": null,
+      "stem": "Which are business metrics for evaluating generative AI applications? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Accuracy and relevance of outputs" },
+        { "key": "B", "text": "Task completion rates and reduction in manual effort" },
+        { "key": "C", "text": "Customer lifetime value and conversion rate" },
+        { "key": "D", "text": "Number of GPU cores in the training cluster" },
+        { "key": "E", "text": "Size of the model's parameter file on disk" },
+        { "key": "F", "text": "Number of AWS Regions the model is deployed in" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Business metrics include output quality (accuracy, relevance), efficiency (task completion rates, reduced manual effort), and business impact (customer lifetime value, conversion rate, average revenue per user).",
+        "distractors": {
+          "D": "GPU core count is infrastructure, not a business metric for AI application success.",
+          "E": "File size is a technical characteristic, not a business performance metric.",
+          "F": "Deployment breadth is operational, not a metric for evaluating application value."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "output-quality",
+      "scenario": null,
+      "stem": "Which metrics measure the output quality of foundation models? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Relevance — how well the output matches the user's intent" },
+        { "key": "B", "text": "Coherence — logical consistency and flow of the generated content" },
+        { "key": "C", "text": "Appropriateness — suitability of content for the context" },
+        { "key": "D", "text": "File size — how many bytes the response contains" },
+        { "key": "E", "text": "Compression ratio — how much the output can be compressed" },
+        { "key": "F", "text": "Network latency — milliseconds between request and response" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Output quality metrics include relevance (matches user intent), accuracy, coherence (logical flow), and appropriateness (suitable for context). These contribute to user satisfaction and determine adoption.",
+        "distractors": {
+          "D": "Response size is a technical metric, not a quality measure of content.",
+          "E": "Compression ratio measures data redundancy, not content quality.",
+          "F": "Latency measures speed, not the quality of the generated content."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "llm-limitations",
+      "scenario": null,
+      "stem": "Which are known problems that can occur with LLM completions? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Using toxic language in responses because the training data included such language from the internet" },
+        { "key": "B", "text": "Providing detailed information about dangerous topics" },
+        { "key": "C", "text": "Giving confident but factually incorrect answers (hallucination)" },
+        { "key": "D", "text": "Refusing to process any prompt submitted by users" },
+        { "key": "E", "text": "Automatically charging users' credit cards" },
+        { "key": "F", "text": "Deleting files from the user's computer" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Known LLM problems include toxic language (learned from internet training data), providing information on dangerous topics, and hallucination (confident incorrect responses). These are why responsible AI and alignment matter.",
+        "distractors": {
+          "D": "LLMs don't blanket-refuse prompts. Guardrails may block specific content, but this isn't a model behavior problem.",
+          "E": "LLMs generate text. They don't have access to financial systems or payment capabilities.",
+          "F": "LLMs don't interact with file systems. They generate text responses within their inference environment."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "gen-ai-advantages",
+      "scenario": "A retail company wants to build a product recommendation chatbot. Their CTO asks whether generative AI would be suitable or if they need a complex custom-built AI system.",
+      "stem": "Why might generative AI be advantageous for this business application?",
+      "options": [
+        { "key": "A", "text": "Generative AI is a general-purpose technology that makes building AI applications more straightforward, faster, and at lower cost than complex custom systems" },
+        { "key": "B", "text": "Generative AI is the only technology capable of building chatbots" },
+        { "key": "C", "text": "Generative AI eliminates the need for any product data" },
+        { "key": "D", "text": "Generative AI requires no testing or evaluation before deployment" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Generative AI is a general-purpose technology that makes AI applications more straightforward to build at lower costs and faster. For a recommendation chatbot, it provides natural language understanding without building a custom NLP system from scratch.",
+        "distractors": {
+          "B": "Chatbots existed before generative AI using rule-based and traditional NLP approaches. Gen AI makes them better and easier to build.",
+          "C": "The chatbot still needs product data for accurate recommendations. Gen AI makes the system easier to build, not data-free.",
+          "D": "All AI systems need testing and evaluation. Gen AI reduces build complexity but doesn't eliminate quality assurance."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "llm-limitations",
+      "scenario": "A medical startup wants to use an LLM to answer patient questions about rare diseases. A senior engineer warns that the model might generate plausible-sounding but medically inaccurate information.",
+      "stem": "What practical approach should the startup take given this limitation?",
+      "options": [
+        { "key": "A", "text": "Implement verification against authoritative medical sources and never rely solely on the LLM for medical facts" },
+        { "key": "B", "text": "Increase the model size until hallucinations disappear completely" },
+        { "key": "C", "text": "Trust all model outputs since larger LLMs don't hallucinate" },
+        { "key": "D", "text": "Only use the LLM for topics where it expresses uncertainty" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "You should double-check answers with authoritative sources before counting on them. For medical applications, verification against established sources is critical since LLMs can hallucinate on any topic.",
+        "distractors": {
+          "B": "No model size eliminates hallucination completely. Verification is always needed for critical domains.",
+          "C": "All LLMs can hallucinate regardless of size. Trusting all outputs without verification is dangerous in healthcare.",
+          "D": "LLMs don't reliably express uncertainty. They can be confidently wrong, which is exactly why verification is needed."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "evaluation-metrics",
+      "scenario": "A company builds an AI translation system and wants to measure how well their model's translations compare to professional human translations.",
+      "stem": "Which evaluation metric is specifically designed for this comparison?",
+      "options": [
+        { "key": "A", "text": "BLEU — compares machine-translated text to human-generated translations" },
+        { "key": "B", "text": "ROUGE — compares generated summaries to reference summaries" },
+        { "key": "C", "text": "F1 score — measures precision and recall balance" },
+        { "key": "D", "text": "MAP — measures object detection accuracy" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "BLEU (Bilingual Evaluation Understudy) is specifically designed to evaluate machine translation quality by comparing model translations to human-generated reference translations.",
+        "distractors": {
+          "B": "ROUGE is for summarization evaluation, not translation. BLEU is the translation-specific metric.",
+          "C": "F1 score is a general classification metric. BLEU specifically handles the nuances of language translation evaluation.",
+          "D": "MAP is for object detection in computer vision. BLEU handles text translation quality."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "business-metrics",
+      "scenario": "A SaaS company deploys a generative AI feature and wants to measure its business impact. They track whether the AI reduces manual work for their support team and improves their bottom line.",
+      "stem": "Which combination of metrics best captures both operational efficiency and business value?",
+      "options": [
+        { "key": "A", "text": "Task completion rates and reduction in manual effort (efficiency) combined with conversion rate and customer lifetime value (business value)" },
+        { "key": "B", "text": "GPU utilization and model parameter count" },
+        { "key": "C", "text": "Number of API calls and storage consumed" },
+        { "key": "D", "text": "Training time and dataset size" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Efficiency metrics (task completion rates, reduced manual effort) show operational impact. Business value metrics (conversion rate, CLTV) show financial impact. Together they capture the full picture of AI business success.",
+        "distractors": {
+          "B": "GPU utilization and parameters are infrastructure metrics, not business impact measures.",
+          "C": "API calls and storage are usage metrics, not measures of efficiency or business value.",
+          "D": "Training metrics describe model development, not the deployed application's business impact."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "fm-challenges",
+      "scenario": "An enterprise is adopting foundation models for customer-facing applications. Their CTO identifies several organizational challenges beyond just model quality.",
+      "stem": "Which organizational challenge must be addressed for foundation models to provide real business value?",
+      "options": [
+        { "key": "A", "text": "FMs need to integrate with existing business systems like databases, ERP, and CRM, requiring employees with technical skills to implement and maintain them" },
+        { "key": "B", "text": "FMs work completely independently with no need for integration" },
+        { "key": "C", "text": "FMs automatically integrate with all business systems without configuration" },
+        { "key": "D", "text": "FMs replace all existing business systems upon deployment" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "For FMs to be useful in enterprise context, they need to integrate with existing systems (databases, ERP, CRM). Organizations need technically skilled employees to implement, customize, and maintain them, plus computational resources for cost-effective deployment.",
+        "distractors": {
+          "B": "FMs don't work in isolation. Business value requires integration with data and workflow systems.",
+          "C": "Integration requires configuration, APIs, and technical implementation. It is not automatic.",
+          "D": "FMs augment existing systems. They don't replace ERP, CRM, or databases."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "human-values",
+      "scenario": "A team is fine-tuning their LLM to better align with human values. They reference three key principles that guide responsible AI development.",
+      "stem": "Which are the three human values that guide responsible LLM development? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Helpfulness — providing useful and relevant responses" },
+        { "key": "B", "text": "Honesty — generating truthful and accurate information" },
+        { "key": "C", "text": "Harmlessness — avoiding offensive, discriminatory, or dangerous content" },
+        { "key": "D", "text": "Speed — generating responses as quickly as possible" },
+        { "key": "E", "text": "Verbosity — always generating the longest possible response" },
+        { "key": "F", "text": "Novelty — always generating unexpected or surprising content" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The three human values are helpfulness (useful responses), honesty (truthful information), and harmlessness (avoiding offensive, discriminatory, or dangerous content). RLHF can increase alignment with these values.",
+        "distractors": {
+          "D": "Speed is a performance concern, not a human value for alignment. Helpful, honest, and harmless are the guiding principles.",
+          "E": "Verbosity is not a value. Concise, helpful responses are often preferred over unnecessarily long ones.",
+          "F": "Novelty is not an alignment value. Surprising outputs could be hallucinations. Honesty and helpfulness matter more."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "evaluation-challenges",
+      "scenario": "An ML team is transitioning from evaluating traditional ML models to evaluating LLMs. They find that standard accuracy metrics don't apply the same way.",
+      "stem": "Why is evaluating LLMs more challenging than traditional ML models? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "LLM output is non-deterministic, so the same input can produce different outputs" },
+        { "key": "B", "text": "Language-based evaluation is more complex than comparing to known correct labels" },
+        { "key": "C", "text": "LLMs cannot produce any measurable output" },
+        { "key": "D", "text": "Traditional ML has no evaluation metrics" },
+        { "key": "E", "text": "LLMs always produce identical outputs making comparison impossible" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "LLM output is non-deterministic (same prompt can produce different completions). Language-based evaluation is also harder because you can't simply compare to a single known-correct output — you need metrics like ROUGE and BLEU.",
+        "distractors": {
+          "C": "LLMs produce measurable text output. The challenge is evaluating quality, not producing output.",
+          "D": "Traditional ML has well-established metrics (accuracy, F1, etc.). The challenge is that these don't directly apply to generative text.",
+          "E": "LLMs produce varying outputs (non-deterministic). The opposite is true — variability makes evaluation harder."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "model-selection-factors",
+      "scenario": "A solutions architect is helping a client select the right generative AI model for their enterprise deployment.",
+      "stem": "Which factors should be considered when selecting a generative AI model for business use? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Model type and performance capabilities for the specific content type needed (text, image, code, video)" },
+        { "key": "B", "text": "Requirements, constraints, and compliance standards the organization must meet" },
+        { "key": "C", "text": "The favorite programming language of the model's creators" },
+        { "key": "D", "text": "The alphabetical order of the model's name" },
+        { "key": "E", "text": "The social media popularity of the model's announcement" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Selection factors include model type/performance for the needed content type (text, image, code, video) and organizational requirements, constraints, and compliance standards. Different models specialize in different areas.",
+        "distractors": {
+          "C": "The creators' language preference is irrelevant. What matters is the model's capabilities and your requirements.",
+          "D": "Model naming has no bearing on capability or suitability for business needs.",
+          "E": "Social media popularity doesn't indicate model quality or fitness for a specific enterprise use case."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "gen-ai-advantages",
+      "scenario": "A new AI engineer asks their mentor a helpful heuristic for determining what an LLM can and cannot do well when given a prompt.",
+      "stem": "What is a useful heuristic for determining whether a prompt-based task is suitable for an LLM?",
+      "options": [
+        { "key": "A", "text": "Ask whether a 10-year-old could follow the instructions and complete the task — if yes, an LLM likely can too" },
+        { "key": "B", "text": "If the task requires more than 5 words in the prompt, the LLM cannot handle it" },
+        { "key": "C", "text": "LLMs can only complete tasks that have exact numerical answers" },
+        { "key": "D", "text": "If the task has ever been done by a human, an LLM can always do it better" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A helpful heuristic: could a 10-year-old follow the instructions and complete the task? If so, an LLM likely can too. But if the task requires knowledge the model wasn't trained on (like details of a new service), it would need additional context.",
+        "distractors": {
+          "B": "Prompt length doesn't determine capability. LLMs handle complex, lengthy prompts within their context window.",
+          "C": "LLMs excel at language tasks beyond numbers — summarization, classification, generation, translation, and more.",
+          "D": "LLMs have limitations (hallucination, no reasoning, no real-world actions). Not all human tasks translate to LLM capabilities."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "business-metrics",
+      "scenario": "A product team wants to maximize customer lifetime value (CLTV) using their generative AI powered platform. They ask their data team what strategies support this metric.",
+      "stem": "Which are strategies that leverage generative AI to maximize customer lifetime value?",
+      "options": [
+        { "key": "A", "text": "Personalized experiences, loyalty programs, collecting feedback, and cross-selling — all enabled by AI-driven understanding of customer preferences" },
+        { "key": "B", "text": "Increasing model size until customers are satisfied" },
+        { "key": "C", "text": "Reducing all AI features to minimize costs" },
+        { "key": "D", "text": "Deploying the model in more AWS Regions" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Strategies to maximize CLTV include loyalty programs, creating brand loyalty, collecting feedback, cross-selling, and personalized experiences — all of which can be enhanced by generative AI's ability to understand and respond to individual customer preferences.",
+        "distractors": {
+          "B": "Model size alone doesn't drive customer value. Application quality and personalization matter more.",
+          "C": "Reducing features reduces value to customers. The goal is to enhance experiences, not strip them away.",
+          "D": "Regional deployment affects availability, not the strategies that drive customer lifetime value."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,458 @@
+{
+  "label": "Generative AI Risks & LLM Evaluation — Part A",
+  "order": 2,
+  "topic": "Domain 4: Guidelines for Responsible AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "hallucination",
+      "scenario": null,
+      "stem": "What causes hallucination in generative AI models?",
+      "options": [
+        { "key": "A", "text": "The model attempts to fill in gaps when something is missing in its training data, producing content that sounds factual but is fiction" },
+        { "key": "B", "text": "The model runs out of compute resources during inference and produces random output" },
+        { "key": "C", "text": "The model intentionally generates false content to test user awareness" },
+        { "key": "D", "text": "The model encounters encrypted data that it cannot decode properly" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Hallucination occurs when the AI model attempts to fill in the gaps when something is missing in its training data, generating content that might sound factual but is actually fiction.",
+        "distractors": {
+          "B": "Compute resource limitations can cause errors but not coherent-sounding fictitious content. Hallucination is a model behavior, not a hardware issue.",
+          "C": "Models do not intentionally generate false content. Hallucination is an unintended result of gaps in training data.",
+          "D": "Encrypted data would cause processing errors, not believable but false factual claims."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "copyright-risks",
+      "scenario": null,
+      "stem": "Why can't AI-generated works be copyrighted?",
+      "options": [
+        { "key": "A", "text": "Because they are not the work of a human" },
+        { "key": "B", "text": "Because AI models are open source and free to use" },
+        { "key": "C", "text": "Because AI outputs always contain copyrighted training data" },
+        { "key": "D", "text": "Because copyright law does not apply to digital content" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AI-generated works cannot be copyrighted because they are not the work of a human. Copyright law requires human authorship.",
+        "distractors": {
+          "B": "Not all AI models are open source. The copyright restriction is about human authorship, not model licensing.",
+          "C": "AI outputs don't always contain copyrighted data. The non-copyrightability is because the output wasn't created by a human.",
+          "D": "Copyright law does apply to digital content. The restriction is specific to non-human authorship, not the digital medium."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "toxic-content",
+      "scenario": null,
+      "stem": "What is the primary reason generative AI models can produce offensive or toxic content?",
+      "options": [
+        { "key": "A", "text": "Because such content was present in their training data" },
+        { "key": "B", "text": "Because the models are programmed to test user boundaries" },
+        { "key": "C", "text": "Because all language models eventually produce harmful content regardless of training" },
+        { "key": "D", "text": "Because users always prompt the model to generate harmful content" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Generative AI models can generate offensive, disturbing, or obscene content if such content was in their training data. The model learns patterns from its data, including harmful patterns.",
+        "distractors": {
+          "B": "Models are not programmed to test users. Toxic output is an unintended consequence of training data content.",
+          "C": "Models trained on curated, clean data are far less likely to produce harmful content. Training data quality is the determining factor.",
+          "D": "Models can produce toxic content without explicit prompting if the patterns exist in training data."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "data-privacy-risk",
+      "scenario": null,
+      "stem": "Why is it particularly difficult to remove sensitive data from a foundation model once it has been incorporated?",
+      "options": [
+        { "key": "A", "text": "Because as soon as an FM is trained or sees data, you cannot make it forget by deleting the data" },
+        { "key": "B", "text": "Because foundation models store all training data in a searchable database" },
+        { "key": "C", "text": "Because AWS does not allow deletion of any data used in model training" },
+        { "key": "D", "text": "Because sensitive data is encrypted within the model and cannot be identified" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Once an FM is trained or sees some data, you cannot make it forget by deleting the data. The information becomes part of the model's learned parameters and can potentially leak into outputs.",
+        "distractors": {
+          "B": "FMs do not store training data in a searchable database. They encode patterns in neural network weights, making deletion impossible.",
+          "C": "This is not an AWS restriction. It is a fundamental property of how neural networks learn from data.",
+          "D": "Data is not encrypted within the model. It is encoded in weights and parameters, which makes it impossible to selectively remove."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "bedrock-guardrails",
+      "scenario": null,
+      "stem": "In Amazon Bedrock, when a user submits a prompt that violates configured guardrails, what happens?",
+      "options": [
+        { "key": "A", "text": "The prompt is sent to the model with a warning flag attached" },
+        { "key": "B", "text": "The user receives a configurable violation response and the prompt never reaches the model" },
+        { "key": "C", "text": "The model processes the prompt but the response is deleted before returning to the user" },
+        { "key": "D", "text": "The user's account is suspended until manual review is completed" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When a prompt is not allowed by guardrails, the user receives a violation response that you configure, and the prompt never makes it to the model. This prevents the model from processing inappropriate content.",
+        "distractors": {
+          "A": "The prompt is blocked entirely, not forwarded with a warning. Guardrails prevent the content from reaching the model.",
+          "C": "The model never processes the blocked prompt. Guardrails intercept before the model, not after.",
+          "D": "Guardrails return a configured response. They do not suspend accounts or require manual review."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "generative-ai-risks",
+      "scenario": null,
+      "stem": "Which are risks specific to working with generative AI models? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Hallucination — generating content that sounds factual but is fiction" },
+        { "key": "B", "text": "Copyright infringement — outputs may include content from copyrighted training data" },
+        { "key": "C", "text": "Data privacy leakage — sensitive data in training or prompts can appear in outputs" },
+        { "key": "D", "text": "Hardware failure — GPUs used for inference randomly produce incorrect calculations" },
+        { "key": "E", "text": "Version deprecation — models automatically stop working after 12 months" },
+        { "key": "F", "text": "Network latency — slow internet connections cause models to hallucinate" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Key generative AI risks include hallucination (filling gaps with fiction), copyright issues (training data containing protected works that appear in outputs), and data privacy leakage (PII, trade secrets, or IP from training data or user prompts appearing in outputs).",
+        "distractors": {
+          "D": "Hardware failure is a general infrastructure concern, not a generative AI-specific risk. It would cause errors, not coherent false content.",
+          "E": "Models do not automatically expire. Version management is a deployment concern, not an inherent generative AI risk.",
+          "F": "Network latency affects response time, not the truthfulness or safety of model outputs."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "bedrock-guardrails",
+      "scenario": null,
+      "stem": "At which points in the interaction flow can Amazon Bedrock guardrails be applied? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "On the user prompt before it reaches the model" },
+        { "key": "B", "text": "On the model response before it reaches the user" },
+        { "key": "C", "text": "During model training to remove harmful patterns from weights" },
+        { "key": "D", "text": "During model deployment to modify the endpoint configuration" },
+        { "key": "E", "text": "On the S3 bucket storing the model artifacts" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Guardrails can be set on both the prompt (blocking inappropriate user inputs before they reach the model) and the model response (blocking inappropriate outputs before they reach the user).",
+        "distractors": {
+          "C": "Guardrails are runtime filters. They do not modify model weights during training.",
+          "D": "Guardrails filter content at inference time. They do not modify endpoint deployment configurations.",
+          "E": "Guardrails operate on prompt/response content, not on stored model artifacts in S3."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "llm-evaluation",
+      "scenario": null,
+      "stem": "Which evaluation dimensions can SageMaker Clarify assess when running LLM evaluation jobs? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Prompt stereotyping — measuring probability of biases in responses" },
+        { "key": "B", "text": "Toxicity — checking for sexual references, insults, profanity, and threats" },
+        { "key": "C", "text": "Factual knowledge — checking the veracity of model responses" },
+        { "key": "D", "text": "Training cost — evaluating the dollar cost per training epoch" },
+        { "key": "E", "text": "Network throughput — measuring data transfer speeds during evaluation" },
+        { "key": "F", "text": "Storage efficiency — measuring how compactly the model stores learned patterns" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "SageMaker Clarify evaluates LLMs across five dimensions including prompt stereotyping (biases for race, gender, religion, etc.), toxicity (insults, profanity, threats, etc.), and factual knowledge (veracity of responses).",
+        "distractors": {
+          "D": "Training cost is a billing metric, not a model quality evaluation dimension.",
+          "E": "Network throughput is an infrastructure metric unrelated to model behavior evaluation.",
+          "F": "Storage efficiency is a deployment concern, not a dimension of responsible AI model evaluation."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "llm-evaluation",
+      "scenario": null,
+      "stem": "Which task types can SageMaker Clarify run evaluation jobs for when comparing LLMs? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Text generation and text summarization" },
+        { "key": "B", "text": "Question answering and text classification" },
+        { "key": "C", "text": "Image generation and video synthesis" },
+        { "key": "D", "text": "Speech recognition and audio classification" },
+        { "key": "E", "text": "Database querying and report generation" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Clarify can run four types of evaluation tasks: text generation, text classification, question answering, and text summarization.",
+        "distractors": {
+          "C": "Image generation and video synthesis are not among the four evaluation task types supported by Clarify's LLM evaluation.",
+          "D": "Speech recognition and audio classification are not listed as evaluation task types for Clarify's LLM evaluation.",
+          "E": "Database querying is not an LLM evaluation task type in SageMaker Clarify."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "llm-evaluation",
+      "scenario": null,
+      "stem": "Which sources of evaluation data can be used when running SageMaker Clarify LLM evaluation jobs? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "A built-in prompt dataset provided by the service" },
+        { "key": "B", "text": "A human workforce such as employees or subject matter experts providing feedback" },
+        { "key": "C", "text": "Automatically generated synthetic evaluation data from another AI model" },
+        { "key": "D", "text": "Real-time production traffic sampled from the endpoint" },
+        { "key": "E", "text": "AWS CloudTrail logs of previous API calls" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "You can use a built-in prompt dataset or supply your own. You can also engage a human workforce (employees or subject matter experts) to provide feedback for evaluation.",
+        "distractors": {
+          "C": "Synthetic data generation from another model is not mentioned as an evaluation source. Built-in datasets or custom/human inputs are the options.",
+          "D": "Production traffic sampling is a monitoring approach (Model Monitor). Clarify evaluation uses curated datasets or human feedback.",
+          "E": "CloudTrail logs capture API metadata, not evaluation content suitable for assessing model quality."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "hallucination",
+      "scenario": "A law firm uses a generative AI assistant to research case precedents. An associate submits a brief to court containing three case citations provided by the AI. During review, the judge discovers that all three cases are fabricated — they sound legitimate but do not exist.",
+      "stem": "What generative AI risk does this scenario illustrate?",
+      "options": [
+        { "key": "A", "text": "Hallucination — the model generated content that sounds factual but is fiction" },
+        { "key": "B", "text": "Copyright infringement — the model copied content from protected legal databases" },
+        { "key": "C", "text": "Data poisoning — an attacker corrupted the model's training data" },
+        { "key": "D", "text": "Prompt injection — the user manipulated the model into generating false output" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "This is hallucination — the model filled gaps in its knowledge by generating case citations that sound factual but are entirely fabricated. This mirrors the real 2023 case where lawyers submitted AI-generated fake citations to a New York court.",
+        "distractors": {
+          "B": "Copyright infringement involves reproducing protected content. Here the content doesn't exist at all — it's fabricated.",
+          "C": "Data poisoning involves an attacker corrupting training data. This is normal model behavior when knowledge gaps exist.",
+          "D": "Prompt injection involves malicious instructions to alter behavior. The user made a legitimate request; the model hallucinated independently."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "copyright-risks",
+      "scenario": "A marketing agency uses a text-to-image generative AI model to create advertising visuals. Their legal team notices that some generated images contain recognizable elements from copyrighted photographs, including distinctive watermark patterns from a stock photo service.",
+      "stem": "What generative AI risk is present in this scenario?",
+      "options": [
+        { "key": "A", "text": "The model may have been trained on copyrighted data, which can be included in outputs" },
+        { "key": "B", "text": "The model is hallucinating watermarks that don't actually exist" },
+        { "key": "C", "text": "The user intentionally prompted the model to reproduce copyrighted content" },
+        { "key": "D", "text": "The model's inference endpoint was compromised by an attacker" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A generative AI model may have been trained with data protected by copyrights, patents, or trademarks, which can then be included in outputs. The recognizable elements and watermarks suggest copyrighted training data.",
+        "distractors": {
+          "B": "The watermarks are real artifacts from copyrighted training images, not hallucinations. They indicate the training data included protected content.",
+          "C": "The scenario describes unintentional reproduction. The model includes copyrighted elements regardless of user intent because they were in training data.",
+          "D": "This is not a security compromise. It is an inherent risk of models trained on copyrighted content."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "data-privacy-risk",
+      "scenario": "An employee at a technology company pastes proprietary source code into a generative AI assistant to ask for help debugging. Weeks later, another user of the same AI service receives a response that contains fragments of that proprietary code.",
+      "stem": "Which generative AI risk does this scenario demonstrate?",
+      "options": [
+        { "key": "A", "text": "Data privacy leakage — sensitive data submitted as input can be incorporated into the model's outputs for other users" },
+        { "key": "B", "text": "Hallucination — the model fabricated code that coincidentally resembles the proprietary code" },
+        { "key": "C", "text": "Model inversion — an attacker reverse-engineered the model to extract the code" },
+        { "key": "D", "text": "Copyright infringement — the model's training data contained the code before the employee submitted it" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Data privacy is a risk because sensitive data that makes its way into a large language model (through training data or user prompts) can leak and be incorporated into outputs. This includes intellectual property, trade secrets, and PII.",
+        "distractors": {
+          "B": "The code fragments are real proprietary content, not fabricated. This is a data leakage issue, not hallucination.",
+          "C": "Model inversion involves systematically querying a model to infer training data. This scenario shows inadvertent leakage from user input, not a deliberate attack.",
+          "D": "The code entered the model through user input, not through pre-existing training data."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "bedrock-guardrails",
+      "scenario": "A children's education company deploys a learning assistant using Amazon Bedrock. They need to ensure the assistant never generates violent, sexual, or insulting content even if students try to prompt it in those directions.",
+      "stem": "How should the company configure Bedrock guardrails to meet this requirement?",
+      "options": [
+        { "key": "A", "text": "Set content filter thresholds for hate, insults, sexual, and violence categories on both prompts and responses" },
+        { "key": "B", "text": "Retrain the foundation model on children's content only" },
+        { "key": "C", "text": "Block all user prompts longer than 50 words" },
+        { "key": "D", "text": "Deploy the model in a private VPC to prevent inappropriate access" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Guardrails provide content filters with configurable thresholds for hate, insults, sexual, and violence categories. Setting these on both prompts and responses ensures inappropriate content is blocked in both directions.",
+        "distractors": {
+          "B": "Retraining is expensive and unnecessary when guardrails can filter content at runtime. Guardrails handle this without model modification.",
+          "C": "Prompt length has no relationship to content appropriateness. Short prompts can be harmful and long prompts can be safe.",
+          "D": "VPC controls network access, not content safety. Inappropriate prompts could still come from authorized users within the VPC."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "llm-evaluation",
+      "scenario": "A company is evaluating multiple LLMs for their customer support chatbot. They need to ensure that whichever model they choose does not produce different quality responses when users make typos or use inconsistent capitalization in their messages.",
+      "stem": "Which SageMaker Clarify evaluation dimension specifically tests this robustness requirement?",
+      "options": [
+        { "key": "A", "text": "Semantic robustness — checks whether output changes due to keyword typos, random uppercase changes, and whitespace modifications" },
+        { "key": "B", "text": "Toxicity — checks for offensive language in responses" },
+        { "key": "C", "text": "Factual knowledge — checks the accuracy of factual claims" },
+        { "key": "D", "text": "Prompt stereotyping — checks for bias in responses" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Semantic robustness specifically checks whether model output changes because of keyword typos, random changes to uppercase, and random additions or deletions of whitespace. This tests if the model handles imperfect input gracefully.",
+        "distractors": {
+          "B": "Toxicity evaluates harmful content generation, not input resilience to typos.",
+          "C": "Factual knowledge verifies truthfulness of responses, not consistency under input variations.",
+          "D": "Prompt stereotyping measures bias tendencies, not robustness to input formatting changes."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "generative-ai-risks",
+      "scenario": "An HR technology company uses generative AI to screen resumes. They face multiple legal and ethical risks from their AI system.",
+      "stem": "Which real-world legal consequences can result from irresponsible AI practices? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Discrimination lawsuits when AI programs automatically reject applicants based on protected attributes like age" },
+        { "key": "B", "text": "Court sanctions and fines when AI-generated content submitted as legal evidence is discovered to be fabricated" },
+        { "key": "C", "text": "Automatic revocation of AWS account access when bias is detected" },
+        { "key": "D", "text": "Mandatory open-sourcing of all model code as a legal penalty" },
+        { "key": "E", "text": "Criminal prosecution of the AI model itself" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The EEOC sued companies for AI hiring discrimination against older applicants. A court sanctioned and fined lawyers who submitted AI-generated fake case citations. Both are real-world legal consequences of irresponsible AI use.",
+        "distractors": {
+          "C": "AWS does not revoke account access based on model bias. Legal consequences come from courts and regulators, not cloud providers.",
+          "D": "Open-sourcing code is not a legal penalty for bias. Penalties include fines, sanctions, and liability for damages.",
+          "E": "AI models cannot be criminally prosecuted. Legal liability falls on the organizations and individuals deploying them."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "llm-evaluation",
+      "scenario": "A social media company wants to evaluate a foundation model for potential biases before deploying it as a content moderation assistant. They specifically want to check whether the model exhibits stereotyping.",
+      "stem": "Which types of bias does the prompt stereotyping dimension in SageMaker Clarify check for? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Race and gender" },
+        { "key": "B", "text": "Religion and age" },
+        { "key": "C", "text": "Sexual orientation and nationality" },
+        { "key": "D", "text": "Programming language preference" },
+        { "key": "E", "text": "Cloud provider choice" },
+        { "key": "F", "text": "Operating system preference" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Prompt stereotyping measures bias for race, gender, sexual orientation, religion, age, nationality, disability, physical appearance, and socioeconomic status.",
+        "distractors": {
+          "D": "Programming language preference is a technical choice, not a protected attribute or source of harmful stereotyping.",
+          "E": "Cloud provider choice is a business decision with no bias or stereotyping implications.",
+          "F": "Operating system preference is a technology preference, not a characteristic susceptible to harmful stereotyping."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "generative-ai-risks",
+      "scenario": "A content platform uses generative AI to create articles. Their legal team is assessing the intellectual property risks associated with both the AI's inputs and outputs.",
+      "stem": "Which copyright-related risks exist with generative AI? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The model may have been trained on data protected by copyrights, patents, or trademarks that appear in outputs" },
+        { "key": "B", "text": "A user can submit copyrighted work as input, and the AI can create an unlicensed derivative" },
+        { "key": "C", "text": "All AI-generated text is automatically protected by copyright in favor of the AI developer" },
+        { "key": "D", "text": "Using AI eliminates all copyright liability because machines cannot infringe copyrights" },
+        { "key": "E", "text": "Copyright only applies to images, not text generated by AI" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Models may be trained on copyrighted content that then appears in outputs. Additionally, users can submit copyrighted works as input, and the AI can create unlicensed derivatives.",
+        "distractors": {
+          "C": "AI-generated works cannot be copyrighted because they are not human-created. They don't automatically gain protection.",
+          "D": "Using AI does not eliminate copyright liability. Organizations can face lawsuits for AI outputs that infringe copyrights.",
+          "E": "Copyright applies to all creative works regardless of medium. Both text and images can be infringed."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "llm-evaluation",
+      "scenario": "A financial news company is comparing two LLMs for generating market summaries. They need to ensure the selected model generates factually accurate information and does not fabricate market data or statistics.",
+      "stem": "Which SageMaker Clarify evaluation dimension should they prioritize for this use case?",
+      "options": [
+        { "key": "A", "text": "Factual knowledge" },
+        { "key": "B", "text": "Semantic robustness" },
+        { "key": "C", "text": "Prompt stereotyping" },
+        { "key": "D", "text": "Toxicity" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Factual knowledge checks the veracity of model responses. For financial news where accuracy of market data is critical, this dimension directly tests whether the model generates truthful content.",
+        "distractors": {
+          "B": "Semantic robustness tests consistency under input variations. While important, factual accuracy is the primary concern for financial reporting.",
+          "C": "Prompt stereotyping measures bias tendencies. Financial summaries need factual accuracy more than stereotyping assessment.",
+          "D": "Toxicity checks for offensive content. Financial summaries need truth verification, not profanity detection."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "bedrock-guardrails",
+      "scenario": "A healthcare company's AI assistant occasionally generates responses that contain medical advice the company is not licensed to provide. They want to completely block the model from responding to any medical diagnosis questions.",
+      "stem": "Which Bedrock guardrails feature should the company use to prevent responses on this specific topic?",
+      "options": [
+        { "key": "A", "text": "Define medical diagnosis as a denied topic using plaintext description, with guardrails blocking both prompts and responses on this topic" },
+        { "key": "B", "text": "Set the content filter threshold for violence to maximum" },
+        { "key": "C", "text": "Enable PII redaction for all model responses" },
+        { "key": "D", "text": "Reduce the model's maximum response length to prevent detailed medical advice" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "You can block specific topics by describing them in plaintext as denied topics. Guardrails detect and block user inputs and FM responses that fall into restricted topics. This can be applied on both prompts and responses.",
+        "distractors": {
+          "B": "Violence content filters address offensive content categories, not topic-specific blocking. Medical diagnosis is not a violence category.",
+          "C": "PII redaction removes personal data but does not block entire topics. Medical advice would still be generated, just without PII.",
+          "D": "Shorter responses can still contain medical advice. Topic blocking prevents the content regardless of length."
+        }
+      }
+    }
+  ]
+}

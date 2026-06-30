@@ -1,0 +1,458 @@
+{
+  "label": "Responsible AI Principles & Fairness — Part A",
+  "order": 1,
+  "topic": "Domain 4: Guidelines for Responsible AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "responsible-ai-principles",
+      "scenario": null,
+      "stem": "Which core dimension of responsible AI ensures that AI systems are tolerant of failures and minimize errors?",
+      "options": [
+        { "key": "A", "text": "Fairness" },
+        { "key": "B", "text": "Robustness" },
+        { "key": "C", "text": "Transparency" },
+        { "key": "D", "text": "Governance" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Robustness ensures that AI systems are tolerant of failures and minimize errors. As users rely on AI, robustness makes sure the system performs reliably.",
+        "distractors": {
+          "A": "Fairness ensures models treat everyone equitably and impartially regardless of personal attributes.",
+          "C": "Transparency is about providing clear information about model capabilities, limitations, and potential risks.",
+          "D": "Governance is about meeting and auditing compliance with industry standards and best practices."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "responsible-ai-principles",
+      "scenario": null,
+      "stem": "What does explainability mean in the context of responsible AI?",
+      "options": [
+        { "key": "A", "text": "The ability to explain in human terms why a model made a particular decision" },
+        { "key": "B", "text": "The ability for the model to explain its own source code to users" },
+        { "key": "C", "text": "The requirement to publish all training data for public review" },
+        { "key": "D", "text": "The process of documenting model deployment infrastructure" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Explainability is the ability to explain in human terms why a model made a particular decision. For example, explaining the main reasons a loan application was rejected.",
+        "distractors": {
+          "B": "Explainability refers to explaining decisions, not source code. Users need to understand why a decision was made, not how the model is implemented.",
+          "C": "Publishing training data is not required for explainability. Explainability is about explaining individual decisions.",
+          "D": "Infrastructure documentation is an operational concern, not what explainability addresses."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "fairness",
+      "scenario": null,
+      "stem": "What is class imbalance and why is it a main reason for model bias?",
+      "options": [
+        { "key": "A", "text": "When a feature value has fewer training samples compared to another, causing the model to perform better for the overrepresented class" },
+        { "key": "B", "text": "When all classes have equal representation but the model is too complex" },
+        { "key": "C", "text": "When the model has too many hidden layers for the dataset size" },
+        { "key": "D", "text": "When the test dataset is larger than the training dataset" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Class imbalance occurs when a feature value has fewer training samples compared to another. The model sees more data for the overrepresented class, performs better for it, and may have higher error rates for the underrepresented class.",
+        "distractors": {
+          "B": "Equal representation is the goal, not the problem. Class imbalance is specifically about unequal representation.",
+          "C": "Model complexity (number of layers) is an architecture decision, not the definition of class imbalance.",
+          "D": "Dataset split ratios are unrelated to class imbalance, which refers to representation within the training data itself."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "fairness",
+      "scenario": null,
+      "stem": "What happens when a model overfits due to a training dataset that is not representative of the real world?",
+      "options": [
+        { "key": "A", "text": "The model performs well on all inputs regardless of representation" },
+        { "key": "B", "text": "The model only performs well on inputs that resemble the training data, and underrepresented groups experience more negative outcomes" },
+        { "key": "C", "text": "The model becomes immune to bias because it memorizes all training examples" },
+        { "key": "D", "text": "The model automatically balances its predictions across all groups" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When a training dataset is not representative, overfitting causes the model to only perform well on inputs resembling the training data. Groups not properly represented potentially experience more negative outcomes.",
+        "distractors": {
+          "A": "An overfit model on unrepresentative data performs poorly on inputs from underrepresented groups, not well on all inputs.",
+          "C": "Memorizing training examples is overfitting, which worsens bias for underrepresented groups rather than eliminating it.",
+          "D": "Overfitting does not balance predictions. It skews performance toward groups well-represented in training data."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "responsible-datasets",
+      "scenario": null,
+      "stem": "Why are responsible datasets considered the foundation of responsible AI?",
+      "options": [
+        { "key": "A", "text": "Because datasets with fewer records train faster and cost less" },
+        { "key": "B", "text": "Because biases in the training dataset will become biases in the output" },
+        { "key": "C", "text": "Because larger datasets always produce more accurate models" },
+        { "key": "D", "text": "Because responsible datasets eliminate the need for model monitoring" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Responsible datasets are the foundation of responsible AI because biases in the training dataset will become biases in the output. The model learns from its data, so biased data produces biased results.",
+        "distractors": {
+          "A": "Training speed and cost are operational concerns. Responsible datasets focus on quality, balance, and fairness.",
+          "C": "Size alone doesn't guarantee accuracy. A large but biased dataset still produces biased outputs.",
+          "D": "Even with responsible datasets, model monitoring remains necessary to detect drift and emerging biases."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "responsible-ai-principles",
+      "scenario": null,
+      "stem": "Which are core dimensions of a responsible AI model? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Fairness" },
+        { "key": "B", "text": "Privacy and security" },
+        { "key": "C", "text": "Governance" },
+        { "key": "D", "text": "Profitability" },
+        { "key": "E", "text": "Market share" },
+        { "key": "F", "text": "Processing speed" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Core dimensions of responsible AI include fairness (equitable treatment), privacy and security (protecting user data and PII), and governance (meeting compliance standards and mitigating risk). Other dimensions include explainability, robustness, and transparency.",
+        "distractors": {
+          "D": "Profitability is a business metric, not a core dimension of responsible AI.",
+          "E": "Market share is a competitive metric unrelated to responsible AI principles.",
+          "F": "Processing speed is a performance characteristic, not a responsibility or ethics dimension."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "responsible-datasets",
+      "scenario": null,
+      "stem": "Which characteristics should a responsible dataset demonstrate? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Inclusivity — representing diverse populations, perspectives, and experiences" },
+        { "key": "B", "text": "Balanced representation — equal representation of different groups to avoid skewed distributions" },
+        { "key": "C", "text": "Privacy protection — safeguarding sensitive information and adhering to data protection regulations" },
+        { "key": "D", "text": "Maximum size — always using the largest possible dataset regardless of quality" },
+        { "key": "E", "text": "Homogeneity — using data from a single source to ensure consistency" },
+        { "key": "F", "text": "Exclusivity — limiting data to only the majority demographic for accuracy" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Responsible datasets need inclusivity (diverse populations), balanced representation (equal group representation), and privacy protection (safeguarding sensitive data). They also need diversity, curated sources, consent and transparency, and regular audits.",
+        "distractors": {
+          "D": "Maximum size without quality consideration doesn't make a dataset responsible. Quality, balance, and representativeness matter more than raw size.",
+          "E": "Homogeneity from a single source limits diversity and representation. Responsible datasets use varied, curated sources.",
+          "F": "Limiting data to the majority demographic creates class imbalance and biased models. Responsible datasets represent all groups."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "model-selection",
+      "scenario": null,
+      "stem": "Which practices should be considered when selecting AI models responsibly? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Assess the environmental impact including carbon footprint and energy consumption" },
+        { "key": "B", "text": "Consider using an already trained model to reduce the amount of training needed" },
+        { "key": "C", "text": "Always train the largest possible model from scratch for best performance" },
+        { "key": "D", "text": "Prioritize model complexity over sustainability" },
+        { "key": "E", "text": "Exclude stakeholders from the selection process for faster decisions" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Responsible model selection includes assessing environmental impact (carbon footprint, energy consumption) and considering pre-trained models as starting points to reduce training needs. Sustainability and reuse of existing work are key principles.",
+        "distractors": {
+          "C": "Training from scratch has the highest environmental impact. Using pre-trained models is the sustainable approach.",
+          "D": "Sustainability should be prioritized, not complexity. Models with minimal environmental impact and long-term viability are preferred.",
+          "E": "Stakeholder engagement is a responsible practice. Diverse perspectives should be involved in selection and deployment."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "fairness",
+      "scenario": null,
+      "stem": "What are the consequences of biased or inconsistent AI output? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Erosion of user trust in the AI system" },
+        { "key": "B", "text": "Ethical concerns when AI systems violate principles of fairness and equal treatment" },
+        { "key": "C", "text": "Improved model accuracy for all groups" },
+        { "key": "D", "text": "Faster training times for subsequent models" },
+        { "key": "E", "text": "Reduced need for model monitoring" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Biased output erodes user trust and raises ethical concerns when AI systems violate principles of fairness, non-discrimination, and equal treatment.",
+        "distractors": {
+          "C": "Bias reduces accuracy for some groups. It does not improve accuracy.",
+          "D": "Bias has no relationship to training speed. Biased outputs indicate data or model problems.",
+          "E": "Biased output increases the need for monitoring, not reduces it."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "responsible-datasets",
+      "scenario": null,
+      "stem": "Which practices ensure responsible data collection and usage for AI training? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Obtaining informed consent from data subjects and providing clear information about data usage" },
+        { "key": "B", "text": "Conducting regular audits to identify and address potential biases in datasets" },
+        { "key": "C", "text": "Collecting data from users without their knowledge to ensure natural behavior" },
+        { "key": "D", "text": "Reusing data from one project without reviewing its applicability to another" },
+        { "key": "E", "text": "Skipping audits after initial dataset creation since biases are only present at creation" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Consent and transparency involve obtaining informed consent and clearly communicating data usage. Regular audits are crucial for periodic reviews to identify and address emerging issues or biases.",
+        "distractors": {
+          "C": "Collecting data without knowledge violates privacy protection and consent principles of responsible datasets.",
+          "D": "Data must be reviewed for applicability, quality, and bias when reused. Blind reuse can introduce inappropriate biases.",
+          "E": "Biases can emerge over time as populations change. Regular periodic audits are crucial, not just initial review."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "fairness",
+      "scenario": "A healthcare AI startup discovers that their disease prediction model has a 95% accuracy for men but only 78% accuracy for women. An analysis shows that women constitute 32% of their training data while men make up 68%.",
+      "stem": "What is the primary cause of the accuracy disparity between genders in this model?",
+      "options": [
+        { "key": "A", "text": "Class imbalance — women have fewer training samples, so the model performs better for the overrepresented class (men)" },
+        { "key": "B", "text": "The model architecture is inherently biased against women" },
+        { "key": "C", "text": "Women are harder to diagnose regardless of data representation" },
+        { "key": "D", "text": "The model is overfitting to the test dataset" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Class imbalance is the primary cause. With women at only 32% of training data, the model saw more records for men, performs better for them, and could have a higher error rate for women due to undersampling.",
+        "distractors": {
+          "B": "Model architectures are not inherently biased against specific groups. Bias comes from the data, not the algorithm structure.",
+          "C": "The disparity is due to unequal data representation, not inherent medical difficulty. With balanced data, accuracy would improve for women.",
+          "D": "The problem is training data imbalance causing overfitting to the majority class, not overfitting to test data."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "responsible-ai-principles",
+      "scenario": "An insurance company deploys an AI model that automatically sets premiums. Customers complain that they don't understand why their premiums are higher than others with seemingly similar profiles. The company cannot explain the model's reasoning.",
+      "stem": "Which responsible AI dimension is the company failing to meet?",
+      "options": [
+        { "key": "A", "text": "Robustness" },
+        { "key": "B", "text": "Explainability" },
+        { "key": "C", "text": "Privacy and security" },
+        { "key": "D", "text": "Governance" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Explainability is the ability to explain in human terms why a model made a particular decision. The company cannot explain why premiums differ, which means they are failing to provide explainability.",
+        "distractors": {
+          "A": "Robustness relates to fault tolerance and minimizing errors. The model may be functioning correctly but cannot explain its decisions.",
+          "C": "Privacy and security protect PII. The issue is decision transparency, not data exposure.",
+          "D": "Governance covers compliance standards and risk. While related, the specific gap is the inability to explain individual decisions."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "model-selection",
+      "scenario": "A data science team needs to build a sentiment analysis model. They are debating between training a large transformer model from scratch on 200 GPUs for two weeks, or fine-tuning a pre-trained model that requires only 4 GPUs for two days.",
+      "stem": "From a responsible AI sustainability perspective, which approach should the team prefer and why?",
+      "options": [
+        { "key": "A", "text": "Fine-tuning the pre-trained model because it reduces environmental impact by reusing existing work" },
+        { "key": "B", "text": "Training from scratch because larger models always produce more responsible outputs" },
+        { "key": "C", "text": "Training from scratch because sustainability only applies to deployment, not training" },
+        { "key": "D", "text": "Fine-tuning is irresponsible because it relies on potentially biased pre-trained weights" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Using a pre-trained model as a starting point reduces training compute requirements, minimizing carbon footprint and energy consumption. Reuse of existing work is a key sustainability principle in responsible AI.",
+        "distractors": {
+          "B": "Larger models trained from scratch have the highest environmental impact. Model size does not guarantee responsibility.",
+          "C": "Sustainability applies to the entire lifecycle including training. The compute resources for training are a major environmental consideration.",
+          "D": "Fine-tuning is recommended for sustainability. Potential biases in pre-trained models are addressed through evaluation, not by avoiding reuse entirely."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "responsible-ai-principles",
+      "scenario": "A retail company deploys a product recommendation chatbot without informing customers that they are interacting with AI rather than a human agent. Customers are surprised when they discover the truth.",
+      "stem": "Which responsible AI dimension does this practice violate?",
+      "options": [
+        { "key": "A", "text": "Transparency" },
+        { "key": "B", "text": "Robustness" },
+        { "key": "C", "text": "Fairness" },
+        { "key": "D", "text": "Privacy and security" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Transparency includes making sure that users know when they are interacting with AI. Failing to disclose that customers are engaging with an AI chatbot rather than a human violates this dimension.",
+        "distractors": {
+          "B": "Robustness concerns system reliability and fault tolerance, not disclosure of AI interaction.",
+          "C": "Fairness is about equitable treatment across groups. The issue here is non-disclosure, not discriminatory treatment.",
+          "D": "Privacy protects PII. The violation is about transparency of AI interaction, not exposure of personal data."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "fairness",
+      "scenario": "A university uses an AI admissions model. Analysis shows that women applicants comprised 46% of rejected applicants but only 32% of accepted applicants. The admissions team needs to understand what type of bias this represents.",
+      "stem": "What bias metric does this finding demonstrate?",
+      "options": [
+        { "key": "A", "text": "Demographic disparity — the rate at which women were rejected exceeds the rate at which they were accepted" },
+        { "key": "B", "text": "Label imbalance — there are more rejection labels than acceptance labels in the dataset" },
+        { "key": "C", "text": "Treatment equality — the ratio of false negatives to false positives differs between groups" },
+        { "key": "D", "text": "Accuracy difference — the model has different accuracy for men versus women" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Demographic disparity indicates whether a particular class has a larger proportion of rejected outcomes than accepted outcomes. Women at 46% of rejections but only 32% of acceptances demonstrates this disparity.",
+        "distractors": {
+          "B": "Label imbalance refers to positive outcomes favoring one class over another in training data, not the comparison of acceptance vs rejection rates within a group.",
+          "C": "Treatment equality specifically measures the ratio of false negatives to false positives. This scenario describes acceptance vs rejection proportions.",
+          "D": "Accuracy difference measures prediction accuracy between classes, not the proportion of actual acceptance vs rejection outcomes."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "sagemaker-clarify",
+      "scenario": "A credit union uses SageMaker Clarify to evaluate their loan approval model for bias. They want to understand whether the model treats different age groups fairly.",
+      "stem": "Which bias metrics can SageMaker Clarify measure on the trained model to assess fairness across age groups? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Difference in positive proportions in predictions — whether the model predicts positive outcomes differently for each class" },
+        { "key": "B", "text": "Recall difference — the difference in true positive rate between two classes" },
+        { "key": "C", "text": "Treatment equality — the difference in the ratio of false negatives to false positives between classes" },
+        { "key": "D", "text": "Model training time — how long the model took to train for each class" },
+        { "key": "E", "text": "Feature count — the number of features used per age group" },
+        { "key": "F", "text": "Endpoint latency — the response time difference for different age groups" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "SageMaker Clarify measures trained model bias through metrics including difference in positive proportions in predictions, recall difference (TPR between classes), and treatment equality (ratio of false negatives to false positives).",
+        "distractors": {
+          "D": "Training time is an operational metric, not a bias metric. Bias metrics compare model outcomes across groups.",
+          "E": "Feature count is a data characteristic. Bias metrics compare how the model treats different groups, not feature engineering details.",
+          "F": "Endpoint latency is a performance metric. Bias metrics assess fairness in predictions, not response speed."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "sagemaker-clarify",
+      "scenario": "A financial services firm wants to understand why their loan approval model rejects certain applicants. They deploy SageMaker Clarify to analyze the model's decision-making process.",
+      "stem": "How does SageMaker Clarify improve model explainability? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "It treats the model as a black box, observing inputs and outputs to determine relative importance of each feature" },
+        { "key": "B", "text": "It can explain deep learning, computer vision, and NLP models using unstructured data" },
+        { "key": "C", "text": "It modifies the model's internal weights to make decisions more interpretable" },
+        { "key": "D", "text": "It replaces the model with a simpler decision tree for explanation purposes" },
+        { "key": "E", "text": "It requires access to the model's source code to trace decision logic" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Clarify treats the model as a black box, looking at inputs and outputs to determine relative feature importance. Because of this approach, it can explain deep learning, CV, and NLP models that use unstructured data.",
+        "distractors": {
+          "C": "Clarify does not modify model weights. It observes behavior externally without changing the model's inner workings.",
+          "D": "Clarify does not replace the model. It explains the existing model's decisions by analyzing input-output relationships.",
+          "E": "Because Clarify treats the model as a black box, it does not need source code. It works by observing external behavior."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "sagemaker-clarify",
+      "scenario": "A data science team sets up a SageMaker Clarify processing job to analyze their ML model for bias. They want to understand how the analysis pipeline works.",
+      "stem": "What does the SageMaker Clarify processing job interact with to perform its analysis? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "An Amazon S3 bucket containing input datasets and configuration for analysis" },
+        { "key": "B", "text": "A model deployed to a SageMaker inference endpoint to obtain predictions" },
+        { "key": "C", "text": "AWS IAM Identity Center to authenticate model users" },
+        { "key": "D", "text": "Amazon Macie to scan for PII in model predictions" },
+        { "key": "E", "text": "AWS CloudTrail to audit all model inference calls" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The SageMaker Clarify processing container interacts with an S3 bucket (for input datasets and configuration) and a model deployed to a SageMaker inference endpoint (to send requests and retrieve predictions for analysis).",
+        "distractors": {
+          "C": "IAM Identity Center manages user authentication. Clarify's processing job interacts with S3 and the model endpoint, not identity services.",
+          "D": "Macie scans S3 for sensitive data. Clarify performs bias and explainability analysis, not PII detection.",
+          "E": "CloudTrail logs API calls. Clarify directly communicates with the endpoint for analysis, independent of CloudTrail."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "sagemaker-clarify",
+      "scenario": "A bank's model monitoring team notices that their loan approval model approves loans at a 72% rate for middle-aged applicants but only a 48% rate for younger applicants. They want to determine whether this disparity existed in the training data or was introduced by the model.",
+      "stem": "Which SageMaker Clarify metric helps determine whether bias in positive outcome proportions changed after training compared to the training data?",
+      "options": [
+        { "key": "A", "text": "Difference in positive proportions in predictions" },
+        { "key": "B", "text": "Treatment equality" },
+        { "key": "C", "text": "Accuracy difference" },
+        { "key": "D", "text": "Demographic disparity" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The difference in positive proportions in predictions metric indicates whether the model predicts positive outcomes differently for each class. It can be compared with label imbalance in training data to determine whether bias changed after training or was present in the data.",
+        "distractors": {
+          "B": "Treatment equality measures the ratio of false negatives to false positives between classes, not overall positive prediction rates.",
+          "C": "Accuracy difference compares prediction accuracy between classes, not the proportion of positive predictions.",
+          "D": "Demographic disparity is a pre-training metric that looks at rejection vs acceptance proportions in the dataset, not in model predictions."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "sagemaker-clarify",
+      "scenario": "A credit card company discovers their fraud detection model has the same overall accuracy for younger and older customers. However, younger customers experience more false fraud alerts (false positives), while older customers experience more missed fraud (false negatives).",
+      "stem": "Which SageMaker Clarify bias metric captures this type of disparity?",
+      "options": [
+        { "key": "A", "text": "Accuracy difference" },
+        { "key": "B", "text": "Treatment equality" },
+        { "key": "C", "text": "Recall difference" },
+        { "key": "D", "text": "Difference in positive proportions in predictions" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Treatment equality measures the difference in the ratio of false negatives to false positives between classes. Even if accuracy is the same, a difference in the types of errors (more false positives for one group, more false negatives for another) constitutes bias captured by this metric.",
+        "distractors": {
+          "A": "Accuracy difference measures overall accuracy between classes. In this scenario, accuracy is the same for both groups.",
+          "C": "Recall difference measures the true positive rate difference. While related, treatment equality specifically captures the FN-to-FP ratio difference described here.",
+          "D": "Difference in positive proportions measures whether positive outcomes are predicted differently, not the error type distribution."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,459 @@
+{
+  "label": "Prompt Engineering Techniques — Part A",
+  "order": 1,
+  "topic": "Domain 3: Applications of Foundation Models",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "prompt-components",
+      "scenario": null,
+      "stem": "What are the components that a prompt can contain?",
+      "options": [
+        { "key": "A", "text": "The task or instruction, the context, and the input text for the desired response" },
+        { "key": "B", "text": "The model architecture, the training data, and the hyperparameters" },
+        { "key": "C", "text": "The IAM policy, the VPC configuration, and the endpoint URL" },
+        { "key": "D", "text": "The embedding model, the vector database, and the retriever" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A prompt contains the task or instruction you want the LLM to perform, the context of that task, and the input text for the desired response or output. Depending on the use case, a prompt should combine one or more of these components.",
+        "distractors": {
+          "B": "Architecture, training data, and hyperparameters are model design elements, not prompt components provided by the user.",
+          "C": "IAM policies, VPCs, and endpoints are infrastructure configurations, not parts of a prompt.",
+          "D": "Embedding models, vector databases, and retrievers are RAG components, not the components of a user prompt."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "few-shot-prompting",
+      "scenario": null,
+      "stem": "What is few-shot prompting?",
+      "options": [
+        { "key": "A", "text": "Providing a few examples in the prompt to help the LLM better perform and calibrate its output" },
+        { "key": "B", "text": "Training the model on a small dataset before deployment" },
+        { "key": "C", "text": "Limiting the model to generate only a few words in its response" },
+        { "key": "D", "text": "Running inference with reduced computational resources" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Few-shot prompting provides a few examples to help LLMs better perform and calibrate their output to meet expectations. The examples guide the model's behavior without modifying its weights.",
+        "distractors": {
+          "B": "Training on a small dataset is fine-tuning, not few-shot prompting. Few-shot works entirely within the prompt at inference time.",
+          "C": "Few-shot refers to the number of examples provided, not the response length. Response length is controlled by separate parameters.",
+          "D": "Reduced compute is an infrastructure decision. Few-shot is a prompt design technique using examples."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "zero-shot-prompting",
+      "scenario": null,
+      "stem": "What distinguishes zero-shot prompting from few-shot prompting?",
+      "options": [
+        { "key": "A", "text": "Zero-shot provides no examples in the prompt, relying solely on instructions and the model's pre-trained knowledge" },
+        { "key": "B", "text": "Zero-shot requires retraining the model before each prompt" },
+        { "key": "C", "text": "Zero-shot means the model has never been trained on any data" },
+        { "key": "D", "text": "Zero-shot uses more examples than few-shot for better accuracy" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Zero-shot prompting provides no examples — it relies on the task description and the model's pre-trained knowledge. Few-shot provides examples to calibrate output. Zero-shot tests the model's ability to generalize from instructions alone.",
+        "distractors": {
+          "B": "Zero-shot requires no retraining. It works at inference time with just instructions in the prompt.",
+          "C": "The model is fully trained. 'Zero-shot' refers to zero examples in the prompt, not zero training.",
+          "D": "Zero-shot uses fewer examples (zero) than few-shot. It is the opposite — relying entirely on instructions."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "chain-of-thought",
+      "scenario": null,
+      "stem": "What is chain-of-thought prompting used for?",
+      "options": [
+        { "key": "A", "text": "Breaking down the reasoning process into intermediate steps to improve the quality and coherence of complex task outputs" },
+        { "key": "B", "text": "Chaining multiple different models together in a pipeline" },
+        { "key": "C", "text": "Limiting the model to single-word responses for faster inference" },
+        { "key": "D", "text": "Connecting the model to multiple databases simultaneously" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Chain-of-thought prompting breaks down the reasoning process into intermediate steps for more complex tasks. This improves the quality and coherence of the final output by guiding the model through logical steps.",
+        "distractors": {
+          "B": "Model chaining is a separate concept (pipelines/agents). Chain-of-thought is about reasoning steps within a single prompt.",
+          "C": "Chain-of-thought typically produces longer responses by showing intermediate steps, not shorter ones.",
+          "D": "Database connections are infrastructure concerns. Chain-of-thought is a prompting technique for reasoning."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "latent-space",
+      "scenario": null,
+      "stem": "What is the latent space of a large language model?",
+      "options": [
+        { "key": "A", "text": "The encoded knowledge and stored patterns of data that capture relationships and reconstruct language when prompted" },
+        { "key": "B", "text": "The physical storage location of the model's weights on disk" },
+        { "key": "C", "text": "The network latency between the user and the model endpoint" },
+        { "key": "D", "text": "The unused memory available on the inference server" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Latent space is the encoded knowledge of language in a LLM — the stored patterns of data that capture relationships and, when prompted, reconstruct language from those patterns. It's a statistical database of learned patterns.",
+        "distractors": {
+          "B": "Physical storage location is an infrastructure detail. Latent space refers to the abstract knowledge representation within the model.",
+          "C": "Network latency is a connectivity metric. Latent space is the model's internal knowledge representation.",
+          "D": "Available memory is a hardware metric. Latent space refers to what the model has learned and encoded."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "prompt-engineering-techniques",
+      "scenario": null,
+      "stem": "Which are key techniques for effective prompt engineering? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Be specific and provide clear instructions including desired format, style, tone, and output length" },
+        { "key": "B", "text": "Include examples of desired behavior such as sample texts, templates, or code" },
+        { "key": "C", "text": "Use an iterative process to test prompts and understand how modifications alter responses" },
+        { "key": "D", "text": "Always use the longest possible prompts to maximize context" },
+        { "key": "E", "text": "Copy prompts from other applications without modification" },
+        { "key": "F", "text": "Avoid testing prompts to save time and compute costs" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Key techniques include being specific with instructions (format, style, tone, length), including examples of desired behavior (texts, templates, code), and experimenting iteratively to understand how modifications change responses.",
+        "distractors": {
+          "D": "Balance simplicity and complexity. Overly long prompts can clutter context and produce vague or unrelated responses.",
+          "E": "Prompts should be tailored to your specific task, model, and data. Blindly copying rarely produces optimal results.",
+          "F": "Iteration and testing is a core technique. Skipping it leads to suboptimal prompts and poor model performance."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "prompt-risks",
+      "scenario": null,
+      "stem": "Which are risks and attacks associated with prompt engineering? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Prompt injection — manipulating prompts with untrusted input to produce malicious responses" },
+        { "key": "B", "text": "Jailbreaking — attempting to bypass safety guardrails established for the model" },
+        { "key": "C", "text": "Poisoning — embedding harmful instructions in messages, emails, or web pages" },
+        { "key": "D", "text": "Overfitting — the model memorizing prompt examples during inference" },
+        { "key": "E", "text": "Underfitting — the model forgetting its training when a prompt is submitted" },
+        { "key": "F", "text": "Tokenization — converting text into model-readable tokens" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Key prompt risks include injection (manipulating prompts to produce malicious responses), jailbreaking (bypassing safety guardrails), and poisoning (embedding harmful instructions in external content that gets ingested).",
+        "distractors": {
+          "D": "Overfitting is a training problem, not a prompt engineering risk. The model doesn't memorize prompt examples during inference.",
+          "E": "Underfitting is a training issue. Models don't forget training at inference time due to prompts.",
+          "F": "Tokenization is a normal processing step, not a risk. It converts text to tokens the model can process."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "prompt-engineering-techniques",
+      "scenario": null,
+      "stem": "Which additional best practices improve prompt engineering effectiveness? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Know the strengths and weaknesses of your model" },
+        { "key": "B", "text": "Balance simplicity and complexity in prompts to avoid vague or unexpected answers" },
+        { "key": "C", "text": "Always use the same prompt regardless of which model you are using" },
+        { "key": "D", "text": "Never include context because it confuses the model" },
+        { "key": "E", "text": "Avoid iterating on prompts since the first attempt is always optimal" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Knowing your model's strengths and weaknesses is essential for effective prompting. Balancing simplicity and complexity prevents vague, unrelated, or unexpected answers.",
+        "distractors": {
+          "C": "Different models have different capabilities. Prompts should be adapted to the specific model's strengths and limitations.",
+          "D": "Context is a key prompt component. Including relevant context improves response quality.",
+          "E": "Iteration is a core technique. Testing and refining prompts is essential for optimal results."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "prompt-tuning",
+      "scenario": null,
+      "stem": "Which statements about prompt tuning are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The actual prompt text is replaced with a continuous embedding vector that is optimized during training" },
+        { "key": "B", "text": "The rest of the model parameters remain frozen while only the prompt embedding is fine-tuned" },
+        { "key": "C", "text": "Prompt tuning modifies all model weights simultaneously" },
+        { "key": "D", "text": "Prompt tuning requires retraining the model from scratch" },
+        { "key": "E", "text": "Prompt tuning can only be used for classification tasks" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Prompt tuning replaces the actual prompt text with a continuous embedding vector optimized during training. It keeps the rest of the model parameters frozen, making it more efficient than full fine-tuning for task-specific adaptation.",
+        "distractors": {
+          "C": "Prompt tuning specifically freezes all other model parameters. Only the prompt embedding is optimized.",
+          "D": "Prompt tuning is efficient precisely because it avoids retraining from scratch. It only tunes the prompt embedding.",
+          "E": "Prompt tuning can be applied to various tasks, not just classification. It adapts the prompt for any specific task."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "latent-space",
+      "scenario": null,
+      "stem": "What is the relationship between a model's latent space and hallucination? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "If the model's latent space lacks information about a prompt's topic, it will choose the closest statistical match, which may be factually incorrect" },
+        { "key": "B", "text": "A key part of advanced prompt engineering is assessing the latent space for a given topic before constructing prompts" },
+        { "key": "C", "text": "Larger latent spaces guarantee zero hallucinations" },
+        { "key": "D", "text": "Hallucination only occurs when the latent space is completely empty" },
+        { "key": "E", "text": "The latent space can be directly inspected by users to verify its contents" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "When knowledge isn't in the latent space, the model chooses the closest statistical match — producing responses that are statistically correct but factually wrong. Advanced prompt engineering requires assessing the latent space for a topic before constructing prompts.",
+        "distractors": {
+          "C": "No latent space guarantees zero hallucinations. Larger models have more knowledge but can still generate incorrect content.",
+          "D": "Hallucination occurs when the latent space has insufficient or approximate information, not only when it's completely empty.",
+          "E": "The latent space is an abstract mathematical representation. It cannot be directly browsed or inspected like a database."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "few-shot-prompting",
+      "scenario": "A customer support team is using Amazon Bedrock to classify incoming tickets into categories (billing, technical, account). The model sometimes misclassifies tickets. The team wants to improve accuracy without fine-tuning.",
+      "stem": "Which prompting technique should the team use to guide the model's classification behavior?",
+      "options": [
+        { "key": "A", "text": "Few-shot prompting — include several labeled examples of tickets in each category within the prompt" },
+        { "key": "B", "text": "Reduce the temperature to zero to eliminate all randomness" },
+        { "key": "C", "text": "Increase the response length parameter to allow more detailed responses" },
+        { "key": "D", "text": "Switch to a smaller model that specializes in shorter text" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Few-shot prompting provides examples that help the model calibrate its classification behavior. Including labeled ticket examples guides the model to follow the same pattern for new inputs without fine-tuning.",
+        "distractors": {
+          "B": "Reducing temperature makes output deterministic but doesn't teach the model correct categories. Examples (few-shot) are needed.",
+          "C": "Longer responses don't improve classification accuracy. The model needs guidance through examples, not more output space.",
+          "D": "A smaller model would likely perform worse. The current model needs better prompting, not replacement."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "chain-of-thought",
+      "scenario": "A math tutoring application needs the AI to solve multi-step word problems and show its work. Simply asking for the answer often produces incorrect results because the model skips intermediate reasoning.",
+      "stem": "Which prompting technique should be used to improve accuracy on these multi-step problems?",
+      "options": [
+        { "key": "A", "text": "Chain-of-thought prompting — instruct the model to break down the reasoning into intermediate steps before giving the final answer" },
+        { "key": "B", "text": "Zero-shot prompting — ask for the answer with no examples or instructions" },
+        { "key": "C", "text": "Reduce the model's temperature to force deterministic outputs" },
+        { "key": "D", "text": "Use a stop sequence after the first number to capture only the final answer" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Chain-of-thought prompting breaks down reasoning into intermediate steps for complex tasks. This improves quality and coherence by forcing the model to work through the logic rather than jumping to an answer.",
+        "distractors": {
+          "B": "Zero-shot without guidance is what's currently producing incorrect results. The model needs structured reasoning direction.",
+          "C": "Deterministic output doesn't improve reasoning quality. The model needs to show steps, not just produce consistent wrong answers.",
+          "D": "Stopping at the first number would cut off the solution. The goal is to show intermediate steps, not truncate output."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "prompt-risks",
+      "scenario": "A company deploys an AI chatbot for employee HR queries. An attacker crafts a prompt that instructs the model to ignore its system prompt and reveal confidential salary data that was provided as context.",
+      "stem": "Which type of prompt attack does this represent?",
+      "options": [
+        { "key": "A", "text": "Prompt injection — manipulating the prompt with untrusted input to override the system prompt and produce unintended responses" },
+        { "key": "B", "text": "Prompt poisoning — embedding harmful instructions in training data" },
+        { "key": "C", "text": "Jailbreaking — bypassing content safety filters for harmful categories" },
+        { "key": "D", "text": "Hijacking — changing the topic of conversation to an unrelated subject" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Prompt injection involves an untrusted user input manipulating the prompt to override developer-set instructions. The attacker instructs the model to ignore its system prompt to produce malicious or unintended responses.",
+        "distractors": {
+          "B": "Poisoning embeds harmful instructions in external content (emails, web pages) that gets ingested. This is direct manipulation of the prompt input.",
+          "C": "Jailbreaking targets safety measures/guardrails. This attack targets the system prompt's instructions, not content filters.",
+          "D": "Hijacking changes the original prompt with new instructions. This scenario specifically overrides the system prompt to extract data."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "prompt-risks",
+      "scenario": "A security team discovers that their customer-facing AI assistant has been responding inappropriately after users found creative ways to phrase requests that circumvent the content safety thresholds configured in guardrails.",
+      "stem": "Which type of prompt attack are users performing?",
+      "options": [
+        { "key": "A", "text": "Jailbreaking — attempting to bypass the safety guardrails established for the model" },
+        { "key": "B", "text": "Prompt injection — adding untrusted input to override the system prompt" },
+        { "key": "C", "text": "Poisoning — embedding instructions in external web pages" },
+        { "key": "D", "text": "Hijacking — completely replacing the original prompt with a new topic" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Jailbreaking specifically targets safety measures and guardrails. Users craft creative phrasings to bypass the content safety thresholds, which differs from injection (overriding instructions) or poisoning (external content).",
+        "distractors": {
+          "B": "Injection overrides system prompt instructions. Jailbreaking specifically targets safety guardrails and content thresholds.",
+          "C": "Poisoning involves external content with embedded instructions. This is direct user interaction circumventing guardrails.",
+          "D": "Hijacking changes the topic. Jailbreaking maintains the same intent but finds ways around safety filters."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "latent-space",
+      "scenario": "A developer prompts an LLM about a highly specialized medical procedure that was developed in 2024. The model generates a confident-sounding response that contains factual inaccuracies. The developer suspects the model lacks knowledge on this topic.",
+      "stem": "What is the most likely explanation for this behavior based on the concept of latent space?",
+      "options": [
+        { "key": "A", "text": "The model's latent space lacks sufficient information about this topic, so it chose the closest statistical match — producing content that is statistically plausible but factually wrong" },
+        { "key": "B", "text": "The model intentionally generates incorrect information to test the developer" },
+        { "key": "C", "text": "The model's temperature was set too low, forcing incorrect outputs" },
+        { "key": "D", "text": "The model detected the query was about medicine and refused to answer accurately for liability reasons" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "When knowledge isn't in the latent space, the model chooses the closest statistical match. The response is statistically correct (follows language patterns) but factually wrong because the specific knowledge doesn't exist in the model's encoded patterns.",
+        "distractors": {
+          "B": "Models don't intentionally generate wrong information. They produce the most statistically probable output given their training.",
+          "C": "Low temperature makes output more deterministic but doesn't cause inaccuracy. The issue is missing knowledge in the latent space.",
+          "D": "Models don't have liability reasoning. They generate text based on statistical patterns, not legal considerations."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "prompt-risks",
+      "scenario": "An enterprise security team is configuring guardrails for their Amazon Bedrock application. They want to protect against multiple types of prompt attacks.",
+      "stem": "Which protections can guardrails provide for prompt security? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Define topics that are not desirable within the application context" },
+        { "key": "B", "text": "Configure thresholds to filter harmful content categories and prompt attacks like jailbreak and injection" },
+        { "key": "C", "text": "Filter inputs that might contain sensitive data" },
+        { "key": "D", "text": "Automatically retrain the model to resist future attacks" },
+        { "key": "E", "text": "Block all user access after a single detected attack" },
+        { "key": "F", "text": "Delete the model's latent space when an attack is detected" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Guardrails can define undesirable topics, configure thresholds to filter harmful categories and prompt attacks (jailbreak, injection), and filter inputs containing sensitive data.",
+        "distractors": {
+          "D": "Guardrails are runtime filters. They do not retrain models. Model updates require separate training processes.",
+          "E": "Guardrails block specific content, not users entirely. They return configured violation responses.",
+          "F": "The latent space is the model's encoded knowledge. It cannot be selectively deleted by guardrails."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "prompt-engineering-techniques",
+      "scenario": "A prompt engineer at a content company is refining prompts for their blog generation AI. They want to produce consistently high-quality outputs.",
+      "stem": "Which prompt components should they include for optimal results? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Detailed context including desired format, style, tone, and output length" },
+        { "key": "B", "text": "Sample texts and templates showing the desired output behavior" },
+        { "key": "C", "text": "The model's internal weight values for transparency" },
+        { "key": "D", "text": "The AWS account ID and Region for authentication" },
+        { "key": "E", "text": "The complete training dataset used to build the model" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Effective prompts include specific instructions with desired format, style, tone, and length, plus examples of desired behavior such as sample texts, templates, code, or data formats.",
+        "distractors": {
+          "C": "Internal model weights are inaccessible to users and cannot be included in prompts.",
+          "D": "Authentication is handled at the API level, not within prompts. Prompts contain task instructions and context.",
+          "E": "Training datasets are not included in prompts. Prompts provide task-specific instructions and examples."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "llm-tasks",
+      "scenario": "A development team is building applications using Amazon Bedrock and wants to understand which tasks their LLM can support through prompt engineering.",
+      "stem": "Which tasks are commonly supported by LLMs on Amazon Bedrock? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Classification and question answering" },
+        { "key": "B", "text": "Summarization and open-ended text generation" },
+        { "key": "C", "text": "Code generation and math/reasoning" },
+        { "key": "D", "text": "Physical robot control and hardware manipulation" },
+        { "key": "E", "text": "Real-time video rendering and 3D modeling" },
+        { "key": "F", "text": "Database schema migration and index optimization" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Common LLM tasks on Bedrock include classification, question answering (with and without context), summarization, open-ended text generation, code generation, math, and reasoning/logical thinking.",
+        "distractors": {
+          "D": "Physical robot control requires robotics systems, not LLM prompting through Bedrock.",
+          "E": "Video rendering and 3D modeling are specialized compute tasks, not text-based LLM capabilities.",
+          "F": "While LLMs can discuss databases, actual schema migration and index optimization require specialized database tools."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "prompt-risks",
+      "scenario": "A company discovers that their AI customer service bot started providing misleading information after processing a batch of customer emails. Investigation reveals that an attacker embedded hidden instructions within the emails that the bot ingested as context.",
+      "stem": "Which type of prompt attack was used in this scenario?",
+      "options": [
+        { "key": "A", "text": "Poisoning — harmful instructions were embedded in messages (emails) that the model ingested" },
+        { "key": "B", "text": "Jailbreaking — the attacker bypassed content safety guardrails" },
+        { "key": "C", "text": "Prompt injection — the attacker directly manipulated the system prompt" },
+        { "key": "D", "text": "Hijacking — the attacker changed the bot's topic to an unrelated subject" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Poisoning involves embedding harmful instructions in messages, emails, web pages, or other content that gets ingested by the model. The attacker used emails as the delivery mechanism for hidden malicious instructions.",
+        "distractors": {
+          "B": "Jailbreaking targets safety guardrails through creative prompt phrasing. This attack used external content (emails) with embedded instructions.",
+          "C": "Direct injection manipulates the prompt itself. Poisoning uses external content sources as delivery mechanisms.",
+          "D": "Hijacking changes the prompt's topic. Poisoning delivers malicious instructions through ingested external content."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "prompt-engineering-definition",
+      "scenario": "A new ML engineer joins a team working with Amazon Bedrock. Their manager explains that prompt engineering is the most important skill for getting quality outputs from foundation models.",
+      "stem": "How is prompt engineering defined?",
+      "options": [
+        { "key": "A", "text": "The practice of crafting and optimizing input prompts by selecting appropriate words, phrases, sentences, and formatting to effectively use LLMs" },
+        { "key": "B", "text": "The process of modifying the model's internal weights to improve output quality" },
+        { "key": "C", "text": "The technique of increasing model size to produce better responses" },
+        { "key": "D", "text": "The practice of deploying multiple model instances for load balancing" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Prompt engineering is the practice of crafting and optimizing input prompts — selecting appropriate words, phrases, sentences, punctuation, and separator characters to effectively use LLMs for a wide variety of applications.",
+        "distractors": {
+          "B": "Modifying weights is training/fine-tuning, not prompt engineering. Prompt engineering works with the model as-is.",
+          "C": "Model size is an architecture decision. Prompt engineering optimizes inputs without changing the model.",
+          "D": "Load balancing is infrastructure engineering. Prompt engineering is about crafting effective inputs for quality outputs."
+        }
+      }
+    }
+  ]
+}

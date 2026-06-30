@@ -1,0 +1,457 @@
+{
+  "label": "Gap Coverage — Supplemental",
+  "order": 3,
+  "topic": "Domain 4: Guidelines for Responsible AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "label-imbalance",
+      "scenario": null,
+      "stem": "What does label imbalance in training data mean?",
+      "options": [
+        { "key": "A", "text": "The labels favor positive outcomes for one class over another in the training dataset" },
+        { "key": "B", "text": "The dataset has more features than labels" },
+        { "key": "C", "text": "The model predicts the same label for all inputs" },
+        { "key": "D", "text": "Labels are missing from a portion of the training data" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Label imbalance occurs when the labels favor positive outcomes for one class over another. For example, training data might show loans approved at a higher rate for middle-aged individuals than for other age groups.",
+        "distractors": {
+          "B": "Having more features than labels is a dataset shape issue, not label imbalance. Label imbalance is about unequal distribution of outcomes across classes.",
+          "C": "Predicting the same label for all inputs describes a collapsed model, not label imbalance in the data.",
+          "D": "Missing labels describe incomplete data, not label imbalance. Label imbalance exists even when all records are labeled."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "specificity-bias",
+      "scenario": null,
+      "stem": "What does it indicate when specificity is lower for one age group compared to others in a trained model?",
+      "options": [
+        { "key": "A", "text": "The model is showing bias because it less often correctly predicts negative outcomes for that group" },
+        { "key": "B", "text": "The model has higher accuracy for that group" },
+        { "key": "C", "text": "The model was trained with more data for that group" },
+        { "key": "D", "text": "The model takes longer to generate predictions for that group" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Specificity measures how often the model correctly predicts a negative outcome. If specificity is lower for one group, the model is less accurate at predicting negative cases for that group, which is a form of bias against the other groups.",
+        "distractors": {
+          "B": "Lower specificity means worse performance for negative predictions, not higher overall accuracy.",
+          "C": "More training data would typically improve performance, not reduce specificity. Lower specificity indicates a bias issue.",
+          "D": "Inference speed is unrelated to specificity. Specificity is about prediction correctness for negative outcomes."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "accuracy-difference",
+      "scenario": null,
+      "stem": "What does the accuracy difference metric in SageMaker Clarify measure?",
+      "options": [
+        { "key": "A", "text": "The difference between prediction accuracies for different classes, which can occur when data contains class imbalance" },
+        { "key": "B", "text": "The difference between training accuracy and test accuracy for the same model" },
+        { "key": "C", "text": "The difference between the model's accuracy and a random baseline" },
+        { "key": "D", "text": "The improvement in accuracy after hyperparameter tuning" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The accuracy difference metric measures the difference between prediction accuracies for different classes. This can occur when training data contains class imbalance, causing the model to perform differently for different groups.",
+        "distractors": {
+          "B": "The gap between training and test accuracy indicates overfitting, not bias between groups. Accuracy difference compares classes, not dataset splits.",
+          "C": "Comparing against a random baseline measures overall model utility, not fairness between classes.",
+          "D": "Hyperparameter tuning improvement is a model optimization metric, not a bias measurement."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "underfitting",
+      "scenario": null,
+      "stem": "How does underfitting relate to fairness for specific groups?",
+      "options": [
+        { "key": "A", "text": "Underfitting occurs for groups when insufficient training data matched their characteristics, causing the model to perform poorly for them" },
+        { "key": "B", "text": "Underfitting always affects all groups equally regardless of data representation" },
+        { "key": "C", "text": "Underfitting only impacts model training speed, not prediction quality" },
+        { "key": "D", "text": "Underfitting makes the model too complex for underrepresented groups" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Underfitting can occur for some groups when there wasn't enough training data matching their characteristics. The model doesn't learn the patterns for those groups well enough, leading to poor performance specifically for them.",
+        "distractors": {
+          "B": "Underfitting can disproportionately affect specific groups based on their representation in training data. It does not always affect all groups equally.",
+          "C": "Underfitting directly impacts prediction quality. The model fails to capture relevant patterns for the affected group.",
+          "D": "Underfitting means the model is too simple or lacks sufficient data, not too complex. Overfitting relates to excess complexity."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "accountability",
+      "scenario": null,
+      "stem": "What does accountability mean as a responsible AI model selection practice?",
+      "options": [
+        { "key": "A", "text": "Establishing clear lines of responsibility for AI model outcomes and decision-making" },
+        { "key": "B", "text": "Making the AI model financially accountable for its own compute costs" },
+        { "key": "C", "text": "Ensuring the model can explain its decisions to end users automatically" },
+        { "key": "D", "text": "Requiring all model predictions to be reviewed by a human before delivery" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Accountability means establishing clear lines of responsibility for AI model outcomes and decision-making. It ensures that people and organizations are answerable for the results their AI systems produce.",
+        "distractors": {
+          "B": "Financial accountability for compute costs is a budgeting concern, not the responsible AI definition of accountability.",
+          "C": "Automatic explanation is explainability, not accountability. Accountability is about human responsibility for outcomes.",
+          "D": "Human review of predictions is one possible control, but accountability is broader — it's about establishing who is responsible for outcomes."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "clarify-outputs",
+      "scenario": null,
+      "stem": "What outputs does a SageMaker Clarify processing job produce after analyzing a model? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "A JSON file with bias metrics and global feature attributions" },
+        { "key": "B", "text": "A visual report" },
+        { "key": "C", "text": "Additional files for local feature attributions" },
+        { "key": "D", "text": "A retrained model with bias removed" },
+        { "key": "E", "text": "An updated IAM policy restricting access to biased features" },
+        { "key": "F", "text": "A new training dataset with class imbalances corrected" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The Clarify processing container computes and saves results to S3 including a JSON file with bias metrics and global feature attributions, a visual report, and additional files for local feature attributions.",
+        "distractors": {
+          "D": "Clarify analyzes and reports on bias. It does not retrain the model or modify its weights.",
+          "E": "Clarify produces analysis results, not IAM policy changes. Access control is managed separately.",
+          "F": "Clarify identifies imbalances but does not modify or regenerate datasets. Data correction is a separate step."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "model-selection",
+      "scenario": null,
+      "stem": "Which practices must be considered when selecting AI models to ensure systems are socially responsible? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Accountability — establishing clear lines of responsibility for model outcomes" },
+        { "key": "B", "text": "Stakeholder engagement — involving diverse perspectives in model selection and deployment" },
+        { "key": "C", "text": "Transparency — providing clear information about capabilities, limitations, and potential risks" },
+        { "key": "D", "text": "Exclusivity — limiting model access to a single team to prevent misuse" },
+        { "key": "E", "text": "Complexity — always choosing the most complex model for maximum accuracy" },
+        { "key": "F", "text": "Speed — prioritizing the fastest model regardless of fairness" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Responsible model selection includes accountability (clear responsibility for outcomes), stakeholder engagement (diverse perspectives in selection/deployment), and transparency (clear information about capabilities, limitations, and risks).",
+        "distractors": {
+          "D": "Involving diverse perspectives (stakeholder engagement) is the recommendation, not exclusivity.",
+          "E": "Sustainability recommends considering environmental impact. Choosing the most complex model contradicts this principle.",
+          "F": "Speed is a performance consideration. Responsible selection prioritizes fairness, sustainability, and transparency over pure speed."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "llm-evaluation",
+      "scenario": null,
+      "stem": "Which evaluation dimensions does SageMaker Clarify assess when evaluating LLMs? (Select TWO that include the accuracy dimension)",
+      "options": [
+        { "key": "A", "text": "Accuracy — compares model output to expected responses such as classifying and summarizing correctly" },
+        { "key": "B", "text": "Semantic robustness — checks output consistency under input variations like typos" },
+        { "key": "C", "text": "Latency — measures response time for different prompt lengths" },
+        { "key": "D", "text": "Cost efficiency — evaluates tokens per dollar spent" },
+        { "key": "E", "text": "Scalability — tests maximum concurrent users supported" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Clarify evaluates LLMs across five dimensions: prompt stereotyping, toxicity, factual knowledge, semantic robustness, and accuracy. Accuracy compares model output to expected responses for tasks like classification and summarization.",
+        "distractors": {
+          "C": "Latency is a performance metric, not one of the five evaluation dimensions for LLM quality.",
+          "D": "Cost efficiency is a billing concern, not a model quality evaluation dimension.",
+          "E": "Scalability is an infrastructure metric. Clarify evaluates model behavior quality, not infrastructure capacity."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "bedrock-guardrails",
+      "scenario": null,
+      "stem": "Which content filter categories can you configure thresholds for in Amazon Bedrock guardrails? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Hate and insults" },
+        { "key": "B", "text": "Sexual content and violence" },
+        { "key": "C", "text": "Copyright and plagiarism" },
+        { "key": "D", "text": "Factual accuracy and hallucination" },
+        { "key": "E", "text": "Grammar and spelling" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Bedrock guardrails provide content filters with configurable thresholds across four categories: hate, insults, sexual content, and violence.",
+        "distractors": {
+          "C": "Copyright detection is not one of the four content filter categories. It is a separate legal concern not handled by content thresholds.",
+          "D": "Factual accuracy and hallucination are not content filter categories in guardrails. These are evaluated by SageMaker Clarify's LLM evaluation.",
+          "E": "Grammar and spelling are language quality issues, not content safety categories in guardrails."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "generative-ai-risks",
+      "scenario": null,
+      "stem": "Which are consequences of irresponsible AI practices for an organization? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Loss of customer trust due to biased or harmful outputs" },
+        { "key": "B", "text": "Reputational damage because of unintended consequences from AI systems" },
+        { "key": "C", "text": "Automatic improvement of model accuracy through public scrutiny" },
+        { "key": "D", "text": "Increased market share due to media attention" },
+        { "key": "E", "text": "Faster model training from negative feedback loops" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Irresponsible AI practices can result in loss of customer trust and reputational damage. These risks extend beyond legal consequences to long-term business impact from biased, harmful, or unintended AI behavior.",
+        "distractors": {
+          "C": "Public scrutiny of irresponsible AI typically damages reputation rather than improving the model automatically.",
+          "D": "Negative media attention from irresponsible AI harms reputation and market position, not improves it.",
+          "E": "Negative feedback from irresponsible practices does not create beneficial training loops. It causes distrust and potential legal action."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "label-imbalance",
+      "scenario": "A consumer lending company analyzes their training data and finds that loan approvals are 78% for applicants aged 35-50 but only 52% for applicants aged 18-25 and 55% for those over 60. The company wants to understand if this represents a data bias issue.",
+      "stem": "What type of training data bias does this pattern represent?",
+      "options": [
+        { "key": "A", "text": "Label imbalance — positive outcome labels favor the middle-aged class over other age groups" },
+        { "key": "B", "text": "Class imbalance — there are fewer records for middle-aged applicants" },
+        { "key": "C", "text": "Feature imbalance — the age feature has too many unique values" },
+        { "key": "D", "text": "Sample imbalance — the test set is larger than the training set" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "This is label imbalance — the positive outcome (approval) favors middle-aged applicants at 78% versus much lower rates for younger and older applicants. The training data shows an unwanted pattern where positive outcomes are disproportionately assigned to one class.",
+        "distractors": {
+          "B": "Class imbalance refers to the number of records per class. This scenario describes unequal approval rates (labels), not unequal sample counts.",
+          "C": "Feature imbalance is not a standard bias term. The issue is about outcome label distribution across age groups.",
+          "D": "Sample imbalance between splits is a data engineering concern. This scenario describes label distribution bias within training data."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "accuracy-difference",
+      "scenario": "A healthcare company's disease prediction model achieves 94% accuracy for patients aged 30-50 but only 81% accuracy for patients over 70. The data team suspects this is related to class imbalance in training data.",
+      "stem": "Which SageMaker Clarify metric directly captures this disparity?",
+      "options": [
+        { "key": "A", "text": "Accuracy difference — the difference between prediction accuracies for different classes" },
+        { "key": "B", "text": "Demographic disparity — the proportion of rejected outcomes between classes" },
+        { "key": "C", "text": "Treatment equality — the ratio of false negatives to false positives" },
+        { "key": "D", "text": "Recall difference — the difference in true positive rates" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The accuracy difference metric measures the difference between prediction accuracies for different classes. A 94% vs 81% accuracy split across age groups is exactly what this metric captures, and it can occur from class imbalance in training data.",
+        "distractors": {
+          "B": "Demographic disparity measures the proportion of rejected vs accepted outcomes in data, not model prediction accuracy differences.",
+          "C": "Treatment equality compares the FN-to-FP ratio between classes. The scenario describes overall accuracy, not error type ratios.",
+          "D": "Recall difference measures true positive rate differences. While related, the scenario specifically describes overall accuracy (all predictions), not just positive case predictions."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "bedrock-guardrails",
+      "scenario": "A travel company configures Amazon Bedrock guardrails for their booking assistant. They want users to receive a helpful, branded message when their prompt is blocked, and a different message when the model's response is blocked.",
+      "stem": "Does Amazon Bedrock guardrails support configuring separate messages for these two blocking scenarios?",
+      "options": [
+        { "key": "A", "text": "Yes, you can specify separate response messages for when a prompt is blocked versus when a model response is blocked" },
+        { "key": "B", "text": "No, a single generic error message is used for all blocked content" },
+        { "key": "C", "text": "No, blocked content simply returns an empty response with no message" },
+        { "key": "D", "text": "Yes, but only if you deploy a custom Lambda function to handle the messages" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "You can specify two separate configurable response messages: one for when a prompt is blocked, and one for when a model response is blocked. This allows branded, helpful messaging for each scenario.",
+        "distractors": {
+          "B": "Guardrails support separate configurable messages for prompt blocks vs response blocks, not a single generic message.",
+          "C": "Blocked content returns a configured violation response message, not an empty response.",
+          "D": "Message configuration is built into guardrails. No custom Lambda function is required."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "bedrock-evaluation",
+      "scenario": "A company is choosing between three foundation models available in Amazon Bedrock for their summarization use case. They want to evaluate and compare the models' performance before committing to one.",
+      "stem": "Where can the company access LLM evaluation capabilities for pre-trained models in Amazon Bedrock?",
+      "options": [
+        { "key": "A", "text": "In the Amazon Bedrock console, which offers the same evaluation capabilities as SageMaker Clarify" },
+        { "key": "B", "text": "Only through SageMaker Studio, as Bedrock does not have evaluation features" },
+        { "key": "C", "text": "Only through AWS CLI commands, as no console interface exists for Bedrock evaluation" },
+        { "key": "D", "text": "Through AWS Artifact, which provides model evaluation reports" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The same evaluation capabilities available in SageMaker Clarify are also available in the Bedrock console to help evaluate pre-trained LLMs in Amazon Bedrock.",
+        "distractors": {
+          "B": "Bedrock has its own evaluation capabilities in the Bedrock console. You don't need SageMaker Studio exclusively.",
+          "C": "A console interface exists in Bedrock for model evaluation. It's not limited to CLI access.",
+          "D": "AWS Artifact provides compliance reports, not model performance evaluation."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "stakeholder-engagement",
+      "scenario": "A fintech company is selecting an AI model for credit decisions. The data science team wants to make the decision independently to move fast, but the VP of Product insists on involving compliance officers, customer advocates, and ethicists in the process.",
+      "stem": "Which responsible AI practice supports the VP's position?",
+      "options": [
+        { "key": "A", "text": "Stakeholder engagement — involving diverse perspectives in the model selection and deployment process" },
+        { "key": "B", "text": "Sustainability — minimizing environmental impact of the selection process" },
+        { "key": "C", "text": "Robustness — ensuring the model tolerates failures" },
+        { "key": "D", "text": "Privacy — protecting PII during the selection process" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Stakeholder engagement is about involving diverse perspectives in the model selection and deployment process. Including compliance, customer advocates, and ethicists ensures the model is socially responsible, not just technically sound.",
+        "distractors": {
+          "B": "Sustainability concerns environmental impact, not the breadth of people involved in selection decisions.",
+          "C": "Robustness is about system reliability, not about who participates in the selection process.",
+          "D": "Privacy protects personal data. The scenario is about including diverse viewpoints, not data protection."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "specificity-bias",
+      "scenario": "A fraud detection model is evaluated and found to have different specificity rates across age groups. For customers aged 20-30, specificity is 92%. For customers aged 50-60, specificity is only 76%.",
+      "stem": "What does this specificity difference mean in practical terms? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The model less accurately identifies legitimate (non-fraudulent) transactions for the 50-60 age group" },
+        { "key": "B", "text": "The 50-60 age group experiences more false fraud alerts on their legitimate transactions" },
+        { "key": "C", "text": "The model catches more actual fraud for the 50-60 age group" },
+        { "key": "D", "text": "The 20-30 age group has a higher rate of undetected fraud" },
+        { "key": "E", "text": "Both groups have identical user experiences" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Lower specificity means the model less often correctly predicts negative outcomes (non-fraud) for that group. Practically, the 50-60 group experiences more false positives — legitimate transactions incorrectly flagged as fraud.",
+        "distractors": {
+          "C": "Catching more actual fraud relates to recall/sensitivity, not specificity. Specificity is about correctly identifying non-fraud cases.",
+          "D": "Undetected fraud would be measured by recall for the younger group. The scenario only tells us about specificity differences.",
+          "E": "Different specificity rates directly mean different user experiences — one group gets more false fraud alerts."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "clarify-outputs",
+      "scenario": "A data science team has completed a SageMaker Clarify processing job analyzing their recommendation model for bias. They want to share results with both technical and non-technical stakeholders.",
+      "stem": "Which outputs from the Clarify processing job can they use for different audiences? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "A visual report suitable for non-technical stakeholders to understand bias findings" },
+        { "key": "B", "text": "A JSON file with bias metrics and feature attributions for programmatic analysis by engineers" },
+        { "key": "C", "text": "An automatically generated email to all stakeholders with a summary" },
+        { "key": "D", "text": "A model retraining script that fixes detected biases" },
+        { "key": "E", "text": "An IAM policy update that restricts access to biased features" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Clarify produces a visual report (suitable for non-technical review) and a JSON file with bias metrics and global feature attributions (suitable for programmatic analysis). Both are saved to the S3 output location.",
+        "distractors": {
+          "C": "Clarify saves results to S3. It does not send automated emails to stakeholders.",
+          "D": "Clarify identifies bias but does not generate retraining scripts. Remediation is a separate human decision.",
+          "E": "Clarify does not modify IAM policies. It reports findings; access control changes are separate."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "underfitting",
+      "scenario": "A bank's credit scoring model performs well for urban applicants (who make up 80% of training data) but poorly for rural applicants (20% of training data). The model seems to apply overly simple rules to rural applicants rather than capturing their unique financial patterns.",
+      "stem": "Which issues are contributing to this problem? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Underfitting for rural applicants because insufficient training data matched their characteristics" },
+        { "key": "B", "text": "Class imbalance with rural applicants underrepresented at only 20% of training data" },
+        { "key": "C", "text": "Overfitting for rural applicants due to too much rural data" },
+        { "key": "D", "text": "The model architecture is too complex for rural applicant patterns" },
+        { "key": "E", "text": "Label imbalance showing rural applicants have a higher approval rate" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Underfitting occurs for groups when insufficient training data matched their characteristics. Class imbalance (rural at only 20%) means the model couldn't learn the nuanced patterns for rural applicants, applying overly simplistic rules instead.",
+        "distractors": {
+          "C": "With only 20% representation, rural applicants are underrepresented. The model may overfit the few rural samples it has, not because there's too much data.",
+          "D": "The model applies overly simple rules for rural applicants, suggesting underfitting (too few patterns learned), not excessive complexity.",
+          "E": "The scenario describes performance differences, not label imbalance. No information about approval rate differences is given."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "accountability",
+      "scenario": "An autonomous vehicle company's AI system causes an accident. Multiple teams were involved: the data team curated training data, the ML team built the model, the product team defined requirements, and the operations team deployed it. No one claims responsibility.",
+      "stem": "Which responsible AI principle was violated in the development process that led to this accountability gap?",
+      "options": [
+        { "key": "A", "text": "Accountability — clear lines of responsibility for AI model outcomes were not established" },
+        { "key": "B", "text": "Transparency — the model's capabilities were not documented" },
+        { "key": "C", "text": "Fairness — the model discriminated against certain road conditions" },
+        { "key": "D", "text": "Privacy — user driving data was exposed in the accident" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Accountability requires establishing clear lines of responsibility for AI model outcomes and decision-making. Without assigned accountability, no team owns the consequences when the system fails.",
+        "distractors": {
+          "B": "Transparency about capabilities may be an issue, but the core problem is that no one is answerable for outcomes.",
+          "C": "The scenario describes an accountability gap, not a fairness issue about discriminatory treatment.",
+          "D": "Privacy concerns are about data exposure. The scenario is about organizational responsibility for AI outcomes."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "llm-evaluation",
+      "scenario": "A customer support team is comparing two LLMs for classifying incoming tickets into categories (billing, technical, account). They need to evaluate which model more accurately assigns tickets to the correct category compared to human-labeled expected responses.",
+      "stem": "Which SageMaker Clarify LLM evaluation dimension directly measures this classification performance?",
+      "options": [
+        { "key": "A", "text": "Accuracy — compares model output to expected responses such as classifying data correctly" },
+        { "key": "B", "text": "Factual knowledge — checks veracity of model responses" },
+        { "key": "C", "text": "Semantic robustness — checks consistency under input variations" },
+        { "key": "D", "text": "Prompt stereotyping — checks for biases in responses" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The accuracy dimension compares model output to expected responses, specifically evaluating whether the model classifies and summarizes data correctly. For ticket classification, it measures how well the model matches human-labeled categories.",
+        "distractors": {
+          "B": "Factual knowledge verifies truthfulness of generated content, not classification correctness against expected labels.",
+          "C": "Semantic robustness tests consistency under typos and formatting changes, not classification accuracy.",
+          "D": "Prompt stereotyping measures bias tendencies, not how accurately the model classifies inputs."
+        }
+      }
+    }
+  ]
+}

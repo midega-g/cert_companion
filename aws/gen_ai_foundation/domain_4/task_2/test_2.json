@@ -1,0 +1,457 @@
+{
+  "label": "Transparent & Explainable Models — Part B",
+  "order": 2,
+  "topic": "Domain 4: Guidelines for Responsible AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "explainability",
+      "scenario": null,
+      "stem": "Why is every model considered explainable even if it is not interpretable?",
+      "options": [
+        { "key": "A", "text": "Because explainability treats the model as a black box and observes outputs relative to inputs, so any model can be observed and explained" },
+        { "key": "B", "text": "Because all models are required by law to publish their source code" },
+        { "key": "C", "text": "Because neural networks have simple internal structures that can always be documented" },
+        { "key": "D", "text": "Because AWS provides automatic explanations for every model deployed on SageMaker" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Explainability treats the model as a black box — describing what a model does by observing outputs relative to inputs. Since every model produces outputs from inputs, every model can be observed and explained using model-agnostic approaches.",
+        "distractors": {
+          "B": "There is no universal law requiring source code publication. Explainability works without access to source code through input-output observation.",
+          "C": "Neural networks have complex internal structures that are not easily documented. Their explainability comes from external observation, not structural simplicity.",
+          "D": "AWS provides tools like SageMaker Clarify to help with explainability, but explanations are not automatically generated for every deployed model without configuration."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "transparency",
+      "scenario": null,
+      "stem": "What often determines the degree of model transparency that is required for an AI system?",
+      "options": [
+        { "key": "A", "text": "Regulatory requirements designed to protect consumers against bias and unfairness" },
+        { "key": "B", "text": "The number of GPUs used during model training" },
+        { "key": "C", "text": "The geographic Region where the model is deployed" },
+        { "key": "D", "text": "The programming language used to build the model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The degree of transparency required often depends upon regulatory requirements so that consumers are protected against bias and unfairness. Regulations may mandate full interpretability or a minimum level of explainability.",
+        "distractors": {
+          "B": "GPU count affects training performance and cost, not transparency requirements. Regulatory context drives transparency needs.",
+          "C": "Deployment Region affects latency and data residency, not the level of transparency required for the model.",
+          "D": "Programming language is an implementation detail that does not influence regulatory transparency requirements."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "transparency-privacy",
+      "scenario": null,
+      "stem": "What data privacy concern can arise from AI model transparency?",
+      "options": [
+        { "key": "A", "text": "Transparency might require sharing details about training data, which raises concerns about the privacy of data used to train the model" },
+        { "key": "B", "text": "Transparent models automatically expose all customer PII in their predictions" },
+        { "key": "C", "text": "Data privacy regulations prohibit all forms of model explainability" },
+        { "key": "D", "text": "Transparent models cannot be encrypted at rest" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Ensuring customer data privacy while maintaining transparency can be challenging. Transparency might require sharing details about the data used to train the model, which raises concerns about data privacy.",
+        "distractors": {
+          "B": "Transparent models do not automatically expose PII. The concern is about training data details being shared in documentation or explanations.",
+          "C": "Privacy regulations do not prohibit explainability. They create a tension that must be balanced, not an outright prohibition.",
+          "D": "Encryption capabilities are independent of model transparency. Transparent models can absolutely be encrypted at rest."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "open-source",
+      "scenario": null,
+      "stem": "Why do some companies block their employees from developing with open source AI models despite the transparency benefits?",
+      "options": [
+        { "key": "A", "text": "They have concerns about model safety and prefer proprietary development to limit transparency for security reasons" },
+        { "key": "B", "text": "Open source models cannot run on AWS infrastructure" },
+        { "key": "C", "text": "Open source models are always less accurate than proprietary models" },
+        { "key": "D", "text": "Open source licenses prohibit commercial use in all cases" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "With maximum transparency through open source, some companies have model safety concerns. They prefer proprietary development to limit transparency and protect against reverse engineering or vulnerability exposure.",
+        "distractors": {
+          "B": "Open source models can run on AWS. Services like SageMaker support deploying open source models.",
+          "C": "Accuracy depends on architecture and data, not licensing model. Open source models can match or exceed proprietary ones.",
+          "D": "Many open source licenses permit commercial use. The concern is about safety and IP exposure, not licensing restrictions."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "interpretability",
+      "scenario": null,
+      "stem": "When starting a new AI/ML project, what should you determine first regarding model transparency?",
+      "options": [
+        { "key": "A", "text": "Whether interpretability is a hard business or regulatory requirement" },
+        { "key": "B", "text": "Whether the model will be deployed in multiple AWS Regions" },
+        { "key": "C", "text": "How many team members will work on the project" },
+        { "key": "D", "text": "Whether the model will use GPU or CPU for inference" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "When starting a new project, you need to determine whether interpretability is a hard business requirement. If regulations or business rules require complete transparency, you must select an interpretable model.",
+        "distractors": {
+          "B": "Multi-Region deployment is an operational decision made later. Transparency requirements should be established first to guide model selection.",
+          "C": "Team size is a project management concern that does not influence whether interpretability is required.",
+          "D": "Hardware choice (GPU/CPU) affects performance and cost, not whether the model meets transparency requirements."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "rlhf",
+      "scenario": null,
+      "stem": "What is the goal of Reinforcement Learning from Human Feedback (RLHF) for large language models? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Ensure the LLM produces content that is truthful" },
+        { "key": "B", "text": "Ensure the LLM produces content that is harmless" },
+        { "key": "C", "text": "Ensure the LLM produces content that is helpful" },
+        { "key": "D", "text": "Ensure the LLM produces content that is maximum length" },
+        { "key": "E", "text": "Ensure the LLM produces content that uses the most complex vocabulary" },
+        { "key": "F", "text": "Ensure the LLM produces content that always agrees with the user" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "RLHF is an industry standard technique for ensuring LLMs produce content that is truthful, harmless, and helpful. It aligns model output with human goals, wants, and needs through reward signals.",
+        "distractors": {
+          "D": "Maximum length is not a goal of RLHF. Concise, helpful responses are often preferred over lengthy ones.",
+          "E": "Complex vocabulary does not align with being helpful. RLHF optimizes for quality and alignment, not vocabulary complexity.",
+          "F": "Always agreeing with the user would compromise truthfulness. RLHF aims for truthful responses even when they contradict the user."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "human-centered-ai",
+      "scenario": null,
+      "stem": "Which practices are part of human-centered AI development? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Interdisciplinary collaboration involving psychologists, ethicists, and domain experts" },
+        { "key": "B", "text": "Involving users in the development process to ensure the AI is genuinely beneficial" },
+        { "key": "C", "text": "Incorporating humans at each stage to ensure transparency, fairness, and privacy" },
+        { "key": "D", "text": "Removing all human decision-making from the AI pipeline for consistency" },
+        { "key": "E", "text": "Training only technical engineers without input from other disciplines" },
+        { "key": "F", "text": "Deploying the model as quickly as possible without user testing" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Human-centered AI involves interdisciplinary collaboration (psychologists, ethicists, domain experts), user involvement in development, and incorporating humans at each stage to ensure the AI is transparent, explainable, fair, unbiased, and maintains privacy.",
+        "distractors": {
+          "D": "Human-centered AI increases human involvement, not removes it. Humans are essential at every stage.",
+          "E": "The approach explicitly involves diverse disciplines beyond engineering — psychologists, ethicists, domain experts.",
+          "F": "Human-centered AI prioritizes user needs and involves them in development. Rushing deployment without user input contradicts this principle."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "sagemaker-clarify-explainability",
+      "scenario": null,
+      "stem": "Which explainability analyses does SageMaker Clarify provide? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Feature attributions based on Shapley values showing each feature's contribution to predictions" },
+        { "key": "B", "text": "Partial dependence plots showing how predictions change for different values of a feature" },
+        { "key": "C", "text": "Model source code decompilation revealing the exact algorithm logic" },
+        { "key": "D", "text": "Hardware utilization analysis showing GPU memory consumption per feature" },
+        { "key": "E", "text": "Cost attribution showing the dollar cost of processing each feature" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Clarify provides feature attributions based on Shapley values (showing each feature's importance) and partial dependence plots (showing how predictions change for different values of a feature).",
+        "distractors": {
+          "C": "Clarify treats models as black boxes. It does not decompile or reveal internal algorithm logic.",
+          "D": "GPU memory usage is an infrastructure metric. Clarify analyzes model behavior, not hardware consumption.",
+          "E": "Cost attribution per feature is not an explainability analysis. Clarify measures feature impact on predictions, not processing cost."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "model-cards",
+      "scenario": null,
+      "stem": "What happens when you create a SageMaker Model Card for a SageMaker-trained model? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "SageMaker autopopulates details about the trained model including how it was trained" },
+        { "key": "B", "text": "Details about the datasets and containers used are automatically included" },
+        { "key": "C", "text": "The model is automatically retrained with improved hyperparameters" },
+        { "key": "D", "text": "A public API endpoint is automatically created for the model" },
+        { "key": "E", "text": "The model's weights are exported to an open source repository" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "When you create a Model Card, SageMaker autopopulates details about your trained model, including how the model was trained, along with the datasets and containers that were used.",
+        "distractors": {
+          "C": "Model Cards document the model. They do not trigger retraining or modify model parameters.",
+          "D": "Model Cards are documentation. Endpoint creation is a separate deployment step.",
+          "E": "Model Cards do not export weights. They document the lifecycle for governance, not share model artifacts externally."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "transparency-security",
+      "scenario": null,
+      "stem": "Which security risks are associated with highly transparent AI models? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Attackers can more easily reverse engineer the model by accessing explanations of its behavior" },
+        { "key": "B", "text": "Exposure of proprietary algorithms to competitors" },
+        { "key": "C", "text": "The model automatically becomes noncompliant with all regulations" },
+        { "key": "D", "text": "Transparent models cannot be deployed behind firewalls" },
+        { "key": "E", "text": "Model transparency causes all training data to be publicly accessible" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The more explanations attackers can access, the more easily they can reverse engineer the model. Additionally, transparency can expose proprietary algorithms to those who might copy them.",
+        "distractors": {
+          "C": "Transparency often helps meet regulatory requirements, not violate them. The concern is security, not compliance.",
+          "D": "Transparent models can be deployed behind firewalls. Security infrastructure is independent of model transparency.",
+          "E": "Transparency about model behavior does not automatically make training data public. Data privacy must be managed separately."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "explainability",
+      "scenario": "A customer contacts their bank asking why an email they sent was flagged as spam by the AI-powered email security system. The security team needs to explain the decision without revealing the model's internal spam detection logic.",
+      "stem": "Which approach to explainability allows the team to answer this question?",
+      "options": [
+        { "key": "A", "text": "A model-agnostic approach that observes output relative to input, treating the model as a black box" },
+        { "key": "B", "text": "Opening the neural network's weights and documenting each neuron's contribution" },
+        { "key": "C", "text": "Replacing the spam model with a rule-based filter that is fully interpretable" },
+        { "key": "D", "text": "Providing the customer with the model's complete training dataset for review" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A model-agnostic approach treats the model as a black box and observes outputs relative to inputs. This can answer real-world questions like why an email was flagged as spam by identifying which input features most influenced the decision.",
+        "distractors": {
+          "B": "Neural network weight inspection is impractical for individual decisions. The model-agnostic approach works without accessing internal mechanisms.",
+          "C": "Replacing the model is unnecessary. Explainability techniques can explain the existing model's decisions without changing the system.",
+          "D": "Sharing training data would violate privacy and security. Explainability describes the decision basis, not the training data."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "interpretability",
+      "scenario": "A government healthcare agency is building a model to determine patient treatment eligibility. Federal regulations require that auditors can document exactly how each internal variable in the model influences the final decision.",
+      "stem": "Which level of model transparency does this requirement mandate?",
+      "options": [
+        { "key": "A", "text": "Interpretability — the ability to document how the inner mechanisms of the model impact the output" },
+        { "key": "B", "text": "Explainability — the ability to describe what the model does by treating it as a black box" },
+        { "key": "C", "text": "Accuracy — the ability to show the model predicts correctly most of the time" },
+        { "key": "D", "text": "Robustness — the ability to show the model handles failures gracefully" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Interpretability means being able to document how the inner mechanisms of the model impact the output. When regulations require auditing internal variables, interpretability (not just explainability) is required.",
+        "distractors": {
+          "B": "Explainability describes behavior without access to inner mechanisms. The requirement specifically asks for documentation of internal variables, which requires interpretability.",
+          "C": "Accuracy measures correctness but does not address how decisions are made internally. The regulation requires process transparency, not just outcome quality.",
+          "D": "Robustness is about failure tolerance. The requirement is about understanding decision mechanisms, not system resilience."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "rlhf",
+      "scenario": "A conversational AI company uses RLHF to improve their chatbot. They have trained a reward model on human preferences and now want the LLM to use it to improve response quality.",
+      "stem": "How does the LLM use the reward model in RLHF?",
+      "options": [
+        { "key": "A", "text": "The LLM refines its responses to maximize the reward predicted by the reward model" },
+        { "key": "B", "text": "The LLM replaces its weights entirely with the reward model's weights" },
+        { "key": "C", "text": "The reward model directly edits the LLM's responses before they reach users" },
+        { "key": "D", "text": "The LLM deletes all training data that the reward model scored poorly" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The LLM uses the reward model to refine its responses for maximum reward. The reward model predicts how highly a human would score a response, and the LLM optimizes to produce responses that score well.",
+        "distractors": {
+          "B": "The LLM and reward model are separate models. The LLM refines its behavior using reward signals, not by copying weights.",
+          "C": "The reward model scores responses; it does not edit them. The LLM itself learns to produce better responses based on reward signals.",
+          "D": "RLHF adjusts model behavior through reinforcement learning, not by deleting training data."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "amazon-a2i",
+      "scenario": "A document processing company uses Amazon Textract to extract data from forms. For critical financial documents, they want humans to verify any extraction where the AI confidence is below 90%, and they need at least 3 reviewers to agree before accepting the result.",
+      "stem": "Which Amazon A2I configuration supports this multi-reviewer verification requirement?",
+      "options": [
+        { "key": "A", "text": "Configure A2I to route low-confidence predictions to human review and set the number of required reviewers to 3" },
+        { "key": "B", "text": "Deploy three separate Textract endpoints and compare their outputs programmatically" },
+        { "key": "C", "text": "Train three separate models and use ensemble voting" },
+        { "key": "D", "text": "Set Textract's confidence threshold to 300% to require triple verification" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon A2I lets you configure how many reviewers need to review each prediction. Combined with routing low-confidence inferences to human review, this supports the multi-reviewer verification requirement.",
+        "distractors": {
+          "B": "Multiple endpoints don't provide human judgment. A2I specifically provides human review workflows.",
+          "C": "Ensemble models are AI-based, not human verification. The requirement is for human reviewers to verify results.",
+          "D": "Confidence thresholds don't work that way. A2I is the mechanism for adding human review to AI outputs."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "shapley-values",
+      "scenario": "A marketing team's customer churn model predicts that a specific customer will churn. The team wants to know which of the customer's attributes (tenure, last purchase date, support tickets) contributed most to this specific prediction.",
+      "stem": "What type of SageMaker Clarify feature attribution answers this question for an individual prediction?",
+      "options": [
+        { "key": "A", "text": "Local feature attributions that show each feature's contribution for a specific prediction" },
+        { "key": "B", "text": "Global feature attributions that show average importance across all predictions" },
+        { "key": "C", "text": "A partial dependence plot showing prediction changes across feature ranges" },
+        { "key": "D", "text": "Demographic disparity showing bias between customer segments" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "SageMaker Clarify produces local feature attributions that show each feature's contribution to a specific individual prediction. The Clarify processing job saves additional files for local feature attributions alongside the global attributions.",
+        "distractors": {
+          "B": "Global attributions show overall feature importance across the dataset, not for one specific customer's prediction.",
+          "C": "Partial dependence plots show how predictions change across a feature's value range for the model overall, not for one specific case.",
+          "D": "Demographic disparity is a bias metric comparing groups, not an individual prediction explanation."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "open-source",
+      "scenario": "A data science team is evaluating whether to use an open source AI model for their fraud detection system. Their CISO and head of ML have different perspectives.",
+      "stem": "Which statements correctly represent the benefits AND concerns of open source AI models? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Benefit: Because inner workings are open for scrutiny, it instills confidence in the model's fairness" },
+        { "key": "B", "text": "Concern: Maximum transparency may compromise model safety because proprietary logic is exposed" },
+        { "key": "C", "text": "Benefit: Open source models require no monitoring because the community handles all updates" },
+        { "key": "D", "text": "Concern: Open source models cannot meet any regulatory compliance requirements" },
+        { "key": "E", "text": "Benefit: Open source eliminates the need for human review of predictions" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Open scrutiny instills confidence in fairness since biases are more likely to be caught by diverse contributors. However, some companies have safety concerns because maximum transparency exposes model logic that attackers or competitors could exploit.",
+        "distractors": {
+          "C": "Open source models still require monitoring in production. Community development does not eliminate operational responsibilities.",
+          "D": "Open source models can meet compliance requirements. Some companies prefer proprietary for safety, not because open source is inherently noncompliant.",
+          "E": "Open source does not eliminate human review needs. Human oversight remains important regardless of model licensing."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "ai-service-cards",
+      "scenario": "A compliance officer at an enterprise is evaluating AWS AI services for their organization. They need responsible AI documentation for each service they plan to use.",
+      "stem": "What do AWS AI service cards provide that helps compliance officers make informed decisions? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Intended use cases and limitations of the AI service" },
+        { "key": "B", "text": "Deployment and performance optimization best practices" },
+        { "key": "C", "text": "Complete model weights for independent audit" },
+        { "key": "D", "text": "Personal liability statements from AWS engineers" },
+        { "key": "E", "text": "Competitor comparison charts" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "AI service cards provide intended use cases, limitations, responsible AI design choices, and deployment/performance optimization best practices. This gives compliance officers a single place to understand how responsible AI dimensions are addressed.",
+        "distractors": {
+          "C": "AWS managed services are accessed via API. Model weights are proprietary and not shared for independent audit.",
+          "D": "AI service cards document service characteristics, not personal liability. Accountability is organizational.",
+          "E": "Service cards document the AWS service itself, not competitive comparisons."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "human-centered-ai",
+      "scenario": "A medical imaging startup is building an AI system to assist radiologists in detecting tumors. They want to implement human-centered AI principles to ensure the system augments rather than replaces clinical judgment.",
+      "stem": "Which approaches align with human-centered AI for this use case? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Involve radiologists in the development process to ensure the AI is beneficial and user-friendly" },
+        { "key": "B", "text": "Collaborate with ethicists and domain experts to collect diverse perspectives" },
+        { "key": "C", "text": "Make the AI's diagnosis final and remove the radiologist from the review process" },
+        { "key": "D", "text": "Hide the AI's confidence levels from radiologists to avoid influencing their judgment" },
+        { "key": "E", "text": "Replace the radiologist entirely once the model achieves 95% accuracy" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Human-centered AI involves users (radiologists) in development to ensure genuine benefit, and engages in interdisciplinary collaboration with ethicists and domain experts for diverse perspectives.",
+        "distractors": {
+          "C": "Human-centered AI enhances human abilities rather than replacing them. The radiologist should remain central to decision-making.",
+          "D": "Transparency and explainability are core to human-centered AI. Hiding confidence levels contradicts these principles.",
+          "E": "The goal is enhancing human abilities, not replacing them. Even highly accurate AI should augment clinical judgment."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "partial-dependence",
+      "scenario": "An auto insurance company uses an AI model to set premiums. Their pricing team wants to visualize how the predicted premium changes as the driver's age ranges from 18 to 75, to understand whether the model has learned expected risk patterns.",
+      "stem": "Which SageMaker Clarify visualization directly shows this relationship between a single feature and model predictions?",
+      "options": [
+        { "key": "A", "text": "A partial dependence plot showing how predictions change for different age values" },
+        { "key": "B", "text": "A Shapley value chart showing age's overall importance rank among all features" },
+        { "key": "C", "text": "A recall difference analysis showing prediction accuracy by age group" },
+        { "key": "D", "text": "A treatment equality chart showing error ratios between age groups" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A partial dependence plot shows how a model's predictions change for different values of a feature. It directly visualizes the relationship between age (ranging 18-75) and the predicted premium output.",
+        "distractors": {
+          "B": "Shapley values show importance rank (how much a feature contributes overall), not the curve of how predictions change across feature values.",
+          "C": "Recall difference is a bias metric comparing true positive rates between classes, not a visualization of feature-prediction relationships.",
+          "D": "Treatment equality measures error type ratios between groups. It does not show how predictions vary across a continuous feature range."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "rlhf",
+      "scenario": "An AI research team is implementing RLHF for their language model. They need human workers to compare multiple model responses to the same prompt and rank them. The team is deciding which AWS service to use for collecting these preference rankings at scale.",
+      "stem": "Which AWS service is recommended for collecting human preference rankings for RLHF training data?",
+      "options": [
+        { "key": "A", "text": "Amazon SageMaker Ground Truth" },
+        { "key": "B", "text": "Amazon SageMaker Model Monitor" },
+        { "key": "C", "text": "Amazon SageMaker Clarify" },
+        { "key": "D", "text": "Amazon SageMaker Feature Store" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Collecting human preferences for RLHF can be accomplished most readily with SageMaker Ground Truth. It provides labeling interfaces where human workers rank responses for clarity and preference.",
+        "distractors": {
+          "B": "Model Monitor tracks model quality and drift in production. It does not collect human preference data.",
+          "C": "Clarify analyzes bias and provides explainability. It does not manage human labeling or preference collection workflows.",
+          "D": "Feature Store manages ML features for training and inference. It does not provide human labeling interfaces."
+        }
+      }
+    }
+  ]
+}

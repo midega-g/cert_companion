@@ -1,0 +1,458 @@
+{
+  "label": "AWS Infrastructure & Technologies for Gen AI — Part A",
+  "order": 1,
+  "topic": "Domain 2: Fundamentals of Generative AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "transfer-learning",
+      "scenario": null,
+      "stem": "What is transfer learning in the context of foundation models?",
+      "options": [
+        { "key": "A", "text": "The process of fine-tuning a pre-trained model on a new dataset without training from scratch, producing accurate models with smaller datasets and less training time" },
+        { "key": "B", "text": "Transferring a model from one AWS Region to another" },
+        { "key": "C", "text": "Copying training data between S3 buckets" },
+        { "key": "D", "text": "Moving a model from development to production environment" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Transfer learning fine-tunes a pre-trained model on a new dataset without training from scratch. The generalized model already knows language patterns and only needs to learn how those patterns map to your new dataset, saving time and data.",
+        "distractors": {
+          "B": "Region migration is an infrastructure operation. Transfer learning is a training technique that reuses pre-trained knowledge.",
+          "C": "Data transfer between buckets is storage operations. Transfer learning is about reusing a model's learned knowledge.",
+          "D": "Dev-to-prod deployment is a DevOps process. Transfer learning is a model training strategy."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "token-pricing",
+      "scenario": null,
+      "stem": "What is token-based pricing for LLMs?",
+      "options": [
+        { "key": "A", "text": "Pricing based on the number of tokens processed, where each token is a discrete unit of information such as a word in text or a pixel in an image" },
+        { "key": "B", "text": "A one-time license fee paid per model regardless of usage" },
+        { "key": "C", "text": "Pricing based on the number of GPUs reserved for the model" },
+        { "key": "D", "text": "A flat monthly subscription for unlimited model access" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Token-based pricing charges based on the number of tokens processed (both input and output). Tokens are discrete units — characters or words in text, pixels in images — and are how vendors price API calls.",
+        "distractors": {
+          "B": "Token pricing is usage-based (pay per token), not a one-time fee. It scales with actual usage.",
+          "C": "GPU-based pricing is for self-hosted infrastructure. Token pricing is for managed API access where you pay per unit processed.",
+          "D": "Token pricing is pay-as-you-go, not flat monthly. You pay only for tokens processed."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "aws-nitro",
+      "scenario": null,
+      "stem": "What does the AWS Nitro System provide for AI workloads?",
+      "options": [
+        { "key": "A", "text": "Specialized hardware and firmware designed to enforce security restrictions ensuring no unauthorized person can access workloads or data on EC2 instances" },
+        { "key": "B", "text": "A machine learning framework for training models" },
+        { "key": "C", "text": "A vector database for storing embeddings" },
+        { "key": "D", "text": "A prompt engineering tool for optimizing LLM inputs" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The AWS Nitro System has specialized hardware and firmware designed to enforce security restrictions, ensuring no one can access workloads or data running on EC2 instances including those with ML accelerators like Inferentia, Trainium, and GPUs.",
+        "distractors": {
+          "B": "Nitro is security hardware, not an ML framework. SageMaker and frameworks like PyTorch handle model training.",
+          "C": "Nitro secures compute instances. Vector databases (OpenSearch, Aurora) store embeddings.",
+          "D": "Nitro provides infrastructure security. Prompt engineering is done through Bedrock or direct model interaction."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "amazon-bedrock",
+      "scenario": null,
+      "stem": "What does Amazon Bedrock provide?",
+      "options": [
+        { "key": "A", "text": "A managed service that lets you access multiple foundation models from AWS and third parties using APIs, with pay-per-use pricing and no term commitment" },
+        { "key": "B", "text": "A physical data center for training models on-premises" },
+        { "key": "C", "text": "A code editor specifically designed for writing machine learning algorithms" },
+        { "key": "D", "text": "A hardware accelerator chip for inference only" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon Bedrock is a managed service providing API access to multiple FMs — AWS models (Titan) plus third-party models (Cohere, Stability AI). You pay only for what you use with no time-based term commitment.",
+        "distractors": {
+          "B": "Bedrock is a cloud service, not physical infrastructure. It provides managed API access to models.",
+          "C": "Bedrock provides model access, not a code editor. IDEs and SageMaker handle code development.",
+          "D": "Bedrock is a service layer for accessing models, not a hardware chip. Inferentia and Trainium are AWS hardware accelerators."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "sagemaker-jumpstart",
+      "scenario": null,
+      "stem": "What is Amazon SageMaker JumpStart?",
+      "options": [
+        { "key": "A", "text": "A model hub that helps quickly deploy foundation models, provides fine-tuning capabilities, and offers resources like blogs, videos, and example notebooks" },
+        { "key": "B", "text": "A hardware monitoring tool for GPU utilization" },
+        { "key": "C", "text": "A data labeling service for training datasets" },
+        { "key": "D", "text": "A billing dashboard for tracking AI service costs" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "SageMaker JumpStart is a model hub that helps quickly deploy foundation models, provides fine-tuning and deployment capabilities, and offers resources (blogs, videos, notebooks) to get into production at scale.",
+        "distractors": {
+          "B": "GPU monitoring is handled by CloudWatch. JumpStart provides models and deployment capabilities.",
+          "C": "Data labeling is SageMaker Ground Truth's role. JumpStart provides pre-built models and solutions.",
+          "D": "Billing is handled by AWS Cost Explorer. JumpStart is for model discovery and deployment."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "gen-ai-stack",
+      "scenario": null,
+      "stem": "What are the three layers of the AWS generative AI stack? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Bottom layer — tools for building and training LLMs/FMs with specialized hardware" },
+        { "key": "B", "text": "Middle layer — access to models and tools needed to build and scale gen AI applications" },
+        { "key": "C", "text": "Top layer — applications that use LLMs/FMs for code, content, insights, and actions" },
+        { "key": "D", "text": "Security layer — a dedicated layer only for encryption" },
+        { "key": "E", "text": "Marketing layer — a layer for promoting AI services" },
+        { "key": "F", "text": "Storage layer — a dedicated layer only for S3" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The three layers are: bottom (building/training with specialized hardware), middle (model access and tools to build/scale applications), and top (applications using FMs for code, content, insights, and actions). Security spans all three.",
+        "distractors": {
+          "D": "Security is applied across all three layers, not as a separate dedicated layer.",
+          "E": "Marketing is a business function, not a layer of the technical AI stack.",
+          "F": "Storage is part of the infrastructure layer (bottom), not a standalone layer."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "aws-ml-accelerators",
+      "scenario": null,
+      "stem": "Which AWS ML accelerators are protected by the Nitro System? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "AWS Inferentia — designed for inference workloads" },
+        { "key": "B", "text": "AWS Trainium — designed for training workloads" },
+        { "key": "C", "text": "AWS Lambda — for serverless functions" },
+        { "key": "D", "text": "Amazon S3 — for object storage" },
+        { "key": "E", "text": "Amazon DynamoDB — for NoSQL databases" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The Nitro System protects all Nitro-based instances including those with ML accelerators like AWS Inferentia (inference) and AWS Trainium (training), plus GPU instances like P4, P5, G5, and G6.",
+        "distractors": {
+          "C": "Lambda is a serverless compute service, not an ML accelerator chip.",
+          "D": "S3 is a storage service, not compute hardware protected by Nitro.",
+          "E": "DynamoDB is a database service, not an ML accelerator."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "pricing-models",
+      "scenario": null,
+      "stem": "What are the pricing models for using LLMs? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Self-hosted — pay for computing resources to run models on your own infrastructure, plus possible license fees" },
+        { "key": "B", "text": "Token-based — pay per token processed through API calls, adding scalability" },
+        { "key": "C", "text": "Free forever — all LLMs are available at no cost" },
+        { "key": "D", "text": "Advertising-supported — models are free but show ads in responses" },
+        { "key": "E", "text": "Blockchain-verified — each token is minted as cryptocurrency" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Two pricing models: self-hosted (pay for compute resources + possible license fees, requires infrastructure investment) and token-based (pay per token processed via APIs, adding scalability without infrastructure management).",
+        "distractors": {
+          "C": "LLMs require significant resources. They are not universally free — costs exist in compute, API usage, or licensing.",
+          "D": "AI services are not ad-supported. Payment is through resource usage or per-token pricing.",
+          "E": "Token pricing refers to language tokens (words/characters), not cryptocurrency tokens."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "bedrock-features",
+      "scenario": null,
+      "stem": "Which features does Amazon Bedrock provide for model experimentation? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Playgrounds — run model inference against different base foundation models to align use cases with highest accuracy" },
+        { "key": "B", "text": "Model evaluations — compare foundation model performance for your use case" },
+        { "key": "C", "text": "Physical hardware labs — try different GPU configurations" },
+        { "key": "D", "text": "Training clusters — pre-train models from scratch" },
+        { "key": "E", "text": "Data centers — tour AWS facilities to see models running" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Bedrock offers playgrounds (experiment with inference against different base FMs) and model evaluations (compare FM performance for your use case) to help identify the most suitable model.",
+        "distractors": {
+          "C": "Bedrock is a managed service. You don't configure physical hardware — AWS handles infrastructure.",
+          "D": "Bedrock provides access to pre-trained models. Pre-training from scratch is done through SageMaker or custom infrastructure.",
+          "E": "AWS data centers are not open for tours. Bedrock provides cloud-based model access through APIs."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "aws-advantages",
+      "scenario": null,
+      "stem": "What are advantages of using AWS generative AI services? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Lower barrier to entry and accessibility for building AI applications" },
+        { "key": "B", "text": "Cost-effectiveness and speed to market" },
+        { "key": "C", "text": "Enterprise-grade security and privacy" },
+        { "key": "D", "text": "Unlimited free compute for all customers" },
+        { "key": "E", "text": "Automatic compliance with all global regulations" },
+        { "key": "F", "text": "Guaranteed zero hallucination in all models" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "AWS advantages include accessibility/lower barrier to entry, cost-effectiveness/speed to market, and enterprise-grade security/privacy. These help organizations build and scale gen AI applications effectively.",
+        "distractors": {
+          "D": "AWS charges for compute. Services offer cost-effectiveness, not unlimited free resources.",
+          "E": "Compliance is a shared responsibility. AWS provides tools, but customers must configure their workloads correctly.",
+          "F": "No service guarantees zero hallucination. This is a fundamental LLM limitation addressed through RAG and guardrails."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "transfer-learning",
+      "scenario": "A healthcare startup has limited labeled medical data (5,000 records) but needs to build a medical text classification model. Training a model from scratch would require millions of examples they don't have.",
+      "stem": "Which approach allows them to build an accurate model with their limited dataset?",
+      "options": [
+        { "key": "A", "text": "Transfer learning — start with a pre-trained model that already understands language, then fine-tune on their 5,000 medical records" },
+        { "key": "B", "text": "Train a model from scratch on only the 5,000 records" },
+        { "key": "C", "text": "Wait until they collect millions of records before starting" },
+        { "key": "D", "text": "Use a rule-based system with no machine learning" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Transfer learning produces accurate models with smaller datasets and less training time. The pre-trained model already understands language patterns; it only needs to learn how those map to the medical domain with the limited data.",
+        "distractors": {
+          "B": "Training from scratch with only 5,000 records would produce a very poor model. Transfer learning leverages existing knowledge.",
+          "C": "Waiting defeats the business need. Transfer learning enables building useful models with limited data now.",
+          "D": "Rule-based systems can't capture the complexity of medical text. Transfer learning provides ML capability with limited data."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "token-pricing",
+      "scenario": "A startup is choosing between self-hosting an LLM and using Amazon Bedrock's pay-per-token API. Their usage is unpredictable — some days they process 1,000 requests, other days 100,000.",
+      "stem": "Why is token-based pricing advantageous for their unpredictable workload?",
+      "options": [
+        { "key": "A", "text": "Token pricing adds scalability — they pay only for tokens processed without infrastructure investment, scaling automatically with demand" },
+        { "key": "B", "text": "Token pricing is always cheaper than self-hosting regardless of usage volume" },
+        { "key": "C", "text": "Token pricing provides dedicated hardware reserved exclusively for their workload" },
+        { "key": "D", "text": "Token pricing eliminates all costs on days with zero usage" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Token-based pricing adds scalability — you pay per token processed without infrastructure investment or maintenance. It scales naturally with unpredictable demand without over-provisioning idle resources.",
+        "distractors": {
+          "B": "At very high consistent volumes, self-hosting may be cheaper. Token pricing wins for variable/unpredictable workloads.",
+          "C": "Token pricing uses shared managed infrastructure, not dedicated hardware. That's why it scales without upfront investment.",
+          "D": "While you pay nothing for zero tokens, there may be minimal baseline costs. The key advantage is scalability."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "partyrock",
+      "scenario": "A developer new to generative AI wants to learn prompt engineering fundamentals by building simple applications without worrying about infrastructure or costs.",
+      "stem": "Which AWS offering provides a no-code playground for learning generative AI fundamentals?",
+      "options": [
+        { "key": "A", "text": "PartyRock — a playground built on Amazon Bedrock for building gen AI apps and learning how FMs respond to prompts" },
+        { "key": "B", "text": "Amazon SageMaker Studio — for production ML model development" },
+        { "key": "C", "text": "AWS CloudFormation — for deploying infrastructure templates" },
+        { "key": "D", "text": "Amazon EC2 — for launching virtual machines" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "PartyRock is a playground built on Amazon Bedrock for building gen AI applications and learning fundamental techniques like understanding how a foundation model responds to different prompts (playlists, trivia, recipes, etc.).",
+        "distractors": {
+          "B": "SageMaker Studio is a full-featured ML development environment, not a beginner-friendly learning playground.",
+          "C": "CloudFormation deploys infrastructure, not gen AI learning experiences.",
+          "D": "EC2 provides raw compute instances. PartyRock provides a no-code gen AI learning environment."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "ai-system-components",
+      "scenario": "A security architect is designing the security posture for their company's AI system. They need to identify the critical components that require protection.",
+      "stem": "What are the three critical components of any AI system that need security protection?",
+      "options": [
+        { "key": "A", "text": "Input, model, and output" },
+        { "key": "B", "text": "CPU, memory, and storage" },
+        { "key": "C", "text": "Developer, manager, and user" },
+        { "key": "D", "text": "Training, testing, and deployment" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The three critical components of any AI system are input, model, and output. These can be protected by establishing security policies, standards, and guidelines along with roles and responsibilities.",
+        "distractors": {
+          "B": "CPU, memory, and storage are infrastructure components, not the AI system's functional components that need specific AI security.",
+          "C": "People are stakeholders, not components of the AI system itself.",
+          "D": "Training, testing, and deployment are lifecycle stages, not the three core components of a running AI system."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "bedrock-models",
+      "scenario": "A company evaluating Amazon Bedrock wants to understand the model options available. They need text generation capabilities and want to know what AWS offers natively.",
+      "stem": "What is Amazon Titan in the context of Amazon Bedrock?",
+      "options": [
+        { "key": "A", "text": "Amazon's own foundation model that acts as a general-purpose FM providing text generation capabilities among other functions" },
+        { "key": "B", "text": "A hardware accelerator chip for inference" },
+        { "key": "C", "text": "A vector database service for storing embeddings" },
+        { "key": "D", "text": "A monitoring service for tracking model performance" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon Titan is Amazon's own foundation model available through Bedrock. It acts as a general-purpose FM and is a great option for text generation capabilities.",
+        "distractors": {
+          "B": "Titan is a model, not hardware. AWS Inferentia and Trainium are the hardware accelerators.",
+          "C": "Titan is an FM for generation. Vector databases like OpenSearch store embeddings.",
+          "D": "Titan generates content. Model Monitor and CloudWatch handle performance monitoring."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "ai-vulnerabilities",
+      "scenario": "A security team is briefing their AI development team on specific vulnerabilities unique to AI systems that they must protect against.",
+      "stem": "Which are AI-specific vulnerabilities that need mitigation? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Prompt injection — manipulating inputs to produce unintended outputs" },
+        { "key": "B", "text": "Data poisoning — corrupting training data to alter model behavior" },
+        { "key": "C", "text": "Model inversion — reverse engineering training data from outputs" },
+        { "key": "D", "text": "DNS spoofing — redirecting network traffic" },
+        { "key": "E", "text": "SQL injection — attacking relational databases" },
+        { "key": "F", "text": "Buffer overflow — exploiting memory allocation" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "AI-specific vulnerabilities include prompt injection (manipulating inputs), data poisoning (corrupting training data), and model inversion (inferring training data from outputs). These require AI-specific security measures.",
+        "distractors": {
+          "D": "DNS spoofing is a network attack, not AI-specific.",
+          "E": "SQL injection attacks databases, not AI models. It's a traditional application vulnerability.",
+          "F": "Buffer overflow is a memory exploitation attack, not specific to AI systems."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "security-measures",
+      "scenario": "An organization is implementing security for their generative AI application following AWS best practices.",
+      "stem": "Which security measures should be implemented for AI systems? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Encryption and multi-factor authentication" },
+        { "key": "B", "text": "Continuous monitoring and alignment to risk tolerance frameworks" },
+        { "key": "C", "text": "Disabling all access logs to reduce storage costs" },
+        { "key": "D", "text": "Sharing model weights publicly for transparency" },
+        { "key": "E", "text": "Removing all authentication to improve user experience" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "AI systems should implement encryption and MFA for access control, plus continuous monitoring aligned to risk tolerance and security frameworks. These protect against AI-specific and general security threats.",
+        "distractors": {
+          "C": "Access logs are essential for security auditing. Disabling them removes visibility into potential attacks.",
+          "D": "Sharing model weights enables model theft and reverse engineering. Weights should be secured.",
+          "E": "Removing authentication exposes the system to unauthorized access. MFA should be added, not removed."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "sagemaker-jumpstart",
+      "scenario": "An ML team is evaluating SageMaker JumpStart for their foundation model deployment. They want to understand cost considerations.",
+      "stem": "Which cost considerations apply to SageMaker JumpStart? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "JumpStart models require GPUs to fine-tune and deploy — check the SageMaker pricing page before selecting compute" },
+        { "key": "B", "text": "Delete SageMaker model endpoints when not in use to optimize costs" },
+        { "key": "C", "text": "JumpStart models run for free with no compute charges" },
+        { "key": "D", "text": "JumpStart automatically deletes endpoints after each use" },
+        { "key": "E", "text": "JumpStart only supports CPU instances which are always cheaper" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "JumpStart models require GPUs (check pricing before selecting compute) and you should delete endpoints when not in use to follow cost-monitoring best practices and optimize expenses.",
+        "distractors": {
+          "C": "GPU compute for models incurs charges. JumpStart provides model access, but compute costs apply.",
+          "D": "Endpoints persist until manually deleted. You must actively manage them to avoid ongoing charges.",
+          "E": "JumpStart models require GPUs, not just CPUs. GPU instances are needed for fine-tuning and deployment."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "bedrock-models",
+      "scenario": "A development team using Amazon Bedrock wants to use a model from a third-party provider for image generation alongside Amazon's own text model.",
+      "stem": "Which third-party model providers are available through Amazon Bedrock?",
+      "options": [
+        { "key": "A", "text": "Third-party providers including Cohere and Stability AI, giving access to different models for different use cases" },
+        { "key": "B", "text": "Only Amazon's own Titan models are available" },
+        { "key": "C", "text": "Only open-source models from GitHub" },
+        { "key": "D", "text": "Models must be uploaded by customers; no pre-existing providers are available" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon Bedrock provides access to FMs curated by AWS (Titan) plus third-party providers like Cohere and Stability AI, enabling interaction with different models for different use cases.",
+        "distractors": {
+          "B": "Bedrock offers both Amazon models and third-party models. It's designed to provide choice across providers.",
+          "C": "Bedrock includes commercial and proprietary models, not just open-source. It curates models from multiple providers.",
+          "D": "Bedrock comes with pre-integrated foundation models. Custom model import is also supported but not the only option."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "aws-ml-stack",
+      "scenario": "A solutions architect is explaining the AWS ML stack to a client. The client wants to understand the layered approach from infrastructure to prebuilt AI services.",
+      "stem": "What is the correct order of the AWS ML stack from bottom to top?",
+      "options": [
+        { "key": "A", "text": "Infrastructure layer (compute, GPUs) → ML services layer (SageMaker) → AI services layer (prebuilt APIs and models)" },
+        { "key": "B", "text": "AI services layer → ML services layer → Infrastructure layer" },
+        { "key": "C", "text": "All services are at the same level with no layering" },
+        { "key": "D", "text": "Infrastructure layer → AI services layer → ML services layer" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The AWS ML stack layers are: infrastructure (compute with GPUs, Nitro) → ML services (SageMaker for training/deploying) → AI services (prebuilt APIs, algorithms, models you can integrate without ML expertise).",
+        "distractors": {
+          "B": "This reverses the order. Infrastructure is the foundation, with ML services and AI services built on top.",
+          "C": "AWS explicitly structures these as layers, each building on the one below.",
+          "D": "ML services (SageMaker) sit between infrastructure and prebuilt AI services, not below AI services."
+        }
+      }
+    }
+  ]
+}

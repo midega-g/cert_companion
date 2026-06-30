@@ -9,61 +9,308 @@
           "label": "Gen AI Foundation",
           "children": [
             {
-              "id": "domain_5",
-              "label": "Domain 5",
-              "description": "Security & Governance \u2014 Methods to secure AI systems, compliance regulations",
+              "id": "domain_1",
+              "label": "Domain 1",
+              "description": "Fundamentals of AI and ML",
               "children": [
                 {
-                  "id": "task_1_methods_to_secure_AI_systems",
-                  "label": "Task 1",
-                  "description": "Methods to secure AI systems",
+                  "id": "task_1",
+                  "label": "Task 1.1",
+                  "description": "Explain basic AI concepts and terminologies",
                   "tests": [
                     {
                       "id": "test_1",
-                      "label": "IAM & Access Control \u2014 Part A",
-                      "path": "aws/gen_ai_foundation/domain_5/task_1_methods_to_secure_AI_systems/test_1.json"
+                      "label": "AI & ML Fundamentals \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_1/task_1/test_1.json"
                     },
                     {
                       "id": "test_2",
-                      "label": "Encryption, Network Security & AI Attacks \u2014 Part A",
-                      "path": "aws/gen_ai_foundation/domain_5/task_1_methods_to_secure_AI_systems/test_2.json"
-                    },
-                    {
-                      "id": "test_3",
-                      "label": "Model Governance & Lineage \u2014 Part A",
-                      "path": "aws/gen_ai_foundation/domain_5/task_1_methods_to_secure_AI_systems/test_3.json"
-                    },
-                    {
-                      "id": "test_4",
-                      "label": "Gap Coverage \u2014 Supplemental",
-                      "path": "aws/gen_ai_foundation/domain_5/task_1_methods_to_secure_AI_systems/test_4.json"
+                      "label": "Learning Styles, Deep Learning & Bias \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_1/task_1/test_2.json"
                     }
                   ]
                 },
                 {
-                  "id": "task_2_governance_and_compliance_regulations_for_AI_systems",
-                  "label": "Task 2",
-                  "description": "Governance and compliance regulations for AI systems",
+                  "id": "task_2",
+                  "label": "Task 1.2",
+                  "description": "Identify practical use cases for AI",
                   "tests": [
                     {
                       "id": "test_1",
-                      "label": "Compliance Standards & AI Regulations \u2014 Part A",
-                      "path": "aws/gen_ai_foundation/domain_5/task_2_governance_and_compliance_regulations_for_AI_systems/test_1.json"
+                      "label": "AI Use Cases & Problem Types \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_1/task_2/test_1.json"
                     },
                     {
                       "id": "test_2",
-                      "label": "AWS Compliance Services & Data Governance \u2014 Part A",
-                      "path": "aws/gen_ai_foundation/domain_5/task_2_governance_and_compliance_regulations_for_AI_systems/test_2.json"
+                      "label": "AWS AI Services & Real-World Use Cases \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_1/task_2/test_2.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_3",
+                  "label": "Task 1.3",
+                  "description": "Describe the ML development lifecycle",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "ML Pipeline & Data Preparation \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_1/task_3/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Training, Tuning & Deployment \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_1/task_3/test_2.json"
                     },
                     {
                       "id": "test_3",
-                      "label": "Data Management, Lake Formation & AI Governance Strategy \u2014 Part A",
-                      "path": "aws/gen_ai_foundation/domain_5/task_2_governance_and_compliance_regulations_for_AI_systems/test_3.json"
+                      "label": "Monitoring, MLOps & Evaluation Metrics \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_1/task_3/test_3.json"
+                    },
+                    {
+                      "id": "test_4",
+                      "label": "ML Lifecycle \u2014 Gap Coverage",
+                      "path": "aws/gen_ai_foundation/domain_1/task_3/test_4.json"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "domain_2",
+              "label": "Domain 2",
+              "description": "Fundamentals of Generative AI",
+              "children": [
+                {
+                  "id": "task_1",
+                  "label": "Task 2.1",
+                  "description": "Explain the basic concepts of generative AI",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Generative AI Core Concepts \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_2/task_1/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Modalities, Diffusion Models & Use Cases \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_2/task_1/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Generative AI Fundamentals \u2014 Gap Coverage",
+                      "path": "aws/gen_ai_foundation/domain_2/task_1/test_3.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_2",
+                  "label": "Task 2.2",
+                  "description": "Understand the capabilities and limits of generative AI for solving business problems",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Capabilities & Limits of Gen AI for Business \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_2/task_2/test_1.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_3",
+                  "label": "Task 2.3",
+                  "description": "Describe AWS infrastructure and technologies for building generative AI applications",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "AWS Infrastructure & Technologies for Gen AI \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_2/task_3/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "AWS Infrastructure & Technologies for Gen AI \u2014 Part B",
+                      "path": "aws/gen_ai_foundation/domain_2/task_3/test_2.json"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "domain_3",
+              "label": "Domain 3",
+              "description": "Applications of Foundation Models",
+              "children": [
+                {
+                  "id": "task_1",
+                  "label": "Task 3.1",
+                  "description": "Describe design considerations for applications that use foundation models",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Model Selection & Design Considerations \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_3/task_1/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Inference Parameters, RAG & Agents \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_3/task_1/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Gap Coverage \u2014 Supplemental",
+                      "path": "aws/gen_ai_foundation/domain_3/task_1/test_3.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_2",
+                  "label": "Task 3.2",
+                  "description": "Choose effective prompt engineering techniques",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Prompt Engineering Techniques \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_3/task_2/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Prompt Engineering \u2014 Gap Coverage",
+                      "path": "aws/gen_ai_foundation/domain_3/task_2/test_2.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_3",
+                  "label": "Task 3.3",
+                  "description": "Describe the training and fine-tuning process for foundation models",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Training & Fine-Tuning Foundation Models \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_3/task_3/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Training & Fine-Tuning \u2014 Gap Coverage",
+                      "path": "aws/gen_ai_foundation/domain_3/task_3/test_2.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_4",
+                  "label": "Task 3.4",
+                  "description": "Describe methods to evaluate foundation model performance",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Evaluating Foundation Model Performance \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_3/task_4/test_1.json"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "domain_4",
+              "label": "Domain 4",
+              "description": "Guidelines for Responsible AI",
+              "children": [
+                {
+                  "id": "task_1",
+                  "label": "Task 4.1",
+                  "description": "Explain the development of AI systems that are responsible",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Responsible AI Principles & Fairness \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_4/task_1/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Generative AI Risks & LLM Evaluation \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_4/task_1/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Gap Coverage \u2014 Supplemental",
+                      "path": "aws/gen_ai_foundation/domain_4/task_1/test_3.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_2",
+                  "label": "Task 4.2",
+                  "description": "Recognize the importance of transparent and explainable models",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Transparent & Explainable Models \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_4/task_2/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Transparent & Explainable Models \u2014 Part B",
+                      "path": "aws/gen_ai_foundation/domain_4/task_2/test_2.json"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "domain_5",
+              "label": "Domain 5",
+              "description": "Security, Compliance & Governance for AI Solutions",
+              "children": [
+                {
+                  "id": "task_1",
+                  "label": "Task 5.1",
+                  "description": "Explain methods to secure AI systems",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "IAM & Access Control \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_1/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Encryption, Network Security & AI Attacks \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_1/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Model Governance & Lineage \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_1/test_3.json"
                     },
                     {
                       "id": "test_4",
                       "label": "Gap Coverage \u2014 Supplemental",
-                      "path": "aws/gen_ai_foundation/domain_5/task_2_governance_and_compliance_regulations_for_AI_systems/test_4.json"
+                      "path": "aws/gen_ai_foundation/domain_5/task_1/test_4.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_2",
+                  "label": "Task 5.2",
+                  "description": "Recognize governance and compliance regulations for AI systems",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Compliance Standards & AI Regulations \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_2/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "AWS Compliance Services & Data Governance \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_2/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Data Management, Lake Formation & AI Governance Strategy \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_2/test_3.json"
+                    },
+                    {
+                      "id": "test_4",
+                      "label": "Gap Coverage \u2014 Supplemental",
+                      "path": "aws/gen_ai_foundation/domain_5/task_2/test_4.json"
                     }
                   ]
                 }

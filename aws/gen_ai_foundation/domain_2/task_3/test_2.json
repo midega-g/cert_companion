@@ -1,0 +1,457 @@
+{
+  "label": "AWS Infrastructure & Technologies for Gen AI — Part B",
+  "order": 2,
+  "topic": "Domain 2: Fundamentals of Generative AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "transfer-learning",
+      "scenario": null,
+      "stem": "Why does transfer learning accelerate the training process for new tasks?",
+      "options": [
+        { "key": "A", "text": "The algorithm already knows language patterns from pre-training and only needs to figure out how those elements map to the new dataset" },
+        { "key": "B", "text": "Transfer learning skips all training entirely and uses the model as-is" },
+        { "key": "C", "text": "Transfer learning uses a faster programming language for computation" },
+        { "key": "D", "text": "Transfer learning removes unnecessary parameters to speed up inference" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "With transfer learning, the algorithm already knows information from pre-training and understands language patterns. It only needs to figure out how those elements map to the new dataset, which requires less data and time.",
+        "distractors": {
+          "B": "Transfer learning still involves training (fine-tuning). It starts from a trained baseline rather than random initialization.",
+          "C": "Speed comes from reusing learned knowledge, not a different programming language.",
+          "D": "Transfer learning preserves parameters. It doesn't remove them — it reuses the learned weights as a starting point."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "bedrock-custom-models",
+      "scenario": null,
+      "stem": "What capability does Amazon Bedrock provide for organizations with their own model weights?",
+      "options": [
+        { "key": "A", "text": "Import custom weights for supported model architectures and serve the custom model using on-demand mode" },
+        { "key": "B", "text": "Only third-party models can be used; custom models are not supported" },
+        { "key": "C", "text": "Custom weights must be converted to Amazon Titan format before import" },
+        { "key": "D", "text": "Custom models require a minimum 3-year commitment" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon Bedrock supports importing custom weights for supported model architectures and serving the custom model using on-demand mode. You only pay for what you use with no time-based term commitment.",
+        "distractors": {
+          "B": "Bedrock supports both pre-integrated FMs and custom model imports. Custom models are explicitly supported.",
+          "C": "Custom weights are imported for supported architectures directly. No conversion to Titan format is required.",
+          "D": "Bedrock uses on-demand pricing with no term commitment for custom models."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "data-security-concerns",
+      "scenario": null,
+      "stem": "What is one of the biggest concerns organizations have about generative AI applications?",
+      "options": [
+        { "key": "A", "text": "Securing sensitive business data including personal data, compliance data, operational data, and financial information" },
+        { "key": "B", "text": "The color scheme of the generated outputs" },
+        { "key": "C", "text": "Whether the model can generate content in comic sans font" },
+        { "key": "D", "text": "The physical size of the servers running the model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "One of the biggest concerns with generative AI applications is securing sensitive business data — personal data, compliance data, operational data, and financial information. AWS addresses this with security across all three layers of the gen AI stack.",
+        "distractors": {
+          "B": "Output aesthetics are a design concern, not a top organizational security worry.",
+          "C": "Font support is a formatting detail, not a business-critical security concern.",
+          "D": "Physical server size is AWS's infrastructure concern, not an organizational concern about gen AI adoption."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "caf-ai",
+      "scenario": null,
+      "stem": "What is the AWS Cloud Adoption Framework for AI, ML, and Generative AI (CAF-AI)?",
+      "options": [
+        { "key": "A", "text": "A starting point and guide for an organization's AI journey that serves as a resource for AI strategy discussions with teams and AWS Partners" },
+        { "key": "B", "text": "A mandatory compliance framework that all AWS customers must follow" },
+        { "key": "C", "text": "A hardware specification for building on-premises AI infrastructure" },
+        { "key": "D", "text": "An automated tool that deploys AI models without human input" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The AWS CAF-AI serves as both a starting point and a guide for your AI/ML/gen AI journey. It's a resource for discussions about AI strategy with your team and when collaborating with coworkers and AWS Partners.",
+        "distractors": {
+          "B": "CAF-AI is guidance, not a mandatory compliance requirement. It helps organizations plan their journey.",
+          "C": "CAF-AI is a strategic framework, not a hardware specification.",
+          "D": "CAF-AI guides strategy and planning. It doesn't automatically deploy models."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "why-not-self-train",
+      "scenario": null,
+      "stem": "Why will most organizations not train their own LLMs from scratch?",
+      "options": [
+        { "key": "A", "text": "Training requires investing in research, collecting and cleaning quality data, time, and expensive hardware — most organizations will use existing pre-trained models instead" },
+        { "key": "B", "text": "AWS prohibits customers from training their own models" },
+        { "key": "C", "text": "Self-trained models always perform worse than pre-trained ones" },
+        { "key": "D", "text": "There is no data available to train language models" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Most organizations won't train their own LLMs because it requires massive research investment, data collection/cleaning, time, and hardware costs. Similarly, most won't self-host due to hardware and storage expenses. Using existing models through services like Bedrock is far more practical.",
+        "distractors": {
+          "B": "AWS doesn't prohibit self-training. SageMaker supports it. Most organizations simply choose not to due to cost.",
+          "C": "Self-trained models can perform well for specific domains. The issue is cost and complexity, not inherent quality.",
+          "D": "Vast amounts of data exist. The challenge is the cost of collecting, cleaning, and processing it at scale."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "gen-ai-stack",
+      "scenario": null,
+      "stem": "What does the bottom layer of the AWS generative AI stack provide? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Tools for building and training LLMs and other foundation models" },
+        { "key": "B", "text": "Specialized hardware that reduces costs with better price performance than traditional CPUs or GPUs" },
+        { "key": "C", "text": "Pre-built chatbot applications ready for customer deployment" },
+        { "key": "D", "text": "Marketing materials for promoting AI services" },
+        { "key": "E", "text": "Human labeling teams for annotating training data" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The bottom layer provides tools for building and training LLMs/FMs, plus specialized hardware (Inferentia, Trainium) that offers better price performance than traditional CPUs or GPUs for AI workloads.",
+        "distractors": {
+          "C": "Pre-built applications are in the top layer, not the bottom infrastructure layer.",
+          "D": "Marketing is a business function, not part of the technical gen AI stack.",
+          "E": "Labeling services (Ground Truth) are tools, but the bottom layer specifically focuses on compute infrastructure and training tools."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "bedrock-features",
+      "scenario": null,
+      "stem": "What can you do with Amazon Bedrock playgrounds? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Run model inference against different base foundation models supported within the service" },
+        { "key": "B", "text": "Adjust inference parameters to determine different completion results depending on the model selected" },
+        { "key": "C", "text": "Train models from scratch using your own compute cluster" },
+        { "key": "D", "text": "Directly modify the internal weights of foundation models" },
+        { "key": "E", "text": "Deploy models to on-premises hardware" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Bedrock playgrounds let you run inference against different base FMs and adjust inference parameters to see how different settings produce different completion results. The available parameters depend on the model selected.",
+        "distractors": {
+          "C": "Playgrounds are for experimentation with existing models, not training from scratch.",
+          "D": "Playgrounds don't modify model weights. They let you test inference behavior through prompts and parameters.",
+          "E": "Bedrock is a cloud service. Playgrounds operate within AWS infrastructure, not on-premises."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "embeddings-storage",
+      "scenario": null,
+      "stem": "How is data stored and used in generative AI vector databases? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Data is stored as embeddings — vectors that can be compressed, stored, and indexed" },
+        { "key": "B", "text": "Embeddings enable advanced searches through vector similarity" },
+        { "key": "C", "text": "Data is stored as plain text files without any numerical representation" },
+        { "key": "D", "text": "Vector databases can only store images, not text" },
+        { "key": "E", "text": "Embeddings are deleted after each query and regenerated from scratch" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "In generative AI, data is stored as embeddings — vectors that can be compressed, stored, and indexed for advanced searches. This enables semantic search through vector similarity rather than keyword matching.",
+        "distractors": {
+          "C": "Vector databases store numerical embeddings, not plain text. The power is in the mathematical representation.",
+          "D": "Vector databases store embeddings from any modality — text, images, audio. They are not limited to images.",
+          "E": "Embeddings persist in the database. They are computed once and stored for repeated efficient retrieval."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "aws-nitro",
+      "scenario": null,
+      "stem": "Which GPU instance families are protected by the AWS Nitro System for ML workloads? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "P4 and P5 instances" },
+        { "key": "B", "text": "G5 and G6 instances" },
+        { "key": "C", "text": "T2 and T3 instances (general purpose burstable)" },
+        { "key": "D", "text": "M5 and M6 instances (general purpose)" },
+        { "key": "E", "text": "R5 and R6 instances (memory optimized)" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Nitro protection applies to GPU instances used for ML including P4, P5 (training/inference), G5, and G6 (graphics/ML inference). These are the instance families with ML accelerators.",
+        "distractors": {
+          "C": "T-series are burstable general-purpose instances, not ML-focused GPU instances.",
+          "D": "M-series are general-purpose compute, not GPU-equipped ML instances.",
+          "E": "R-series are memory-optimized for databases/caching, not ML GPU instances."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "security-policies",
+      "scenario": null,
+      "stem": "How should the three critical AI system components (input, model, output) be protected? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Establish security policies, standards, and guidelines specific to AI workloads" },
+        { "key": "B", "text": "Define roles and responsibilities related to AI systems" },
+        { "key": "C", "text": "Allow unrestricted access to maximize innovation" },
+        { "key": "D", "text": "Disable monitoring to reduce overhead costs" },
+        { "key": "E", "text": "Share model weights publicly for peer review" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Input, model, and output can be protected by establishing security policies/standards/guidelines and defining clear roles and responsibilities related to AI workloads.",
+        "distractors": {
+          "C": "Unrestricted access violates security principles. AI systems need access controls.",
+          "D": "Continuous monitoring is essential for detecting attacks and drift. Disabling it creates blind spots.",
+          "E": "Public model weights enable reverse engineering and theft. They should be secured, not shared."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "bedrock-models",
+      "scenario": "A company needs both text generation from Amazon's own model and image generation from Stability AI's model. They want to manage both through a single service without maintaining separate infrastructure for each.",
+      "stem": "Which AWS service provides unified API access to both Amazon and third-party foundation models?",
+      "options": [
+        { "key": "A", "text": "Amazon Bedrock — provides access to AWS models (Titan) and third-party models (Stability AI, Cohere) through a single managed service" },
+        { "key": "B", "text": "Amazon SageMaker JumpStart — only provides Amazon's own models" },
+        { "key": "C", "text": "AWS Lambda — runs custom code for each model separately" },
+        { "key": "D", "text": "Amazon EC2 — hosts each model on separate instances you manage" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon Bedrock provides API access to both Amazon FMs (Titan) and third-party models (Cohere, Stability AI) through a single managed service, enabling interaction with different models for different use cases.",
+        "distractors": {
+          "B": "JumpStart also provides third-party models, but Bedrock is the managed service specifically designed for unified FM API access without infrastructure management.",
+          "C": "Lambda runs code but doesn't provide managed access to foundation models. You'd need to integrate model APIs yourself.",
+          "D": "EC2 requires you to manage infrastructure for each model. Bedrock eliminates this operational burden."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "pricing-models",
+      "scenario": "A large enterprise processes 10 million tokens per day consistently. They're comparing self-hosting on dedicated GPU infrastructure versus using token-based API pricing. Their workload is predictable and constant.",
+      "stem": "In which scenario might self-hosting be more cost-effective than token-based pricing?",
+      "options": [
+        { "key": "A", "text": "When workload is high and consistent — dedicated infrastructure amortizes over constant heavy usage, potentially costing less per token than API pricing" },
+        { "key": "B", "text": "Self-hosting is always cheaper regardless of usage pattern" },
+        { "key": "C", "text": "Self-hosting is never cheaper because APIs are always more efficient" },
+        { "key": "D", "text": "Self-hosting only makes sense for fewer than 100 tokens per day" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Self-hosting requires infrastructure investment and maintenance but can be cost-effective at high, consistent volumes where the per-token cost is amortized across massive constant usage. Token pricing wins for variable workloads.",
+        "distractors": {
+          "B": "Self-hosting has fixed costs (hardware, maintenance) that only make sense with sufficient volume to amortize.",
+          "C": "At very high consistent volumes, self-hosting can be cheaper. Token pricing is better for variable/low workloads.",
+          "D": "Low volumes (100 tokens/day) would never justify self-hosting costs. Self-hosting makes sense at massive scale."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "partyrock",
+      "scenario": "A non-technical product manager wants to experiment with generative AI to create a simple trivia game powered by a foundation model. They have no coding experience and want to start immediately.",
+      "stem": "Which AWS platform allows them to build this gen AI application without code?",
+      "options": [
+        { "key": "A", "text": "PartyRock — a no-code playground built on Amazon Bedrock where you can build apps like trivia games, playlists, and recipes" },
+        { "key": "B", "text": "Amazon SageMaker — a full ML development environment requiring Python expertise" },
+        { "key": "C", "text": "AWS CloudFormation — infrastructure-as-code requiring YAML/JSON" },
+        { "key": "D", "text": "Amazon EC2 — virtual machines requiring system administration" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "PartyRock is built on Amazon Bedrock and lets you build generative AI applications (trivia games, playlists, recipes) without code while learning fundamental techniques like how FMs respond to different prompts.",
+        "distractors": {
+          "B": "SageMaker requires programming skills. PartyRock is specifically designed for non-technical experimentation.",
+          "C": "CloudFormation deploys infrastructure and requires template authoring, not gen AI app building.",
+          "D": "EC2 requires server management skills. PartyRock is a no-code app builder."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "ai-security-consequences",
+      "scenario": "A CISO is presenting AI security risks to the board. They need to explain what can happen if AI-specific vulnerabilities like prompt injection, data poisoning, or model inversion are not addressed.",
+      "stem": "What are the potential consequences of unmitigated AI vulnerabilities?",
+      "options": [
+        { "key": "A", "text": "Privacy breaches, data manipulation, abuse, and compromised decision-making" },
+        { "key": "B", "text": "Only minor cosmetic issues with output formatting" },
+        { "key": "C", "text": "Temporary latency increases with no data impact" },
+        { "key": "D", "text": "Only increased compute costs with no security impact" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Unmitigated AI vulnerabilities can lead to privacy breaches, data manipulation, abuse, and compromised decision-making. These risks require validated policies and security measures aligned with organizational risk tolerance.",
+        "distractors": {
+          "B": "AI vulnerabilities can lead to serious consequences far beyond cosmetic issues — including data breaches and manipulation.",
+          "C": "The consequences go far beyond latency. Privacy breaches and compromised decisions have major business impact.",
+          "D": "Security impact is significant. Data manipulation and privacy breaches affect trust, compliance, and legal liability."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "gen-ai-stack",
+      "scenario": "A solutions architect needs to explain to their client which layer of the AWS gen AI stack handles their RAG application that uses a foundation model to answer customer questions from their knowledge base.",
+      "stem": "Which layer of the AWS generative AI stack includes RAG applications?",
+      "options": [
+        { "key": "A", "text": "The top layer — applications that use LLMs and FMs to write code, generate content, derive insights, and take actions" },
+        { "key": "B", "text": "The bottom layer — infrastructure for building and training models" },
+        { "key": "C", "text": "The middle layer — tools for building and scaling applications" },
+        { "key": "D", "text": "RAG exists outside the stack and is not part of AWS services" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The top layer includes applications that use LLMs/FMs — this includes specific gen AI architectures like RAG applications, prompt engineering dashboards, code generation tools, and content generation systems.",
+        "distractors": {
+          "B": "The bottom layer handles compute infrastructure and model training, not application architectures like RAG.",
+          "C": "The middle layer provides model access and tools. The top layer is where specific applications (including RAG) operate.",
+          "D": "RAG is explicitly mentioned as part of the top layer of the AWS gen AI stack."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "sagemaker-jumpstart",
+      "scenario": "An ML team is getting started with SageMaker JumpStart and wants to understand what it offers beyond just model deployment.",
+      "stem": "What does SageMaker JumpStart provide? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Pre-built projects with datasets, models, and algorithm types based on industry best practices" },
+        { "key": "B", "text": "Fine-tuning and deploying models with quick paths to production at scale" },
+        { "key": "C", "text": "Resources including blogs, videos, and example notebooks" },
+        { "key": "D", "text": "Physical GPU hardware shipped to your office" },
+        { "key": "E", "text": "Automatic compliance certification for regulated industries" },
+        { "key": "F", "text": "Permanent free-tier access with no usage limits" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "JumpStart provides pre-built projects (datasets, models, algorithms), fine-tuning/deployment capabilities to reach production at scale, and learning resources (blogs, videos, example notebooks).",
+        "distractors": {
+          "D": "JumpStart is a cloud service. AWS does not ship physical hardware to customers.",
+          "E": "JumpStart provides models and tools, not automatic compliance certification. Compliance is the customer's responsibility.",
+          "F": "JumpStart models require GPU compute which incurs costs. There is no unlimited free tier."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "fm-investment",
+      "scenario": "A CTO is building the business case for investing in foundation models. They want to articulate the value these models bring.",
+      "stem": "How can foundation models create value for organizations? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Enhance customer experiences through natural language understanding" },
+        { "key": "B", "text": "Transform operations and improve employee productivity" },
+        { "key": "C", "text": "Create new revenue streams through AI-powered products" },
+        { "key": "D", "text": "Eliminate the need for all human employees" },
+        { "key": "E", "text": "Guarantee zero errors in all business processes" },
+        { "key": "F", "text": "Remove the need for any data governance or security" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Foundation models enhance customer experiences, transform operations/improve employee productivity, and create new revenue. These are key value propositions for enterprise FM adoption.",
+        "distractors": {
+          "D": "FMs augment human work, not replace all employees. Human oversight remains essential.",
+          "E": "No technology guarantees zero errors. FMs can hallucinate and make mistakes.",
+          "F": "FMs require more governance and security, not less. Sensitive data protection is a top concern."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "transfer-learning",
+      "scenario": "A team is explaining to stakeholders why they chose to fine-tune an existing model rather than build one from scratch.",
+      "stem": "What are the advantages of transfer learning over training from scratch? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Produces accurate models with smaller datasets because the model already has general knowledge" },
+        { "key": "B", "text": "Requires less training time because the model only needs to learn the new dataset's specifics" },
+        { "key": "C", "text": "Produces models that never need further updates or monitoring" },
+        { "key": "D", "text": "Eliminates the need for any GPU compute" },
+        { "key": "E", "text": "Guarantees better performance than any model trained from scratch" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Transfer learning produces accurate models with smaller datasets (the model already knows patterns) and requires less training time (only needs to map existing knowledge to new data).",
+        "distractors": {
+          "C": "All models need monitoring for drift and updates over time. Transfer learning doesn't eliminate this need.",
+          "D": "Fine-tuning still requires GPU compute, just less than training from scratch.",
+          "E": "Transfer learning usually performs well, but isn't guaranteed to outperform every from-scratch model on every task."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "nitro-security",
+      "scenario": "A financial services company is considering using AWS for their AI workloads but their compliance team is concerned about unauthorized access to their model weights and training data while running on shared cloud infrastructure.",
+      "stem": "How does AWS address this zero-access security concern for AI workloads?",
+      "options": [
+        { "key": "A", "text": "The Nitro System ensures zero access to sensitive AI data (model weights and processed data) by any unauthorized person, including AWS employees" },
+        { "key": "B", "text": "AWS stores all model weights on physically separate servers in isolated rooms" },
+        { "key": "C", "text": "Customers must encrypt their own data manually before uploading" },
+        { "key": "D", "text": "AWS provides a separate cloud region exclusively for financial services" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The Nitro System provides zero access to sensitive AI data (model weights and data processed with models) by any unauthorized person. This specialized hardware and firmware enforces security restrictions at the infrastructure level.",
+        "distractors": {
+          "B": "Nitro provides hardware-level isolation on shared infrastructure. Physical separation isn't the mechanism — cryptographic enforcement is.",
+          "C": "While customers should encrypt data, Nitro provides infrastructure-level protection regardless. It's an additional layer, not the customer's sole responsibility.",
+          "D": "AWS doesn't have industry-exclusive Regions. Nitro provides security across all Nitro-based instances in any Region."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "aws-advantages",
+      "scenario": "A startup CTO is presenting to investors why they chose AWS for their generative AI product rather than building everything in-house.",
+      "stem": "Which combination of AWS advantages best supports the decision for a startup?",
+      "options": [
+        { "key": "A", "text": "Lower barrier to entry, speed to market, cost-effectiveness, and enterprise-grade security without building infrastructure from scratch" },
+        { "key": "B", "text": "AWS is the only cloud provider that supports AI" },
+        { "key": "C", "text": "AWS provides free unlimited compute for all startups" },
+        { "key": "D", "text": "AWS guarantees product-market fit for all gen AI applications" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS offers lower barrier to entry, speed to market, cost-effectiveness, and enterprise-grade security/privacy — all without building infrastructure from scratch. These are critical advantages for startups needing to ship quickly.",
+        "distractors": {
+          "B": "Multiple cloud providers support AI (Azure, GCP). AWS's advantage is its breadth of services and maturity, not exclusivity.",
+          "C": "AWS charges for compute. They offer startup credits, but not unlimited free compute.",
+          "D": "Product-market fit depends on the product and market. AWS provides technology tools, not guaranteed business success."
+        }
+      }
+    }
+  ]
+}

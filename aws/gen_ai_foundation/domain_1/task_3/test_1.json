@@ -1,0 +1,460 @@
+{
+  "label": "ML Pipeline & Data Preparation — Part A",
+  "order": 1,
+  "topic": "Domain 1: Fundamentals of AI and ML",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "ml-pipeline",
+      "scenario": null,
+      "stem": "What is the first step in the ML development pipeline?",
+      "options": [
+        { "key": "A", "text": "Identifying the business goal with clear success criteria and measurable business value" },
+        { "key": "B", "text": "Collecting as much data as possible from all available sources" },
+        { "key": "C", "text": "Training the model with the largest available algorithm" },
+        { "key": "D", "text": "Deploying a model to production immediately" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The development of an ML model should always begin with identifying the business goal. You must have a clear idea of the problem to be solved, measurable business value, and specific success criteria.",
+        "distractors": {
+          "B": "Data collection comes after defining the goal. You need to know what problem you're solving before gathering data.",
+          "C": "Training requires data preparation and a defined goal. It's not the starting point.",
+          "D": "Deployment is one of the last steps. The pipeline begins with goal definition."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "ml-pipeline",
+      "scenario": null,
+      "stem": "Why is the ML pipeline often described as a lifecycle rather than a linear process?",
+      "options": [
+        { "key": "A", "text": "Models are re-trained with new data, continually evaluated, monitored for drift and bias, and adjusted — making parts or all of it repeatable even after deployment" },
+        { "key": "B", "text": "Because each step can only be performed once and never revisited" },
+        { "key": "C", "text": "Because the model is deleted after each training run" },
+        { "key": "D", "text": "Because deployment is always the final step with no further action needed" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "ML models are dynamic — re-trained with new data, continually evaluated against metrics, monitored for drift and bias, and adjusted or rebuilt. Parts or all of the pipeline are repeated even after deployment.",
+        "distractors": {
+          "B": "The pipeline is iterative. Steps are frequently revisited as models are retrained and improved.",
+          "C": "Models are preserved and updated, not deleted after training.",
+          "D": "After deployment, monitoring and re-training continue. The lifecycle doesn't end at deployment."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "model-approach",
+      "scenario": null,
+      "stem": "In what order should organizations evaluate approaches for solving their ML problem?",
+      "options": [
+        { "key": "A", "text": "Start with hosted AI services, then pre-trained models with fine-tuning, then training from scratch as a last resort" },
+        { "key": "B", "text": "Always train from scratch first for maximum customization" },
+        { "key": "C", "text": "Always use hosted services regardless of whether they meet requirements" },
+        { "key": "D", "text": "Skip evaluation and build a custom model immediately" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Start with the simplest solution: evaluate hosted AI services first, then pre-trained models (Bedrock, JumpStart) with fine-tuning, and only train from scratch if simpler approaches don't meet objectives. This minimizes cost and complexity.",
+        "distractors": {
+          "B": "Training from scratch is the most difficult and costly. It should be the last resort, not first choice.",
+          "C": "If hosted services don't meet objectives, you need to escalate to fine-tuning or custom models.",
+          "D": "Evaluation is essential. The simplest solution that meets goals should be preferred."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "data-preparation",
+      "scenario": null,
+      "stem": "What is the recommended split for training, evaluation, and test datasets?",
+      "options": [
+        { "key": "A", "text": "80% training, 10% evaluation, 10% final test" },
+        { "key": "B", "text": "33% training, 33% evaluation, 33% test" },
+        { "key": "C", "text": "100% training with no separate evaluation or test sets" },
+        { "key": "D", "text": "50% training, 50% test with no evaluation set" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A common recommendation is 80% for training, 10% for model evaluation, and 10% for final testing before production deployment.",
+        "distractors": {
+          "B": "Equal splits waste training data. 80/10/10 maximizes training while still validating and testing.",
+          "C": "Without evaluation and test sets, you can't measure model performance or detect overfitting.",
+          "D": "Without an evaluation set, you can't tune during development. The three-way split is recommended."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "feature-engineering",
+      "scenario": null,
+      "stem": "Why should the number of features be reduced during feature engineering?",
+      "options": [
+        { "key": "A", "text": "Reducing features to only those needed for inference decreases the memory and computing power required for training" },
+        { "key": "B", "text": "More features always produce worse models" },
+        { "key": "C", "text": "AWS charges per feature used in training" },
+        { "key": "D", "text": "Models can only process a maximum of 10 features" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Reducing features to the relevant subset minimizes error rate while decreasing memory and computing power needed for training. Features can also be combined to further reduce count.",
+        "distractors": {
+          "B": "More relevant features can improve models. The goal is removing irrelevant ones, not minimizing all features.",
+          "C": "AWS charges for compute resources, not per-feature. Feature reduction saves compute costs indirectly.",
+          "D": "No such limit exists. The principle is to use only features that contribute meaningfully."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "aws-glue",
+      "scenario": null,
+      "stem": "What does AWS Glue provide for ML data preparation? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "A fully managed ETL service that extracts, transforms, and loads data from various sources" },
+        { "key": "B", "text": "A Data Catalog that stores metadata including table definitions, schemas, and data locations" },
+        { "key": "C", "text": "Crawlers that automatically discover data schemas from data stores" },
+        { "key": "D", "text": "Model training and deployment capabilities" },
+        { "key": "E", "text": "Real-time inference endpoints for production models" },
+        { "key": "F", "text": "Foundation model fine-tuning with RLHF" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "AWS Glue provides managed ETL (extract/transform/load from many sources), a Data Catalog (metadata, schemas, locations), and crawlers (automatically discover schemas and write to the catalog).",
+        "distractors": {
+          "D": "Model training is handled by SageMaker, not Glue. Glue handles data preparation.",
+          "E": "Inference endpoints are provided by SageMaker, not Glue.",
+          "F": "Fine-tuning with RLHF is done through SageMaker or Bedrock, not Glue."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "data-preparation",
+      "scenario": null,
+      "stem": "What activities are part of data preparation for ML? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Filtering or repairing data with missing or anomalous values" },
+        { "key": "B", "text": "Masking or removing PII data" },
+        { "key": "C", "text": "Feature engineering — selecting relevant characteristics for training" },
+        { "key": "D", "text": "Deploying the model to a production endpoint" },
+        { "key": "E", "text": "Configuring auto-scaling policies for inference" },
+        { "key": "F", "text": "Setting up CloudWatch alarms for monitoring" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Data preparation includes handling missing/anomalous values, removing PII, and feature engineering (selecting relevant characteristics). These steps happen before training begins.",
+        "distractors": {
+          "D": "Deployment is a later pipeline stage, not part of data preparation.",
+          "E": "Auto-scaling is infrastructure configuration during deployment, not data preparation.",
+          "F": "Monitoring setup is part of the final pipeline stage, not data preparation."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "aws-data-services",
+      "scenario": null,
+      "stem": "Which AWS services help with data preparation and feature engineering for ML? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "AWS Glue DataBrew — visual data preparation with 250+ built-in transformations" },
+        { "key": "B", "text": "Amazon SageMaker Canvas — visual interface for feature engineering with 300+ transformations" },
+        { "key": "C", "text": "Amazon SageMaker Feature Store — centralized store for features and metadata" },
+        { "key": "D", "text": "Amazon CloudFront — content delivery network" },
+        { "key": "E", "text": "Amazon Route 53 — DNS service" },
+        { "key": "F", "text": "AWS WAF — web application firewall" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "DataBrew provides visual data preparation (250+ transformations). SageMaker Canvas offers visual feature engineering (300+ transformations). Feature Store provides centralized feature storage and discovery for reuse.",
+        "distractors": {
+          "D": "CloudFront delivers web content, not ML data preparation.",
+          "E": "Route 53 is DNS. It doesn't prepare or transform data for ML.",
+          "F": "WAF protects web applications from attacks, not ML data preparation."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "etl-process",
+      "scenario": null,
+      "stem": "What does the ETL process involve for ML data collection? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Extracting data from multiple sources and loading it into a centralized repository" },
+        { "key": "B", "text": "Transforming data (dropping duplicates, filling missing values, splitting datasets)" },
+        { "key": "C", "text": "Training the ML model during the load phase" },
+        { "key": "D", "text": "Deploying the model as part of the extract phase" },
+        { "key": "E", "text": "Monitoring model accuracy during transformation" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "ETL (Extract, Transform, Load) collects data from multiple sources into a centralized repository and transforms it (dropping duplicates, filling missing values, splitting datasets). AWS Glue automates this.",
+        "distractors": {
+          "C": "ETL prepares data for training. Model training is a separate subsequent pipeline stage.",
+          "D": "Model deployment is a later stage. ETL only handles data collection and transformation.",
+          "E": "Monitoring is a post-deployment activity. ETL occurs during data preparation."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "glue-data-catalog",
+      "scenario": null,
+      "stem": "What does the AWS Glue Data Catalog contain? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Metadata including the location, schema, and runtime metrics of data" },
+        { "key": "B", "text": "References to data used as sources and targets of ETL jobs" },
+        { "key": "C", "text": "The actual source data copied from all data stores" },
+        { "key": "D", "text": "Trained ML model artifacts and weights" },
+        { "key": "E", "text": "Docker container images for model deployment" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The Data Catalog stores metadata (location, schema, runtime metrics) and references to data used as ETL job sources/targets. The actual source data is NOT written to the catalog — only metadata is stored.",
+        "distractors": {
+          "C": "The catalog stores only metadata (location, schema). Source data stays in its original location.",
+          "D": "Model artifacts are stored in S3. The Data Catalog handles data metadata, not model artifacts.",
+          "E": "Container images are stored in ECR. The Data Catalog stores data metadata."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "ml-pipeline",
+      "scenario": "A retail company wants to use ML to forecast demand but isn't sure if they should use a hosted AI service, fine-tune a pre-trained model, or build from scratch. Their VP asks the data team to evaluate options.",
+      "stem": "What should the team evaluate first according to ML pipeline best practices?",
+      "options": [
+        { "key": "A", "text": "Start with hosted AI services (like Amazon Forecast) since AWS provides pay-as-you-go fully trained models — only escalate to custom models if these don't meet objectives" },
+        { "key": "B", "text": "Immediately begin training a custom deep learning model from scratch" },
+        { "key": "C", "text": "Skip evaluation and deploy the first model they find" },
+        { "key": "D", "text": "Build their own AI hardware before considering any model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS recommends evaluating hosted AI services first — they're pay-as-you-go, fully trained, and allow customization. If they don't meet goals, try pre-trained models with fine-tuning, then custom training as last resort.",
+        "distractors": {
+          "B": "Training from scratch is the most costly and complex approach. It should be evaluated last.",
+          "C": "Evaluation against business objectives is essential. Skipping it risks deploying a model that doesn't meet goals.",
+          "D": "AWS provides infrastructure. Building hardware is unnecessary and unrelated to model selection."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "data-preparation",
+      "scenario": "A healthcare ML team has raw patient data containing names, SSNs, and medical records. They need to prepare this data for training a disease prediction model.",
+      "stem": "What must they do with the PII in the dataset before training?",
+      "options": [
+        { "key": "A", "text": "Mask or remove the PII data during data preparation — PII like names and SSNs should not be used for training" },
+        { "key": "B", "text": "Keep all PII because it improves model accuracy" },
+        { "key": "C", "text": "Encrypt the PII and use it directly for training" },
+        { "key": "D", "text": "Only remove PII after the model is deployed" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "PII data should be masked or removed during data preparation. Personal information like names and SSNs is not relevant for disease prediction and creates privacy/compliance risks if included.",
+        "distractors": {
+          "B": "PII like names/SSNs doesn't improve disease prediction. It creates bias and privacy risks.",
+          "C": "Even encrypted, PII shouldn't be in training data. The model could learn patterns based on identity rather than medical features.",
+          "D": "PII must be removed before training, not after deployment. By then the model may have learned from it."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "ground-truth",
+      "scenario": "A computer vision team needs 100,000 labeled images for their object detection model. Their internal team of 5 people cannot label this volume in a reasonable timeframe.",
+      "stem": "Which AWS service addresses large-scale labeling challenges?",
+      "options": [
+        { "key": "A", "text": "Amazon SageMaker Ground Truth — uses active learning plus human workers from Mechanical Turk or private workforce for scalable labeling" },
+        { "key": "B", "text": "Amazon S3 — automatically labels all uploaded images" },
+        { "key": "C", "text": "AWS Glue — transforms data and applies labels during ETL" },
+        { "key": "D", "text": "Amazon CloudWatch — monitors labeling progress" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "SageMaker Ground Truth uses active learning (ML labels what it can, humans handle the rest) with workers from Mechanical Turk (500,000+ contractors) or private workforce for scalable labeling.",
+        "distractors": {
+          "B": "S3 stores data. It doesn't automatically label images.",
+          "C": "Glue handles data transformation (ETL), not data labeling.",
+          "D": "CloudWatch monitors metrics, not labeling operations."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "aws-glue",
+      "scenario": "A data engineer needs to collect data from Amazon RDS, Amazon Redshift, and streaming services, transform it by removing duplicates and filling missing values, then store it in S3 for model training.",
+      "stem": "Which AWS service provides this end-to-end ETL capability?",
+      "options": [
+        { "key": "A", "text": "AWS Glue — a fully managed ETL service that extracts from diverse sources, transforms with built-in operations, and loads to S3" },
+        { "key": "B", "text": "Amazon SageMaker — trains models on the raw data" },
+        { "key": "C", "text": "Amazon Bedrock — provides foundation model access" },
+        { "key": "D", "text": "AWS IAM — manages access permissions" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS Glue is a fully managed ETL service that extracts from databases, warehouses, and streaming services, has built-in transformations (dropping duplicates, filling values, splitting datasets), and loads to S3.",
+        "distractors": {
+          "B": "SageMaker trains models but doesn't provide ETL. It consumes data already prepared in S3.",
+          "C": "Bedrock provides FM access, not data transformation and loading.",
+          "D": "IAM manages permissions. It doesn't extract, transform, or load data."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "databrew",
+      "scenario": "A data analyst without coding experience needs to clean and normalize a dataset for ML training. They want a visual interface to apply transformations like removing nulls and fixing schema inconsistencies.",
+      "stem": "Which AWS service provides no-code visual data preparation with 250+ built-in transformations?",
+      "options": [
+        { "key": "A", "text": "AWS Glue DataBrew" },
+        { "key": "B", "text": "Amazon SageMaker Training Jobs" },
+        { "key": "C", "text": "Amazon Bedrock Playgrounds" },
+        { "key": "D", "text": "AWS CloudFormation" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS Glue DataBrew is a visual data preparation tool with 250+ built-in transformations (removing nulls, replacing missing values, fixing schemas) that doesn't require writing code.",
+        "distractors": {
+          "B": "SageMaker Training Jobs train models. They don't provide visual data cleaning tools.",
+          "C": "Bedrock Playgrounds test model inference. They don't clean or normalize training data.",
+          "D": "CloudFormation deploys infrastructure. It doesn't transform or clean data."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "ml-pipeline",
+      "scenario": "A team is planning their ML project and needs to ensure all pipeline stages are covered.",
+      "stem": "What are the main stages of the ML development pipeline? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Define the business goal and evaluate if ML is appropriate" },
+        { "key": "B", "text": "Collect, prepare, and process training data" },
+        { "key": "C", "text": "Train, tune, evaluate, deploy, and monitor the model" },
+        { "key": "D", "text": "Market the model to external customers" },
+        { "key": "E", "text": "Patent the algorithm before any development" },
+        { "key": "F", "text": "Hire a full-time team of 100 data scientists before starting" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The ML pipeline includes: (1) define business goal/evaluate ML fit, (2) collect and prepare data, (3) train, tune, evaluate, deploy, and monitor. These stages iterate throughout the model lifecycle.",
+        "distractors": {
+          "D": "Marketing is a business activity outside the ML development pipeline.",
+          "E": "Patent filing is a legal process, not a pipeline development stage.",
+          "F": "Team size is an organizational decision. The pipeline stages don't require a specific team size."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "business-goal",
+      "scenario": "A CTO is evaluating whether their organization should pursue an ML project. Their data team is conducting a feasibility assessment.",
+      "stem": "What should be evaluated before proceeding with an ML project? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Whether enough relevant high-quality training data is available" },
+        { "key": "B", "text": "Whether clear success criteria and measurable business objectives exist" },
+        { "key": "C", "text": "Whether a cost-benefit analysis supports moving forward" },
+        { "key": "D", "text": "Whether the model can achieve 100% accuracy on all possible inputs" },
+        { "key": "E", "text": "Whether competitors are using the same algorithm" },
+        { "key": "F", "text": "Whether the project can be completed in one week" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Evaluate: data availability (sufficient relevant high-quality data), clear success criteria (measurable objectives), and cost-benefit analysis (is the investment justified). Without these, the project shouldn't proceed.",
+        "distractors": {
+          "D": "100% accuracy is unrealistic. Models provide probabilistic results. Success criteria should be achievable.",
+          "E": "Competitor algorithms are irrelevant. Focus on whether ML solves your specific business problem.",
+          "F": "Timeline depends on complexity. One week is arbitrary and likely insufficient for most ML projects."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "transfer-learning",
+      "scenario": "A team is deciding between three approaches to building their ML model: hosted AI services, fine-tuning a pre-trained model, or training from scratch.",
+      "stem": "What are advantages of using pre-trained models with transfer learning? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Large savings in cost and development time compared to creating a custom model from scratch" },
+        { "key": "B", "text": "Can fine-tune with your own dataset using incremental training" },
+        { "key": "C", "text": "Guarantees perfect accuracy on all tasks" },
+        { "key": "D", "text": "Eliminates the need for any training data" },
+        { "key": "E", "text": "Requires no compute resources" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Pre-trained models save significant cost and time over building from scratch. You can fine-tune them with your own data using transfer learning (incremental training on your dataset).",
+        "distractors": {
+          "C": "No model guarantees perfect accuracy. Transfer learning improves efficiency, not perfection.",
+          "D": "Fine-tuning still needs domain-specific data, just less than training from scratch.",
+          "E": "Fine-tuning requires GPU compute, though less than training from scratch."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "data-collection",
+      "scenario": "An ML team needs to build a repeatable data collection process because their model requires frequent retraining with fresh data from multiple sources.",
+      "stem": "What key characteristic must their data collection process have?",
+      "options": [
+        { "key": "A", "text": "It must be repeatable because models should be re-trained frequently with new data from possibly multiple sources" },
+        { "key": "B", "text": "It only needs to run once because models never need retraining" },
+        { "key": "C", "text": "It should manually collect data one record at a time" },
+        { "key": "D", "text": "It should only collect data from a single source for consistency" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Data collection must be repeatable because models need frequent retraining with new data. The ETL process collects from possibly multiple sources and needs to run reliably on schedule.",
+        "distractors": {
+          "B": "ML models are dynamic. They require regular retraining with fresh data, so collection must repeat.",
+          "C": "Manual record-by-record collection doesn't scale. Automated ETL processes are needed.",
+          "D": "Multiple data sources are common. ETL should collect from all relevant sources, not just one."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "feature-store",
+      "scenario": "Multiple ML teams in an organization independently create the same features from raw data, wasting effort and creating inconsistencies.",
+      "stem": "Which AWS service solves this by providing centralized feature storage for discovery and reuse?",
+      "options": [
+        { "key": "A", "text": "Amazon SageMaker Feature Store" },
+        { "key": "B", "text": "Amazon S3" },
+        { "key": "C", "text": "AWS Glue Data Catalog" },
+        { "key": "D", "text": "Amazon DynamoDB" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "SageMaker Feature Store is a centralized store for features and metadata, making features easily discoverable and reusable. It reduces repetitive data processing and curation work across teams.",
+        "distractors": {
+          "B": "S3 stores raw data. Feature Store specifically manages processed ML features with metadata for discovery.",
+          "C": "Glue Data Catalog stores data metadata (schemas, locations). Feature Store manages computed ML features.",
+          "D": "DynamoDB is a database for application data. Feature Store is purpose-built for ML feature management."
+        }
+      }
+    }
+  ]
+}

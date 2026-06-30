@@ -1,0 +1,457 @@
+{
+  "label": "Transparent & Explainable Models — Part A",
+  "order": 1,
+  "topic": "Domain 4: Guidelines for Responsible AI",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "transparency",
+      "scenario": null,
+      "stem": "What does a model's transparency measure?",
+      "options": [
+        { "key": "A", "text": "The degree to which ML owners and stakeholders can understand how a model works and why it produces its outputs" },
+        { "key": "B", "text": "The percentage of correct predictions the model makes on test data" },
+        { "key": "C", "text": "The speed at which the model processes inference requests" },
+        { "key": "D", "text": "The amount of training data that was used to build the model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A model's transparency measures the degree to which ML owners and stakeholders can understand how the model works and why it produces its outputs. The degree required often depends on regulatory requirements.",
+        "distractors": {
+          "B": "Prediction accuracy is a performance metric, not a measure of transparency. A model can be accurate but opaque.",
+          "C": "Processing speed is a performance metric unrelated to understanding how or why the model produces decisions.",
+          "D": "Training data volume is a characteristic of model development, not a measure of how understandable the model is."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "interpretability",
+      "scenario": null,
+      "stem": "What is the difference between interpretability and explainability as measures of model transparency?",
+      "options": [
+        { "key": "A", "text": "Interpretability means understanding the inner mechanisms; explainability describes what a model is doing without knowing exactly how" },
+        { "key": "B", "text": "Interpretability applies only to neural networks; explainability applies only to linear models" },
+        { "key": "C", "text": "They are interchangeable terms with no meaningful difference" },
+        { "key": "D", "text": "Interpretability is about model speed; explainability is about model accuracy" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "With interpretability, you can document how the inner mechanisms of the model impact the output. Explainability describes what a model is doing without knowing exactly how — it treats the model as a black box.",
+        "distractors": {
+          "B": "The relationship is reversed. Simpler models (like linear regression) are interpretable; neural networks are typically only explainable through black-box observation.",
+          "C": "They are distinct concepts. Interpretability reveals inner workings; explainability observes behavior without access to inner mechanisms.",
+          "D": "Neither relates to speed or accuracy. Both are about understanding model decisions, at different levels of depth."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "interpretability",
+      "scenario": null,
+      "stem": "Which types of algorithms are considered highly interpretable?",
+      "options": [
+        { "key": "A", "text": "Linear regression and decision trees" },
+        { "key": "B", "text": "Deep neural networks and transformers" },
+        { "key": "C", "text": "Generative adversarial networks and autoencoders" },
+        { "key": "D", "text": "Convolutional neural networks and recurrent neural networks" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Linear regression (where you can see the slope and intercept) and decision trees (which produce basic understandable rules) are straightforward to interpret. They represent models with high transparency.",
+        "distractors": {
+          "B": "Neural networks emulate how the brain works and are on the opposite end of the interpretability spectrum — complex and difficult to interpret.",
+          "C": "GANs and autoencoders are complex neural network architectures with low interpretability.",
+          "D": "CNNs and RNNs are deep learning models that lack the straightforward interpretability of simpler algorithms."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "transparency-tradeoffs",
+      "scenario": null,
+      "stem": "What is the typical tradeoff between model transparency and model performance?",
+      "options": [
+        { "key": "A", "text": "Higher transparency through less complex algorithms usually involves a compromise in model performance" },
+        { "key": "B", "text": "More transparent models always perform better because they are easier to debug" },
+        { "key": "C", "text": "There is no tradeoff — all models can be made fully transparent without performance loss" },
+        { "key": "D", "text": "Less transparent models always perform worse because they cannot be validated" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Model transparency can be improved by choosing a less complex algorithm, but it usually involves a compromise in performance. Simple models are limited in capabilities — for example, a word-by-word translation vs a neural network understanding full sentence context.",
+        "distractors": {
+          "B": "Transparent models are simpler but typically less capable. A decision tree cannot match a neural network's performance on complex tasks.",
+          "C": "A tradeoff exists. Neural networks achieve higher performance precisely because of their complexity, which reduces interpretability.",
+          "D": "Less transparent models (like neural networks) often perform better on complex tasks. They can be validated through explainability techniques."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "transparency-security",
+      "scenario": null,
+      "stem": "From a model safety perspective, why can a lack of transparency be advantageous?",
+      "options": [
+        { "key": "A", "text": "Transparent models are more susceptible to attacks because hackers have more information about inner mechanisms to find vulnerabilities" },
+        { "key": "B", "text": "Opaque models cannot be deployed, so they are never exposed to attackers" },
+        { "key": "C", "text": "Transparent models always produce biased output" },
+        { "key": "D", "text": "Less transparent models are immune to all forms of attack" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Transparent models are more susceptible to attacks because hackers have more information about inner mechanisms and can find vulnerabilities. More opaque models limit attackers to only what they can learn from studying outputs.",
+        "distractors": {
+          "B": "Opaque models can be deployed. Their lack of transparency is about inner workings, not deployability.",
+          "C": "Transparency does not cause bias. Bias comes from data and design, not from how visible the model's logic is.",
+          "D": "No model is immune to all attacks. Less transparency reduces some attack surfaces but doesn't eliminate all risk."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "transparency-tradeoffs",
+      "scenario": null,
+      "stem": "What are the tradeoffs to consider when choosing a model with high transparency? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Performance — simple interpretable models are limited in capabilities compared to complex ones" },
+        { "key": "B", "text": "Security — transparent models expose inner mechanisms making them more susceptible to attacks" },
+        { "key": "C", "text": "Cost — transparent models always cost more to train and deploy" },
+        { "key": "D", "text": "Availability — transparent models can only run in a single AWS Region" },
+        { "key": "E", "text": "Durability — transparent models degrade faster over time" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The two tradeoffs for high transparency are performance (simple models have limited capabilities) and security (transparent models give attackers more information about inner mechanisms and vulnerabilities).",
+        "distractors": {
+          "C": "Cost is not identified as a transparency tradeoff. Simple models may actually cost less to train due to lower complexity.",
+          "D": "Region availability is an infrastructure concern unrelated to model transparency.",
+          "E": "Model degradation (drift) happens regardless of transparency. It is not a tradeoff of choosing transparent models."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "open-source",
+      "scenario": null,
+      "stem": "What are advantages of open source AI models for transparency? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Users can understand the model's construction and inner workings because everything is shared" },
+        { "key": "B", "text": "Many global contributors increase diversity of developers and reduce bias" },
+        { "key": "C", "text": "Open source models are always more accurate than proprietary models" },
+        { "key": "D", "text": "Open source models cannot be attacked because their code is public" },
+        { "key": "E", "text": "Open source eliminates all need for model monitoring" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Open source AI is developed openly, so users understand construction and inner workings (maximizing transparency). Many global contributors result in increased developer diversity and less bias, with issues more likely to be caught.",
+        "distractors": {
+          "C": "Accuracy depends on architecture and data, not whether a model is open source. Proprietary models can be equally or more accurate.",
+          "D": "Public code can actually increase attack surface. Some companies avoid open source for model safety concerns.",
+          "E": "Open source models still need monitoring for drift and bias in deployment. Transparency doesn't eliminate monitoring needs."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "ai-service-cards",
+      "scenario": null,
+      "stem": "What information do AWS AI service cards provide to customers? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Intended use cases for the AI service" },
+        { "key": "B", "text": "Limitations of the AI service" },
+        { "key": "C", "text": "Responsible AI design choices and deployment best practices" },
+        { "key": "D", "text": "The complete source code of the AI service" },
+        { "key": "E", "text": "The personal information of the engineers who built the service" },
+        { "key": "F", "text": "Real-time pricing for each API call" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "AI service cards provide customers with intended use cases, limitations, responsible AI design choices, and deployment/performance optimization best practices in a single place.",
+        "distractors": {
+          "D": "AWS managed AI services are accessed via APIs. The source code is proprietary and not shared through service cards.",
+          "E": "Service cards provide technical documentation about the service, not personal information about development teams.",
+          "F": "Pricing information is available on AWS pricing pages, not within AI service cards."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "shapley-values",
+      "scenario": null,
+      "stem": "What does SageMaker Clarify use Shapley values for? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "To determine the contribution that each feature made to model predictions" },
+        { "key": "B", "text": "To provide feature attribution analysis for explainability" },
+        { "key": "C", "text": "To calculate the financial cost of each feature in the training dataset" },
+        { "key": "D", "text": "To automatically remove low-contributing features from the model" },
+        { "key": "E", "text": "To determine which AWS Region provides the best model performance" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Clarify provides feature attributions based on Shapley values, which determine the contribution each feature made to model predictions. This supports explainability by showing which features drive decisions.",
+        "distractors": {
+          "C": "Shapley values measure feature contribution to predictions, not financial cost. Cost analysis is unrelated to this technique.",
+          "D": "Shapley values report contributions but do not automatically modify the model. Feature selection is a separate design decision.",
+          "E": "Shapley values analyze feature importance within a model, not infrastructure performance across Regions."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "rlhf",
+      "scenario": null,
+      "stem": "How does Reinforcement Learning from Human Feedback (RLHF) work? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Humans review multiple LLM responses for the same prompt and indicate their preferred response" },
+        { "key": "B", "text": "A separate reward model is trained on human preferences to predict how highly a human would score a response" },
+        { "key": "C", "text": "Humans manually rewrite every model response before it reaches the end user" },
+        { "key": "D", "text": "The LLM is retrained from scratch after each piece of human feedback" },
+        { "key": "E", "text": "Human feedback is collected only during the initial model training and never updated" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "In RLHF, humans review multiple responses and indicate preferences. These preferences train a separate reward model that predicts human scores. The LLM then refines responses to maximize the reward model's predicted score.",
+        "distractors": {
+          "C": "RLHF trains the model to improve responses autonomously through a reward model, not by requiring humans to rewrite every output.",
+          "D": "RLHF refines the model using reward signals, not by retraining from scratch after each feedback instance.",
+          "E": "RLHF is an ongoing technique. Human preferences can be collected continuously to further refine the model."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "transparency-tradeoffs",
+      "scenario": "A financial regulator requires that a bank's lending model be fully interpretable so auditors can document exactly how each feature impacts loan decisions. The bank's data science team is choosing between a decision tree and a deep neural network.",
+      "stem": "Given the regulatory requirement for interpretability, which model should the team select and what is the expected tradeoff?",
+      "options": [
+        { "key": "A", "text": "A decision tree, accepting that performance may be lower than a neural network" },
+        { "key": "B", "text": "A neural network, since explainability techniques satisfy interpretability requirements" },
+        { "key": "C", "text": "A decision tree, which will also outperform the neural network on accuracy" },
+        { "key": "D", "text": "A neural network with disabled layers to make it interpretable" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "When interpretability is a hard business/regulatory requirement, you must select an interpretable model like a decision tree. The tradeoff is that simple models have limited performance compared to neural networks.",
+        "distractors": {
+          "B": "Explainability (black-box observation) is different from interpretability (understanding inner mechanisms). If the regulation requires interpretability, explainability alone does not suffice.",
+          "C": "Decision trees are interpretable but typically do not outperform neural networks on complex tasks. The expected tradeoff is lower performance.",
+          "D": "Disabling layers doesn't make a neural network interpretable. Interpretability requires straightforward algorithms like decision trees."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "transparency-security",
+      "scenario": "A cybersecurity company builds an AI-powered threat detection model. They debate whether to publish a detailed explanation of how their model works to build customer trust, or keep the model's logic opaque to prevent attackers from exploiting it.",
+      "stem": "What security concern justifies limiting the transparency of this model?",
+      "options": [
+        { "key": "A", "text": "The more explanations attackers can access about the model's behavior, the more easily they can reverse engineer it" },
+        { "key": "B", "text": "Transparent models are incapable of detecting sophisticated threats" },
+        { "key": "C", "text": "Publishing model details would violate AWS terms of service" },
+        { "key": "D", "text": "Customers do not benefit from understanding how threat detection works" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The more explanations of the AI model's behavior that attackers can access, the more easily they can reverse engineer the model. Limiting transparency protects proprietary algorithms from exploitation.",
+        "distractors": {
+          "B": "Transparency does not reduce detection capability. The concern is security of the model itself, not its performance.",
+          "C": "There is no AWS terms of service violation for transparency. The concern is business and security risk.",
+          "D": "Customers do benefit from trust and understanding. The tradeoff is between customer trust and vulnerability to attackers."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "amazon-a2i",
+      "scenario": "An e-commerce company uses AI to detect explicit content in product images. They want humans to review predictions where the AI has low confidence before making a final decision about blocking the content.",
+      "stem": "Which AWS service allows them to route low-confidence AI predictions to human reviewers?",
+      "options": [
+        { "key": "A", "text": "Amazon Augmented AI (Amazon A2I)" },
+        { "key": "B", "text": "Amazon SageMaker Clarify" },
+        { "key": "C", "text": "Amazon Rekognition" },
+        { "key": "D", "text": "Amazon SageMaker Ground Truth" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon A2I incorporates human review for samples of inferences made by AWS AI services or custom models. You can configure it to send low-confidence predictions to human reviewers before delivering results to the client.",
+        "distractors": {
+          "B": "SageMaker Clarify analyzes bias and explainability. It does not provide human review workflows for individual predictions.",
+          "C": "Amazon Rekognition is the AI service making the predictions. A2I is the service that adds human review on top of it.",
+          "D": "SageMaker Ground Truth is primarily for data labeling. While it can provide human workforce for RLHF, A2I is specifically designed for reviewing AI inference outputs."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "rlhf",
+      "scenario": "A company building a customer-facing LLM wants to ensure it produces responses that are truthful, harmless, and helpful. They decide to implement RLHF and need a tool to collect human preference rankings for multiple model responses to the same prompt.",
+      "stem": "Which AWS service is most suitable for collecting human preference data for RLHF?",
+      "options": [
+        { "key": "A", "text": "Amazon SageMaker Ground Truth" },
+        { "key": "B", "text": "Amazon Augmented AI (A2I)" },
+        { "key": "C", "text": "AWS CloudTrail" },
+        { "key": "D", "text": "Amazon SageMaker Model Monitor" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Collecting human preferences for RLHF can be accomplished most readily with SageMaker Ground Truth, which provides the labeling workforce and interface for humans to rank responses.",
+        "distractors": {
+          "B": "A2I is for reviewing individual inference outputs at runtime. Ground Truth is for collecting labeled training data and preference rankings.",
+          "C": "CloudTrail logs API calls for auditing. It does not collect human feedback or preference data.",
+          "D": "Model Monitor tracks model quality drift. It does not collect human preference rankings for training."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "shapley-values",
+      "scenario": "A data scientist at an insurance company needs to explain to their actuarial team why the AI model charges certain customers higher premiums. They need a visualization showing how each feature (age, location, driving history) contributes to the premium calculation.",
+      "stem": "Which SageMaker Clarify analysis produces this type of feature contribution visualization?",
+      "options": [
+        { "key": "A", "text": "Feature attributions based on Shapley values, which show the contribution of each feature to predictions" },
+        { "key": "B", "text": "Demographic disparity analysis, which compares outcomes across groups" },
+        { "key": "C", "text": "Data capture analysis, which logs inference inputs and outputs" },
+        { "key": "D", "text": "Model registry analysis, which tracks model version history" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "SageMaker Clarify provides feature attributions based on Shapley values that determine the contribution each feature made to predictions. This produces bar charts showing the most impactful features.",
+        "distractors": {
+          "B": "Demographic disparity measures bias between groups. It does not show individual feature contributions to predictions.",
+          "C": "Data capture stores inference traffic for monitoring. It does not analyze feature contributions.",
+          "D": "Model registry tracks versions. Feature contribution analysis is performed by Clarify's explainability features."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "amazon-a2i",
+      "scenario": "A content moderation team is configuring Amazon A2I for their image classification system. They want to understand the full capabilities of the service.",
+      "stem": "Which capabilities does Amazon A2I provide? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Send low-confidence inferences to human reviewers before delivering to clients" },
+        { "key": "B", "text": "Use reviewers from your own organization or Amazon Mechanical Turk" },
+        { "key": "C", "text": "Configure how many reviewers need to review each prediction" },
+        { "key": "D", "text": "Automatically retrain the model without any human involvement" },
+        { "key": "E", "text": "Replace the AI model entirely with human reviewers for all predictions" },
+        { "key": "F", "text": "Encrypt model weights using human-provided encryption keys" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "A2I can send low-confidence inferences to reviewers, use your own organization's pool or Mechanical Turk, and let you configure how many reviewers assess each prediction.",
+        "distractors": {
+          "D": "A2I provides human review of predictions. Model retraining is a separate process. However, reviewer feedback can be added to training data separately.",
+          "E": "A2I augments AI with human review for select cases (low confidence, random audit). It does not replace AI entirely.",
+          "F": "A2I manages human review workflows, not encryption. KMS handles encryption."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "ai-service-cards",
+      "scenario": "A healthcare startup is evaluating Amazon Rekognition for matching patient faces to verify identity. Before adoption, their compliance team wants documentation about the service's responsible AI practices.",
+      "stem": "For which AWS AI services do AI service cards currently exist? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Matching faces with Amazon Rekognition" },
+        { "key": "B", "text": "Detecting PII with Amazon Comprehend" },
+        { "key": "C", "text": "Managing IAM permissions with AWS IAM" },
+        { "key": "D", "text": "Storing objects in Amazon S3" },
+        { "key": "E", "text": "Deploying containers on Amazon ECS" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "AI service cards exist for several AWS AI service APIs including matching faces with Amazon Rekognition and detecting PII with Amazon Comprehend (also Amazon Textract for analyzing IDs and Amazon Titan Text in Bedrock).",
+        "distractors": {
+          "C": "IAM is a security service, not an AI service. AI service cards cover AI/ML services specifically.",
+          "D": "S3 is a storage service. AI service cards document AI services' responsible AI practices.",
+          "E": "ECS is a container orchestration service, not an AI service requiring responsible AI documentation."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "human-centered-ai",
+      "scenario": "A hospital is developing an AI-powered diagnostic system. They want to follow human-centered AI principles to ensure the system enhances rather than replaces clinical expertise.",
+      "stem": "Which principles define human-centered AI? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Designing AI systems that prioritize the needs and values of humans" },
+        { "key": "B", "text": "Enhancing human abilities rather than replacing them" },
+        { "key": "C", "text": "Removing all human involvement to eliminate human error" },
+        { "key": "D", "text": "Making AI decisions final without possibility of human override" },
+        { "key": "E", "text": "Prioritizing model speed over user experience" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Human-centered AI designs systems that prioritize human needs and values, with the goal of enhancing human abilities rather than replacing them. It incorporates humans at each development stage.",
+        "distractors": {
+          "C": "Human-centered AI increases human involvement, not removes it. Humans participate in design, development, and review.",
+          "D": "Human-centered AI includes human oversight and review capability. Decisions are not meant to be final without human input.",
+          "E": "Human-centered AI prioritizes human needs and user experience, not raw model speed."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "partial-dependence",
+      "scenario": "A real estate company's AI model predicts house prices. They want to understand how the model's predictions change as the square footage feature increases from 1,000 to 5,000 sq ft, holding all other features constant.",
+      "stem": "Which SageMaker Clarify analysis type shows how predictions change for different values of a single feature?",
+      "options": [
+        { "key": "A", "text": "A partial dependence plot" },
+        { "key": "B", "text": "A Shapley value bar chart" },
+        { "key": "C", "text": "A demographic disparity analysis" },
+        { "key": "D", "text": "A treatment equality metric" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A partial dependence plot shows how a model's predictions change for different values of a feature. It visualizes the relationship between a specific feature (like age or square footage) and the model's output.",
+        "distractors": {
+          "B": "Shapley value charts show the overall contribution (importance) of each feature, not how predictions change across different values of one feature.",
+          "C": "Demographic disparity analyzes bias between groups in the dataset, not the functional relationship between a feature and predictions.",
+          "D": "Treatment equality measures the FN-to-FP ratio between classes. It is a bias metric, not a feature-prediction relationship visualization."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "amazon-a2i",
+      "scenario": "A machine learning team wants to periodically verify their deployed model's predictions are correct, even when the model reports high confidence. They want a random sample of predictions reviewed by humans as an ongoing audit mechanism.",
+      "stem": "Which Amazon A2I capability supports this random audit requirement?",
+      "options": [
+        { "key": "A", "text": "Having human reviewers review random predictions as a way to audit the model, in addition to reviewing low-confidence outputs" },
+        { "key": "B", "text": "Automatically sending all predictions to human reviewers regardless of confidence" },
+        { "key": "C", "text": "Only routing predictions that receive customer complaints to human review" },
+        { "key": "D", "text": "Running a one-time batch evaluation at model deployment time" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Besides reviewing low-confidence inferences, A2I allows you to have human reviewers review random predictions as a way to audit the model. This provides ongoing verification even for high-confidence outputs.",
+        "distractors": {
+          "B": "Sending all predictions to reviewers would defeat the purpose of AI automation. A2I is for selective review (low-confidence or random samples).",
+          "C": "A2I is proactive (low-confidence + random audit), not reactive to complaints. Waiting for complaints misses errors that go unreported.",
+          "D": "A2I provides ongoing review during production serving, not just a one-time evaluation at deployment."
+        }
+      }
+    }
+  ]
+}
