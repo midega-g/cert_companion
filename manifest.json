@@ -9,13 +9,60 @@
           "label": "Gen AI Foundation",
           "children": [
             {
+              "id": "domain_4",
+              "label": "Domain 4",
+              "description": "Responsible AI \u2014 Development of responsible systems, transparency & explainability",
+              "children": [
+                {
+                  "id": "task_1_development_of_AI_systems_that_are_responsible",
+                  "label": "Task 1",
+                  "description": "Development of AI systems that are responsible",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Responsible AI Principles & Fairness \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_4/task_1_development_of_AI_systems_that_are_responsible/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Generative AI Risks & LLM Evaluation \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_4/task_1_development_of_AI_systems_that_are_responsible/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Gap Coverage \u2014 Supplemental",
+                      "path": "aws/gen_ai_foundation/domain_4/task_1_development_of_AI_systems_that_are_responsible/test_3.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_2_importance_of_transparent_and_explainable_models",
+                  "label": "Task 2",
+                  "description": "Importance of transparent and explainable models",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Transparent & Explainable Models \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_4/task_2_importance_of_transparent_and_explainable_models/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Transparent & Explainable Models \u2014 Part B",
+                      "path": "aws/gen_ai_foundation/domain_4/task_2_importance_of_transparent_and_explainable_models/test_2.json"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
               "id": "domain_5",
               "label": "Domain 5",
               "description": "Security & Governance \u2014 Methods to secure AI systems, compliance regulations",
               "children": [
                 {
                   "id": "task_1_methods_to_secure_AI_systems",
-                  "label": "Task 1 Methods To Secure AI Systems",
+                  "label": "Task 1",
+                  "description": "Methods to secure AI systems",
                   "tests": [
                     {
                       "id": "test_1",
@@ -41,7 +88,8 @@
                 },
                 {
                   "id": "task_2_governance_and_compliance_regulations_for_AI_systems",
-                  "label": "Task 2 Governance And Compliance Regulations For AI Systems",
+                  "label": "Task 2",
+                  "description": "Governance and compliance regulations for AI systems",
                   "tests": [
                     {
                       "id": "test_1",
