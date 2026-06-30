@@ -145,9 +145,7 @@ async function renderHome() {
           (p) => `
         <div class="card" onclick="navigateTo('${p.id}', 0)">
           <div class="card-title">${p.label}</div>
-          <div class="card-meta">${countTests(p)} test${
-            countTests(p) !== 1 ? "s" : ""
-          }</div>
+          <div class="card-meta">${nodeMetaText(p)}</div>
           ${
             p.description ? `<div class="card-desc">${p.description}</div>` : ""
           }
@@ -163,6 +161,31 @@ function countTests(node) {
   if (node.tests) count += node.tests.length;
   if (node.children) node.children.forEach((c) => (count += countTests(c)));
   return count;
+}
+
+function nodeMetaText(node) {
+  // Show the immediate children count with appropriate label
+  // If node has children, describe them (topics, domains, tasks, etc.)
+  // If node is a leaf (tests only), show test count
+  const hasChildren = node.children && node.children.length > 0;
+  const hasTests = node.tests && node.tests.length > 0;
+
+  if (hasChildren) {
+    const count = node.children.length;
+    // Infer the child type from the first child's id
+    const firstChildId = node.children[0].id || "";
+    let unit = "topic";
+    if (firstChildId.startsWith("domain")) unit = "domain";
+    else if (firstChildId.startsWith("task")) unit = "task";
+    return `${count} ${unit}${count !== 1 ? "s" : ""}`;
+  }
+
+  if (hasTests) {
+    const count = node.tests.length;
+    return `${count} test${count !== 1 ? "s" : ""}`;
+  }
+
+  return "";
 }
 
 function findNodeAtDepth(depth, id) {
@@ -231,9 +254,7 @@ function renderNode() {
         state.navPath.length
       })">
         <div class="card-title">${c.label}</div>
-        <div class="card-meta">${countTests(c)} test${
-          countTests(c) !== 1 ? "s" : ""
-        }</div>
+        <div class="card-meta">${nodeMetaText(c)}</div>
         ${c.description ? `<div class="card-desc">${c.description}</div>` : ""}
       </div>`,
       )
