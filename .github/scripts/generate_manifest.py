@@ -2,15 +2,20 @@
 """
 Auto-generates manifest.json by walking the repository tree.
 
-Structure expected:
+Structure supported (any depth):
+  <provider>/test_N.json
   <provider>/<topic>/test_N.json
+  <provider>/<topic>/<subtopic>/test_N.json
+  <provider>/<topic>/<subtopic>/<...>/test_N.json
+
+The first directory level is always the provider (e.g., snowflake, aws).
+Any leaf directory containing test_N.json files becomes a "topic" in the manifest.
+The topic label is built from all intermediate folder names joined with " > ".
 
 Each test_N.json may contain optional top-level fields:
-  "label": string  — display name shown in the UI (falls back to "Test N")
-  "order": int     — explicit sort position within the topic (falls back to N)
-
-When "order" is present, tests are sorted by that value rather than filename number.
-This allows Part A / Part B pairs to be grouped together regardless of filename.
+  "label": string         — display name shown in the UI (falls back to "Test N")
+  "order": int            — explicit sort position within the topic (falls back to N)
+  "questionType": string  — e.g. "recall" (passed through to manifest)
 
 Outputs manifest.json at the repo root.
 """
@@ -19,46 +24,65 @@ import json
 import os
 import re
 
-SKIP_DIRS = {".git", ".github", "node_modules"}
-SKIP_FILES = {"index.html", "style.css", "app.js", "manifest.json"}
+SKIP_DIRS = {".git", ".github", "node_modules", ".vscode", ".ruff_cache", "sources"}
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+TEST_PATTERN = re.compile(r"test_(\d+)\.json")
 
 
 def to_label(name: str) -> str:
-    """Convert a folder id to a display label.
-
-    Examples:
-        'snowflake'                    -> 'Snowflake'
-        'micro_partition_and_clustering' -> 'Micro Partition And Clustering'
-        'virtual-machines'             -> 'Virtual Machines'
-    """
+    """Convert a folder id to a display label."""
     return name.replace("-", " ").replace("_", " ").title()
 
 
 def test_sort_key(filename: str) -> int:
-    match = re.fullmatch(r"test_(\d+)\.json", filename)
+    match = TEST_PATTERN.fullmatch(filename)
     return int(match.group(1)) if match else 0
 
 
-def read_test_label(filepath: str, fallback: str) -> str:
-    """Read the optional 'label' field from the JSON file; return fallback if absent."""
+def read_test_metadata(filepath: str) -> dict:
+    """Read optional fields from a test JSON file."""
     try:
         with open(filepath, encoding="utf-8") as f:
             data = json.load(f)
-        return data.get("label") or fallback
+        return {
+            "label": data.get("label"),
+            "order": data.get("order"),
+            "questionType": data.get("questionType"),
+        }
     except Exception:
-        return fallback
+        return {}
 
 
-def read_test_order(filepath: str, fallback: int) -> int:
-    """Read the optional 'order' field from the JSON file; return fallback if absent."""
+def find_test_dirs(
+    base_path: str, rel_parts: list[str] = None
+) -> list[tuple[str, list[str]]]:
+    """Recursively find all directories containing test_N.json files.
+
+    Returns list of (absolute_path, relative_path_parts) tuples.
+    """
+    if rel_parts is None:
+        rel_parts = []
+
+    results = []
+
     try:
-        with open(filepath, encoding="utf-8") as f:
-            data = json.load(f)
-        val = data.get("order")
-        return int(val) if val is not None else fallback
-    except Exception:
-        return fallback
+        entries = sorted(os.scandir(base_path), key=lambda e: e.name)
+    except PermissionError:
+        return results
+
+    # Check if this directory has test files
+    test_files = [
+        e.name for e in entries if e.is_file() and TEST_PATTERN.fullmatch(e.name)
+    ]
+    if test_files:
+        results.append((base_path, list(rel_parts)))
+
+    # Recurse into subdirectories
+    for entry in entries:
+        if entry.is_dir() and entry.name not in SKIP_DIRS:
+            results.extend(find_test_dirs(entry.path, rel_parts + [entry.name]))
+
+    return results
 
 
 def build_manifest(root: str) -> dict:
@@ -74,41 +98,52 @@ def build_manifest(root: str) -> dict:
         provider_path = os.path.join(root, provider_id)
         topics = []
 
-        topic_dirs = sorted(
-            entry.name for entry in os.scandir(provider_path) if entry.is_dir()
-        )
+        # Find all directories with test files under this provider
+        test_dirs = find_test_dirs(provider_path)
 
-        for topic_id in topic_dirs:
-            topic_path = os.path.join(provider_path, topic_id)
+        for dir_path, rel_parts in test_dirs:
+            # Build topic id from relative path parts
+            topic_id = "/".join(rel_parts) if rel_parts else provider_id
+            # Build topic label from folder names
+            topic_label = (
+                " > ".join(to_label(p) for p in rel_parts)
+                if rel_parts
+                else to_label(provider_id)
+            )
+
+            # Collect test files
             test_files = sorted(
-                [
-                    f
-                    for f in os.listdir(topic_path)
-                    if re.fullmatch(r"test_\d+\.json", f)
-                ],
+                [f for f in os.listdir(dir_path) if TEST_PATTERN.fullmatch(f)],
                 key=test_sort_key,
             )
 
-            if not test_files:
-                continue
-
             tests = []
             for f in test_files:
-                n = re.fullmatch(r"test_(\d+)\.json", f).group(1)
-                fallback_label = f"Test {n}"
-                filepath = os.path.join(topic_path, f)
-                label = read_test_label(filepath, fallback_label)
-                order = read_test_order(filepath, int(n))
-                tests.append(
-                    {
-                        "id": f.replace(".json", ""),
-                        "label": label,
-                        "path": f"{provider_id}/{topic_id}/{f}",
-                        "_order": order,
-                    }
+                n = TEST_PATTERN.fullmatch(f).group(1)
+                filepath = os.path.join(dir_path, f)
+                meta = read_test_metadata(filepath)
+
+                # Build the path relative to repo root
+                rel_path_from_root = os.path.relpath(filepath, root).replace(
+                    os.sep, "/"
                 )
 
-            # Sort by explicit order field, falling back to filename number
+                fallback_label = f"Test {n}"
+                label = meta.get("label") or fallback_label
+                order_val = meta.get("order")
+                order = int(order_val) if order_val is not None else int(n)
+
+                entry = {
+                    "id": f.replace(".json", ""),
+                    "label": label,
+                    "path": rel_path_from_root,
+                    "_order": order,
+                }
+                if meta.get("questionType"):
+                    entry["questionType"] = meta["questionType"]
+                tests.append(entry)
+
+            # Sort by explicit order, then strip internal field
             tests.sort(key=lambda t: t["_order"])
             for t in tests:
                 del t["_order"]
@@ -116,7 +151,7 @@ def build_manifest(root: str) -> dict:
             topics.append(
                 {
                     "id": topic_id,
-                    "label": to_label(topic_id),
+                    "label": topic_label,
                     "tests": tests,
                 }
             )
