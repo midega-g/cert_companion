@@ -1,0 +1,460 @@
+{
+  "label": "Model Governance & Lineage — Part A",
+  "order": 3,
+  "topic": "Domain 5: Security, Compliance, and Governance for AI Solutions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "artifact-versioning",
+      "scenario": null,
+      "stem": "Why is tracking all artifacts used for model production an essential requirement?",
+      "options": [
+        { "key": "A", "text": "To increase model inference speed by caching previous versions" },
+        { "key": "B", "text": "To reproduce the model and meet regulatory and control requirements" },
+        { "key": "C", "text": "To automatically retrain the model when new data arrives" },
+        { "key": "D", "text": "To reduce the storage costs associated with model artifacts" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Tracking all artifacts is essential for reproducing the model to meet regulatory and control requirements. All various artifacts that went into model development must be versioned and tracked so the model can be recreated.",
+        "distractors": {
+          "A": "Artifact tracking supports reproducibility and governance, not inference performance optimization.",
+          "C": "Artifact tracking enables model recreation, not automatic retraining. Retraining is a separate workflow.",
+          "D": "Versioning and tracking may increase storage usage. The purpose is reproducibility and compliance, not cost reduction."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "artifact-versioning",
+      "scenario": null,
+      "stem": "How should datasets be stored and organized in Amazon S3 to support model reproducibility?",
+      "options": [
+        { "key": "A", "text": "In a single bucket with no organizational structure" },
+        { "key": "B", "text": "Partitioned with prefixes to uniquely identify the training dataset" },
+        { "key": "C", "text": "Compressed into a single archive file per model version" },
+        { "key": "D", "text": "Stored in Amazon DynamoDB tables for faster retrieval" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Datasets should be stored in Amazon S3 and partitioned with prefixes to uniquely identify the training dataset. This ensures each dataset version can be traced back to the model it produced.",
+        "distractors": {
+          "A": "Storing data without structure makes it impossible to uniquely identify which dataset was used for which training job.",
+          "C": "While compression saves space, unique identification through prefixes is the recommended approach for traceability.",
+          "D": "S3 is the recommended storage for ML datasets. DynamoDB is a key-value database, not suited for storing large training datasets."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "model-registry",
+      "scenario": null,
+      "stem": "What does a model package in SageMaker Model Registry correspond to?",
+      "options": [
+        { "key": "A", "text": "A deployed inference endpoint" },
+        { "key": "B", "text": "A trained model within a model group" },
+        { "key": "C", "text": "A feature group in SageMaker Feature Store" },
+        { "key": "D", "text": "A completed SageMaker processing job" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Each model package in a model group corresponds to a trained model. Model groups contain different versions of a model, and you can associate and view model metadata including training metrics.",
+        "distractors": {
+          "A": "A deployed endpoint is a separate resource. Model packages represent trained model versions, which can then be deployed from the registry.",
+          "C": "Feature groups are part of SageMaker Feature Store, a separate service for managing features. Model packages store trained models.",
+          "D": "Processing jobs transform data. Model packages specifically correspond to trained model artifacts, not data processing outputs."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "model-cards",
+      "scenario": null,
+      "stem": "What is the primary purpose of Amazon SageMaker Model Cards?",
+      "options": [
+        { "key": "A", "text": "To automatically deploy models to production endpoints" },
+        { "key": "B", "text": "To document, retrieve, and share essential model information from conception to deployment" },
+        { "key": "C", "text": "To encrypt model artifacts stored in Amazon S3" },
+        { "key": "D", "text": "To monitor model performance and detect data drift in real time" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "SageMaker Model Cards are used to document, retrieve, and share essential model information from conception to deployment. They create an immutable record of intended uses, risk ratings, training details, and evaluation results.",
+        "distractors": {
+          "A": "Model Cards document models; they do not handle deployment. Deployment is managed through endpoints and the model registry.",
+          "C": "Encryption is handled by AWS KMS and service-level encryption settings, not Model Cards.",
+          "D": "Real-time monitoring and drift detection is the responsibility of SageMaker Model Monitor, not Model Cards."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "lineage-tracking",
+      "scenario": null,
+      "stem": "What does Amazon SageMaker ML Lineage Tracking automatically create?",
+      "options": [
+        { "key": "A", "text": "A graphical representation of all elements of the end-to-end ML workflow" },
+        { "key": "B", "text": "A backup copy of all training data in a separate S3 bucket" },
+        { "key": "C", "text": "An IAM policy for each SageMaker job that is executed" },
+        { "key": "D", "text": "A cost allocation report for each ML experiment" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "SageMaker ML Lineage Tracking automatically creates a graphical representation of all elements of the end-to-end ML workflow. It creates tracking entities for trial components and their associated trials and experiments.",
+        "distractors": {
+          "B": "Lineage Tracking traces relationships between workflow elements. It does not create data backups.",
+          "C": "IAM policies are created through IAM or SageMaker Role Manager, not Lineage Tracking.",
+          "D": "Cost allocation is handled by AWS billing and tagging services, not Lineage Tracking."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "model-registry",
+      "scenario": null,
+      "stem": "Which capabilities does SageMaker Model Registry provide? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Catalog models in model groups containing different versions of a model" },
+        { "key": "B", "text": "Deploy models directly from the registry" },
+        { "key": "C", "text": "Maintain model status such as pending, approved, or rejected" },
+        { "key": "D", "text": "Automatically retrain models when their status changes to rejected" },
+        { "key": "E", "text": "Generate training data for new model versions" },
+        { "key": "F", "text": "Replace Amazon S3 as the storage layer for model artifacts" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Model Registry lets you catalog models in model groups with different versions, deploy models directly from the registry, and maintain status labels such as pending, approved, or rejected for each model version.",
+        "distractors": {
+          "D": "Model Registry tracks status but does not trigger automatic retraining. Status changes are informational for governance workflows.",
+          "E": "Model Registry stores and manages model versions. It does not generate training data.",
+          "F": "Model Registry catalogs and manages model metadata and deployment. S3 remains the storage layer for actual model artifacts."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "model-cards",
+      "scenario": null,
+      "stem": "Which stakeholders can use SageMaker Model Cards to create an immutable record of model information? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Risk managers" },
+        { "key": "B", "text": "Data scientists" },
+        { "key": "C", "text": "ML engineers" },
+        { "key": "D", "text": "End users of the model's predictions" },
+        { "key": "E", "text": "AWS account billing administrators" },
+        { "key": "F", "text": "Physical data center security staff" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Risk managers, data scientists, and ML engineers can use Model Cards to create an immutable record of intended model uses, risk ratings, training details, and evaluation results.",
+        "distractors": {
+          "D": "End users consume model predictions but are not the stakeholders who document model governance through Model Cards.",
+          "E": "Billing administrators manage cost and account charges, not model documentation and governance.",
+          "F": "Physical security staff protect data centers, which is an AWS responsibility. They do not participate in model documentation."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "feature-store",
+      "scenario": null,
+      "stem": "Which capabilities does Amazon SageMaker Feature Store provide? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Centralized storage for features and associated metadata for easy discovery and reuse" },
+        { "key": "B", "text": "Automatic model training using stored features without additional configuration" },
+        { "key": "C", "text": "Point-in-time queries to retrieve the state of each feature at a historical time of interest" },
+        { "key": "D", "text": "Automatic deployment of models that use features from the store" },
+        { "key": "E", "text": "Real-time monitoring of deployed model predictions for data drift" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Feature Store is a centralized store for features and associated metadata, enabling easy discovery and reuse. It also supports point-in-time queries to retrieve the historical state of features at any time of interest.",
+        "distractors": {
+          "B": "Feature Store stores and manages features but does not automatically train models. Training is a separate step using SageMaker training jobs.",
+          "D": "Feature Store manages features, not model deployment. Deployment is handled through endpoints and Model Registry.",
+          "E": "Real-time monitoring of predictions is the responsibility of SageMaker Model Monitor, not Feature Store."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "artifact-versioning",
+      "scenario": null,
+      "stem": "Which artifacts are automatically versioned or uniquely identified by AWS services to support model reproducibility? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Source code in repositories like GitHub and AWS CodeCommit" },
+        { "key": "B", "text": "Container images in Amazon ECR with unique IDs and tags" },
+        { "key": "C", "text": "SageMaker training jobs with unique identifiers and metadata including hyperparameters" },
+        { "key": "D", "text": "IAM policies attached to SageMaker roles" },
+        { "key": "E", "text": "CloudWatch dashboard configurations" },
+        { "key": "F", "text": "VPC security group rules" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Code repositories automatically retain versions of source code. Container images in Amazon ECR are uniquely identified with IDs and can be tagged. SageMaker automatically uniquely identifies each training job and stores metadata such as hyperparameters and identifiers for containers, datasets, and model output.",
+        "distractors": {
+          "D": "IAM policies are access control mechanisms, not ML artifacts that need versioning for model reproducibility.",
+          "E": "CloudWatch dashboards are monitoring configurations, not ML artifacts tracked for model lineage.",
+          "F": "Security group rules are network configuration, not ML workflow artifacts."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "model-dashboard",
+      "scenario": null,
+      "stem": "Which information can you view and track through Amazon SageMaker Model Dashboard? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Models that violate thresholds for data quality, model quality, bias, and explainability" },
+        { "key": "B", "text": "Which models are deployed for inference on endpoints or used in batch transform jobs" },
+        { "key": "C", "text": "The source code of training scripts used for each model" },
+        { "key": "D", "text": "The AWS monthly billing cost breakdown per model" },
+        { "key": "E", "text": "The personal information of data scientists who created each model" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Model Dashboard lets you find models violating thresholds for data quality, model quality, bias, and explainability. It also tracks which models are deployed for inference on endpoints or used in batch transform jobs.",
+        "distractors": {
+          "C": "Training script source code is stored in code repositories, not tracked through Model Dashboard.",
+          "D": "Billing information is available through AWS Cost Explorer and billing services, not Model Dashboard.",
+          "E": "Model Dashboard tracks model metadata and performance, not personal information about team members."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "model-registry",
+      "scenario": "An MLOps team at an insurance company manages 15 different ML models. They need a centralized way to track model versions, approve models for production deployment, and deploy approved models without manual configuration.",
+      "stem": "Which SageMaker feature should the team use to manage model versioning and deployment approval?",
+      "options": [
+        { "key": "A", "text": "SageMaker Model Monitor" },
+        { "key": "B", "text": "SageMaker Model Registry" },
+        { "key": "C", "text": "SageMaker Feature Store" },
+        { "key": "D", "text": "SageMaker ML Lineage Tracking" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "SageMaker Model Registry lets you catalog models in model groups with different versions, maintain model status (pending, approved, rejected), and deploy models directly from the registry.",
+        "distractors": {
+          "A": "Model Monitor tracks model quality and drift in production. It does not manage versioning or deployment approvals.",
+          "C": "Feature Store manages ML features for discovery and reuse, not model versions or deployment workflows.",
+          "D": "Lineage Tracking creates a graphical representation of workflow elements and their relationships. It does not manage approval status or enable direct deployment."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "lineage-tracking",
+      "scenario": "A pharmaceutical company's regulatory affairs team needs to prove that a specific drug interaction model was trained using a particular validated dataset and container image. They need to trace the complete lineage of the model back to its source artifacts.",
+      "stem": "Which SageMaker capability allows the team to discover relationships between models and the datasets and containers used to produce them?",
+      "options": [
+        { "key": "A", "text": "SageMaker Model Cards" },
+        { "key": "B", "text": "SageMaker ML Lineage Tracking" },
+        { "key": "C", "text": "SageMaker Model Registry" },
+        { "key": "D", "text": "SageMaker Experiments" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "SageMaker ML Lineage Tracking automatically creates a graphical representation of workflow elements. You can run queries against lineage data to discover relationships, such as retrieving all models that use a particular dataset or datasets that use a specific container image artifact.",
+        "distractors": {
+          "A": "Model Cards document model information like intended uses and risk ratings but do not trace artifact-to-artifact relationships.",
+          "C": "Model Registry catalogs model versions and manages deployment status but does not provide end-to-end lineage queries across all artifacts.",
+          "D": "Experiments organize trial runs but do not provide the queryable lineage graph connecting datasets, containers, and models."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "model-cards",
+      "scenario": "A risk management team at a bank requires documentation of every ML model's intended use, risk rating, and evaluation results before it can be approved for production. They also need to share this documentation as a PDF with external auditors.",
+      "stem": "Which SageMaker feature meets the requirements for immutable model documentation that can be exported and shared?",
+      "options": [
+        { "key": "A", "text": "SageMaker Model Cards" },
+        { "key": "B", "text": "SageMaker Model Dashboard" },
+        { "key": "C", "text": "SageMaker Model Monitor" },
+        { "key": "D", "text": "SageMaker Feature Store" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "SageMaker Model Cards create an immutable record of intended model uses, risk ratings, training details, and evaluation results. Model Cards can be exported to PDF and shared with relevant stakeholders including external auditors.",
+        "distractors": {
+          "B": "Model Dashboard is a centralized portal for viewing and searching models. It aggregates information but does not create exportable immutable documentation.",
+          "C": "Model Monitor tracks quality and drift in production. It does not produce shareable governance documentation.",
+          "D": "Feature Store manages ML features. It has no role in documenting model intended use or risk ratings."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "feature-store",
+      "scenario": "A retail analytics team has multiple ML projects that use customer purchase history features. Each project team independently processes raw transaction data into the same features, creating duplicated work and inconsistencies across models.",
+      "stem": "Which SageMaker capability addresses this problem by allowing feature sharing and reuse across projects?",
+      "options": [
+        { "key": "A", "text": "SageMaker Feature Store" },
+        { "key": "B", "text": "SageMaker Model Registry" },
+        { "key": "C", "text": "SageMaker ML Lineage Tracking" },
+        { "key": "D", "text": "SageMaker Processing Jobs" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "SageMaker Feature Store is a centralized store for features and associated metadata so features can be easily discovered and reused. It reduces repetitive data processing and curation work required to convert raw data into features.",
+        "distractors": {
+          "B": "Model Registry manages model versions and deployment, not feature sharing across projects.",
+          "C": "Lineage Tracking traces relationships between artifacts but does not provide centralized feature storage and reuse.",
+          "D": "Processing Jobs execute data transformation code but do not provide a centralized store for sharing and discovering features."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "model-dashboard",
+      "scenario": "A chief data officer wants a single view of all ML models across their organization's AWS account. They need to quickly identify models that lack monitoring configuration and models that are currently violating quality thresholds.",
+      "stem": "Which SageMaker feature provides this centralized visibility?",
+      "options": [
+        { "key": "A", "text": "SageMaker Model Dashboard" },
+        { "key": "B", "text": "SageMaker Model Cards" },
+        { "key": "C", "text": "SageMaker Studio Notebooks" },
+        { "key": "D", "text": "AWS CloudTrail" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "SageMaker Model Dashboard is a centralized portal where you can view, search, and explore all models in your account. It helps identify models violating thresholds and models that don't have monitoring metrics configured.",
+        "distractors": {
+          "B": "Model Cards document individual model information but do not provide a centralized search and monitoring overview across all models.",
+          "C": "Studio Notebooks are for interactive development, not centralized model governance and monitoring visibility.",
+          "D": "CloudTrail logs API activity for auditing but does not provide a model-centric view with quality and monitoring status."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "lineage-tracking",
+      "scenario": "A data governance team at a telecommunications company discovers a data quality issue in one of their S3 datasets. They need to identify all ML models that were trained using this compromised dataset and all endpoints currently serving predictions from those models.",
+      "stem": "Which SageMaker capabilities should the team use to trace the impact of the compromised dataset? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "SageMaker ML Lineage Tracking to query which models used the dataset" },
+        { "key": "B", "text": "SageMaker Model Dashboard to find which models are deployed on endpoints" },
+        { "key": "C", "text": "SageMaker Feature Store to roll back features to a previous version" },
+        { "key": "D", "text": "Amazon Macie to scan the dataset for PII" },
+        { "key": "E", "text": "SageMaker Model Monitor to automatically remove the compromised models" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "ML Lineage Tracking lets you query relationships to retrieve all models that use a particular dataset. Model Dashboard shows which models are deployed for inference on endpoints or used in batch transform jobs, completing the impact assessment.",
+        "distractors": {
+          "C": "Feature Store manages features, not raw dataset versioning. It cannot roll back the impact of a compromised S3 dataset on trained models.",
+          "D": "Macie detects sensitive data like PII but does not trace which models were trained on a given dataset.",
+          "E": "Model Monitor detects drift and quality issues but does not automatically remove or undeploy models."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "feature-store",
+      "scenario": "An e-commerce company's ML platform team is setting up SageMaker Feature Store. They want to understand the full lifecycle of features, from how raw data was ingested to which feature groups were created, and they also need to retrieve historical feature values for a specific date in the past.",
+      "stem": "Which Feature Store capabilities support these requirements? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "View the lineage of a feature group including execution code and data sources used for ingestion" },
+        { "key": "B", "text": "Use point-in-time queries to retrieve the state of features at a historical time of interest" },
+        { "key": "C", "text": "Automatically retrain models when features are updated in the store" },
+        { "key": "D", "text": "Generate new synthetic features based on existing feature patterns" },
+        { "key": "E", "text": "Deploy feature groups directly as inference endpoints" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Feature Store lets you view the lineage of a feature group, including information about the execution code and data sources used for ingestion. It also supports point-in-time queries to retrieve the state of each feature at a historical time of interest.",
+        "distractors": {
+          "C": "Feature Store stores and serves features but does not trigger automatic model retraining when features change.",
+          "D": "Feature Store stores existing features. It does not generate synthetic features.",
+          "E": "Feature groups are feature storage constructs, not deployable model artifacts. Endpoints serve model predictions, not raw features."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "model-dashboard",
+      "scenario": "An ML governance team uses SageMaker Model Dashboard to oversee all models in their account. They want to leverage the dashboard's aggregation of information from multiple SageMaker features to maintain comprehensive oversight.",
+      "stem": "Which SageMaker features does Model Dashboard aggregate information from? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "SageMaker Model Monitor" },
+        { "key": "B", "text": "SageMaker Model Cards" },
+        { "key": "C", "text": "AWS IAM Identity Center" },
+        { "key": "D", "text": "Amazon Macie" },
+        { "key": "E", "text": "AWS CloudFormation" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Model Dashboard aggregates model-related information from several features including Model Monitor (for monitoring results and threshold violations) and Model Cards (for model documentation). It also lets you visualize workflow lineage.",
+        "distractors": {
+          "C": "IAM Identity Center manages user authentication and access, not model metadata. Model Dashboard does not pull from identity services.",
+          "D": "Macie scans S3 for sensitive data. It is not a source of model governance information aggregated by Model Dashboard.",
+          "E": "CloudFormation manages infrastructure as code. Model Dashboard aggregates ML-specific model information, not infrastructure templates."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "artifact-versioning",
+      "scenario": "A regulated financial institution needs to recreate an exact copy of a model that was deployed 18 months ago for an audit. They need to reproduce the same training environment, code, data, and hyperparameters that produced the original model.",
+      "stem": "Which combination of tracked artifacts makes this model reproduction possible?",
+      "options": [
+        { "key": "A", "text": "Source code versions, S3 dataset prefixes, ECR container image IDs, and SageMaker training job metadata including hyperparameters" },
+        { "key": "B", "text": "CloudWatch logs, IAM policies, and VPC configurations from the time of training" },
+        { "key": "C", "text": "Model Cards documentation and Model Dashboard monitoring results" },
+        { "key": "D", "text": "Feature Store point-in-time queries and SageMaker endpoint configurations" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "To recreate a model, you need the versioned source code (from repositories), the uniquely identified dataset (S3 prefixes), the container image (ECR unique ID), and training job metadata (hyperparameters, dataset identifiers, model output identifiers). SageMaker automatically tracks this metadata.",
+        "distractors": {
+          "B": "CloudWatch logs, IAM policies, and VPC configurations are operational context but do not contain the artifacts needed to reproduce training.",
+          "C": "Model Cards document model information and Dashboard shows monitoring results, but neither contains the actual artifacts (code, data, containers) needed to reproduce training.",
+          "D": "Feature Store queries retrieve feature values and endpoint configurations describe deployment, but they don't provide the complete set of artifacts for model reproduction."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "lineage-tracking",
+      "scenario": "A machine learning platform team is implementing governance controls for their organization. They want to automatically trace all elements of their ML workflows and be able to answer questions like 'which datasets use this container image?' and 'which models were produced from this dataset?'",
+      "stem": "Which statements about SageMaker ML Lineage Tracking are correct for this use case? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Lineage tracking automatically creates tracking entities for trial components and their associated trials and experiments" },
+        { "key": "B", "text": "You can run queries against lineage data to discover relationships between entities" },
+        { "key": "C", "text": "Lineage tracking is activated when you create SageMaker jobs such as processing jobs, training jobs, and batch transform jobs" },
+        { "key": "D", "text": "Lineage tracking must be manually configured for each individual SageMaker job" },
+        { "key": "E", "text": "Lineage tracking replaces the need for SageMaker Model Registry" },
+        { "key": "F", "text": "Lineage tracking stores the actual training data alongside the tracking metadata" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Lineage Tracking automatically creates tracking entities for trial components and their associated trials/experiments. You can query lineage data to discover relationships (e.g., models using a dataset). It is activated automatically when creating SageMaker jobs like processing, training, and batch transform.",
+        "distractors": {
+          "D": "Lineage tracking is automatic, not manual. It creates tracking entities when SageMaker jobs are created without requiring per-job configuration.",
+          "E": "Lineage Tracking and Model Registry serve different purposes. Lineage traces relationships; Model Registry manages model versions and deployment status. They complement each other.",
+          "F": "Lineage Tracking stores metadata and relationships between artifacts. The actual training data remains in its storage location (e.g., S3)."
+        }
+      }
+    }
+  ]
+}

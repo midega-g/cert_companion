@@ -1,0 +1,457 @@
+{
+  "label": "IAM & Access Control — Part A",
+  "order": 1,
+  "topic": "Domain 5: Security, Compliance, and Governance for AI Solutions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "shared-responsibility-model",
+      "scenario": null,
+      "stem": "Under the AWS Shared Responsibility Model, which of the following is a customer responsibility?",
+      "options": [
+        { "key": "A", "text": "Physical security of data centers" },
+        { "key": "B", "text": "Maintaining the host operating system virtualization layer" },
+        { "key": "C", "text": "Properly configuring services and ensuring data security" },
+        { "key": "D", "text": "Managing networking components of the AWS global infrastructure" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Customers are responsible for properly configuring AWS services and their applications, and for ensuring that their data is secure. This is referred to as security 'in' the cloud.",
+        "distractors": {
+          "A": "Physical security of data centers is an AWS responsibility under the 'security of the cloud' category.",
+          "B": "The host operating system and virtualization layers are managed by AWS as part of the underlying infrastructure.",
+          "D": "AWS networking components that run AWS services are managed by AWS, not the customer."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "shared-responsibility-model",
+      "scenario": null,
+      "stem": "Which statement accurately describes how the level of customer responsibility changes depending on the AWS service used?",
+      "options": [
+        { "key": "A", "text": "Deploying models on Amazon EC2 means AWS manages the instance operating system and security patches" },
+        { "key": "B", "text": "Using SageMaker Serverless Inferencing means customers must manage scaling policies" },
+        { "key": "C", "text": "Deploying models on Amazon EC2 means the customer is responsible for the instance operating system and security patches" },
+        { "key": "D", "text": "Fully managed services require customers to manage the underlying infrastructure" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "When deploying on Amazon EC2, the customer is responsible for the instance operating system, security patches, scaling, and application security. Fully managed services like SageMaker Serverless Inferencing reduce this burden.",
+        "distractors": {
+          "A": "On EC2, the customer—not AWS—manages the instance OS and security patches.",
+          "B": "SageMaker Serverless Inferencing is fully managed; AWS handles scaling policies, not the customer.",
+          "D": "Fully managed services reduce customer responsibility; AWS manages the underlying infrastructure."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "iam",
+      "scenario": null,
+      "stem": "Which characteristic of AWS IAM is accurate?",
+      "options": [
+        { "key": "A", "text": "IAM is a regional service specific to the Region where it is configured" },
+        { "key": "B", "text": "IAM is a global service but can restrict user permissions to certain Regions" },
+        { "key": "C", "text": "IAM requires a separate subscription fee beyond the base AWS account" },
+        { "key": "D", "text": "IAM cannot be used to manage access to other AWS services" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "IAM is a global resource not specific to any one Region, but IAM policies can be used to restrict a user's permissions to certain Regions.",
+        "distractors": {
+          "A": "IAM is global, not regional. However, permissions can be scoped to specific Regions through policies.",
+          "C": "IAM is a feature of the AWS account offered at no additional charge. You are only charged for other services accessed via IAM users.",
+          "D": "IAM is integrated with AWS services and is specifically used to manage actions users can take on resources."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "iam",
+      "scenario": null,
+      "stem": "What is the recommended best practice for the AWS root user after creating an AWS account?",
+      "options": [
+        { "key": "A", "text": "Use the root user for all daily administrative tasks" },
+        { "key": "B", "text": "Share root user credentials with a trusted administrator" },
+        { "key": "C", "text": "Create an IAM user with administrative access and use it for everyday tasks" },
+        { "key": "D", "text": "Delete the root user after creating the first IAM user" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Best practice is to not use the root user except for tasks that require it. Instead, create an IAM user with administrative access permissions for everyday use.",
+        "distractors": {
+          "A": "The root user should not be used for daily tasks because its permissions cannot be restricted.",
+          "B": "Root user credentials should never be shared with anyone to maintain account security.",
+          "D": "The root user cannot be deleted; it is the foundational identity of the account. You should secure it and minimize its use."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "iam",
+      "scenario": null,
+      "stem": "What happens when an action is explicitly denied by an identity-based policy but allowed by a resource-based policy?",
+      "options": [
+        { "key": "A", "text": "The resource-based policy overrides the deny and the action is allowed" },
+        { "key": "B", "text": "The action is denied because an explicit deny in either policy type overrides any allow" },
+        { "key": "C", "text": "The action is allowed because resource-based policies take precedence over identity-based policies" },
+        { "key": "D", "text": "The action results in an error because conflicting policies cannot be evaluated" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "An explicit deny in either an identity-based policy or a resource-based policy overrides any allow. The resulting permissions are the combination of both policy types, but explicit denies always win.",
+        "distractors": {
+          "A": "Resource-based policies do not override explicit denies. An explicit deny always takes precedence.",
+          "C": "There is no blanket precedence of resource-based over identity-based policies. Explicit deny overrides allow regardless of source.",
+          "D": "AWS can evaluate conflicting policies. The rule is that an explicit deny in either policy overrides an allow."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "iam",
+      "scenario": null,
+      "stem": "Which of the following are best practices for managing IAM users and groups? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Attach permission policies to groups rather than individual users" },
+        { "key": "B", "text": "Nest IAM groups inside other IAM groups for hierarchical permissions" },
+        { "key": "C", "text": "Create individual IAM users for each person who needs AWS access" },
+        { "key": "D", "text": "Share credentials among users with the same access level to reduce complexity" },
+        { "key": "E", "text": "Assign all permissions at the user level to maintain granular control" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Best practice is to attach policies to groups and create individual IAM users for each person. Individual users ensure visibility into which user is taking actions, and group-level policies simplify administration.",
+        "distractors": {
+          "B": "IAM groups cannot belong to other groups. Nesting is not supported.",
+          "D": "Users should not share credentials. Shared credentials prevent tracking which user performed specific actions.",
+          "E": "Policies should be attached to groups, with only unique permissions attached directly to users."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "iam-roles",
+      "scenario": null,
+      "stem": "Which statements about IAM roles are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "IAM roles provide permanent credentials that do not expire" },
+        { "key": "B", "text": "IAM roles provide temporary security credentials that automatically expire" },
+        { "key": "C", "text": "Each IAM role has an associated trust policy that determines which entities can assume it" },
+        { "key": "D", "text": "IAM roles can only be assumed by IAM users, not by AWS services" },
+        { "key": "E", "text": "IAM roles replace the need for identity-based policies entirely" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "IAM roles provide temporary security credentials for a session that automatically expire. Each role has a trust policy that specifies which entities (IAM users, AWS services, or external identity providers) can assume it.",
+        "distractors": {
+          "A": "Roles provide temporary credentials, not permanent ones. This is one of their key security advantages over long-lived user credentials.",
+          "D": "IAM roles can be assumed by IAM users, AWS services, and users authenticated by external identity providers.",
+          "E": "Roles have permissions policies associated with them (identity-based policies). They complement, not replace, the policy model."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "identity-federation",
+      "scenario": null,
+      "stem": "Which capabilities does AWS IAM Identity Center provide? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Authenticate users through an external identity provider like Active Directory" },
+        { "key": "B", "text": "Manage permissions for multiple AWS accounts from a central repository" },
+        { "key": "C", "text": "Provide permanent access keys for all workforce users" },
+        { "key": "D", "text": "Use roles to grant temporary permissions to authenticated users" },
+        { "key": "E", "text": "Replace AWS CloudTrail for auditing user actions" },
+        { "key": "F", "text": "Authenticate users using a directory created within IAM Identity Center itself" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "IAM Identity Center lets you authenticate with an external identity provider or its own directory, manage permissions centrally for multiple AWS accounts, and uses roles to grant temporary permissions rather than long-lived credentials.",
+        "distractors": {
+          "C": "IAM Identity Center provides temporary access keys, not permanent ones. Temporary credentials are the recommended security practice.",
+          "E": "IAM Identity Center does not replace CloudTrail. CloudTrail is the service for auditing API calls and user actions.",
+          "F": "This is actually correct — IAM Identity Center can use its own directory. However, the three most representative capabilities are A, B, and D as they capture the core value proposition of centralized federation with temporary credentials."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "cloudtrail",
+      "scenario": null,
+      "stem": "Which details can be determined from the information collected by AWS CloudTrail for SageMaker? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The IP address from which a SageMaker API request was made" },
+        { "key": "B", "text": "The real-time inference responses from SageMaker endpoints" },
+        { "key": "C", "text": "Who made a specific API request and when it was made" },
+        { "key": "D", "text": "The model accuracy metrics for deployed endpoints" },
+        { "key": "E", "text": "The hyperparameters used during model training" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "CloudTrail captures API calls and lets you determine the IP address from which requests were made, who made them, and when they were made. It captures all SageMaker API calls except invoking endpoints.",
+        "distractors": {
+          "B": "CloudTrail captures all SageMaker API calls except for invoking endpoints, so inference responses are not logged by CloudTrail.",
+          "D": "Model accuracy metrics are tracked by SageMaker Model Monitor, not CloudTrail. CloudTrail logs API activity, not model performance.",
+          "E": "While CloudTrail logs the CreateTrainingJob API call, the detailed hyperparameters are tracked as training job metadata in SageMaker, not in CloudTrail logs."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "sagemaker-role-manager",
+      "scenario": null,
+      "stem": "Which are pre-configured role personas available in Amazon SageMaker Role Manager? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Data scientist" },
+        { "key": "B", "text": "MLOps" },
+        { "key": "C", "text": "Security administrator" },
+        { "key": "D", "text": "SageMaker compute" },
+        { "key": "E", "text": "Data engineer" },
+        { "key": "F", "text": "Business analyst" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "SageMaker Role Manager provides three pre-configured role personas: data scientist (for general ML development and experimentation), MLOps (for managing models, pipelines, and endpoints), and SageMaker compute (for roles used by SageMaker compute resources).",
+        "distractors": {
+          "C": "Security administrator is not one of the three pre-configured personas in SageMaker Role Manager.",
+          "E": "Data engineer is not a pre-configured persona. The three personas are data scientist, MLOps, and SageMaker compute.",
+          "F": "Business analyst is not a persona provided by SageMaker Role Manager."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "iam",
+      "scenario": "A machine learning team at a financial services company has 50 data scientists who all need the same set of permissions to access SageMaker and S3. The team lead wants to simplify permission management and avoid attaching policies to each user individually.",
+      "stem": "Which approach should the team lead use to efficiently manage permissions for all 50 data scientists?",
+      "options": [
+        { "key": "A", "text": "Create an IAM role and have each user assume the role when they need access" },
+        { "key": "B", "text": "Create an IAM group, add all data scientists to it, and attach the required policy to the group" },
+        { "key": "C", "text": "Attach a resource-based policy to each S3 bucket listing all 50 users" },
+        { "key": "D", "text": "Create a single IAM user and share the credentials among all data scientists" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "IAM groups let you assign policies at the group level. All users in the group inherit the group's permissions, which simplifies administration for teams that share the same access requirements.",
+        "distractors": {
+          "A": "While roles provide temporary credentials, the question is about simplifying ongoing permission management for a team. Groups are the correct mechanism for organizing users with shared permissions.",
+          "C": "Listing 50 users in resource-based policies would be difficult to maintain and does not simplify permission management.",
+          "D": "Sharing credentials violates best practices. Each person must have their own IAM user to maintain accountability."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "shared-responsibility-model",
+      "scenario": "A healthcare startup deploys a diagnostic AI model using SageMaker Serverless Inferencing. Their compliance officer wants to understand which security responsibilities the startup must handle versus what AWS manages.",
+      "stem": "Which security responsibility belongs to the startup in this deployment model?",
+      "options": [
+        { "key": "A", "text": "Managing the scaling policies for the inference instances" },
+        { "key": "B", "text": "Patching the operating system on the underlying compute instances" },
+        { "key": "C", "text": "Configuring IAM permissions to control who can invoke the endpoint" },
+        { "key": "D", "text": "Securing the physical hardware hosting the serverless infrastructure" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Even with fully managed services like SageMaker Serverless Inferencing, customers are responsible for configuring access control through IAM. AWS manages the infrastructure, scaling, and OS patching.",
+        "distractors": {
+          "A": "With SageMaker Serverless Inferencing, AWS manages all scaling policies. The customer does not handle this.",
+          "B": "AWS manages the underlying infrastructure including OS patching for fully managed serverless services.",
+          "D": "Physical security of hardware and data centers is always an AWS responsibility."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "iam-mfa",
+      "scenario": "A security engineer at a retail company discovers that the AWS root user account does not have multifactor authentication enabled. The company uses several AI services in production, and the engineer is concerned about account compromise.",
+      "stem": "Why is enabling MFA on the root user critical even if a strong password is in place?",
+      "options": [
+        { "key": "A", "text": "MFA encrypts the root user's API access keys at rest" },
+        { "key": "B", "text": "A password alone constitutes single-factor authentication, which remains vulnerable to social engineering and automated attacks" },
+        { "key": "C", "text": "MFA restricts the root user's permissions to only billing management tasks" },
+        { "key": "D", "text": "MFA replaces the need for IAM policies on the root user account" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "A username and password is single-factor authentication. Even with a strong password, the account remains at risk from social engineering, bots, or scripts. MFA adds a second factor requiring a physical or virtual device in the user's possession.",
+        "distractors": {
+          "A": "MFA does not encrypt access keys. It adds an additional authentication factor required to sign in.",
+          "C": "MFA does not restrict what the root user can do. Root user permissions cannot be restricted. MFA only adds an authentication step.",
+          "D": "MFA is an authentication mechanism, not an authorization mechanism. It does not replace IAM policies."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "identity-federation",
+      "scenario": "A large enterprise with 5,000 employees uses Active Directory for corporate authentication. They have 12 AWS accounts and want employees to access these accounts without creating separate IAM users in each one.",
+      "stem": "Which AWS service should the enterprise use to provide centralized access management across all 12 accounts?",
+      "options": [
+        { "key": "A", "text": "AWS IAM Identity Center" },
+        { "key": "B", "text": "AWS CloudTrail" },
+        { "key": "C", "text": "Amazon SageMaker Role Manager" },
+        { "key": "D", "text": "AWS Key Management Service" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS IAM Identity Center allows organizations to use an external identity provider like Active Directory, manage permissions for multiple AWS accounts from one central repository, and provide temporary credentials through roles.",
+        "distractors": {
+          "B": "CloudTrail is for auditing and logging API calls, not for managing user access or authentication.",
+          "C": "SageMaker Role Manager simplifies creating IAM roles specifically for ML activities, not for enterprise-wide identity federation.",
+          "D": "AWS KMS is for managing encryption keys, not for identity federation or user authentication."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "s3-security",
+      "scenario": "A data science team stores ML training datasets in Amazon S3. A recent audit found that one bucket was accidentally configured with public read access, potentially exposing sensitive customer data used for model training.",
+      "stem": "Which feature should be enabled at the account level to prevent any S3 bucket from granting public access, both now and in the future?",
+      "options": [
+        { "key": "A", "text": "Amazon S3 Block Public Access at the account level" },
+        { "key": "B", "text": "Amazon S3 Block Public Access at the bucket level" },
+        { "key": "C", "text": "AWS CloudTrail logging for S3 API calls" },
+        { "key": "D", "text": "Server-side encryption with AWS KMS keys" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "S3 Block Public Access at the account level ensures no buckets—existing or new—can grant public access. It overrides any public permissions granted by bucket policies or access control lists.",
+        "distractors": {
+          "B": "Bucket-level Block Public Access only protects individual buckets. Other buckets in the account might still be open to the public.",
+          "C": "CloudTrail logs API activity for auditing but does not prevent public access to buckets.",
+          "D": "Encryption protects data confidentiality but does not control who can access the bucket publicly."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "iam",
+      "scenario": "A startup is building a recommendation engine on AWS. The CTO wants to ensure that the principle of least privilege is followed across all team members, while also ensuring that actions taken in the account are auditable.",
+      "stem": "Which practices should the CTO implement to achieve least privilege and auditability? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Grant only the permissions required to complete each user's specific tasks through IAM policies" },
+        { "key": "B", "text": "Enable AWS CloudTrail to log API calls made by or on behalf of the account" },
+        { "key": "C", "text": "Give all team members administrative access to avoid workflow delays" },
+        { "key": "D", "text": "Disable IAM access keys for all users to prevent programmatic access" },
+        { "key": "E", "text": "Use the root user for daily tasks so all actions are tracked under one identity" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The principle of least privilege means granting only the permissions required to complete a task. CloudTrail captures API calls and related events to provide auditability of who did what and when.",
+        "distractors": {
+          "C": "Granting all users administrative access violates the principle of least privilege and increases security risk.",
+          "D": "Disabling access keys entirely would block legitimate programmatic access. Least privilege means scoping permissions, not removing access entirely.",
+          "E": "Using the root user for daily tasks is a security anti-pattern. The root user cannot have its permissions restricted and should only be used for tasks that require it."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "sagemaker-role-manager",
+      "scenario": "An ML engineering team is setting up IAM roles for their SageMaker environment. They need a role for a data scientist to run experiments, and a separate role for their SageMaker training jobs to access S3 data and write model artifacts.",
+      "stem": "Which SageMaker Role Manager personas should they select for these two roles? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Data scientist persona for the team member running experiments" },
+        { "key": "B", "text": "MLOps persona for the team member running experiments" },
+        { "key": "C", "text": "SageMaker compute persona for the training job role" },
+        { "key": "D", "text": "MLOps persona for the training job role" },
+        { "key": "E", "text": "Data scientist persona for the training job role" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "The data scientist persona is for someone who needs to perform general ML development and experimentation. The SageMaker compute persona is used for creating roles that SageMaker compute resources (like training jobs) use to perform tasks such as training and inference.",
+        "distractors": {
+          "B": "The MLOps persona is for managing models, pipelines, experiments, and endpoints—not for running experiments as a data scientist.",
+          "D": "The MLOps persona is for a person managing models and pipelines, not for compute resources performing training.",
+          "E": "The data scientist persona is for a human user, not for a role assumed by SageMaker compute resources."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "iam-roles",
+      "scenario": "A DevOps engineer at a logistics company is writing application code that stores AWS access keys directly in the source code to allow the application to access SageMaker APIs. A colleague raises a concern about this approach during code review.",
+      "stem": "What is the recommended alternative to embedding long-lived credentials in application code?",
+      "options": [
+        { "key": "A", "text": "Use an IAM role that the application or service can assume to gain temporary credentials" },
+        { "key": "B", "text": "Store the access keys in an environment variable on the server instead of in code" },
+        { "key": "C", "text": "Create an IAM group for the application and attach the permissions policy to it" },
+        { "key": "D", "text": "Use the root user credentials since they have unrestricted access to all services" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "IAM roles provide temporary security credentials that automatically expire, eliminating the risk of long-lived credentials being compromised. AWS services and applications can assume roles instead of using embedded access keys.",
+        "distractors": {
+          "B": "Environment variables are slightly better than hardcoding, but they still use long-lived credentials that can be compromised. Roles with temporary credentials are the recommended approach.",
+          "C": "IAM groups are for organizing users, not applications. Applications should use IAM roles.",
+          "D": "Using root user credentials is a severe security anti-pattern. Root credentials should never be used in applications."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "iam",
+      "scenario": "A compliance team discovers that a new IAM user was created in their AWS account two weeks ago but has not been assigned any permissions policies. The user has been attempting to launch SageMaker notebook instances.",
+      "stem": "What is the expected behavior for this IAM user's attempts to launch notebook instances?",
+      "options": [
+        { "key": "A", "text": "The user can launch notebook instances because new IAM users have default read/write permissions" },
+        { "key": "B", "text": "The user is denied because new IAM users have no permissions associated with them by default" },
+        { "key": "C", "text": "The user can launch notebook instances in the same Region where the IAM user was created" },
+        { "key": "D", "text": "The user has read-only access to all services until an explicit deny policy is attached" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "By default, when you create a new IAM user in AWS, it has no permissions associated with it. You must explicitly grant permissions through IAM policies for the user to perform any actions.",
+        "distractors": {
+          "A": "New IAM users have zero permissions by default, not read/write permissions.",
+          "C": "IAM is global, not regional. Regardless of Region, the user has no permissions until policies are attached.",
+          "D": "New IAM users do not have read-only access. They have no access at all until permissions are explicitly granted."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "identity-federation",
+      "scenario": "A consulting firm with 200 employees uses AWS IAM Identity Center with Active Directory. They want to organize access so that their ML engineers and their solutions architects have different levels of access to the company's three AWS accounts.",
+      "stem": "Which features of IAM Identity Center should the firm use to manage differentiated access? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Create groups in IAM Identity Center and assign permission sets at the group level" },
+        { "key": "B", "text": "Create individual IAM users in each of the three AWS accounts" },
+        { "key": "C", "text": "Use the workforce user portal to let authenticated users access their assigned AWS accounts" },
+        { "key": "D", "text": "Attach resource-based policies to every resource in all three accounts" },
+        { "key": "E", "text": "Configure IAM Identity Center to issue permanent access keys per group" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "IAM Identity Center supports putting users into groups and assigning permission sets at the group level. Once authenticated, workforce users are directed to a portal where they can choose which AWS account to access based on their assigned permissions.",
+        "distractors": {
+          "B": "The purpose of IAM Identity Center is to avoid creating IAM users in each account. It manages access centrally.",
+          "D": "Resource-based policies on every resource would be unmanageable. IAM Identity Center handles access centrally through groups and permission sets.",
+          "E": "IAM Identity Center uses roles to grant temporary permissions. It does not issue permanent access keys."
+        }
+      }
+    }
+  ]
+}

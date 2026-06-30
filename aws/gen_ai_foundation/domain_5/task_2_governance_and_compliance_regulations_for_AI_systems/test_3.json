@@ -1,0 +1,457 @@
+{
+  "label": "Data Management, Lake Formation & AI Governance Strategy — Part A",
+  "order": 3,
+  "topic": "Domain 5: Security, Compliance, and Governance for AI Solutions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "glue-data-catalog",
+      "scenario": null,
+      "stem": "What does an AWS Glue Data Catalog store?",
+      "options": [
+        { "key": "A", "text": "The actual data from your data sources in a centralized repository" },
+        { "key": "B", "text": "Metadata about data sources including locations, schemas, data types, and table definitions" },
+        { "key": "C", "text": "Machine learning model artifacts and training checkpoints" },
+        { "key": "D", "text": "IAM policies and access control configurations for data sources" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The AWS Glue Data Catalog stores metadata about data sources including information about locations and schemas, data types, and table definitions. It does not store the actual data itself.",
+        "distractors": {
+          "A": "The Data Catalog stores metadata, not the actual data. The data remains in its original location (S3, databases, etc.).",
+          "C": "Model artifacts are stored in S3 and managed by SageMaker Model Registry, not the Glue Data Catalog.",
+          "D": "IAM policies are managed by AWS IAM. The Data Catalog stores data metadata, not access control configurations."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "glue-data-catalog",
+      "scenario": null,
+      "stem": "How can the AWS Glue Data Catalog be populated?",
+      "options": [
+        { "key": "A", "text": "Only through manual entry of metadata by a database administrator" },
+        { "key": "B", "text": "Manually, or automatically by defining a Glue crawler job that scans data sources" },
+        { "key": "C", "text": "Only through automatic scanning; manual entry is not supported" },
+        { "key": "D", "text": "By importing metadata from AWS CloudTrail logs" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The Glue Data Catalog can be populated manually, or you can define an AWS Glue crawler job that scans data sources and populates the catalog automatically.",
+        "distractors": {
+          "A": "Both manual and automatic (crawler) methods are supported, not only manual entry.",
+          "C": "Manual population is also supported. Organizations can choose the method that fits their workflow.",
+          "D": "CloudTrail captures API calls, not data schema information. Crawlers scan actual data sources to extract metadata."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "glue-data-quality",
+      "scenario": null,
+      "stem": "What does AWS Glue Data Quality evaluate?",
+      "options": [
+        { "key": "A", "text": "The performance of machine learning models deployed on endpoints" },
+        { "key": "B", "text": "Objects stored in the AWS Glue Data Catalog against defined quality rules" },
+        { "key": "C", "text": "The cost efficiency of data storage across S3 tiers" },
+        { "key": "D", "text": "The network security of VPC configurations for data pipelines" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "AWS Glue Data Quality evaluates objects stored in the AWS Glue Data Catalog. It offers a straightforward way to set up quality rules and can recommend rules using machine learning to detect data anomalies.",
+        "distractors": {
+          "A": "Model performance monitoring is handled by SageMaker Model Monitor, not Glue Data Quality.",
+          "C": "Storage cost evaluation is a billing concern handled by S3 analytics and lifecycle policies, not Glue Data Quality.",
+          "D": "Network security is managed through VPC configurations, security groups, and NACLs, not Glue Data Quality."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "lake-formation",
+      "scenario": null,
+      "stem": "At what granularity can AWS Lake Formation enforce access control permissions?",
+      "options": [
+        { "key": "A", "text": "Only at the database level" },
+        { "key": "B", "text": "At the column, row, and cell levels" },
+        { "key": "C", "text": "Only at the S3 bucket level" },
+        { "key": "D", "text": "Only at the AWS account level" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "AWS Lake Formation manages fine-grained access control with granular controls at the column, row, and cell levels across AWS analytics and machine learning services.",
+        "distractors": {
+          "A": "Lake Formation goes far beyond database-level access. It provides column, row, and cell-level granularity.",
+          "C": "S3 bucket-level access is managed by S3 policies. Lake Formation provides much finer-grained control over data within the lake.",
+          "D": "Account-level access is managed by IAM. Lake Formation specifically addresses fine-grained data-level permissions."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "s3-storage-classes",
+      "scenario": null,
+      "stem": "Which S3 storage class is primarily used for long-term data archival to meet data retention or compliance requirements?",
+      "options": [
+        { "key": "A", "text": "S3 Standard" },
+        { "key": "B", "text": "S3 Standard-IA" },
+        { "key": "C", "text": "S3 Glacier storage classes" },
+        { "key": "D", "text": "S3 Intelligent-Tiering" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "S3 Glacier storage classes are for rarely accessed data and used primarily to retain data in a long-term archive for data retention or compliance reasons.",
+        "distractors": {
+          "A": "S3 Standard is for frequently accessed data. It is the most expensive storage class and not intended for archival.",
+          "B": "S3 Standard-IA is for less frequently accessed data that must be quickly retrievable. It is not an archival tier.",
+          "D": "S3 Intelligent-Tiering automatically moves data between tiers based on access patterns. It is for data with unknown patterns, not explicit long-term archival."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "s3-storage-classes",
+      "scenario": null,
+      "stem": "Which statements about S3 storage classes are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "S3 Standard-IA and S3 One Zone-IA cost less for storage but more for retrieval compared to S3 Standard" },
+        { "key": "B", "text": "S3 Intelligent-Tiering automatically moves less frequently accessed objects into lower-cost infrequent access tiers" },
+        { "key": "C", "text": "S3 Glacier provides instant access to all archived data within milliseconds" },
+        { "key": "D", "text": "S3 Standard is the lowest-cost storage class for all access patterns" },
+        { "key": "E", "text": "S3 One Zone-IA stores data in all Availability Zones for maximum durability" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "S3 Standard-IA and One Zone-IA are less costly for storage but more costly for retrieval than Standard. S3 Intelligent-Tiering automatically moves less frequently accessed objects into lower-cost infrequent access tiers.",
+        "distractors": {
+          "C": "S3 Glacier classes provide different retrieval speed options. Not all Glacier classes offer instant access; retrieval times vary by sub-class.",
+          "D": "S3 Standard is the most expensive storage class. Lower-cost classes exist for less frequently accessed data.",
+          "E": "S3 One Zone-IA stores data in a single Availability Zone, which is why it costs less than Standard-IA."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "s3-lifecycle",
+      "scenario": null,
+      "stem": "What can S3 lifecycle rules do? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Transition data to infrequent access tiers after a specified number of days" },
+        { "key": "B", "text": "Move data to archive tiers like S3 Glacier Deep Archive based on age" },
+        { "key": "C", "text": "Delete data when it is no longer needed for retention" },
+        { "key": "D", "text": "Automatically encrypt data when transitioning between storage classes" },
+        { "key": "E", "text": "Change the AWS Region where the data is stored" },
+        { "key": "F", "text": "Increase the durability of data by adding replicas" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Lifecycle rules transition data to infrequent access or archive tiers based on days after creation, and can delete data when it no longer needs to be retained. Each rule specifies the target storage class and number of days.",
+        "distractors": {
+          "D": "Encryption settings are configured separately on buckets or objects. Lifecycle rules manage transitions and deletion, not encryption.",
+          "E": "Lifecycle rules operate within a single bucket/Region. Cross-Region movement requires replication rules, not lifecycle rules.",
+          "F": "S3 durability is built into the storage architecture (11 9s). Lifecycle rules do not add replicas; cross-region replication is a separate feature."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "ai-governance-strategy",
+      "scenario": null,
+      "stem": "Which responsibilities are included in the scope of an AI governance strategy? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Governance and compliance" },
+        { "key": "B", "text": "Risk management" },
+        { "key": "C", "text": "Implementing security controls" },
+        { "key": "D", "text": "Managing AWS data center physical security" },
+        { "key": "E", "text": "Setting AWS service pricing" },
+        { "key": "F", "text": "Designing AWS hardware infrastructure" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "An AI governance strategy includes governance and compliance, legal and privacy, risk management, implementing security controls, and model resilience within its scope of responsibility.",
+        "distractors": {
+          "D": "Physical data center security is AWS's responsibility, not part of the customer's AI governance strategy.",
+          "E": "AWS service pricing is set by AWS. It is not within the scope of a customer's AI governance strategy.",
+          "F": "Hardware infrastructure design is AWS's responsibility under the shared responsibility model."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "scoping-matrix",
+      "scenario": null,
+      "stem": "According to the Generative AI Security Scoping Matrix, which statements about scopes 3, 4, and 5 are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "You are building your own AI solution and your data can be used in training, fine-tuning, or output" },
+        { "key": "B", "text": "You are responsible for classifying data and model for risk, implementing threat modeling, and limiting access" },
+        { "key": "C", "text": "All governance responsibilities are inherited from the third-party provider" },
+        { "key": "D", "text": "You only need to configure basic IAM permissions with no additional security controls" },
+        { "key": "E", "text": "These scopes carry the least responsibility because AWS manages everything" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "In scopes 3-5, you are building your own AI solution where your data can be used in training, fine-tuning, or output. You are responsible for classifying data/model for risk, threat modeling, limiting access, implementing security controls, and assuring model endpoint resilience.",
+        "distractors": {
+          "C": "In scopes 3-5, governance responsibilities are the customer's. Third-party inheritance applies more to scopes 1-2.",
+          "D": "Scopes 3-5 require comprehensive security including threat modeling, access control, security controls, and model resilience—far beyond basic IAM.",
+          "E": "Scopes 1 and 2 carry the least responsibility. Scopes 3-5 carry the most because you are building your own solution."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "glue-data-quality",
+      "scenario": null,
+      "stem": "Which capabilities does AWS Glue Data Quality provide? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Recommends quality rules using machine learning to detect data anomalies" },
+        { "key": "B", "text": "Provides non-coders a straightforward way to define data quality rules" },
+        { "key": "C", "text": "Automatically fixes data quality issues in the source systems" },
+        { "key": "D", "text": "Deploys machine learning models based on data quality results" },
+        { "key": "E", "text": "Migrates data between AWS Regions based on quality scores" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "AWS Glue Data Quality recommends quality rules using ML to detect anomalies and provides non-coders a straightforward way to set up rules. After defining rules, you run a job and review results showing which rules passed or failed.",
+        "distractors": {
+          "C": "Glue Data Quality evaluates and reports quality issues. Fixing source system problems requires separate action by data stewards.",
+          "D": "Glue Data Quality evaluates data quality, not model deployment. SageMaker handles model deployment.",
+          "E": "Data quality evaluation does not trigger cross-Region data migration. These are unrelated capabilities."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "lake-formation",
+      "scenario": "A financial services company has a data lake in S3 with sensitive customer financial data. They need data scientists to access only specific columns relevant to their ML models, while preventing access to PII columns like social security numbers and account numbers.",
+      "stem": "Which AWS service provides the column-level access control needed for this requirement?",
+      "options": [
+        { "key": "A", "text": "AWS Lake Formation" },
+        { "key": "B", "text": "Amazon S3 Block Public Access" },
+        { "key": "C", "text": "AWS Glue DataBrew" },
+        { "key": "D", "text": "Amazon Macie" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS Lake Formation manages fine-grained access control at the column, row, and cell levels. This allows granting data scientists access to specific columns while blocking access to PII columns.",
+        "distractors": {
+          "B": "S3 Block Public Access prevents public access to buckets. It does not provide column-level access control within data.",
+          "C": "DataBrew is a data preparation tool for profiling and cleaning data. It does not enforce access control at the column level.",
+          "D": "Macie identifies sensitive data like PII but does not enforce column-level access permissions."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "s3-lifecycle",
+      "scenario": "A machine learning team stores training datasets in S3 Standard. After initial model training, the data is rarely accessed but must be retained for 5 years to meet regulatory requirements. The team wants to minimize storage costs.",
+      "stem": "Which approach optimizes cost while meeting the retention requirement?",
+      "options": [
+        { "key": "A", "text": "Create a lifecycle rule that transitions data to S3 Glacier Deep Archive after initial use and deletes it after 5 years" },
+        { "key": "B", "text": "Delete the data immediately after training since the model is already built" },
+        { "key": "C", "text": "Keep the data in S3 Standard for the entire 5-year period" },
+        { "key": "D", "text": "Move the data to Amazon DynamoDB for cheaper long-term storage" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A lifecycle rule can transition data to S3 Glacier Deep Archive (lowest cost for rarely accessed archival data) and include a deletion rule after the retention period ends (5 years). This meets compliance while minimizing cost.",
+        "distractors": {
+          "B": "Deleting data violates the 5-year regulatory retention requirement. The data must be kept.",
+          "C": "S3 Standard is the most expensive class. Keeping rarely accessed data there for 5 years wastes money when cheaper archival tiers exist.",
+          "D": "DynamoDB is a NoSQL database not designed for storing large training datasets. S3 Glacier is purpose-built for archival."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "scoping-matrix",
+      "scenario": "A company needs an AI solution for translating customer support tickets into multiple languages. They want to minimize their governance and security responsibilities while still meeting the requirement.",
+      "stem": "According to the Generative AI Security Scoping Matrix, which approach minimizes governance responsibilities?",
+      "options": [
+        { "key": "A", "text": "Build a custom translation model from scratch using SageMaker" },
+        { "key": "B", "text": "Fine-tune a pre-trained model from SageMaker JumpStart with custom data" },
+        { "key": "C", "text": "Use a fully trained AI service like Amazon Translate" },
+        { "key": "D", "text": "Deploy an open-source model on self-managed EC2 infrastructure" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The scoping matrix recommends looking for solutions from left to right, beginning with fully trained AI services. Amazon Translate is a fully trained service (scope 1-2) that minimizes governance responsibilities since AWS manages the model entirely.",
+        "distractors": {
+          "A": "Building a custom model from scratch is the highest scope (scope 5), maximizing governance responsibilities.",
+          "B": "Fine-tuning a pre-trained model involves your own data in training, increasing scope and governance responsibilities.",
+          "D": "Self-managed infrastructure with an open-source model carries maximum responsibility for security, governance, and model resilience."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "data-governance",
+      "scenario": "A retail company's data team discovers that a report shows different sales figures than a dashboard for the same metric. Investigation reveals the raw data was transformed differently by two teams. They need to trace how the data was processed from its original source.",
+      "stem": "Which concept in data governance helps identify where data originated and how it was moved, transformed, and stored?",
+      "options": [
+        { "key": "A", "text": "Data lineage" },
+        { "key": "B", "text": "Data profiling" },
+        { "key": "C", "text": "Data cataloging" },
+        { "key": "D", "text": "Data encryption" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Data lineage identifies where specific data elements originated and how data was moved, transformed, and stored. When data consumers question where data came from and what calculations were made, lineage provides the answer.",
+        "distractors": {
+          "B": "Data profiling examines data characteristics and quality. It does not trace the origin and transformation history.",
+          "C": "Data cataloging makes data available and discoverable but does not track the transformation history of specific data elements.",
+          "D": "Data encryption protects data confidentiality. It has no role in tracing data origins or transformations."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "ai-governance-strategy",
+      "scenario": "A company has determined their AI governance scope and documented their policies. Their governance committee is defining the next steps to operationalize the strategy.",
+      "stem": "After documenting AI governance policies, what should the organization do to ensure ongoing compliance?",
+      "options": [
+        { "key": "A", "text": "Define mechanisms to monitor AI system performance, compliance, and bias with pre-defined thresholds, and frequently review and revise policies" },
+        { "key": "B", "text": "Delegate all monitoring responsibility to AWS under the shared responsibility model" },
+        { "key": "C", "text": "Freeze the policies permanently to ensure consistency over time" },
+        { "key": "D", "text": "Limit policy awareness to only the executive team for confidentiality" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Organizations should define mechanisms to monitor AI systems' performance, compliance, and bias, determine actions based on pre-defined thresholds, and frequently review results and revise policies to ensure alignment with business goals and AI safety.",
+        "distractors": {
+          "B": "Monitoring AI workloads for compliance and bias is the customer's responsibility. AWS secures infrastructure, not customer AI governance.",
+          "C": "Policies should be frequently reviewed and revised as necessary. Freezing them prevents adaptation to new risks and regulations.",
+          "D": "Employees should be trained on their responsibilities according to their job roles and level of access. Limiting awareness defeats the purpose of governance."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "lake-formation",
+      "scenario": "An analytics team uses AWS Lake Formation for their data lake. They want to understand how Lake Formation integrates with other AWS services to provide governed access to data.",
+      "stem": "Which statements about AWS Lake Formation are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Lake Formation permissions are enforced when users access data through services like Athena, AWS Glue, Amazon EMR, or Amazon Redshift" },
+        { "key": "B", "text": "The AWS Glue Data Catalog checks permissions with Lake Formation before granting access to data" },
+        { "key": "C", "text": "Lake Formation replaces Amazon S3 as the storage layer for the data lake" },
+        { "key": "D", "text": "Lake Formation can only manage access for data stored in relational databases" },
+        { "key": "E", "text": "Lake Formation requires all data to be encrypted with customer-managed KMS keys" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Lake Formation permissions are enforced across AWS analytics and ML services. When a user accesses data through Athena, Glue, EMR, or Redshift, the Glue Data Catalog checks permissions with Lake Formation before granting access.",
+        "distractors": {
+          "C": "Lake Formation manages access control for data in S3. It does not replace S3 as storage—the data stays in S3.",
+          "D": "Lake Formation manages access for structured and unstructured data in S3-based data lakes and cataloged data from relational and NoSQL sources.",
+          "E": "Lake Formation manages access permissions. Encryption configuration is separate and does not require customer-managed keys."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "data-quality",
+      "scenario": "A data quality team finds issues during data profiling. Some problems originate from upstream source systems, while others are integration issues from combining data from multiple sources.",
+      "stem": "Which actions should the team take to address data quality issues? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Alert and report source issues to the data steward and business users who can correct them" },
+        { "key": "B", "text": "Ensure data from different sources links together coherently through data integration" },
+        { "key": "C", "text": "Delete all data from problematic sources to eliminate quality issues" },
+        { "key": "D", "text": "Ignore source issues since they are outside the team's control" },
+        { "key": "E", "text": "Automatically replace problematic data with synthetic data" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "When problems involve the source, you must alert and report issues to data stewards and business users who can correct them. Data integration ensures data from different sources links together coherently to provide a complete picture.",
+        "distractors": {
+          "C": "Deleting data is destructive and may remove valuable information. The goal is to fix root causes, not eliminate data.",
+          "D": "Source issues must be reported for correction. Ignoring them allows data quality problems to persist and affect downstream models.",
+          "E": "Synthetic data replacement without understanding root causes can introduce different problems. Issues should be corrected at the source."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "s3-storage-classes",
+      "scenario": "A data engineering team manages ML training datasets with different access patterns. Some datasets are actively used for weekly model retraining. Other datasets were used once for initial training and are now kept only for audit purposes.",
+      "stem": "Which S3 storage strategies should the team use for these two access patterns? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "S3 Standard for actively used datasets that are accessed weekly" },
+        { "key": "B", "text": "S3 Glacier for datasets retained only for audit and rarely accessed" },
+        { "key": "C", "text": "S3 Standard for all datasets regardless of access pattern" },
+        { "key": "D", "text": "S3 Glacier for all datasets to minimize cost" },
+        { "key": "E", "text": "Delete the audit datasets since models are already trained" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "S3 Standard is for frequently accessed data (weekly retraining datasets). S3 Glacier is for rarely accessed data retained for compliance or audit purposes, offering lower storage cost.",
+        "distractors": {
+          "C": "Storing all datasets in Standard wastes money. Audit-only data accessed rarely should be in a lower-cost tier.",
+          "D": "S3 Glacier has higher retrieval costs and slower access. Actively used weekly datasets would incur unnecessary retrieval costs.",
+          "E": "Audit datasets must be retained for compliance. Deleting them would violate regulatory retention requirements."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "s3-intelligent-tiering",
+      "scenario": "A data science team stores experiment datasets in S3 but cannot predict access patterns. Some experiments are revisited frequently while others are never touched again. They want to optimize cost without manually managing storage classes.",
+      "stem": "Which S3 storage class automatically manages cost optimization for data with unpredictable access patterns?",
+      "options": [
+        { "key": "A", "text": "S3 Standard" },
+        { "key": "B", "text": "S3 Intelligent-Tiering" },
+        { "key": "C", "text": "S3 One Zone-IA" },
+        { "key": "D", "text": "S3 Glacier Deep Archive" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "S3 Intelligent-Tiering is for data with unknown or changing access patterns. It automatically moves less frequently accessed objects into lower-cost infrequent access tiers without manual intervention.",
+        "distractors": {
+          "A": "S3 Standard stores data at the highest cost regardless of access pattern. It requires manual lifecycle management for optimization.",
+          "C": "S3 One Zone-IA is for known infrequent access patterns, not unknown ones. It also stores data in only one AZ.",
+          "D": "Glacier Deep Archive is for data you know will be rarely accessed (archival). It is not suitable for data that might be accessed frequently."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "scoping-matrix",
+      "scenario": "An AI platform team is evaluating options for implementing a text summarization feature. They consider Amazon Bedrock with RAG, fine-tuning a SageMaker JumpStart model, and building a custom transformer from scratch. They want to understand the governance implications of each choice.",
+      "stem": "In what order should the team evaluate these options to progressively minimize governance scope?",
+      "options": [
+        { "key": "A", "text": "Custom model first, then fine-tuning, then Amazon Bedrock with RAG" },
+        { "key": "B", "text": "Amazon Bedrock with RAG first, then fine-tuning a pre-trained model, then custom from scratch" },
+        { "key": "C", "text": "Fine-tuning first, then custom model, then Amazon Bedrock with RAG" },
+        { "key": "D", "text": "All options carry identical governance scope regardless of implementation approach" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The scoping matrix recommends evaluating from left to right: start with fully managed services/pre-trained models (like Bedrock with RAG), then consider fine-tuning, and only build custom if needed. Moving left to right increases scope and responsibilities.",
+        "distractors": {
+          "A": "Starting with a custom model maximizes governance scope. The recommendation is to start with the lowest scope (managed services) first.",
+          "C": "This starts in the middle and jumps to maximum scope before considering the lowest-scope option. The correct order is managed → fine-tuned → custom.",
+          "D": "Governance scope increases significantly from consuming managed services to building custom solutions. The scoping matrix explicitly shows different responsibility levels."
+        }
+      }
+    }
+  ]
+}

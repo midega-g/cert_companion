@@ -1,0 +1,458 @@
+{
+  "label": "Gap Coverage — Supplemental",
+  "order": 4,
+  "topic": "Domain 5: Security, Compliance, and Governance for AI Solutions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "cloudtrail",
+      "scenario": null,
+      "stem": "Which statement correctly describes how AWS CloudTrail integrates with Amazon SageMaker?",
+      "options": [
+        { "key": "A", "text": "CloudTrail captures all SageMaker API calls including endpoint invocations" },
+        { "key": "B", "text": "CloudTrail captures all SageMaker API calls except for invoking endpoints" },
+        { "key": "C", "text": "CloudTrail only captures SageMaker training job creation events" },
+        { "key": "D", "text": "CloudTrail requires manual configuration to capture any SageMaker events" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Amazon SageMaker is integrated with CloudTrail, which captures all API calls for SageMaker except for invoking endpoints. Actions like creating training jobs or notebook instances are logged.",
+        "distractors": {
+          "A": "CloudTrail does not capture endpoint invocations. This is explicitly excluded from SageMaker's CloudTrail integration.",
+          "C": "CloudTrail captures all SageMaker API calls (creating notebook instances, training jobs, etc.), not just training job creation.",
+          "D": "SageMaker is automatically integrated with CloudTrail. No manual configuration is needed to start capturing SageMaker API calls."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "cloudtrail",
+      "scenario": null,
+      "stem": "Where does AWS CloudTrail deliver its log files?",
+      "options": [
+        { "key": "A", "text": "To an Amazon DynamoDB table specified by the user" },
+        { "key": "B", "text": "To an Amazon S3 bucket specified by the user" },
+        { "key": "C", "text": "To an Amazon RDS database for structured querying" },
+        { "key": "D", "text": "To the AWS Management Console only, with no persistent storage" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "CloudTrail delivers log files to an Amazon S3 bucket that you specify. This provides durable storage for audit records.",
+        "distractors": {
+          "A": "DynamoDB is a NoSQL database service, not the delivery destination for CloudTrail logs.",
+          "C": "CloudTrail logs go to S3, not RDS. You can optionally integrate with Athena to query them with SQL.",
+          "D": "CloudTrail delivers logs to S3 for persistent storage. Console visibility alone would not meet audit and compliance requirements."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "s3-block-public-access",
+      "scenario": null,
+      "stem": "What is the difference between enabling S3 Block Public Access at the bucket level versus the account level?",
+      "options": [
+        { "key": "A", "text": "Bucket-level blocks only current public access; account-level blocks both current and future public access on all buckets" },
+        { "key": "B", "text": "Account-level blocks only apply to new buckets; existing buckets are unaffected" },
+        { "key": "C", "text": "Bucket-level and account-level settings are identical in behavior" },
+        { "key": "D", "text": "Account-level blocks require each bucket to also have its own block enabled" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "At the bucket level, some buckets in your account might still be open to the public. When enabled at the account level, no buckets—existing or new—can grant public access, and it overrides public permissions from bucket policies or ACLs.",
+        "distractors": {
+          "B": "Account-level Block Public Access applies to all buckets, existing and new. It is not limited to new buckets.",
+          "C": "They are not identical. Bucket-level protects only that bucket. Account-level ensures comprehensive protection across all buckets.",
+          "D": "Account-level is sufficient on its own. It overrides any public permissions without needing per-bucket configuration."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "s3-block-public-access",
+      "scenario": null,
+      "stem": "What happens when S3 Block Public Access is enabled and a bucket policy grants public read permissions?",
+      "options": [
+        { "key": "A", "text": "The bucket policy takes precedence and public access is granted" },
+        { "key": "B", "text": "S3 Block Public Access overrides the bucket policy and public access is denied" },
+        { "key": "C", "text": "An error is returned because the two settings conflict" },
+        { "key": "D", "text": "The bucket becomes read-only for all users including the account owner" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When S3 Block Public Access is enabled, it overrides any public permissions granted by bucket policies or access control lists. The public access is denied regardless of what the bucket policy states.",
+        "distractors": {
+          "A": "Bucket policies do not override Block Public Access. The block takes precedence over any public grants.",
+          "C": "There is no error. AWS resolves the conflict by enforcing the block—public access is simply denied.",
+          "D": "Block Public Access prevents public access only. The account owner and authorized IAM users retain their normal access."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "mfa",
+      "scenario": null,
+      "stem": "Which type of authentication does using only a username and password to sign into an AWS account represent?",
+      "options": [
+        { "key": "A", "text": "Multifactor authentication" },
+        { "key": "B", "text": "Token-based authentication" },
+        { "key": "C", "text": "Single-factor authentication" },
+        { "key": "D", "text": "Certificate-based authentication" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Using a username and password to log into an AWS account is single-factor authentication—the simplest and most common form of authentication. It relies on one factor (something you know).",
+        "distractors": {
+          "A": "Multifactor authentication requires an additional factor beyond the password, such as a code from a physical or virtual device.",
+          "B": "Token-based authentication uses generated tokens (like temporary security credentials). A static password is not a token.",
+          "D": "Certificate-based authentication uses digital certificates. A username/password combination does not involve certificates."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "mfa",
+      "scenario": null,
+      "stem": "Which are recommended security practices for the AWS root user? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Enable multifactor authentication for the root user" },
+        { "key": "B", "text": "Disable or delete the access keys associated with the root user" },
+        { "key": "C", "text": "Use the root user only for tasks that specifically require it, such as billing account management" },
+        { "key": "D", "text": "Share root user credentials with a single trusted security administrator" },
+        { "key": "E", "text": "Create a separate root user for each team to distribute administrative tasks" },
+        { "key": "F", "text": "Use the root user for deploying production ML models to ensure full permissions" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Best practice is to enable MFA on the root user, disable or delete its access keys (since other users should be used instead), and limit root user usage to only the few tasks that require it like billing management.",
+        "distractors": {
+          "D": "Root user credentials should never be shared with anyone. Each person should have their own IAM user.",
+          "E": "There is only one root user per AWS account. You cannot create additional root users. Use IAM users with appropriate permissions.",
+          "F": "The root user should not be used for everyday tasks like model deployment. Create IAM users or roles with the necessary permissions."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "macie",
+      "scenario": null,
+      "stem": "Which capabilities does Amazon Macie provide for S3 bucket security? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Automatically generates an inventory of S3 buckets including their size and encryption status" },
+        { "key": "B", "text": "Identifies whether buckets have private or public access and shared access with other accounts" },
+        { "key": "C", "text": "Uses ML and pattern matching to identify sensitive data such as PII" },
+        { "key": "D", "text": "Automatically encrypts unencrypted S3 objects it discovers" },
+        { "key": "E", "text": "Deletes any PII it finds in training data buckets" },
+        { "key": "F", "text": "Blocks all public access to S3 buckets where sensitive data is found" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Macie continually evaluates S3 buckets and generates an inventory of their size and state (including encryption status), identifies access levels (private/public/shared), and uses ML and pattern matching to identify and alert on sensitive data like PII.",
+        "distractors": {
+          "D": "Macie identifies and alerts on issues but does not automatically encrypt objects. Encryption must be configured separately.",
+          "E": "Macie alerts you when sensitive data is found. Deletion or remediation is the customer's responsibility.",
+          "F": "Macie reports on access state but does not automatically block public access. S3 Block Public Access is the separate feature for that."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "inter-node-encryption",
+      "scenario": null,
+      "stem": "Which statements about inter-node encryption in SageMaker distributed training are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Inter-node traffic encryption is disabled by default but can be enabled" },
+        { "key": "B", "text": "Enabling inter-node encryption can increase training times for deep learning algorithms" },
+        { "key": "C", "text": "Inter-node encryption is mandatory for all SageMaker training jobs" },
+        { "key": "D", "text": "Inter-node encryption has no performance impact on any algorithm type" },
+        { "key": "E", "text": "Inter-node encryption is only needed for single-node training" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "By default, inter-node traffic in distributed training is not encrypted, but an option exists to enable it. Enabling this encryption can increase training times for some algorithms, particularly deep learning ones.",
+        "distractors": {
+          "C": "Inter-node encryption is optional, not mandatory. It may be required for very sensitive data but is the customer's choice to enable.",
+          "D": "Encryption does have a performance impact. It can increase training times, especially for deep learning algorithms that transfer large amounts of data between nodes.",
+          "E": "Inter-node encryption is relevant for distributed training across multiple nodes. Single-node training has no inter-node traffic to encrypt."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "encryption",
+      "scenario": null,
+      "stem": "Which statements about client-side and server-side encryption on AWS are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Client-side encryption means the customer encrypts data before sending it to an AWS service" },
+        { "key": "B", "text": "Server-side encryption is the easiest way to ensure encryption is implemented correctly and applied consistently" },
+        { "key": "C", "text": "Client-side encryption is performed automatically by all AWS services" },
+        { "key": "D", "text": "Server-side encryption requires customers to manage their own encryption algorithms" },
+        { "key": "E", "text": "Client-side and server-side encryption cannot be used together on the same data" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Client-side encryption is when the customer encrypts data before sending it to AWS. Server-side encryption is the easiest approach because the service handles encryption implementation and consistency—it is usually just an option to enable when configuring a resource.",
+        "distractors": {
+          "C": "Client-side encryption is performed by the customer, not AWS services. AWS services offer server-side encryption.",
+          "D": "With server-side encryption, the service manages the encryption algorithm. Customers only need to enable the option.",
+          "E": "Client-side and server-side encryption can be used together. Data encrypted by the client would be encrypted again at rest by the service."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "kms",
+      "scenario": null,
+      "stem": "Which actions can a customer perform with AWS KMS customer-managed keys that they cannot do with service-owned keys? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Control key policies and IAM policies for the key" },
+        { "key": "B", "text": "Configure key rotation" },
+        { "key": "C", "text": "Enable or disable the key" },
+        { "key": "D", "text": "Use the key to encrypt data at rest" },
+        { "key": "E", "text": "Let AWS manage the key lifecycle without customer involvement" },
+        { "key": "F", "text": "Automatically create IAM users for each key" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Customer-managed keys let you control key policies and IAM policies, configure key rotation, and enable or disable the key. These controls are not available with service-owned keys which are fully managed by AWS.",
+        "distractors": {
+          "D": "Both service-owned and customer-managed keys encrypt data at rest. This capability is not unique to customer-managed keys.",
+          "E": "Letting AWS manage the key lifecycle without involvement describes service-owned keys, not customer-managed keys.",
+          "F": "KMS manages encryption keys, not IAM users. Key policies control which existing users/roles can use the key."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "cloudtrail",
+      "scenario": "A security operations team at a media company needs to investigate who deleted a SageMaker notebook instance last week. They need the identity of the person, the time of the action, and the source IP address.",
+      "stem": "Which AWS service provides the information needed for this investigation?",
+      "options": [
+        { "key": "A", "text": "Amazon SageMaker Model Monitor" },
+        { "key": "B", "text": "AWS CloudTrail" },
+        { "key": "C", "text": "Amazon CloudWatch Metrics" },
+        { "key": "D", "text": "AWS IAM Access Analyzer" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "CloudTrail captures API calls made by or on behalf of the account. For SageMaker, it logs actions like creating and deleting notebook instances, and records who made the request, when, and from which IP address.",
+        "distractors": {
+          "A": "Model Monitor monitors deployed model quality and data drift, not administrative actions like resource deletion.",
+          "C": "CloudWatch Metrics tracks operational metrics (CPU, memory, latency) but does not log who performed which API call.",
+          "D": "IAM Access Analyzer helps identify resources shared externally but does not provide API call history for investigating past actions."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "sagemaker-role-manager",
+      "scenario": "An ML platform team needs to create an IAM role for their SageMaker training instances. The role needs permissions to access S3 data, write to CloudWatch, and manage training jobs. They want to avoid manually writing IAM policies.",
+      "stem": "Which SageMaker Role Manager persona and approach should they use?",
+      "options": [
+        { "key": "A", "text": "Select the SageMaker compute persona, which pre-selects activities for compute resources performing training and inference" },
+        { "key": "B", "text": "Select the data scientist persona, which includes permissions for interactive notebook access" },
+        { "key": "C", "text": "Select the MLOps persona, which includes permissions for managing endpoints and pipelines" },
+        { "key": "D", "text": "Create a custom persona from scratch since pre-configured personas do not include S3 or CloudWatch access" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The SageMaker compute persona is used for creating a role that SageMaker compute resources can use to perform tasks such as training and inference. The predefined permissions include access to services like S3 and CloudWatch.",
+        "distractors": {
+          "B": "The data scientist persona is for a human user performing ML development, not for a role assumed by compute resources.",
+          "C": "The MLOps persona is for managing models, pipelines, and endpoints but is intended for a person, not compute resources.",
+          "D": "Pre-configured personas include permissions for services like S3, AWS Glue, Amazon Athena, and CloudWatch. A custom build is not necessary."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "sagemaker-role-manager",
+      "scenario": "A company has an MLOps engineer who manages model deployments, pipeline orchestration, and endpoint monitoring but should not have access to raw training data stored in S3.",
+      "stem": "Which SageMaker Role Manager persona is designed for this access pattern?",
+      "options": [
+        { "key": "A", "text": "Data scientist persona" },
+        { "key": "B", "text": "MLOps persona" },
+        { "key": "C", "text": "SageMaker compute persona" },
+        { "key": "D", "text": "Security administrator persona" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The MLOps persona is for someone managing models, pipelines, experiments, and endpoints but who doesn't need to access the data in Amazon S3. This matches the requirement of no raw data access.",
+        "distractors": {
+          "A": "The data scientist persona is for general ML development and experimentation, which typically includes data access.",
+          "C": "The SageMaker compute persona is for roles used by compute resources (like training jobs), not for human MLOps engineers.",
+          "D": "Security administrator is not one of the three pre-configured personas offered by SageMaker Role Manager."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "model-monitor-performance",
+      "scenario": "A credit scoring company wants to monitor whether their deployed model's predictions remain accurate over time. They have access to labeled ground truth data from SageMaker Ground Truth for recent inferences.",
+      "stem": "How does SageMaker Model Monitor use this labeled data to monitor model performance?",
+      "options": [
+        { "key": "A", "text": "It compares inferences with labeled data from Ground Truth for the same inputs, then evaluates the performance against a baseline" },
+        { "key": "B", "text": "It uses the labeled data to automatically retrain the model and replace the deployed version" },
+        { "key": "C", "text": "It stores the labeled data in Feature Store for future point-in-time queries" },
+        { "key": "D", "text": "It sends the labeled data to CloudTrail for compliance auditing" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "For model performance monitoring, you use labeled data to create a baseline. After the model quality job runs, it compares inferences with label data from SageMaker Ground Truth for the same inputs, then evaluates performance. Results are viewable in SageMaker Studio.",
+        "distractors": {
+          "B": "Model Monitor evaluates performance but does not automatically retrain or replace models. Retraining is a separate decision.",
+          "C": "Feature Store manages reusable features for training and inference, not labeled ground truth data for monitoring.",
+          "D": "CloudTrail logs API calls. Ground truth data for model performance evaluation is used by Model Monitor, not CloudTrail."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "model-monitor-data-capture",
+      "scenario": "An ML team is setting up SageMaker Model Monitor for data quality monitoring on their real-time inference endpoint. They need to store the actual requests and responses flowing through the endpoint for analysis.",
+      "stem": "What must be enabled on the endpoint to capture inference data for Model Monitor?",
+      "options": [
+        { "key": "A", "text": "CloudTrail logging for the endpoint" },
+        { "key": "B", "text": "Data capture, which stores inference input and output in S3" },
+        { "key": "C", "text": "VPC flow logs on the endpoint's network interface" },
+        { "key": "D", "text": "Amazon Macie scanning on the endpoint's output bucket" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "To use SageMaker Model Monitor, you must enable data capture. This captures the inference input and output from an inference endpoint or batch transform job and stores the data in S3 for monitoring analysis.",
+        "distractors": {
+          "A": "CloudTrail logs API calls (like creating endpoints) but does not capture the actual inference payloads and responses.",
+          "C": "VPC flow logs capture network-level metadata (IPs, ports, protocols), not application-level inference data.",
+          "D": "Macie scans for sensitive data but does not capture inference traffic for model monitoring purposes."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "model-monitor-performance",
+      "scenario": "A SageMaker Model Monitor data quality job has completed and generated statistics. The team wants to understand how results are communicated and where they can be reviewed.",
+      "stem": "Where are SageMaker Model Monitor statistics and monitoring results made available? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "SageMaker Studio for visualization and review" },
+        { "key": "B", "text": "Amazon CloudWatch for metrics and alerting when thresholds are hit" },
+        { "key": "C", "text": "AWS CloudTrail as part of API audit logs" },
+        { "key": "D", "text": "Amazon Macie as sensitive data findings" },
+        { "key": "E", "text": "IAM Identity Center as user access reports" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Model Monitor generates statistics and metrics that are visible in SageMaker Studio and also sent to Amazon CloudWatch. CloudWatch stores log files and notifies you when model quality hits preset thresholds.",
+        "distractors": {
+          "C": "CloudTrail captures API call logs, not model monitoring statistics or data quality metrics.",
+          "D": "Macie findings relate to sensitive data discovery in S3, not model performance monitoring results.",
+          "E": "IAM Identity Center manages user access and authentication, not model monitoring outputs."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "endpoint-tracking",
+      "scenario": "An ML operations team needs to ensure full traceability of their deployed models. They want to know which model version is behind each endpoint and track endpoint configurations as part of their governance process.",
+      "stem": "Which statements about SageMaker endpoint tracking are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "SageMaker endpoints have a unique identifier and metadata that is automatically tracked" },
+        { "key": "B", "text": "The model used by an endpoint is automatically tracked as part of the endpoint configuration" },
+        { "key": "C", "text": "Endpoint configurations must be manually documented in Model Cards to maintain traceability" },
+        { "key": "D", "text": "Endpoints cannot be associated with models in the Model Registry" },
+        { "key": "E", "text": "Endpoint metadata is only available through CloudTrail API logs" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker endpoints all have a unique identifier and metadata. The model that is used is automatically tracked as part of the endpoint configuration, providing traceability without manual documentation.",
+        "distractors": {
+          "C": "Endpoint-to-model tracking is automatic through endpoint configuration metadata. Manual documentation in Model Cards is optional and complementary.",
+          "D": "Models can be deployed directly from Model Registry to endpoints. The registry and endpoints work together.",
+          "E": "Endpoint metadata is available through the SageMaker API and console, not only through CloudTrail logs."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "code-versioning",
+      "scenario": "A regulated healthcare company is establishing version control practices for their ML development lifecycle. They need to version training code, inference code, experiments, and notebooks to meet audit requirements.",
+      "stem": "Which services and practices support code versioning for ML artifacts? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Store code in repositories like GitHub or AWS CodeCommit which automatically retain versions" },
+        { "key": "B", "text": "Use Amazon ECR to store container images with unique IDs and additional tags" },
+        { "key": "C", "text": "Store code directly in SageMaker Feature Store as feature metadata" },
+        { "key": "D", "text": "Rely on CloudWatch Logs to retain historical versions of training scripts" },
+        { "key": "E", "text": "Save code snapshots in Amazon DynamoDB tables with version attributes" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Code repositories like GitHub and AWS CodeCommit automatically retain versions of source code (training code, inference code, experiments, notebooks). Container images in Amazon ECR are uniquely identified with a unique ID and can be tagged with additional information.",
+        "distractors": {
+          "C": "Feature Store manages ML features and their metadata, not source code files.",
+          "D": "CloudWatch Logs stores operational logs, not versioned source code. It cannot serve as a code repository.",
+          "E": "DynamoDB is a key-value database not designed for code versioning. Dedicated code repositories are the correct tool."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "macie",
+      "scenario": "A data engineering team at an insurance company uses Amazon Macie and discovers that their ML training data bucket contains customer social security numbers and home addresses. The model being trained is for claim amount prediction.",
+      "stem": "What is the recommended action after Macie alerts on PII in training data?",
+      "options": [
+        { "key": "A", "text": "Proceed with training since the model needs all available features for accuracy" },
+        { "key": "B", "text": "Remove the PII from the training data because there is no reason to train a model on such sensitive information" },
+        { "key": "C", "text": "Encrypt the bucket with KMS and continue training since encryption makes the data safe" },
+        { "key": "D", "text": "Move the data to a private VPC and retrain the model with the same data" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "PII should be removed from training data. There is no reason to train a model on credit card numbers, names, addresses, or social security numbers. When Macie alerts on sensitive data in training data, it must be removed.",
+        "distractors": {
+          "A": "Including PII in training is unnecessary and creates compliance and privacy risks. The model does not need SSNs to predict claim amounts.",
+          "C": "Encryption protects data from unauthorized access but does not address the fundamental issue that PII should not be used for model training.",
+          "D": "Moving data to a private VPC improves network isolation but does not remove the PII from the training data itself."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "cloudtrail",
+      "scenario": "A compliance officer at a fintech company needs to verify that no unauthorized users have been creating SageMaker training jobs in their production account. They need a historical record of who created each training job and when.",
+      "stem": "Which combination of information from CloudTrail helps the compliance officer verify authorized usage?",
+      "options": [
+        { "key": "A", "text": "The request identity, timestamp, and IP address for each CreateTrainingJob API call" },
+        { "key": "B", "text": "The model accuracy metrics and training loss curves for each job" },
+        { "key": "C", "text": "The training data content and feature importance rankings" },
+        { "key": "D", "text": "The inference responses and prediction confidence scores from endpoints" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "CloudTrail records who made a request, when it was made, the IP address from which it was made, and additional details. For SageMaker, this includes API calls like CreateTrainingJob, providing the audit trail the compliance officer needs.",
+        "distractors": {
+          "B": "Model accuracy and training loss are training job metrics stored in SageMaker metadata, not in CloudTrail audit logs.",
+          "C": "Training data content is stored in S3. CloudTrail logs API actions, not data content.",
+          "D": "CloudTrail does not capture endpoint invocations. Inference responses are not part of CloudTrail logs."
+        }
+      }
+    }
+  ]
+}

@@ -1,8 +1,7 @@
 /* ─── State ─────────────────────────────────────────────────────── */
 const state = {
   manifest: null,
-  provider: null, // { id, label, topics }
-  topic: null, // { id, label, tests }
+  navPath: [], // array of node objects representing the navigation path
   testMeta: null, // { id, label, path }
   exam: null, // loaded JSON { topic, questions }
   answers: [], // [{ selected: [...keys], submitted: bool }]
@@ -12,9 +11,9 @@ const state = {
 
 /* ─── Session Persistence (localStorage) ────────────────────────── */
 function sessionKey() {
-  // Unique key per test: provider/topic/testId
-  if (!state.provider || !state.topic || !state.testMeta) return null;
-  return `cert_session_${state.provider.id}_${state.topic.id}_${state.testMeta.id}`;
+  if (state.navPath.length === 0 || !state.testMeta) return null;
+  const pathIds = state.navPath.map((n) => n.id).join("_");
+  return `cert_session_${pathIds}_${state.testMeta.id}`;
 }
 
 function saveSession() {
@@ -109,6 +108,7 @@ async function fetchJSON(path) {
 /* ─── HOME VIEW ─────────────────────────────────────────────────── */
 async function renderHome() {
   showView("home");
+  state.navPath = [];
   setBreadcrumb([]);
   const el = $("view-home");
   el.innerHTML = `
@@ -143,10 +143,10 @@ async function renderHome() {
       ${providers
         .map(
           (p) => `
-        <div class="card" onclick="selectProvider('${p.id}')">
+        <div class="card" onclick="navigateTo('${p.id}', 0)">
           <div class="card-title">${p.label}</div>
-          <div class="card-meta">${p.topics.length} topic${
-            p.topics.length !== 1 ? "s" : ""
+          <div class="card-meta">${countTests(p)} test${
+            countTests(p) !== 1 ? "s" : ""
           }</div>
         </div>`,
         )
@@ -154,73 +154,134 @@ async function renderHome() {
     </div>`;
 }
 
-function selectProvider(id) {
-  state.provider = state.manifest.providers.find((p) => p.id === id);
-  renderTopic();
+/* ─── NAVIGATION HELPERS ────────────────────────────────────────── */
+function countTests(node) {
+  let count = 0;
+  if (node.tests) count += node.tests.length;
+  if (node.children) node.children.forEach((c) => (count += countTests(c)));
+  return count;
 }
 
-/* ─── TOPIC VIEW ────────────────────────────────────────────────── */
-function renderTopic() {
+function findNodeAtDepth(depth, id) {
+  // depth 0 = top-level providers
+  if (depth === 0) {
+    return state.manifest.providers.find((p) => p.id === id);
+  }
+  // Otherwise, look within the current navPath's last node's children
+  const parent = state.navPath[depth - 1];
+  if (!parent || !parent.children) return null;
+  return parent.children.find((c) => c.id === id);
+}
+
+function navigateTo(id, depth) {
+  const node = findNodeAtDepth(depth, id);
+  if (!node) return;
+
+  // Trim navPath to depth and push the new node
+  state.navPath = state.navPath.slice(0, depth);
+  state.navPath.push(node);
+
+  renderNode();
+}
+
+function navigateToDepth(depth) {
+  // Navigate back to a specific depth in the breadcrumb
+  state.navPath = state.navPath.slice(0, depth + 1);
+  renderNode();
+}
+
+/* ─── NODE VIEW (replaces topic + test list) ────────────────────── */
+function renderNode() {
+  const node = state.navPath[state.navPath.length - 1];
+  const hasChildren = node.children && node.children.length > 0;
+  const hasTests = node.tests && node.tests.length > 0;
+
+  // Build breadcrumb
+  const crumbs = [{ label: "Home", action: "renderHome()" }];
+  state.navPath.forEach((n, i) => {
+    if (i < state.navPath.length - 1) {
+      crumbs.push({ label: n.label, action: `navigateToDepth(${i})` });
+    } else {
+      crumbs.push({ label: n.label });
+    }
+  });
+  setBreadcrumb(crumbs);
+
+  // If node has only tests (leaf), show test list
+  if (hasTests && !hasChildren) {
+    renderTestList(node);
+    return;
+  }
+
+  // If node has only children, show children cards
+  // If node has both, show children cards + tests below
   showView("topic");
-  setBreadcrumb([
-    { label: "Home", action: "renderHome()" },
-    { label: state.provider.label },
-  ]);
+  let html = `<h1 class="page-title">${node.label}</h1>`;
 
-  const topics = state.provider.topics;
-  $("view-topic").innerHTML = `
-    <h1 class="page-title">${state.provider.label}</h1>
-    <p class="page-subtitle">Select a topic</p>
-    <div class="card-grid">
-      ${topics
-        .map(
-          (t) => `
-        <div class="card" onclick="selectTopic('${t.id}')">
-          <div class="card-title">${t.label}</div>
-          <div class="card-meta">${t.tests.length} test${
-            t.tests.length !== 1 ? "s" : ""
-          }</div>
-        </div>`,
-        )
-        .join("")}
-    </div>`;
+  if (hasChildren) {
+    html += `<p class="page-subtitle">Select a topic</p>`;
+    html += `<div class="card-grid">`;
+    html += node.children
+      .map(
+        (c) => `
+      <div class="card" onclick="navigateTo('${c.id}', ${
+        state.navPath.length
+      })">
+        <div class="card-title">${c.label}</div>
+        <div class="card-meta">${countTests(c)} test${
+          countTests(c) !== 1 ? "s" : ""
+        }</div>
+      </div>`,
+      )
+      .join("");
+    html += `</div>`;
+  }
+
+  if (hasTests) {
+    html += `<div class="section-heading" style="margin-top:28px">Tests</div>`;
+    html += buildTestListHTML(node.tests);
+  }
+
+  $("view-topic").innerHTML = html;
 }
 
-function selectTopic(id) {
-  state.topic = state.provider.topics.find((t) => t.id === id);
-  renderTestList();
+function buildTestListHTML(tests) {
+  return `<div class="test-list">
+    ${tests
+      .map(
+        (t) => `
+      <div class="test-row" id="row-${t.id}">
+        <span class="test-row-label">${t.label}</span>
+        <button class="btn btn-primary btn-sm" onclick="startTest('${t.id}')">Start</button>
+      </div>`,
+      )
+      .join("")}
+  </div>`;
 }
 
-/* ─── TEST LIST VIEW ────────────────────────────────────────────── */
-function renderTestList() {
+function renderTestList(node) {
   showView("tests");
-  setBreadcrumb([
-    { label: "Home", action: "renderHome()" },
-    {
-      label: state.provider.label,
-      action: `selectProvider('${state.provider.id}')`,
-    },
-    { label: state.topic.label },
-  ]);
 
-  const rows = state.topic.tests
-    .map(
-      (t) => `
-    <div class="test-row" id="row-${t.id}">
-      <span class="test-row-label">${t.label}</span>
-      <button class="btn btn-primary btn-sm" onclick="startTest('${t.id}')">Start</button>
-    </div>`,
-    )
-    .join("");
+  // Breadcrumb already set by renderNode caller
+  const crumbs = [{ label: "Home", action: "renderHome()" }];
+  state.navPath.forEach((n, i) => {
+    if (i < state.navPath.length - 1) {
+      crumbs.push({ label: n.label, action: `navigateToDepth(${i})` });
+    } else {
+      crumbs.push({ label: n.label });
+    }
+  });
+  setBreadcrumb(crumbs);
 
   $("view-tests").innerHTML = `
-    <h1 class="page-title">${state.topic.label}</h1>
+    <h1 class="page-title">${node.label}</h1>
     <p class="page-subtitle">Choose a test to begin</p>
-    <div class="test-list">${rows}</div>`;
+    ${buildTestListHTML(node.tests)}`;
 }
 
 async function startTest(id) {
-  state.testMeta = state.topic.tests.find((t) => t.id === id);
+  const currentNode = state.navPath[state.navPath.length - 1];
+  state.testMeta = currentNode.tests.find((t) => t.id === id);
   const row = $(`row-${id}`);
   const btn = row.querySelector("button");
   btn.disabled = true;
@@ -242,7 +303,6 @@ async function startTest(id) {
   const saved = loadSession();
   if (saved && saved.answers && saved.answers.some((a) => a.submitted)) {
     // Show resume prompt
-    showView("tests");
     const answeredCount = saved.answers.filter((a) => a.submitted).length;
     const total = state.exam.questions.length;
     row.innerHTML = `
@@ -291,16 +351,16 @@ function initFreshExam() {
 /* ─── EXAM VIEW ─────────────────────────────────────────────────── */
 function renderExam() {
   showView("exam");
-  setBreadcrumb([
-    { label: "Home", action: "renderHome()" },
-    {
-      label: state.provider.label,
-      action: `selectProvider('${state.provider.id}')`,
-    },
-    { label: state.topic.label, action: `selectTopic('${state.topic.id}')` },
-    { label: state.testMeta.label, action: `renderTestList()` },
-    { label: `Q${state.current + 1}` },
-  ]);
+  const crumbs = [{ label: "Home", action: "renderHome()" }];
+  state.navPath.forEach((n, i) => {
+    crumbs.push({ label: n.label, action: `navigateToDepth(${i})` });
+  });
+  crumbs.push({
+    label: state.testMeta.label,
+    action: `navigateToDepth(${state.navPath.length - 1})`,
+  });
+  crumbs.push({ label: `Q${state.current + 1}` });
+  setBreadcrumb(crumbs);
   renderQuestion(state.current);
 }
 
@@ -521,16 +581,16 @@ function goPrev() {
 function renderReport() {
   clearSession(); // Test complete — no need to resume
   showView("report");
-  setBreadcrumb([
-    { label: "Home", action: "renderHome()" },
-    {
-      label: state.provider.label,
-      action: `selectProvider('${state.provider.id}')`,
-    },
-    { label: state.topic.label, action: `selectTopic('${state.topic.id}')` },
-    { label: state.testMeta.label, action: `renderTestList()` },
-    { label: "Results" },
-  ]);
+  const crumbs = [{ label: "Home", action: "renderHome()" }];
+  state.navPath.forEach((n, i) => {
+    crumbs.push({ label: n.label, action: `navigateToDepth(${i})` });
+  });
+  crumbs.push({
+    label: state.testMeta.label,
+    action: `navigateToDepth(${state.navPath.length - 1})`,
+  });
+  crumbs.push({ label: "Results" });
+  setBreadcrumb(crumbs);
 
   const questions = state.exam.questions;
   const total = questions.length;

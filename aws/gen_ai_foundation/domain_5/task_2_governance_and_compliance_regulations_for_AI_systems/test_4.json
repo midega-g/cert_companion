@@ -1,0 +1,456 @@
+{
+  "label": "Gap Coverage — Supplemental",
+  "order": 4,
+  "topic": "Domain 5: Security, Compliance, and Governance for AI Solutions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "customer-compliance-center",
+      "scenario": null,
+      "stem": "Which resources are available in the AWS Customer Compliance Center?",
+      "options": [
+        { "key": "A", "text": "Customer compliance stories, compliance whitepapers, and an auditor learning path" },
+        { "key": "B", "text": "Pre-built machine learning models for compliance detection" },
+        { "key": "C", "text": "Automated remediation scripts for noncompliant resources" },
+        { "key": "D", "text": "Direct chat access to AWS compliance auditors" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The Customer Compliance Center provides customer compliance stories about how regulated companies solved compliance challenges, compliance whitepapers and documentation, and an auditor learning path for auditing, compliance, and legal roles.",
+        "distractors": {
+          "B": "The Compliance Center provides documentation and stories, not ML models. Compliance detection tools are separate services like AWS Config.",
+          "C": "Automated remediation is provided by AWS Config with Systems Manager, not the Compliance Center.",
+          "D": "The Compliance Center provides self-service resources. Direct auditor access is not part of its offering."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "iso-27001",
+      "scenario": null,
+      "stem": "What is ISO 27001 and how does AWS's certification help customers?",
+      "options": [
+        { "key": "A", "text": "An international security management standard; AWS's certification helps customers' organizations achieve the same certification" },
+        { "key": "B", "text": "A US federal regulation for data privacy; AWS enforces it on customer workloads automatically" },
+        { "key": "C", "text": "An AI-specific risk framework; AWS uses it to train foundation models securely" },
+        { "key": "D", "text": "A networking protocol standard; AWS implements it in VPC configurations" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "ISO 27001 is an international security management standard that specifies security management best practices and comprehensive security controls. Because AWS has achieved certification, it can help a customer's organization get the certification by inheriting infrastructure-level controls.",
+        "distractors": {
+          "B": "ISO 27001 is an international standard, not a US federal regulation. It is voluntary, not automatically enforced.",
+          "C": "ISO 27001 covers broad security management. AI-specific risk frameworks are ISO 42001 and ISO 23894.",
+          "D": "ISO 27001 is a security management standard, not a networking protocol. It covers organizational security controls, not network configurations."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "soc-reports",
+      "scenario": null,
+      "stem": "What does a SOC 2 report specifically verify about a service organization?",
+      "options": [
+        { "key": "A", "text": "Controls related to security, availability, processing integrity, confidentiality, and privacy" },
+        { "key": "B", "text": "Controls related only to financial reporting and billing accuracy" },
+        { "key": "C", "text": "Controls related exclusively to physical data center access" },
+        { "key": "D", "text": "Controls related only to network encryption and key management" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A SOC 2 report verifies controls related to security, availability, processing integrity, confidentiality, and privacy. It is used to demonstrate that a third party follows specific best practices in these areas.",
+        "distractors": {
+          "B": "Financial reporting controls are covered by SOC 1, not SOC 2. SOC 2 addresses operational security and privacy controls.",
+          "C": "SOC 2 covers much more than physical access. It spans security, availability, processing integrity, confidentiality, and privacy.",
+          "D": "Encryption and key management are part of security controls, but SOC 2 also covers availability, processing integrity, confidentiality, and privacy."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "ai-transparency",
+      "scenario": null,
+      "stem": "What is the minimum level of transparency recommended when deploying generative AI systems?",
+      "options": [
+        { "key": "A", "text": "Disclosing to users that they are interacting with generative AI and not a human" },
+        { "key": "B", "text": "Publishing the complete model architecture and training data publicly" },
+        { "key": "C", "text": "Providing each user with the model's source code" },
+        { "key": "D", "text": "Sharing the model's confidence scores with every response" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "As a minimum level of transparency, organizations should consider when to disclose to users that they are using generative AI and not engaging with a human. For many applications, deeper explainability may also be needed.",
+        "distractors": {
+          "B": "Publishing full architecture and data would expose intellectual property and is not required. The minimum is disclosure of AI interaction.",
+          "C": "Source code disclosure is not required for transparency. Users need to know they are interacting with AI, not see internal code.",
+          "D": "Confidence scores may be useful but are not the minimum transparency standard. Disclosing AI interaction is the baseline."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "interpretability",
+      "scenario": null,
+      "stem": "What tradeoff should practitioners consider in the initial stages of AI development with regulatory requirements in mind?",
+      "options": [
+        { "key": "A", "text": "The tradeoff between interpretability and model performance" },
+        { "key": "B", "text": "The tradeoff between training speed and data volume" },
+        { "key": "C", "text": "The tradeoff between model size and inference cost" },
+        { "key": "D", "text": "The tradeoff between single-Region and multi-Region deployment" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "In initial stages of AI/ML development, practitioners should consider tradeoffs between interpretability and performance with regulatory requirements in mind. More interpretable models (decision trees, rule-based systems) may sacrifice some performance but are easier to explain.",
+        "distractors": {
+          "B": "Training speed vs data volume is an operational concern, not a regulatory interpretability tradeoff.",
+          "C": "Model size vs cost is a resource optimization concern, not directly related to regulatory explainability requirements.",
+          "D": "Deployment Region decisions relate to availability and latency, not regulatory interpretability."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "customer-compliance-center",
+      "scenario": null,
+      "stem": "Which topics can be found in the compliance whitepapers and documentation available through the Customer Compliance Center? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "AWS answers to key compliance questions" },
+        { "key": "B", "text": "An overview of AWS risk and compliance" },
+        { "key": "C", "text": "Step-by-step guides for training ML models" },
+        { "key": "D", "text": "Pricing calculators for AWS services" },
+        { "key": "E", "text": "Templates for building serverless applications" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The Customer Compliance Center provides whitepapers on topics including AWS answers to key compliance questions, an overview of AWS risk and compliance, and an auditing security checklist.",
+        "distractors": {
+          "C": "ML model training guides are available in SageMaker documentation, not the Customer Compliance Center.",
+          "D": "Pricing calculators are part of AWS billing tools, not compliance resources.",
+          "E": "Serverless application templates are in AWS SAM or the Serverless Application Repository, not the Compliance Center."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "aws-artifact",
+      "scenario": null,
+      "stem": "Which details are included with each compliance report available in AWS Artifact? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "A description of the report's contents" },
+        { "key": "B", "text": "The reporting period for which the documentation is valid" },
+        { "key": "C", "text": "The names of individual AWS employees who performed the controls" },
+        { "key": "D", "text": "Customer-specific compliance scores" },
+        { "key": "E", "text": "Recommendations for which AWS services the customer should use" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Each report in AWS Artifact includes a description of its contents and the reporting period for which the documentation is valid, helping customers understand what the report covers and its current applicability.",
+        "distractors": {
+          "C": "Reports verify controls at an organizational level. Individual employee names are not disclosed.",
+          "D": "Artifact provides AWS's compliance reports, not scores specific to individual customers. Customer assessments are handled by Audit Manager.",
+          "E": "Artifact provides audit evidence, not service recommendations. Trusted Advisor handles recommendations."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "algorithmic-accountability",
+      "scenario": null,
+      "stem": "If enacted, what would the Algorithmic Accountability Act require companies to do? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Assess the impacts of AI systems they use and sell" },
+        { "key": "B", "text": "Create new transparency about when and how AI systems are used" },
+        { "key": "C", "text": "Open-source all AI model weights and training code" },
+        { "key": "D", "text": "Replace all AI systems with human decision makers within two years" },
+        { "key": "E", "text": "Transfer ownership of all AI models to the US government" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The Act would require companies to assess the impacts of AI systems they use and sell, and create new transparency about when and how such systems are used, empowering consumers to make informed choices.",
+        "distractors": {
+          "C": "The Act requires impact assessment and transparency, not open-sourcing proprietary models.",
+          "D": "The Act aims to regulate AI, not eliminate it. It seeks fair and explainable results, not replacement of AI.",
+          "E": "The Act does not involve government ownership of AI. It focuses on consumer protection through transparency and accountability."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "data-security-governance",
+      "scenario": null,
+      "stem": "In data governance, what does data security involve? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Defining who can have access to data and when they should have access" },
+        { "key": "B", "text": "Enabling role-based and temporary access guided by policy decisions from the data owner" },
+        { "key": "C", "text": "Encrypting all data with a single encryption key shared across the organization" },
+        { "key": "D", "text": "Giving all employees unrestricted access to ensure data is not locked in silos" },
+        { "key": "E", "text": "Storing all data in a public S3 bucket for maximum accessibility" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Data security means defining who can access data and when. The data steward enables role-based and temporary access guided by policy decisions established by the data owner.",
+        "distractors": {
+          "C": "A single shared key violates least privilege. Access should be role-based and temporary, not uniformly shared.",
+          "D": "Unrestricted access violates governance principles. Data governance balances control and access—too little control puts data at risk.",
+          "E": "Public access contradicts data security entirely. Access must be controlled and limited to authorized roles."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "ai-governance-strategy",
+      "scenario": null,
+      "stem": "After determining AI governance scope and documenting policies, what additional steps should an organization take? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Train employees on their responsibilities according to job roles and level of access" },
+        { "key": "B", "text": "Define mechanisms to monitor AI system performance, compliance, and bias" },
+        { "key": "C", "text": "Frequently review results and revise policies to align with business goals and AI safety" },
+        { "key": "D", "text": "Freeze all policies permanently after initial documentation to avoid confusion" },
+        { "key": "E", "text": "Delegate all governance monitoring to the root AWS account user" },
+        { "key": "F", "text": "Remove monitoring after the first year if no issues are detected" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Organizations should train employees on responsibilities per their roles, define monitoring mechanisms with pre-defined thresholds for performance/compliance/bias, and frequently review and revise policies to ensure alignment with business goals.",
+        "distractors": {
+          "D": "Policies should be frequently revised as necessary. Freezing them prevents adaptation to new regulations and changing risks.",
+          "E": "Governance responsibilities should be distributed according to roles, not concentrated in a single root user.",
+          "F": "Monitoring must be continuous. Removing it after an arbitrary period leaves the organization blind to emerging risks."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "ai-transparency",
+      "scenario": "A telecom company deploys an AI chatbot to handle billing inquiries. Customers assume they are chatting with a human agent because the interface does not indicate otherwise. A customer advocacy group raises a complaint about deceptive practices.",
+      "stem": "What minimum transparency measure should the company have implemented?",
+      "options": [
+        { "key": "A", "text": "Disclose to users that they are interacting with generative AI, not a human" },
+        { "key": "B", "text": "Provide customers with the chatbot's full training data" },
+        { "key": "C", "text": "Let customers view the model's internal weights and parameters" },
+        { "key": "D", "text": "Publish the chatbot's confidence scores alongside each response" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "As a minimum level of transparency, organizations should disclose to users when they are interacting with generative AI rather than a human. This is the baseline expectation before deeper explainability measures.",
+        "distractors": {
+          "B": "Training data disclosure is not required or practical. Users need to know they're interacting with AI, not inspect training data.",
+          "C": "Internal model parameters are proprietary and meaningless to most users. Disclosure of AI interaction is the minimum.",
+          "D": "Confidence scores may add transparency but are not the minimum. Simply telling users they're interacting with AI is the baseline."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "interpretability",
+      "scenario": "A government agency is building an AI system to determine eligibility for public benefits. Regulations require that every decision be fully explainable to applicants. The team is choosing between a deep neural network and a decision tree model.",
+      "stem": "Which factor should most influence the team's model choice given the regulatory requirement?",
+      "options": [
+        { "key": "A", "text": "The decision tree is more interpretable because you can observe model weights and understand inner workings, satisfying the explainability requirement" },
+        { "key": "B", "text": "The neural network is preferable because larger models always produce more accurate results" },
+        { "key": "C", "text": "Both models are equally explainable since all algorithms can be treated as black boxes" },
+        { "key": "D", "text": "The neural network's higher performance automatically satisfies regulatory requirements" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "More interpretable algorithms like decision trees and rule-based systems allow you to observe model weights and understand inner workings. When regulations require full explainability, the interpretability vs performance tradeoff favors interpretable models.",
+        "distractors": {
+          "B": "Accuracy alone does not satisfy regulatory requirements. The regulation demands explainability, which neural networks may not easily provide.",
+          "C": "They are not equally explainable. Decision trees are inherently interpretable while neural networks are often treated as black boxes requiring model-agnostic techniques.",
+          "D": "Performance does not override regulatory requirements. The regulation specifically demands explainability, which is independent of accuracy."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "data-governance",
+      "scenario": "A data governance team is establishing balance between data access and data protection. Some business units complain that security controls make data too hard to access, while the security team worries about insufficient controls.",
+      "stem": "What is the core challenge of data governance regarding control and access?",
+      "options": [
+        { "key": "A", "text": "Balancing control and access—too much control locks data in silos; not enough control puts data and business at risk" },
+        { "key": "B", "text": "Maximizing control by restricting all access unless explicitly approved by the CEO" },
+        { "key": "C", "text": "Maximizing access by removing all controls to enable innovation" },
+        { "key": "D", "text": "Delegating all access decisions to AWS under the shared responsibility model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Data governance is about making data available to the right people while keeping it secure. Too much control locks data in silos making it difficult for insights and innovation. Not enough control puts data and business at risk.",
+        "distractors": {
+          "B": "Excessive control prevents data from being used for business value. Governance seeks balance, not maximum restriction.",
+          "C": "Removing all controls exposes data to security risks. Governance requires appropriate controls, not zero controls.",
+          "D": "Data access decisions are the customer's responsibility. AWS secures infrastructure, not customer data governance policy."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "glue-databrew",
+      "scenario": "A data engineering team needs to profile datasets stored in both Amazon S3 and Amazon Redshift to understand data quality before using it for model training.",
+      "stem": "Can AWS Glue DataBrew analyze datasets from both of these sources?",
+      "options": [
+        { "key": "A", "text": "Yes, DataBrew can analyze datasets stored in Amazon S3, relational databases, and data warehouses" },
+        { "key": "B", "text": "No, DataBrew only supports datasets stored in Amazon S3" },
+        { "key": "C", "text": "No, DataBrew only supports data in AWS Glue Data Catalog tables" },
+        { "key": "D", "text": "Yes, but only if the data is first copied into DynamoDB" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS Glue DataBrew can analyze many types of datasets including data stored in Amazon S3 and in relational databases and data warehouses.",
+        "distractors": {
+          "B": "DataBrew supports more than just S3. It can analyze data in relational databases and data warehouses as well.",
+          "C": "While DataBrew integrates with the Glue Data Catalog, it can directly access data in S3, relational databases, and warehouses.",
+          "D": "DynamoDB is not required. DataBrew connects directly to S3, relational databases, and data warehouses."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "data-integration",
+      "scenario": "A healthcare analytics team merges patient data from three different hospital systems. Each system uses different identifiers and schemas. They need to ensure data from all sources links together coherently to build a complete patient profile for ML modeling.",
+      "stem": "Which data governance activity addresses the challenge of combining data from multiple sources into a coherent picture?",
+      "options": [
+        { "key": "A", "text": "Data integration" },
+        { "key": "B", "text": "Data profiling" },
+        { "key": "C", "text": "Data encryption" },
+        { "key": "D", "text": "Data archival" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Data integration is about collecting and merging data from a variety of sources, ensuring data from different sources links together coherently so they can be combined to gain a more complete picture.",
+        "distractors": {
+          "B": "Data profiling examines data characteristics and quality but does not address the challenge of linking disparate sources together.",
+          "C": "Data encryption protects confidentiality but does not help with merging or linking data from multiple sources.",
+          "D": "Data archival is about long-term retention and storage optimization, not about combining data from different systems."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "iso-27001",
+      "scenario": "A company running AI workloads on AWS wants to achieve ISO 27001 certification. They want to understand how AWS's existing certification supports their effort.",
+      "stem": "Which statements about ISO 27001 and AWS are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "ISO 27001 specifies security management best practices and comprehensive security controls" },
+        { "key": "B", "text": "AWS's ISO 27001 certification helps customer organizations achieve the same certification by inheriting infrastructure controls" },
+        { "key": "C", "text": "AWS's ISO 27001 certification automatically grants all customers the same certification" },
+        { "key": "D", "text": "ISO 27001 applies only to AI workloads and not general IT systems" },
+        { "key": "E", "text": "ISO 27001 is an AI-specific standard published in 2023" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "ISO 27001 is an international standard specifying security management best practices and comprehensive controls. AWS's certification helps customers achieve their own certification because they inherit verified infrastructure-level controls.",
+        "distractors": {
+          "C": "AWS's certification does not automatically grant it to customers. Customers must still verify their own controls and undergo their own certification process.",
+          "D": "ISO 27001 is a general security management standard applicable to all IT systems, not limited to AI workloads.",
+          "E": "ISO 27001 predates AI standards. ISO 42001 and ISO 23894 (published 2023) are the AI-specific standards."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "data-governance",
+      "scenario": "An organization is implementing data governance and needs to define the relationship between IT and the business-side governance roles (data owner and data steward).",
+      "stem": "What is the role of IT in data governance? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Navigate systems that produce and consume data" },
+        { "key": "B", "text": "Provide data stewards with the right tools and capabilities" },
+        { "key": "C", "text": "Make all data policy decisions including who has access to customer data" },
+        { "key": "D", "text": "Serve as the sole data steward for all business initiatives" },
+        { "key": "E", "text": "Determine regulatory compliance policies for sensitive data domains" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Roles in IT help navigate systems that produce and consume data and provide data stewards with the right tools and capabilities. For example, IT might be responsible for managing and deploying data governance tools in AWS.",
+        "distractors": {
+          "C": "Data policy decisions (like who accesses customer data) are made by the data owner, an executive-level role, not IT.",
+          "D": "Data stewardship is a business responsibility. Stewards have detailed business knowledge of data needed for initiatives.",
+          "E": "Regulatory and compliance policies are determined by data owners working with security and legal teams, not IT alone."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "scoping-matrix",
+      "scenario": "A startup is comparing AI implementation approaches. They want to understand how scopes 1 and 2 in the Generative AI Security Scoping Matrix differ from scopes 3, 4, and 5 in terms of responsibility.",
+      "stem": "Why do scopes 1 and 2 carry the least governance and compliance responsibility? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "You are consuming a third-party consumer or enterprise application rather than building your own" },
+        { "key": "B", "text": "Your data is not used in the training, fine-tuning, or output of the model" },
+        { "key": "C", "text": "AWS automatically handles all governance for any workload at these scopes" },
+        { "key": "D", "text": "Scopes 1 and 2 are exempt from all compliance regulations" },
+        { "key": "E", "text": "These scopes do not use any form of AI or machine learning" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Scopes 1 and 2 carry the least responsibility because you are consuming a third-party consumer or enterprise application. Your data is not used in training, fine-tuning, or output, so you don't need to classify data for risk or implement extensive threat modeling.",
+        "distractors": {
+          "C": "AWS does not automatically handle all governance. Even at lower scopes, some customer responsibilities remain.",
+          "D": "No scope is exempt from compliance. Lower scopes simply have fewer responsibilities because you're consuming rather than building.",
+          "E": "Scopes 1 and 2 do use AI—they consume AI applications built by third parties."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "data-lifecycle",
+      "scenario": "A compliance officer needs to ensure that training data for their AI models is stored cost-effectively while meeting various retention requirements. Some data must be retained for 7 years, while other data can be deleted after 90 days.",
+      "stem": "Which concept in data governance addresses being intentional about storing data for access and optimized cost over time?",
+      "options": [
+        { "key": "A", "text": "Data lifecycle management" },
+        { "key": "B", "text": "Data profiling" },
+        { "key": "C", "text": "Data integration" },
+        { "key": "D", "text": "Data cataloging" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Data lifecycle management means being intentional about storing data for straightforward access and optimized cost. It involves transitioning data to appropriate storage tiers and deleting it when retention requirements are met.",
+        "distractors": {
+          "B": "Data profiling examines data characteristics and quality. It does not address long-term storage strategies or cost optimization.",
+          "C": "Data integration merges data from multiple sources. It does not deal with storage cost or retention management.",
+          "D": "Data cataloging makes data discoverable. It does not address storage cost optimization or retention timelines."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "data-governance",
+      "scenario": "A chief data officer is defining data governance policy for their organization's AI initiatives. They want to understand what data governance fundamentally combines to manage enterprise data effectively.",
+      "stem": "What is data governance a combination of?",
+      "options": [
+        { "key": "A", "text": "People, process, and technology used to manage the availability, usability, integrity, and security of enterprise data" },
+        { "key": "B", "text": "Hardware, software, and networking used to encrypt and store all enterprise data" },
+        { "key": "C", "text": "Auditors, regulators, and legal counsel used to enforce compliance penalties" },
+        { "key": "D", "text": "Models, endpoints, and pipelines used to automate machine learning workflows" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Data governance is the combination of people, process, and technology that is used to manage the availability, usability, integrity, and security of enterprise system data. It ensures data is consistent and trustworthy without being misused.",
+        "distractors": {
+          "B": "This describes infrastructure, not governance. Governance is about managing data through people, processes, and technology.",
+          "C": "Auditors and regulators are external parties. Governance is an internal organizational capability combining people, process, and technology.",
+          "D": "Models, endpoints, and pipelines are ML workflow components. Governance is broader, covering all enterprise data management."
+        }
+      }
+    }
+  ]
+}

@@ -9,8 +9,8 @@ Structure supported (any depth):
   <provider>/<topic>/<subtopic>/<...>/test_N.json
 
 The first directory level is always the provider (e.g., snowflake, aws).
-Any leaf directory containing test_N.json files becomes a "topic" in the manifest.
-The topic label uses only the leaf folder name (not the full path).
+Intermediate directories become navigable nodes in the UI.
+Leaf directories (containing test_N.json files) become the final topic.
 
 Each test_N.json may contain optional top-level fields:
   "label": string         — display name shown in the UI (falls back to "Test N")
@@ -28,30 +28,33 @@ SKIP_DIRS = {".git", ".github", "node_modules", ".vscode", ".ruff_cache", "sourc
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TEST_PATTERN = re.compile(r"test_(\d+)\.json")
 
-
 # Words that should remain fully uppercased
-ACRONYMS = {
+UPPERCASE_WORDS = {
     "ai",
     "aws",
     "gcp",
     "iam",
-    "sql",
-    "api",
     "vpc",
-    "scd",
+    "api",
+    "sql",
+    "ml",
     "dr",
     "ui",
-    "csv",
-    "json",
+    "ci",
+    "cd",
 }
 
 
 def to_label(name: str) -> str:
-    """Convert a folder id to a display label, preserving known acronyms."""
+    """Convert a folder id to a display label with smart casing."""
     words = name.replace("-", " ").replace("_", " ").split()
-    return " ".join(
-        w.upper() if w.lower() in ACRONYMS else w.capitalize() for w in words
-    )
+    result = []
+    for word in words:
+        if word.lower() in UPPERCASE_WORDS:
+            result.append(word.upper())
+        else:
+            result.append(word.capitalize())
+    return " ".join(result)
 
 
 def test_sort_key(filename: str) -> int:
@@ -73,36 +76,87 @@ def read_test_metadata(filepath: str) -> dict:
         return {}
 
 
-def find_test_dirs(
-    base_path: str, rel_parts: list[str] = None
-) -> list[tuple[str, list[str]]]:
-    """Recursively find all directories containing test_N.json files.
+def build_node(
+    dir_path: str, node_id: str, node_label: str, rel_root: str
+) -> dict | None:
+    """Recursively build a tree node for a directory.
 
-    Returns list of (absolute_path, relative_path_parts) tuples.
+    Returns a node dict or None if the directory has no test content.
+    A node can have:
+      - "tests" if it contains test_N.json files (leaf node)
+      - "children" if it has subdirectories with test content (branch node)
+      - both if it has tests AND subdirectories with tests
     """
-    if rel_parts is None:
-        rel_parts = []
-
-    results = []
-
     try:
-        entries = sorted(os.scandir(base_path), key=lambda e: e.name)
+        entries = sorted(os.scandir(dir_path), key=lambda e: e.name)
     except PermissionError:
-        return results
+        return None
 
-    # Check if this directory has test files
-    test_files = [
-        e.name for e in entries if e.is_file() and TEST_PATTERN.fullmatch(e.name)
-    ]
+    # Check for test files in this directory
+    test_files = sorted(
+        [e.name for e in entries if e.is_file() and TEST_PATTERN.fullmatch(e.name)],
+        key=test_sort_key,
+    )
+
+    # Check for child directories
+    child_dirs = [e for e in entries if e.is_dir() and e.name not in SKIP_DIRS]
+
+    tests = []
+    children = []
+
+    # Build tests list if this directory has test files
     if test_files:
-        results.append((base_path, list(rel_parts)))
+        for f in test_files:
+            n = TEST_PATTERN.fullmatch(f).group(1)
+            filepath = os.path.join(dir_path, f)
+            meta = read_test_metadata(filepath)
 
-    # Recurse into subdirectories
-    for entry in entries:
-        if entry.is_dir() and entry.name not in SKIP_DIRS:
-            results.extend(find_test_dirs(entry.path, rel_parts + [entry.name]))
+            rel_path = os.path.relpath(filepath, rel_root).replace(os.sep, "/")
+            fallback_label = f"Test {n}"
+            label = meta.get("label") or fallback_label
+            order_val = meta.get("order")
+            order = int(order_val) if order_val is not None else int(n)
 
-    return results
+            entry = {
+                "id": f.replace(".json", ""),
+                "label": label,
+                "path": rel_path,
+                "_order": order,
+            }
+            if meta.get("questionType"):
+                entry["questionType"] = meta["questionType"]
+            tests.append(entry)
+
+        tests.sort(key=lambda t: t["_order"])
+        for t in tests:
+            del t["_order"]
+
+    # Recursively build children
+    for child_entry in child_dirs:
+        child_node = build_node(
+            child_entry.path,
+            child_entry.name,
+            to_label(child_entry.name),
+            rel_root,
+        )
+        if child_node:
+            children.append(child_node)
+
+    # If nothing found, return None
+    if not tests and not children:
+        return None
+
+    node = {
+        "id": node_id,
+        "label": node_label,
+    }
+
+    if children:
+        node["children"] = children
+    if tests:
+        node["tests"] = tests
+
+    return node
 
 
 def build_manifest(root: str) -> dict:
@@ -116,71 +170,11 @@ def build_manifest(root: str) -> dict:
 
     for provider_id in top_level:
         provider_path = os.path.join(root, provider_id)
-        topics = []
-
-        # Find all directories with test files under this provider
-        test_dirs = find_test_dirs(provider_path)
-
-        for dir_path, rel_parts in test_dirs:
-            # Build topic id from relative path parts
-            topic_id = "/".join(rel_parts) if rel_parts else provider_id
-            # Topic label uses only the leaf folder name (last part)
-            leaf_name = rel_parts[-1] if rel_parts else provider_id
-            topic_label = to_label(leaf_name)
-
-            # Collect test files
-            test_files = sorted(
-                [f for f in os.listdir(dir_path) if TEST_PATTERN.fullmatch(f)],
-                key=test_sort_key,
-            )
-
-            tests = []
-            for f in test_files:
-                n = TEST_PATTERN.fullmatch(f).group(1)
-                filepath = os.path.join(dir_path, f)
-                meta = read_test_metadata(filepath)
-
-                # Build the path relative to repo root
-                rel_path_from_root = os.path.relpath(filepath, root).replace(
-                    os.sep, "/"
-                )
-
-                fallback_label = f"Test {n}"
-                label = meta.get("label") or fallback_label
-                order_val = meta.get("order")
-                order = int(order_val) if order_val is not None else int(n)
-
-                entry = {
-                    "id": f.replace(".json", ""),
-                    "label": label,
-                    "path": rel_path_from_root,
-                    "_order": order,
-                }
-                if meta.get("questionType"):
-                    entry["questionType"] = meta["questionType"]
-                tests.append(entry)
-
-            # Sort by explicit order, then strip internal field
-            tests.sort(key=lambda t: t["_order"])
-            for t in tests:
-                del t["_order"]
-
-            topics.append(
-                {
-                    "id": topic_id,
-                    "label": topic_label,
-                    "tests": tests,
-                }
-            )
-
-        if topics:
-            providers.append(
-                {
-                    "id": provider_id,
-                    "label": to_label(provider_id),
-                    "topics": topics,
-                }
-            )
+        provider_node = build_node(
+            provider_path, provider_id, to_label(provider_id), root
+        )
+        if provider_node:
+            providers.append(provider_node)
 
     return {"providers": providers}
 

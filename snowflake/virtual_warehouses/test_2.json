@@ -1,0 +1,459 @@
+{
+  "label": "Virtual Warehouse Considerations — Part B",
+  "order": 2,
+  "topic": "Virtual Warehouse Considerations",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "When evaluating query composition, which factor has a greater impact on warehouse processing than the number of rows in a table?",
+      "options": [
+        { "key": "A", "text": "The number of distinct values in the primary key column" },
+        { "key": "B", "text": "The overall size of the tables being queried" },
+        { "key": "C", "text": "The number of concurrent users accessing the table" },
+        { "key": "D", "text": "The compression ratio applied to the table's micro-partitions" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The overall size of the tables being queried has more impact on warehouse processing than the number of rows. A large table with fewer rows can demand more compute than a small table with many rows.",
+        "distractors": {
+          "A": "The number of distinct primary key values is not identified as a factor affecting query processing impact relative to row count; table size is the stated differentiator.",
+          "C": "Concurrent user count affects queuing and concurrency, not the per-query processing impact comparison between table size and row count.",
+          "D": "Micro-partition compression ratio is not cited as the factor that outweighs row count in query processing impact; overall table size is the documented factor."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What is SYSTEM$STREAMLIT_NOTEBOOK_WH and what is its primary purpose?",
+      "options": [
+        { "key": "A", "text": "A single-cluster X-Small warehouse provisioned for running Snowflake Cortex AI queries" },
+        { "key": "B", "text": "A multi-cluster X-Small warehouse specifically designed to run Notebook Python code" },
+        { "key": "C", "text": "A dedicated Large warehouse provisioned for running Streamlit applications in production" },
+        { "key": "D", "text": "A system-managed warehouse that runs all scheduled task workloads by default" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "SYSTEM$STREAMLIT_NOTEBOOK_WH is a multi-cluster X-Small warehouse specifically designed to run Notebook Python code. It helps reduce cluster fragmentation, optimize costs, and improve bin-packing efficiency.",
+        "distractors": {
+          "A": "The warehouse is multi-cluster, not single-cluster, and its purpose is Notebook Python execution, not Cortex AI queries.",
+          "C": "The warehouse is X-Small, not Large, and is designed for Notebook code execution, not general-purpose Streamlit production workloads.",
+          "D": "SYSTEM$STREAMLIT_NOTEBOOK_WH is scoped to Notebook Python code; it is not the default handler for scheduled task workloads."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "In a multi-cluster warehouse configured in Auto-scale mode, how are clusters managed?",
+      "options": [
+        { "key": "A", "text": "The administrator must manually start and stop each cluster based on observed query queuing." },
+        { "key": "B", "text": "All clusters in the warehouse run continuously regardless of query volume." },
+        { "key": "C", "text": "Snowflake automatically starts and stops clusters as needed." },
+        { "key": "D", "text": "The number of running clusters is fixed at the maximum value at all times." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Auto-scale mode means Snowflake automatically starts and stops clusters as needed based on query demand, without requiring manual intervention.",
+        "distractors": {
+          "A": "Manual cluster management is the behavior of a disabled or Maximized-mode warehouse, not Auto-scale mode.",
+          "B": "Running all clusters continuously regardless of demand describes Maximized mode, not Auto-scale mode.",
+          "D": "Fixing clusters at the maximum value is the characteristic of Maximized mode; Auto-scale dynamically adjusts within the configured min/max range."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "When a user runs SHOW TABLES in Snowflake, what is true about warehouse usage and billing?",
+      "options": [
+        { "key": "A", "text": "SHOW TABLES requires an active warehouse and bills credits at the X-Small rate." },
+        { "key": "B", "text": "SHOW TABLES requires an active warehouse but does not bill credits." },
+        { "key": "C", "text": "SHOW TABLES does not require a warehouse and no charges apply." },
+        { "key": "D", "text": "SHOW TABLES requires a running warehouse only if the result set exceeds 1,000 rows." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "SHOW TABLES is a client-generated statement that retrieves metadata and does not require a warehouse to execute. Because no warehouse is needed, no credits are charged.",
+        "distractors": {
+          "A": "SHOW TABLES does not require a warehouse at all; it retrieves metadata without compute resources, so no credits apply.",
+          "B": "While SHOW TABLES generates no credit charges, this is because it requires no warehouse, not because it uses one for free.",
+          "D": "There is no row-count threshold that triggers warehouse usage for SHOW TABLES; it never requires a warehouse regardless of result size."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What billing behavior occurs when a warehouse is resized from a 5X-Large to a 4X-Large?",
+      "options": [
+        { "key": "A", "text": "The customer is billed only for the new 4X-Large warehouse from the moment of resize." },
+        { "key": "B", "text": "The customer is billed for both the old and new warehouse during a brief period while the old warehouse is quiesced." },
+        { "key": "C", "text": "Billing is paused until the resize operation completes and then resumes at the new rate." },
+        { "key": "D", "text": "The customer is billed at the average credit rate of the old and new sizes during the transition." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Resizing from a 5XL or 6XL warehouse down to a 4XL or smaller results in a brief period during which the customer is charged for both the new warehouse and the old warehouse while the old warehouse is being quiesced.",
+        "distractors": {
+          "A": "Billing does not immediately switch to the new size only; there is a brief overlap period where both sizes are charged.",
+          "C": "Billing is not paused during a resize; charges continue to accrue on the active resources throughout the transition.",
+          "D": "There is no average-rate billing mechanism; the documented behavior is concurrent charges for both the old and new warehouse during the quiesce window."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO factors related to query composition are identified as impacting warehouse processing? Select TWO.",
+      "options": [
+        { "key": "A", "text": "Query filtering using predicates" },
+        { "key": "B", "text": "The number of distinct users who have previously run the same query" },
+        { "key": "C", "text": "The number of joins and tables referenced in the query" },
+        { "key": "D", "text": "The file format of the underlying data files in cloud storage" },
+        { "key": "E", "text": "The number of Snowflake roles granted to the executing user" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Query filtering using predicates and the number of joins and tables in a query are both documented factors that impact warehouse processing. Predicates affect how much data must be scanned, and more joins increase computational complexity.",
+        "distractors": {
+          "B": "The number of distinct users who have previously run a query has no documented impact on processing; query result caching is a separate mechanism.",
+          "D": "The file format of underlying cloud storage files is not listed among the query composition factors that impact warehouse processing.",
+          "E": "The number of roles granted to a user is an access control concern, not a query composition factor that affects warehouse processing."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO statements correctly describe SYSTEM$STREAMLIT_NOTEBOOK_WH? Select TWO.",
+      "options": [
+        { "key": "A", "text": "It is provisioned automatically for every Snowflake account." },
+        { "key": "B", "text": "It is a single-cluster warehouse sized at Small to handle concurrent notebooks." },
+        { "key": "C", "text": "It helps reduce cluster fragmentation and improve bin-packing efficiency." },
+        { "key": "D", "text": "It must be manually created by an account administrator before notebooks can run." },
+        { "key": "E", "text": "It is designed exclusively for running SQL queries in Snowsight dashboards." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Each account is provisioned with SYSTEM$STREAMLIT_NOTEBOOK_WH automatically — it is not user-created. Its design goals include reducing cluster fragmentation, optimizing costs, and improving bin-packing efficiency for Notebook Python workloads.",
+        "distractors": {
+          "B": "The warehouse is a multi-cluster X-Small, not a single-cluster Small; the multi-cluster design supports efficient concurrent notebook execution.",
+          "D": "The warehouse is automatically provisioned per account; administrators do not need to create it manually.",
+          "E": "SYSTEM$STREAMLIT_NOTEBOOK_WH is designed for Notebook Python code, not for Snowsight SQL dashboard queries."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which THREE statements reflect the recommended approach for configuring auto-suspend? Select THREE.",
+      "options": [
+        { "key": "A", "text": "Set auto-suspend to a low value such as 5 or 10 minutes or less, because Snowflake uses per-second billing." },
+        { "key": "B", "text": "Set the auto-suspend value to match or exceed the typical gap length between incoming queries." },
+        { "key": "C", "text": "Disable auto-suspend for all warehouses to maximize cache availability." },
+        { "key": "D", "text": "Always set auto-suspend to the same value as the warehouse's auto-resume delay to keep the two settings synchronized." },
+        { "key": "E", "text": "Avoid setting auto-suspend shorter than typical query gaps to prevent repeated suspend and resume cycles." },
+        { "key": "F", "text": "Always set auto-suspend to exactly 1 minute to minimize idle credit consumption across all workloads." }
+      ],
+      "correct": ["A", "B", "E"],
+      "explanation": {
+        "correct": "The recommended auto-suspend value is low (5 or 10 minutes or less) given per-second billing. The value should match or exceed the gaps between queries to prevent the warehouse from repeatedly suspending and resuming, since each resume incurs a 60-second minimum billing charge.",
+        "distractors": {
+          "C": "Disabling auto-suspend for all warehouses is explicitly warned against; the cost can be significant, especially for larger warehouses running without queries.",
+          "D": "There is no documented requirement or recommendation to synchronize the auto-suspend value with auto-resume delay; auto-resume responds to query submission events, not a timer, so the two settings serve independent purposes.",
+          "F": "A blanket 1-minute setting is specifically used as an example of what not to do when query gaps are 2 or 3 minutes, as it would cause a continual suspend/resume cycle and accumulate minimum billing charges."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO statements correctly describe when to enable or disable auto-resume for a warehouse? Select TWO.",
+      "options": [
+        { "key": "A", "text": "Enable auto-resume when cost and access control are not a primary concern, to ensure the warehouse starts whenever needed." },
+        { "key": "B", "text": "Enable auto-resume to prevent the 60-second minimum billing charge on the first warehouse start." },
+        { "key": "C", "text": "Disable auto-resume when you want to control costs or restrict which users can trigger warehouse usage." },
+        { "key": "D", "text": "Disable auto-resume to eliminate any provisioning delay when users submit queries." },
+        { "key": "E", "text": "Auto-resume should always be enabled because disabling it causes the warehouse to permanently suspend." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Auto-resume should be enabled when cost and access are not a concern, ensuring the warehouse starts automatically for any submitted query. It should be disabled when you want to control costs or user access, requiring manual resumption of the warehouse.",
+        "distractors": {
+          "B": "The 60-second minimum billing charge applies on any provisioning event, including an auto-resume start; enabling auto-resume does not eliminate this charge.",
+          "D": "Disabling auto-resume means the warehouse will not start automatically, which increases delay for users rather than eliminating it.",
+          "E": "Disabling auto-resume does not permanently suspend a warehouse; it simply means the warehouse will not start automatically on new query submissions and must be resumed manually."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO statements correctly describe warehouse size selection guidance for different environments? Select TWO.",
+      "options": [
+        { "key": "A", "text": "For queries in large-scale production environments, larger warehouse sizes such as Large, X-Large, or 2X-Large may be more cost effective." },
+        { "key": "B", "text": "For small-scale testing environments, warehouse sizes of X-Small, Small, or Medium are typically sufficient." },
+        { "key": "C", "text": "Starting with a larger warehouse is inadvisable because per-second billing prevents you from reducing cost once the warehouse is running." },
+        { "key": "D", "text": "Warehouse size cannot be decreased after a warehouse has been created; you must recreate it at the smaller size." },
+        { "key": "E", "text": "The largest available warehouse size should always be selected for production to guarantee the best query performance." }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Larger warehouse sizes are often more cost effective for large-scale production query workloads, while smaller sizes such as X-Small, Small, and Medium are generally sufficient for small-scale testing environments.",
+        "distractors": {
+          "C": "Per-second billing and auto-suspend actually provide the flexibility to start with a larger size and suspend when not in use; you can also decrease warehouse size at any time.",
+          "D": "Warehouse size can be decreased at any time; recreating the warehouse is not required.",
+          "E": "Larger is not necessarily faster for all queries; matching warehouse size to the expected query complexity is the recommended approach, not defaulting to the largest available size."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A team has a warehouse with auto-suspend set to 2 minutes. Queries arrive every 3 to 4 minutes throughout the workday. The team notices that their actual credit costs are much higher than expected based on the total query execution time alone.",
+      "stem": "What is the most likely cause of the excess credit consumption?",
+      "options": [
+        { "key": "A", "text": "The warehouse is running at a larger size than configured due to a resizing event." },
+        { "key": "B", "text": "The warehouse is repeatedly suspending and resuming, incurring a 60-second minimum charge each time it resumes." },
+        { "key": "C", "text": "The warehouse cache is not being utilized, causing queries to read from storage and consume extra credits." },
+        { "key": "D", "text": "The warehouse is running in Maximized mode, keeping all clusters active between queries." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When the auto-suspend threshold (2 minutes) is shorter than the gaps between queries (3 to 4 minutes), the warehouse suspends and resumes repeatedly. Each resumption incurs the 60-second minimum billing charge, which accumulates well beyond the cost of query execution time alone.",
+        "distractors": {
+          "A": "There is no indication of an unintended resize; the described pattern of excess cost aligns precisely with the suspend/resume cycle from a mismatched auto-suspend threshold.",
+          "C": "Cache misses increase query latency and storage reads but are not billed as extra credits; credit consumption is based on warehouse runtime, not I/O operations.",
+          "D": "Maximized mode is a multi-cluster warehouse setting; the scenario describes a single-warehouse cost pattern caused by the auto-suspend cycle, not cluster scaling behavior."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A developer opens Snowsight and navigates to the Task Run History page to investigate a failed task. The page displays a warehouse selector with a green dot next to the selected warehouse.",
+      "stem": "What does the green dot on the warehouse selector indicate?",
+      "options": [
+        { "key": "A", "text": "The warehouse has sufficient credits remaining to complete the current page load." },
+        { "key": "B", "text": "The warehouse is active." },
+        { "key": "C", "text": "The warehouse is configured for auto-resume and will start automatically if needed." },
+        { "key": "D", "text": "The warehouse is operating below 50% utilization." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "A green dot on the Snowsight warehouse selector indicates that the warehouse is currently active (running).",
+        "distractors": {
+          "A": "The green dot is a status indicator for warehouse activity, not a credit balance or sufficiency indicator.",
+          "C": "Auto-resume configuration is a separate warehouse property and is not what the green dot represents; the dot signals current active status.",
+          "D": "The green dot does not indicate a utilization percentage; it only signals that the warehouse is in an active state."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An operations team resizes a running warehouse from 6X-Large down to 4X-Large during a peak period. Shortly after initiating the resize, the team notices they are being billed for both a 6X-Large and a 4X-Large warehouse simultaneously.",
+      "stem": "Why is the team being billed for both warehouse sizes at the same time?",
+      "options": [
+        { "key": "A", "text": "Resizing always creates a second parallel warehouse that runs until the first is fully terminated." },
+        { "key": "B", "text": "The billing system has a known delay and will consolidate charges at the end of the billing period." },
+        { "key": "C", "text": "Resizing from a 5XL or 6XL to a 4XL or smaller results in a brief period where both the new and old warehouse are charged while the old warehouse is quiesced." },
+        { "key": "D", "text": "The additional billing is a penalty applied whenever a warehouse is downsized while queries are actively running." }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Resizing between a 5XL or 6XL warehouse and a 4XL or smaller is a special case that results in a brief overlap period during which the customer is charged for both the new warehouse and the old warehouse while the old warehouse is being quiesced.",
+        "distractors": {
+          "A": "No parallel warehouse is created; the dual billing is specific to the quiesce window during a downsize from 5XL or 6XL, not a general behavior for all resizes.",
+          "B": "The dual billing is not a system delay or reconciliation artifact; it is a documented behavior specific to this size-range transition.",
+          "D": "There is no downsize penalty mechanism; the dual billing is a function of the quiesce process specific to downsizing from 5XL or 6XL, not a fee applied for active-query downsizing."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A data analyst submits a query but receives no response and observes that the warehouse remains in a suspended state without starting. No error message references permissions or syntax.",
+      "stem": "What is the most likely reason the warehouse did not resume?",
+      "options": [
+        { "key": "A", "text": "The warehouse cache was empty, preventing it from processing the query." },
+        { "key": "B", "text": "Auto-resume is disabled, so the warehouse requires manual resumption before it can process queries." },
+        { "key": "C", "text": "The warehouse is sized too small to process the analyst's query." },
+        { "key": "D", "text": "Auto-suspend and auto-resume cannot both be configured on the same warehouse." }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When auto-resume is disabled, the warehouse will not start automatically when a new query is submitted. The warehouse must be manually resumed before it can process any queries.",
+        "distractors": {
+          "A": "An empty cache causes slower performance after resumption, not a failure to start; the warehouse would still resume and process the query.",
+          "C": "Warehouse size affects performance and queuing, not whether the warehouse starts at all; a too-small warehouse would still attempt to process the query.",
+          "D": "Auto-suspend and auto-resume are independent settings that can be configured independently in any combination on the same warehouse."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A Snowflake administrator manages a shared warehouse that processes a mix of simple single-table lookups, complex multi-table joins, and large aggregation queries. The administrator finds it difficult to determine the right warehouse size and notices that performance analysis is inconsistent.",
+      "stem": "What does running queries of widely varying complexity on the same warehouse make more difficult?",
+      "options": [
+        { "key": "A", "text": "Configuring the warehouse's auto-suspend threshold" },
+        { "key": "B", "text": "Analyzing warehouse load and selecting the best warehouse size to match the workload" },
+        { "key": "C", "text": "Enabling multi-cluster mode for the warehouse" },
+        { "key": "D", "text": "Viewing query history for the warehouse in Snowsight" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Executing queries of widely varying complexity on the same warehouse makes it more difficult to analyze warehouse load, which in turn makes it harder to select the best warehouse size to match the complexity and composition of the workload.",
+        "distractors": {
+          "A": "Auto-suspend threshold configuration is independent of query complexity variance; it is based on inactivity periods, not query mix.",
+          "C": "Enabling multi-cluster mode is a warehouse edition and configuration setting, not something that is complicated by mixed query complexity.",
+          "D": "Snowsight query history displays all queries regardless of their complexity; mixed complexity does not affect the ability to view that history."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A Snowflake administrator wants to identify which Snowsight UI queries have been running on the currently selected warehouse and when they ran.",
+      "stem": "Which TWO steps are part of the correct process for monitoring these queries in Snowsight? Select TWO.",
+      "options": [
+        { "key": "A", "text": "Navigate to Monitoring and then select Query History." },
+        { "key": "B", "text": "Navigate to Data and then select Query Profiler." },
+        { "key": "C", "text": "Select the Client-generated statements checkbox in the Filters drop-down." },
+        { "key": "D", "text": "Select the System queries checkbox in the Filters drop-down." },
+        { "key": "E", "text": "Navigate to Admin and then select Warehouse Usage to view UI query details." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "To monitor Snowsight UI queries, navigate to Monitoring and select Query History, then open the Filters drop-down and select the Client-generated statements checkbox to view internal queries run by a client, driver, or library including the web interface.",
+        "distractors": {
+          "B": "Query Profiler is not the documented path for this task; Query History under Monitoring is the correct starting point.",
+          "D": "The documented checkbox is Client-generated statements, not System queries; selecting System queries would filter for a different category of internal operations.",
+          "E": "Admin > Warehouse Usage shows credit and resource consumption data, not a filterable view of individual UI-generated query executions."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A performance engineer is trying to understand why increasing warehouse size from Small to X-Large improved performance dramatically for some queries but had no measurable effect on others.",
+      "stem": "Which TWO statements best explain this behavior? Select TWO.",
+      "options": [
+        { "key": "A", "text": "Larger, more complex queries tend to scale linearly with warehouse size, benefiting significantly from additional resources." },
+        { "key": "B", "text": "Small or simple queries do not necessarily benefit from additional compute resources regardless of how many concurrent queries are running." },
+        { "key": "C", "text": "Queries that run under 10 seconds always benefit from a larger warehouse because of reduced parse time." },
+        { "key": "D", "text": "Warehouse size improvements only apply to queries that involve external tables; internal table queries are unaffected." },
+        { "key": "E", "text": "Performance gains from resizing apply equally to all query types, regardless of complexity." }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Queries scale linearly with warehouse size particularly for larger, more complex queries, which is why they benefit substantially from a larger warehouse. Small or simple queries do not necessarily benefit from additional compute resources, regardless of concurrency, which explains the lack of improvement for that subset.",
+        "distractors": {
+          "C": "There is no documented rule that sub-10-second queries always benefit from larger warehouses; the determining factor is query size and complexity, not execution duration.",
+          "D": "Warehouse size improvements apply to queries against any table type; there is no documented distinction between external and internal tables in this context.",
+          "E": "Performance gains are not uniform across all query types; the scaling benefit is specifically stronger for larger, more complex queries."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A Snowflake administrator is reviewing Snowsight and notices that the green dot next to the warehouse selector has disappeared, and UI queries are loading slowly. When the administrator investigates, they find the warehouse is suspended.",
+      "stem": "Which TWO statements correctly describe the relationship between the warehouse state and Snowsight behavior in this scenario? Select TWO.",
+      "options": [
+        { "key": "A", "text": "Certain Snowsight pages require a running warehouse to display more than just metadata." },
+        { "key": "B", "text": "All Snowsight pages function identically whether the warehouse is running or suspended." },
+        { "key": "C", "text": "The absence of the green dot indicates the warehouse is no longer active." },
+        { "key": "D", "text": "A suspended warehouse causes Snowsight to automatically switch to a backup warehouse." },
+        { "key": "E", "text": "SHOW-type commands like SHOW TABLES also fail when the warehouse is suspended." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Certain Snowsight pages such as Task Run History and Data Preview require a running warehouse to execute SQL and display more than metadata. The green dot on the warehouse selector specifically indicates when the warehouse is active, so its absence means the warehouse is not currently running.",
+        "distractors": {
+          "B": "Not all Snowsight pages are warehouse-independent; pages that run SQL queries require an active warehouse to display full content.",
+          "D": "There is no automatic failover to a backup warehouse in Snowsight when the selected warehouse is suspended; the administrator must select or resume a warehouse.",
+          "E": "SHOW-type commands like SHOW TABLES do not require a warehouse and succeed regardless of warehouse state; they retrieve metadata without compute resources."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A team is selecting the initial size for a new production warehouse and is concerned about committing to a size before they understand the full query workload. Their advisor tells them that per-second billing and auto-suspend give them more flexibility than they think.",
+      "stem": "Which TWO statements correctly describe the flexibility that per-second billing and auto-suspend provide when selecting an initial warehouse size? Select TWO.",
+      "options": [
+        { "key": "A", "text": "You can start with a larger warehouse and simply suspend it when not in use, limiting costs to actual usage time." },
+        { "key": "B", "text": "Per-second billing eliminates the 60-second minimum charge, so suspending immediately after a query costs nothing." },
+        { "key": "C", "text": "You can decrease the size of a warehouse at any time to adjust to the observed workload." },
+        { "key": "D", "text": "Once a warehouse is running, its size is locked until the end of the billing hour." },
+        { "key": "E", "text": "Per-second billing means you are charged for the full hour regardless of whether you suspend before the hour ends." }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Per-second billing means you can run a larger warehouse and suspend it when not in use, paying only for actual runtime rather than committing to a full hour. Additionally, warehouse size can be decreased at any time, allowing teams to adjust based on observed workload without recreating the warehouse.",
+        "distractors": {
+          "B": "Per-second billing does not eliminate the 60-second minimum; the minimum billing window still applies on every provisioning event, including the first start after a resume.",
+          "D": "Warehouse size is not locked to a billing period; it can be changed at any time, including while the warehouse is running.",
+          "E": "Per-second billing means you are charged only for the seconds the warehouse runs, not for a full hour; suspending before an hour ends stops the credit accrual after the minimum period."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A Snowflake architect is explaining the difference between Maximized mode and Auto-scale mode to a new team member who is configuring a multi-cluster warehouse for a workload with highly variable concurrency.",
+      "stem": "Which THREE statements correctly describe the behavioral difference between Auto-scale mode and Maximized mode? Select THREE.",
+      "options": [
+        { "key": "A", "text": "In Auto-scale mode, Snowflake automatically starts and stops clusters based on query demand." },
+        { "key": "B", "text": "In Maximized mode, all clusters in the warehouse run continuously regardless of current query volume." },
+        { "key": "C", "text": "Auto-scale mode should be used unless there is a specific requirement for Maximized mode." },
+        { "key": "D", "text": "Maximized mode is the recommended default for all Enterprise Edition multi-cluster warehouses." },
+        { "key": "E", "text": "In Auto-scale mode, the number of running clusters is fixed at the maximum value at all times." },
+        { "key": "F", "text": "Maximized mode is appropriate when a consistent, predictable cluster count is specifically required." }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Auto-scale mode has Snowflake automatically start and stop clusters as needed. Maximized mode runs all clusters continuously. Auto-scale is the recommended default; Maximized mode should only be used when there is a specific requirement for it.",
+        "distractors": {
+          "D": "Auto-scale mode, not Maximized mode, is the recommended default for multi-cluster warehouses; Maximized is reserved for specific use cases.",
+          "E": "Fixing clusters at the maximum at all times describes Maximized mode, not Auto-scale; Auto-scale dynamically adjusts within the configured min/max bounds.",
+          "F": "While Maximized mode does run all clusters continuously, the source material frames it as a non-default mode to be used only for specific requirements, without characterizing those requirements as needing a 'consistent, predictable count' specifically — this phrasing is plausible but not the documented framing."
+        }
+      }
+    }
+  ]
+}

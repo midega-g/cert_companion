@@ -1,0 +1,457 @@
+{
+  "label": "AWS Compliance Services & Data Governance — Part A",
+  "order": 2,
+  "topic": "Domain 5: Security, Compliance, and Governance for AI Solutions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "audit-manager",
+      "scenario": null,
+      "stem": "What does AWS Audit Manager do when you create an assessment based on a chosen framework?",
+      "options": [
+        { "key": "A", "text": "It deploys compliant infrastructure templates in your account" },
+        { "key": "B", "text": "It automatically assesses resources in your accounts and collects evidence of compliance or noncompliance" },
+        { "key": "C", "text": "It sends auditors to inspect your AWS environment in person" },
+        { "key": "D", "text": "It blocks all API calls that would violate the framework controls" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When you create an assessment, Audit Manager automatically assesses resources in your AWS accounts and services based on controls defined in the framework, collects relevant evidence, converts it into an auditor-friendly format, and attaches it to controls in the assessment.",
+        "distractors": {
+          "A": "Audit Manager collects evidence and produces reports. It does not deploy infrastructure. AWS CloudFormation handles infrastructure deployment.",
+          "C": "AWS does not allow physical inspections. Audit Manager automates evidence collection digitally.",
+          "D": "Audit Manager assesses and reports. It does not block API calls. AWS Config with remediation rules handles preventive/corrective actions."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "bedrock-guardrails",
+      "scenario": null,
+      "stem": "Which type of content filtering does Guardrails for Amazon Bedrock provide with configurable thresholds?",
+      "options": [
+        { "key": "A", "text": "Filtering across hate, insults, sexual, and violence categories" },
+        { "key": "B", "text": "Filtering based on model token length and response size" },
+        { "key": "C", "text": "Filtering based on the cost of each inference request" },
+        { "key": "D", "text": "Filtering based on the geographic location of the user" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Guardrails for Amazon Bedrock provides content filters with configurable thresholds to filter harmful content across hate, insults, sexual, and violence categories.",
+        "distractors": {
+          "B": "Token length is a model configuration parameter, not a content safety filter category.",
+          "C": "Cost-based filtering is not a guardrails feature. Guardrails focus on content safety, not billing.",
+          "D": "Geographic filtering is a network/access control concern, not a content safety guardrail."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "bedrock-guardrails",
+      "scenario": null,
+      "stem": "How does Guardrails for Amazon Bedrock handle personally identifiable information (PII)?",
+      "options": [
+        { "key": "A", "text": "It encrypts all PII using AWS KMS before passing it to the model" },
+        { "key": "B", "text": "It detects PII in user inputs and FM responses, with options to reject inputs or redact PII in responses" },
+        { "key": "C", "text": "It stores all detected PII in a separate S3 bucket for compliance records" },
+        { "key": "D", "text": "It only detects PII in model responses, not in user inputs" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Guardrails detects PII in both user inputs and FM responses. Based on the use case, you can selectively reject inputs containing PII or redact PII in FM responses.",
+        "distractors": {
+          "A": "Guardrails filters and blocks content; it does not encrypt PII and pass it through to the model.",
+          "C": "Guardrails blocks or redacts PII. It does not store detected PII in a separate bucket.",
+          "D": "Guardrails detects PII in both user inputs and FM responses, not just in responses."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "aws-config",
+      "scenario": null,
+      "stem": "What happens when AWS Config detects a resource configuration change that is noncompliant with its rules?",
+      "options": [
+        { "key": "A", "text": "It deletes the noncompliant resource immediately" },
+        { "key": "B", "text": "It can automatically remediate the change using an AWS Systems Manager automation document" },
+        { "key": "C", "text": "It reverts the resource to its previous configuration without notification" },
+        { "key": "D", "text": "It disables the AWS account until manual review is completed" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When a configuration change is noncompliant with AWS Config rules, it can be automatically remediated with an AWS Systems Manager automation document. This provides automated corrective action.",
+        "distractors": {
+          "A": "AWS Config does not delete resources. It evaluates compliance and triggers remediation actions through Systems Manager.",
+          "C": "Config can trigger remediation but does not silently revert changes. Actions are tracked and documented.",
+          "D": "AWS Config does not disable accounts. It evaluates, records, and optionally remediates configuration changes."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "aws-config",
+      "scenario": null,
+      "stem": "What are conformance packs in AWS Config?",
+      "options": [
+        { "key": "A", "text": "Pre-built IAM policies for common compliance frameworks" },
+        { "key": "B", "text": "Packages that bundle AWS Config rules and remediation actions for deployment to meet compliance needs" },
+        { "key": "C", "text": "Encrypted containers for storing compliance evidence" },
+        { "key": "D", "text": "Training modules for compliance officers" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Conformance packs bundle together AWS Config rules and remediation actions to help deploy rules and remediations to meet compliance needs. You can create them yourself or select from a library of templates.",
+        "distractors": {
+          "A": "Conformance packs contain Config rules and remediations, not IAM policies. IAM policies are managed separately.",
+          "C": "Conformance packs are collections of rules and actions, not encrypted storage containers.",
+          "D": "Conformance packs are technical configurations, not training materials."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "bedrock-guardrails",
+      "scenario": null,
+      "stem": "Which capabilities does Guardrails for Amazon Bedrock provide? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Define denied topics using short natural language descriptions to block restricted content" },
+        { "key": "B", "text": "Configure separate response messages for when a prompt is blocked versus when a model response is blocked" },
+        { "key": "C", "text": "Automatically evaluate both user queries and FM responses for restricted content" },
+        { "key": "D", "text": "Retrain the foundation model to avoid generating harmful content permanently" },
+        { "key": "E", "text": "Replace the foundation model with a rule-based system when harmful content is detected" },
+        { "key": "F", "text": "Encrypt all model responses using customer-managed KMS keys" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Guardrails lets you define denied topics with natural language descriptions, configure separate response messages for blocked prompts versus blocked model responses, and automatically evaluates both user queries and FM responses against restricted categories.",
+        "distractors": {
+          "D": "Guardrails filter content at runtime. They do not retrain the underlying foundation model.",
+          "E": "Guardrails block and respond to harmful content but do not replace the FM with a different system.",
+          "F": "Encryption is handled by AWS KMS and service-level settings, not by Guardrails. Guardrails focus on content safety."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "aws-config",
+      "scenario": null,
+      "stem": "Which are useful conformance pack templates available in AWS Config for AI workloads? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Operational best practices for AI and ML" },
+        { "key": "B", "text": "Security best practices for Amazon SageMaker" },
+        { "key": "C", "text": "Cost optimization for generative AI models" },
+        { "key": "D", "text": "Performance tuning for deep learning training jobs" },
+        { "key": "E", "text": "Data labeling best practices for SageMaker Ground Truth" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Two useful conformance packs for AI workloads are the operational best practices for AI and ML, and the security best practices for Amazon SageMaker.",
+        "distractors": {
+          "C": "Cost optimization is addressed by AWS Trusted Advisor and billing tools, not Config conformance packs.",
+          "D": "Performance tuning is a development concern, not a compliance configuration that Config would evaluate.",
+          "E": "Data labeling practices are not evaluated through AWS Config conformance packs."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "data-governance-roles",
+      "scenario": null,
+      "stem": "Which statements correctly describe the roles of a data owner and a data steward in data governance? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "A data owner is an executive-level person who makes data policy decisions including regulatory and compliance policies" },
+        { "key": "B", "text": "A data steward is a person from the business with detailed knowledge of data needed to support targeted business initiatives" },
+        { "key": "C", "text": "A data owner handles daily project tasks and resolves data quality issues" },
+        { "key": "D", "text": "A data steward makes executive-level decisions about who has access to customer data" },
+        { "key": "E", "text": "A data owner and data steward always report to the IT department" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "A data owner is executive-level and makes policy decisions including regulatory and compliance policies (e.g., who has access to claims data). A data steward is from the business with detailed knowledge of data, involved in daily project details.",
+        "distractors": {
+          "C": "Daily project tasks are the responsibility of the data steward, not the data owner. The data owner sets policies.",
+          "D": "Executive-level access decisions are made by the data owner. The data steward works at the project level guided by owner policies.",
+          "E": "Data owners should be recognized at an organizational level including both technology and business representatives, not solely reporting to IT."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "data-governance",
+      "scenario": null,
+      "stem": "What are the three major parts of data governance? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Curation" },
+        { "key": "B", "text": "Discovery and understanding" },
+        { "key": "C", "text": "Protection" },
+        { "key": "D", "text": "Monetization" },
+        { "key": "E", "text": "Deletion" },
+        { "key": "F", "text": "Replication" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Data governance is broken down into three major parts: curation (identifying and managing valuable data sources), discovery and understanding (discovering and comprehending data meaning), and protection (balancing privacy, security, and access).",
+        "distractors": {
+          "D": "Monetization relates to deriving business value from data, not one of the three governance pillars.",
+          "E": "Deletion may be part of lifecycle management but is not one of the three major governance categories.",
+          "F": "Replication is a data management technique, not one of the three defined governance pillars."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "glue-databrew",
+      "scenario": null,
+      "stem": "Which data governance capabilities does AWS Glue DataBrew provide? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Data profiling that examines data characteristics and validates data quality rules" },
+        { "key": "B", "text": "Visual data lineage showing how data flows through entities from its origin" },
+        { "key": "C", "text": "Automated model training using profiled data" },
+        { "key": "D", "text": "Real-time model inference monitoring for bias" },
+        { "key": "E", "text": "Encryption key management for data at rest" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "AWS Glue DataBrew provides data profiling (examining data content, structure, and relationships while validating quality rules) and data lineage (a visual interface showing data flow through entities from origin).",
+        "distractors": {
+          "C": "DataBrew is a data preparation tool, not a model training service.",
+          "D": "Bias monitoring is handled by SageMaker Clarify, not DataBrew.",
+          "E": "Encryption key management is handled by AWS KMS, not DataBrew."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "audit-manager",
+      "scenario": "A compliance team at a pharmaceutical company needs to demonstrate that their generative AI application follows best practices. They want an automated way to collect evidence of compliance against a standard framework and produce reports for their auditors.",
+      "stem": "Which AWS service should they use to automate compliance evidence collection and report generation?",
+      "options": [
+        { "key": "A", "text": "AWS Audit Manager" },
+        { "key": "B", "text": "AWS Artifact" },
+        { "key": "C", "text": "AWS CloudTrail" },
+        { "key": "D", "text": "Amazon Inspector" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS Audit Manager maps compliance requirements to AWS usage data, collects evidence automatically, and produces assessment reports for auditors. It has built-in frameworks including one for generative AI best practices.",
+        "distractors": {
+          "B": "AWS Artifact provides existing third-party compliance reports about AWS infrastructure. It does not collect evidence from the customer's own resources.",
+          "C": "CloudTrail logs API activity. It provides raw audit data but does not organize it against compliance frameworks or produce assessment reports.",
+          "D": "Amazon Inspector checks applications for security vulnerabilities, not compliance evidence collection against governance frameworks."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "bedrock-guardrails",
+      "scenario": "An e-commerce company deploys a customer support chatbot using Amazon Bedrock. They want to prevent the chatbot from providing investment advice to customers, even if customers explicitly ask about stock recommendations.",
+      "stem": "How should the company configure Guardrails for Amazon Bedrock to block this topic?",
+      "options": [
+        { "key": "A", "text": "Add investment advice as a denied topic with a natural language description and optionally provide example phrases" },
+        { "key": "B", "text": "Retrain the foundation model with data that excludes financial information" },
+        { "key": "C", "text": "Add a content filter threshold for the violence category" },
+        { "key": "D", "text": "Remove all financial vocabulary from the model's tokenizer" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Guardrails lets you define denied topics using short natural language descriptions. You can add a topic like 'investment advice,' describe it in simple terms, and optionally provide example phrases. Guardrails then detects and blocks inputs and responses that fall into this topic.",
+        "distractors": {
+          "B": "Retraining the model is expensive and unnecessary. Guardrails handle topic restrictions at runtime without model modification.",
+          "C": "Investment advice is a topic restriction, not a content filter category. Violence, hate, insults, and sexual are the filter categories.",
+          "D": "Modifying the tokenizer would break the model's language understanding. Topic blocking is handled through guardrails, not tokenizer manipulation."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "inspector",
+      "scenario": "A machine learning team runs custom inference code in Docker containers on EC2 instances. Their security team needs to check whether the containers have known security vulnerabilities or outdated software packages.",
+      "stem": "Which AWS service should the security team use to check containers for vulnerabilities?",
+      "options": [
+        { "key": "A", "text": "Amazon Inspector" },
+        { "key": "B", "text": "AWS Config" },
+        { "key": "C", "text": "AWS Trusted Advisor" },
+        { "key": "D", "text": "AWS Audit Manager" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon Inspector checks applications and containers for security vulnerabilities and deviations from security best practices, such as installations of vulnerable software versions. It provides a prioritized list of findings with remediation recommendations.",
+        "distractors": {
+          "B": "AWS Config monitors resource configurations for compliance but does not scan container contents for software vulnerabilities.",
+          "C": "Trusted Advisor evaluates your environment against broad best practices but does not perform application-level vulnerability scanning.",
+          "D": "Audit Manager collects compliance evidence and produces audit reports but does not scan for software vulnerabilities in containers."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "trusted-advisor",
+      "scenario": "A startup running ML workloads on AWS wants to ensure their environment follows best practices across multiple dimensions including cost optimization, security, performance, and resilience. They want continuous evaluation with remediation recommendations.",
+      "stem": "Which AWS service provides this broad best-practice evaluation?",
+      "options": [
+        { "key": "A", "text": "AWS Trusted Advisor" },
+        { "key": "B", "text": "Amazon Inspector" },
+        { "key": "C", "text": "AWS Config" },
+        { "key": "D", "text": "AWS Audit Manager" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS Trusted Advisor continuously evaluates your AWS environment using best practice checks across cost optimization, performance, resilience, security, operational excellence, and service limits. It recommends actions to remediate deviations.",
+        "distractors": {
+          "B": "Inspector focuses specifically on application and container security vulnerabilities, not broad best practices across cost, performance, and resilience.",
+          "C": "AWS Config monitors resource configurations against specific rules but does not cover cost optimization, performance, or service limits.",
+          "D": "Audit Manager maps compliance requirements and produces audit reports but does not provide broad best practice checks across cost and performance."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "data-governance",
+      "scenario": "A data analytics team discovers that multiple departments have transformed the same raw customer dataset in different ways, leading to inconsistent metrics across dashboards. Their CDO wants to fix this by curating data sources centrally.",
+      "stem": "What does curating data at scale involve in the context of data governance?",
+      "options": [
+        { "key": "A", "text": "Identifying and managing valuable data sources to limit the proliferation and transformation of critical data assets" },
+        { "key": "B", "text": "Deleting all duplicate datasets to force departments to share a single copy" },
+        { "key": "C", "text": "Encrypting all data sources with unique keys per department" },
+        { "key": "D", "text": "Moving all data from databases into a single flat file for simplicity" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Curating data at scale means identifying and managing your most valuable data sources (databases, data lakes, data warehouses) to limit the proliferation and transformation of critical data assets, ensuring data is accurate, fresh, and free of sensitive information.",
+        "distractors": {
+          "B": "Curation is about managing and controlling transformation of data, not deleting duplicates without governance.",
+          "C": "Encryption per department is a security control, not data curation. Curation addresses data quality and consistency.",
+          "D": "Consolidating into a flat file would lose structure and context. Curation manages data across appropriate storage systems."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "inspector",
+      "scenario": "A security team needs to differentiate between AWS services that monitor resource configurations versus those that scan applications for vulnerabilities. They are comparing AWS Config and Amazon Inspector.",
+      "stem": "Which statements correctly distinguish AWS Config from Amazon Inspector? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "AWS Config monitors configurations at the resource level and evaluates changes against compliance rules" },
+        { "key": "B", "text": "Amazon Inspector checks applications and containers for security vulnerabilities and vulnerable software versions" },
+        { "key": "C", "text": "AWS Config performs deep scanning of application code for bugs" },
+        { "key": "D", "text": "Amazon Inspector records configuration history snapshots for all AWS resources" },
+        { "key": "E", "text": "Both services provide identical functionality for different pricing tiers" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "AWS Config monitors resource configurations, captures changes, and evaluates them against rules. Amazon Inspector works at the application level, checking containers and applications for vulnerabilities like open access and vulnerable software versions.",
+        "distractors": {
+          "C": "AWS Config evaluates resource configurations, not application source code. Code scanning is not a Config function.",
+          "D": "Configuration history snapshots are captured by AWS Config, not Inspector. Inspector focuses on vulnerability assessment.",
+          "E": "They serve fundamentally different purposes: Config for resource configuration compliance, Inspector for application vulnerability scanning."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "audit-manager",
+      "scenario": "An enterprise compliance team is setting up AWS Audit Manager for the first time. They want to assess their AI workloads against both generative AI best practices and SOC 2 controls.",
+      "stem": "Which features of AWS Audit Manager support this requirement? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Built-in frameworks including generative AI best practices and SOC 2" },
+        { "key": "B", "text": "Ability to add collected evidence to an assessment report for auditors" },
+        { "key": "C", "text": "Automatic remediation of noncompliant resources using Lambda functions" },
+        { "key": "D", "text": "Real-time blocking of API calls that violate compliance controls" },
+        { "key": "E", "text": "Scanning containers for software vulnerabilities" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Audit Manager has built-in frameworks including generative AI best practices and SOC 2. When it's time for an audit, you can review collected evidence and add it to an assessment report to demonstrate that controls are working as intended.",
+        "distractors": {
+          "C": "Automatic remediation is a feature of AWS Config with Systems Manager, not Audit Manager. Audit Manager collects evidence and produces reports.",
+          "D": "Audit Manager assesses and reports on compliance. It does not block API calls in real time.",
+          "E": "Container vulnerability scanning is performed by Amazon Inspector, not Audit Manager."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "glue-databrew",
+      "scenario": "A data team is using AWS Glue DataBrew to prepare training data for a machine learning model. They want to understand the quality of their dataset and trace where the data originated before using it.",
+      "stem": "Which DataBrew features address these needs? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Run profiling jobs to create a data profile showing content context, structure, and relationships" },
+        { "key": "B", "text": "View data lineage in a visual interface to determine origin and transformations over time" },
+        { "key": "C", "text": "Automatically train a model on the profiled data" },
+        { "key": "D", "text": "Deploy the data directly to a SageMaker endpoint" },
+        { "key": "E", "text": "Create IAM roles for each user who accesses the data" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "DataBrew runs profiling jobs that create a data profile showing content context, structure, and relationships. It also provides a visual data lineage showing where data originally came from, what influenced it, and where it was stored.",
+        "distractors": {
+          "C": "DataBrew is a data preparation tool. Model training is done by SageMaker training jobs.",
+          "D": "DataBrew prepares data. Deploying to endpoints is a model serving operation handled by SageMaker.",
+          "E": "IAM role creation is handled through IAM or SageMaker Role Manager, not DataBrew."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "aws-config",
+      "scenario": "A DevOps team managing SageMaker workloads wants to detect when a resource configuration becomes noncompliant and automatically fix it without manual intervention. They need to evaluate configurations using both prebuilt rules and custom logic.",
+      "stem": "Which combination of AWS services provides configuration monitoring with automatic remediation?",
+      "options": [
+        { "key": "A", "text": "AWS Config rules (prebuilt or custom Lambda-based) with AWS Systems Manager automation for remediation" },
+        { "key": "B", "text": "AWS Audit Manager frameworks with Amazon Inspector remediation" },
+        { "key": "C", "text": "AWS Trusted Advisor checks with AWS Artifact reports" },
+        { "key": "D", "text": "Amazon CloudWatch alarms with AWS IAM policy changes" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS Config evaluates configuration changes against prebuilt rules or custom rules created using Lambda functions. Noncompliant changes can be automatically remediated with Systems Manager automation documents.",
+        "distractors": {
+          "B": "Audit Manager collects compliance evidence but does not remediate. Inspector finds vulnerabilities but does not monitor resource configurations.",
+          "C": "Trusted Advisor recommends best practices and Artifact provides reports, but neither provides automatic configuration remediation.",
+          "D": "CloudWatch alarms monitor metrics and can trigger actions, but AWS Config is the purpose-built service for configuration compliance with built-in remediation."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "data-governance-roles",
+      "scenario": "A healthcare organization is establishing data governance for their AI initiatives. They need to assign someone to make policy decisions about who can access patient claims data, and someone else to work day-to-day on projects ensuring data quality meets initiative requirements.",
+      "stem": "Which roles should be assigned to these two responsibilities?",
+      "options": [
+        { "key": "A", "text": "Data owner for policy decisions about data access; data steward for daily project data quality work" },
+        { "key": "B", "text": "Data steward for policy decisions; data owner for daily project work" },
+        { "key": "C", "text": "IT administrator for both responsibilities" },
+        { "key": "D", "text": "Data scientist for policy decisions; ML engineer for daily data quality work" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The data owner is executive-level and makes policy decisions including who has access to data. The data steward works day-to-day on projects with detailed knowledge of data needed for business initiatives. There is a direct relationship between owner (policy) and steward (execution).",
+        "distractors": {
+          "B": "This reverses the roles. Data owners set policies; data stewards execute daily tasks guided by those policies.",
+          "C": "IT provides tools and capabilities to data stewards. Policy decisions and daily data governance are business responsibilities shared between owners and stewards.",
+          "D": "Data scientists and ML engineers are technical roles. Data governance policy decisions require executive authority (data owner), and daily governance requires business domain knowledge (data steward)."
+        }
+      }
+    }
+  ]
+}

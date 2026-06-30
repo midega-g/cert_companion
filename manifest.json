@@ -1,9 +1,79 @@
 {
   "providers": [
     {
+      "id": "aws",
+      "label": "AWS",
+      "children": [
+        {
+          "id": "gen_ai_foundation",
+          "label": "Gen AI Foundation",
+          "children": [
+            {
+              "id": "domain_5",
+              "label": "Domain 5",
+              "children": [
+                {
+                  "id": "task_1_methods_to_secure_AI_systems",
+                  "label": "Task 1 Methods To Secure AI Systems",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "IAM & Access Control \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_1_methods_to_secure_AI_systems/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Encryption, Network Security & AI Attacks \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_1_methods_to_secure_AI_systems/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Model Governance & Lineage \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_1_methods_to_secure_AI_systems/test_3.json"
+                    },
+                    {
+                      "id": "test_4",
+                      "label": "Gap Coverage \u2014 Supplemental",
+                      "path": "aws/gen_ai_foundation/domain_5/task_1_methods_to_secure_AI_systems/test_4.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_2_governance_and_compliance_regulations_for_AI_systems",
+                  "label": "Task 2 Governance And Compliance Regulations For AI Systems",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Compliance Standards & AI Regulations \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_2_governance_and_compliance_regulations_for_AI_systems/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "AWS Compliance Services & Data Governance \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_2_governance_and_compliance_regulations_for_AI_systems/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Data Management, Lake Formation & AI Governance Strategy \u2014 Part A",
+                      "path": "aws/gen_ai_foundation/domain_5/task_2_governance_and_compliance_regulations_for_AI_systems/test_3.json"
+                    },
+                    {
+                      "id": "test_4",
+                      "label": "Gap Coverage \u2014 Supplemental",
+                      "path": "aws/gen_ai_foundation/domain_5/task_2_governance_and_compliance_regulations_for_AI_systems/test_4.json"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "snowflake",
       "label": "Snowflake",
-      "topics": [
+      "children": [
         {
           "id": "cloning",
           "label": "Cloning",
@@ -59,6 +129,22 @@
               "id": "test_6",
               "label": "Automatic Clustering \u2014 Part B",
               "path": "snowflake/micro_partition_and_clustering/test_6.json"
+            }
+          ]
+        },
+        {
+          "id": "virtual_warehouses",
+          "label": "Virtual Warehouses",
+          "tests": [
+            {
+              "id": "test_1",
+              "label": "Virtual Warehouse Considerations \u2014 Part A",
+              "path": "snowflake/virtual_warehouses/test_1.json"
+            },
+            {
+              "id": "test_2",
+              "label": "Virtual Warehouse Considerations \u2014 Part B",
+              "path": "snowflake/virtual_warehouses/test_2.json"
             }
           ]
         }

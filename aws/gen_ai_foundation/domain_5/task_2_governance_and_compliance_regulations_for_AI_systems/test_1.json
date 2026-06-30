@@ -1,0 +1,457 @@
+{
+  "label": "Compliance Standards & AI Regulations — Part A",
+  "order": 1,
+  "topic": "Domain 5: Security, Compliance, and Governance for AI Solutions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "shared-responsibility-compliance",
+      "scenario": null,
+      "stem": "Under the AWS Shared Responsibility Model for compliance, what is the customer responsible for?",
+      "options": [
+        { "key": "A", "text": "Securing the underlying physical data centers and infrastructure" },
+        { "key": "B", "text": "Maintaining compliance certifications for data center operations" },
+        { "key": "C", "text": "Securing their workloads in the cloud to meet compliance requirements" },
+        { "key": "D", "text": "Having third-party auditors verify AWS infrastructure controls" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Under the Shared Responsibility Model for compliance, AWS secures the underlying infrastructure, while the customer is responsible for securing their workloads in the cloud to meet compliance requirements.",
+        "distractors": {
+          "A": "Securing data centers and infrastructure is an AWS responsibility under 'compliance of the cloud.'",
+          "B": "AWS maintains compliance certifications for data center operations. Customers inherit these controls.",
+          "D": "AWS arranges third-party audits of its own infrastructure. Customers use the resulting reports via AWS Artifact."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "aws-artifact",
+      "scenario": null,
+      "stem": "What does AWS Artifact provide to customers?",
+      "options": [
+        { "key": "A", "text": "Automated remediation of noncompliant resources" },
+        { "key": "B", "text": "Compliance reports from third-party auditors that verify AWS controls" },
+        { "key": "C", "text": "A tool to deploy compliance-tested AI models" },
+        { "key": "D", "text": "Direct access to audit AWS data centers in person" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "AWS Artifact makes compliance reports from third-party auditors available to customers. These reports verify that AWS meets various global, regional, and industry-specific security standards, reducing the scope of customer audits.",
+        "distractors": {
+          "A": "Automated remediation is provided by AWS Config with Systems Manager, not AWS Artifact.",
+          "C": "AWS Artifact provides audit reports and compliance documentation, not model deployment tools.",
+          "D": "Customers cannot send auditors to AWS data centers. Instead, they use the third-party audit reports available through Artifact."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "compliance-standards",
+      "scenario": null,
+      "stem": "What do ISO 42001 and ISO 23894 establish for AI systems?",
+      "options": [
+        { "key": "A", "text": "Legal requirements that all AI systems must follow globally" },
+        { "key": "B", "text": "A framework for organizations to assess and manage risk in AI systems" },
+        { "key": "C", "text": "Technical specifications for training AI models on AWS" },
+        { "key": "D", "text": "Mandatory encryption standards for AI data at rest" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "ISO 42001 and ISO 23894 (both published in 2023) establish mechanisms for assessing and managing risk in AI systems. They provide a framework for organizations to systematically address and control risks related to AI development and deployment.",
+        "distractors": {
+          "A": "These ISO standards are compliance standards that are highly recommended but are not legal requirements.",
+          "C": "These are risk management frameworks, not technical specifications for model training on any specific platform.",
+          "D": "These standards address overall AI risk management, not specific encryption requirements."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "eu-ai-act",
+      "scenario": null,
+      "stem": "How does the EU AI Act categorize AI applications?",
+      "options": [
+        { "key": "A", "text": "Into two categories: permitted and banned" },
+        { "key": "B", "text": "Into three risk categories: unacceptable risk (banned), high-risk (regulated), and largely unregulated" },
+        { "key": "C", "text": "Into four categories based on the size of the organization deploying them" },
+        { "key": "D", "text": "Into categories based solely on the industry where the AI is used" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The EU AI Act assigns AI applications to three risk categories: applications creating unacceptable risk are banned outright, high-risk applications are subject to specific legal requirements, and applications not banned or listed as high-risk are largely unregulated.",
+        "distractors": {
+          "A": "There are three categories, not two. The middle category (high-risk) is regulated but not banned.",
+          "C": "Categories are based on risk level of the application, not organization size.",
+          "D": "Categorization is based on the risk the application poses, not solely the industry of use."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "eu-ai-act",
+      "scenario": null,
+      "stem": "Which AI application would be banned under the EU AI Act as creating unacceptable risk?",
+      "options": [
+        { "key": "A", "text": "A CV scanning tool that ranks job applicants" },
+        { "key": "B", "text": "A social scoring application that classifies individuals based on social behavior" },
+        { "key": "C", "text": "A product recommendation engine for an e-commerce website" },
+        { "key": "D", "text": "A chatbot that provides customer service for an online retailer" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Social scoring applications that classify individuals or groups based on social behavior are explicitly banned under the EU AI Act as creating unacceptable risk.",
+        "distractors": {
+          "A": "A CV scanning tool that ranks job applicants is categorized as high-risk and subject to regulation, not banned outright.",
+          "C": "A product recommendation engine is not banned or explicitly listed as high-risk; it falls into the largely unregulated category.",
+          "D": "A customer service chatbot is not banned or listed as high-risk; it would generally be largely unregulated."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "nist-rmf",
+      "scenario": null,
+      "stem": "Which are the four specific functions described by the NIST AI Risk Management Framework (RMF)? (Select TWO that are correct from the options below)",
+      "options": [
+        { "key": "A", "text": "Govern and Map" },
+        { "key": "B", "text": "Measure and Manage" },
+        { "key": "C", "text": "Plan and Execute" },
+        { "key": "D", "text": "Build and Deploy" },
+        { "key": "E", "text": "Audit and Report" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The NIST AI RMF describes four specific functions: Govern, Map, Measure, and Manage. These help organizations address the risk of AI systems in practice.",
+        "distractors": {
+          "C": "Plan and Execute are not functions of the NIST AI RMF. The four functions are Govern, Map, Measure, and Manage.",
+          "D": "Build and Deploy are lifecycle stages, not the specific functions defined by the NIST framework.",
+          "E": "Audit and Report are compliance activities but not the named functions of the NIST AI RMF."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "risk-management",
+      "scenario": null,
+      "stem": "Which steps are part of the process for estimating the risk of an AI system? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Identify the AI use case and relevant stakeholders" },
+        { "key": "B", "text": "Identify potentially harmful events and use a risk matrix to determine risk for each" },
+        { "key": "C", "text": "Address inherent risk with security controls to reduce the likelihood of events" },
+        { "key": "D", "text": "Eliminate all residual risk before deploying the system" },
+        { "key": "E", "text": "Outsource the risk assessment to AWS under the shared responsibility model" },
+        { "key": "F", "text": "Replace the AI system with a rule-based system to remove all risk" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Risk estimation involves identifying the use case and stakeholders, identifying harmful events and using a risk matrix, and addressing inherent risk with controls and monitoring to reduce likelihood. The residual risk remaining after mitigation determines the overall risk rating.",
+        "distractors": {
+          "D": "Residual risk cannot be entirely eliminated. It is the risk remaining after mitigations, and the overall risk rating is determined by the highest residual risk.",
+          "E": "Risk assessment of AI workloads is the customer's responsibility under the shared responsibility model. AWS secures the infrastructure.",
+          "F": "Replacing the system does not estimate risk. The goal is to assess and manage risk, not eliminate AI entirely."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "explainability",
+      "scenario": null,
+      "stem": "Which approaches can be used to achieve explainability in AI systems? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Observe a model's behavior with regard to output and input to determine which features are given the most consideration" },
+        { "key": "B", "text": "Use more interpretable algorithms such as decision trees or rule-based systems to observe model weights" },
+        { "key": "C", "text": "Increase the training data size until the model's outputs become self-explanatory" },
+        { "key": "D", "text": "Deploy the model in a private VPC to make outputs only visible to authorized users" },
+        { "key": "E", "text": "Remove all features except one to simplify the model's decision process" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "One approach is model-agnostic: observe input-output behavior to determine which features are most considered (treating the model as a black box). Another is using interpretable algorithms like decision trees or rule-based systems where you can observe model weights and understand inner workings.",
+        "distractors": {
+          "C": "Increasing data size improves model performance but does not inherently make the model's decision process more explainable.",
+          "D": "Deploying in a private VPC controls network access, not model explainability. Explainability is about understanding how outputs are derived.",
+          "E": "Reducing to one feature would severely limit the model's usefulness. Explainability is about understanding multi-feature interactions, not eliminating features."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "bias",
+      "scenario": null,
+      "stem": "Which personal attributes must AI systems avoid using improperly to ensure unbiased decision making? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Race" },
+        { "key": "B", "text": "Gender identity" },
+        { "key": "C", "text": "Religious beliefs" },
+        { "key": "D", "text": "Years of professional experience" },
+        { "key": "E", "text": "Educational qualifications" },
+        { "key": "F", "text": "Technical certifications held" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "AI results should not be influenced by the improper use of personal attributes including race, sex, gender identity, religious beliefs, political affiliations, and whether they live in a city or rural community.",
+        "distractors": {
+          "D": "Years of professional experience is a job-relevant qualification, not a protected personal attribute that introduces unfair bias.",
+          "E": "Educational qualifications are objective criteria relevant to many decisions, not protected personal attributes.",
+          "F": "Technical certifications are merit-based qualifications, not personal attributes that cause unfair bias."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "sagemaker-clarify",
+      "scenario": null,
+      "stem": "What can Amazon SageMaker Clarify help you understand and monitor? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "How different variables influence a model's behavior" },
+        { "key": "B", "text": "Bias and feature attribution drift in model results" },
+        { "key": "C", "text": "The physical security controls of the data center hosting the model" },
+        { "key": "D", "text": "The network latency between the model endpoint and end users" },
+        { "key": "E", "text": "The cost of each inference request made to the model" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Clarify helps understand how different variables influence a model's behavior and monitors for bias and feature attribution drift in model results and training data.",
+        "distractors": {
+          "C": "Physical data center security is AWS's responsibility and not something SageMaker Clarify monitors.",
+          "D": "Network latency is a performance metric, not related to bias or feature attribution. CloudWatch handles performance monitoring.",
+          "E": "Inference cost tracking is a billing and cost management concern, not what Clarify is designed to address."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "aws-artifact",
+      "scenario": "A healthcare company is preparing for a SOC 2 audit. Their auditors need to verify that the underlying AWS infrastructure meets the required security controls. The company wants to reduce the scope of the audit by providing evidence that AWS controls are already verified.",
+      "stem": "Which AWS service should the company use to obtain the compliance reports needed for their auditors?",
+      "options": [
+        { "key": "A", "text": "AWS Audit Manager" },
+        { "key": "B", "text": "AWS Artifact" },
+        { "key": "C", "text": "AWS Config" },
+        { "key": "D", "text": "AWS Trusted Advisor" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "AWS Artifact makes compliance reports from third-party auditors available to customers. The SOC 2 report verifies AWS controls related to security, availability, processing integrity, confidentiality, and privacy, reducing the audit scope for customers.",
+        "distractors": {
+          "A": "Audit Manager maps compliance requirements to your own AWS usage data and produces assessment reports. It doesn't provide AWS's third-party audit reports.",
+          "C": "AWS Config monitors resource configurations for compliance but does not provide third-party audit reports about AWS infrastructure.",
+          "D": "Trusted Advisor evaluates your environment against best practices but does not provide SOC compliance reports."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "eu-ai-act",
+      "scenario": "A US-based fintech company is building an AI-powered loan approval system. Their legal team is debating whether they need to comply with the EU AI Act even though they currently have no European customers.",
+      "stem": "Why might the legal team recommend complying with the EU AI Act regardless of current customer location?",
+      "options": [
+        { "key": "A", "text": "The EU AI Act applies to all companies worldwide regardless of where they operate" },
+        { "key": "B", "text": "EU regulations often become global standards, similar to how GDPR influenced worldwide practices" },
+        { "key": "C", "text": "AWS requires all customers to comply with the EU AI Act as part of their terms of service" },
+        { "key": "D", "text": "The US has already adopted the EU AI Act as domestic law" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Even if not directly serving EU citizens, EU regulations often become global standards, like GDPR. Therefore, organizations should pay attention and attempt to meet them proactively.",
+        "distractors": {
+          "A": "The EU AI Act is a European regulation. It directly applies to systems made available to EU citizens, not universally to all companies.",
+          "C": "AWS does not require EU AI Act compliance in its terms of service. Compliance is the customer's regulatory responsibility.",
+          "D": "The US has not adopted the EU AI Act. The US has its own frameworks like the NIST AI RMF and proposed legislation like the Algorithmic Accountability Act."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "risk-management",
+      "scenario": "A retail company completes a risk assessment for their AI-powered pricing model. After implementing security controls and monitoring, some risk remains that cannot be further reduced. The team needs to determine the system's overall risk rating.",
+      "stem": "What determines the overall risk rating of an AI system after mitigation controls are applied?",
+      "options": [
+        { "key": "A", "text": "The average of all inherent risk scores before mitigation" },
+        { "key": "B", "text": "The highest residual risk rating remaining after mitigations" },
+        { "key": "C", "text": "The total number of harmful events identified during the assessment" },
+        { "key": "D", "text": "The cost of implementing the security controls" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The overall risk rating is determined by focusing on the highest residual risk ratings. Residual risk is what remains after inherent risks are mitigated with security controls and monitoring.",
+        "distractors": {
+          "A": "The overall rating uses the highest residual risk, not the average of inherent risks. Inherent risk is what exists before mitigation.",
+          "C": "The number of harmful events contributes to the assessment, but the final rating is driven by the highest remaining risk level, not event count.",
+          "D": "Implementation cost is a practical consideration but does not determine the system's risk rating."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "explainability",
+      "scenario": "A bank deploys an AI system to approve or reject mortgage applications. Regulators require the bank to explain to applicants why their application was rejected. The model uses a deep neural network that is difficult to interpret internally.",
+      "stem": "Which approach to explainability should the bank use given the model's complexity?",
+      "options": [
+        { "key": "A", "text": "A model-agnostic approach that observes the relationship between inputs and outputs to determine which features most influence the decision" },
+        { "key": "B", "text": "Inspect the neural network's internal weights and biases directly to explain each decision" },
+        { "key": "C", "text": "Replace the deep neural network with a random forest to avoid explainability requirements" },
+        { "key": "D", "text": "Provide the full model architecture documentation to each applicant" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A model-agnostic approach treats the model as a black box and observes input-output behavior to determine which features are given the most consideration. This works regardless of model complexity.",
+        "distractors": {
+          "B": "Deep neural networks have millions of parameters making direct weight inspection impractical for explaining individual decisions.",
+          "C": "Replacing the model to avoid requirements is not a valid approach. The bank should use explainability techniques appropriate for the model type.",
+          "D": "Model architecture documentation is not meaningful to applicants and does not explain why a specific decision was made."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "algorithmic-accountability",
+      "scenario": "A consumer lending company uses an AI model to determine credit limits. A customer complains that their credit limit is unfairly low and demands to know why. The Algorithmic Accountability Act, if enacted, would affect this situation.",
+      "stem": "What right would the Algorithmic Accountability Act establish for consumers interacting with AI systems?",
+      "options": [
+        { "key": "A", "text": "The right to override any AI decision without explanation" },
+        { "key": "B", "text": "The right to know why a decision was made and whether unfair bias influenced the result" },
+        { "key": "C", "text": "The right to access the company's full model source code and training data" },
+        { "key": "D", "text": "The right to demand that all AI systems be replaced with human decision makers" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The Algorithmic Accountability Act aims to protect Americans from AI systems that lead to unfair and unexplained results. Consumers have a right to know why decisions like loan rejections were made and whether inherent unfair bias was involved.",
+        "distractors": {
+          "A": "The Act focuses on transparency and impact assessment, not giving consumers override authority over AI decisions.",
+          "C": "The Act requires transparency about impacts and bias, not disclosure of proprietary model code or training data.",
+          "D": "The Act does not require eliminating AI. It requires assessing impacts and providing transparency to consumers."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "compliance-standards",
+      "scenario": "A multinational company wants to demonstrate to its customers that it manages AI risks according to internationally recognized standards. They are evaluating ISO certifications relevant to AI.",
+      "stem": "Which characteristics describe ISO 42001 and ISO 23894? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "They encourage organizations to adopt controls specific to their AI systems for responsible AI practices" },
+        { "key": "B", "text": "They are committed to fostering global interoperability for responsible AI development and deployment" },
+        { "key": "C", "text": "They are legally binding regulations that carry penalties for noncompliance" },
+        { "key": "D", "text": "They replace the need for any other compliance standard including SOC 2 and ISO 27001" },
+        { "key": "E", "text": "They apply exclusively to AI systems built on AWS infrastructure" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "ISO 42001 and ISO 23894 emphasize responsible AI practices with controls specific to each organization's AI systems and are committed to fostering global interoperability for responsible AI development and deployment.",
+        "distractors": {
+          "C": "These compliance standards are highly recommended but are not legal requirements. The EU AI Act is a regulation with legal force, but ISO standards are voluntary.",
+          "D": "ISO AI standards complement other certifications like SOC 2 and ISO 27001. They do not replace them.",
+          "E": "These are international standards applicable to any organization regardless of cloud provider."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "eu-ai-act",
+      "scenario": "A technology company is reviewing the EU AI Act to determine which of their AI products require specific legal compliance. They have products spanning facial recognition, HR tools, and customer chatbots.",
+      "stem": "Which applications would be classified as banned (unacceptable risk) under the EU AI Act? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "A facial recognition database that scrapes facial images from the internet" },
+        { "key": "B", "text": "An application that infers emotions in workplaces" },
+        { "key": "C", "text": "A CV scanning tool that ranks job applicants" },
+        { "key": "D", "text": "A customer service chatbot that answers product questions" },
+        { "key": "E", "text": "A recommendation engine that suggests training courses to employees" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Facial recognition databases that scrape images from the internet and applications that infer emotions in workplaces or educational institutions are explicitly banned as creating unacceptable risk under the EU AI Act.",
+        "distractors": {
+          "C": "A CV scanning tool is classified as high-risk and subject to specific legal requirements, not banned outright.",
+          "D": "A product Q&A chatbot is not explicitly banned or listed as high-risk; it falls in the largely unregulated category.",
+          "E": "A course recommendation engine is not banned or listed as high-risk; it is largely unregulated."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "sagemaker-clarify",
+      "scenario": "A bank is using an AI model to pre-screen loan applications. Regulators require them to demonstrate that the model does not discriminate based on protected attributes and to show which features most influence approval decisions.",
+      "stem": "How should the bank use Amazon SageMaker Clarify to meet these regulatory requirements? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Monitor for bias in the model's results and training data" },
+        { "key": "B", "text": "Analyze feature attribution to understand how different variables influence the model's behavior" },
+        { "key": "C", "text": "Automatically remove biased predictions before they reach customers" },
+        { "key": "D", "text": "Retrain the model with balanced data to eliminate all bias permanently" },
+        { "key": "E", "text": "Generate synthetic training data that ensures equal outcomes for all groups" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Clarify monitors for bias and feature attribution drift, and helps understand how different variables influence model behavior. These capabilities directly address regulatory requirements for non-discrimination and decision explainability.",
+        "distractors": {
+          "C": "Clarify detects and reports bias but does not automatically remove or modify predictions. Remediation decisions are made by the team.",
+          "D": "While balanced data helps reduce bias, Clarify's role is to detect and monitor bias, not to retrain models. Bias cannot be eliminated permanently with a single retraining.",
+          "E": "Clarify does not generate synthetic data. It analyzes existing data and model outputs for bias and attribution patterns."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "soc-reports",
+      "scenario": "A SaaS company wants to achieve SOC 2 compliance to demonstrate trustworthiness to their customers. Their workloads run on AWS, and they want to leverage the compliance work AWS has already completed.",
+      "stem": "How does the AWS SOC 2 report help this company achieve their own SOC 2 compliance?",
+      "options": [
+        { "key": "A", "text": "It serves as a starting point because the customer inherits AWS's infrastructure controls, reducing their audit scope" },
+        { "key": "B", "text": "It automatically grants SOC 2 compliance to any company running on AWS" },
+        { "key": "C", "text": "It replaces the need for the company to configure any security controls of their own" },
+        { "key": "D", "text": "It provides a template for the company to create their own data centers" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The AWS SOC 2 report serves as a starting point. Customers inherit AWS infrastructure controls documented in the report, which reduces audit scope. The customer's auditor then verifies that the customer has configured their own security controls correctly.",
+        "distractors": {
+          "B": "Running on AWS does not automatically grant SOC 2 compliance. The customer must still configure and verify their own controls.",
+          "C": "Customers still need to configure their own security controls. They inherit infrastructure-level controls but are responsible for workload-level security.",
+          "D": "The SOC 2 report validates AWS operations; it has nothing to do with creating separate data centers."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "nist-rmf",
+      "scenario": "An AI governance committee at a manufacturing company is adopting the NIST AI Risk Management Framework. A board member asks whether the framework is a mandatory regulation that carries legal penalties for noncompliance.",
+      "stem": "What is the nature of the NIST AI Risk Management Framework?",
+      "options": [
+        { "key": "A", "text": "It is a legally binding federal regulation with enforcement mechanisms" },
+        { "key": "B", "text": "It is a voluntary framework that provides guidance on managing AI risk" },
+        { "key": "C", "text": "It is an AWS-specific standard that only applies to workloads on AWS" },
+        { "key": "D", "text": "It is a European regulation similar to the EU AI Act" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The NIST AI RMF is intended to be voluntary. It provides guidance and a resource for organizations to help manage the risks of AI systems and promote trustworthy, responsible AI development and use.",
+        "distractors": {
+          "A": "The NIST AI RMF is voluntary guidance, not a legally binding regulation. It does not carry enforcement penalties.",
+          "C": "NIST is a US government agency. The framework is cloud-agnostic and not specific to any cloud provider.",
+          "D": "The NIST AI RMF is a US framework from the National Institute of Standards and Technology, not a European regulation."
+        }
+      }
+    }
+  ]
+}

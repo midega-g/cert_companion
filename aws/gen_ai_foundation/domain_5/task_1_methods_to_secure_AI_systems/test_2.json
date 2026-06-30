@@ -1,0 +1,458 @@
+{
+  "label": "Encryption, Network Security & AI Attacks — Part A",
+  "order": 2,
+  "topic": "Domain 5: Security, Compliance, and Governance for AI Solutions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "encryption",
+      "scenario": null,
+      "stem": "Which statement accurately describes server-side encryption for AWS services?",
+      "options": [
+        { "key": "A", "text": "The customer encrypts data before sending it to the AWS service" },
+        { "key": "B", "text": "The AWS service encrypts data after receiving it, and it is usually enabled as a configuration option" },
+        { "key": "C", "text": "Server-side encryption requires customers to manage their own encryption algorithms" },
+        { "key": "D", "text": "Server-side encryption is only available for compute services, not storage services" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Server-side encryption means the AWS service encrypts the data on behalf of the customer. It is usually an option that you enable when configuring a resource, making it the easiest way to ensure encryption is applied consistently.",
+        "distractors": {
+          "A": "This describes client-side encryption, where the customer encrypts data before sending it to AWS.",
+          "C": "With server-side encryption, AWS manages the encryption algorithm. The customer only needs to enable the option and optionally choose which key to use.",
+          "D": "Server-side encryption is available for storage and many other service types including S3, DynamoDB, and SageMaker."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "encryption",
+      "scenario": null,
+      "stem": "Which AWS services encrypt data by default without requiring the customer to explicitly enable encryption?",
+      "options": [
+        { "key": "A", "text": "Amazon EC2 and AWS Lambda" },
+        { "key": "B", "text": "Amazon S3, Amazon DynamoDB, and Amazon SageMaker" },
+        { "key": "C", "text": "Amazon SageMaker and Amazon EC2" },
+        { "key": "D", "text": "AWS Lambda and Amazon DynamoDB" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Amazon S3, Amazon DynamoDB, and Amazon SageMaker encrypt data by default without the customer having to enable it. SageMaker encrypts all data on ML storage volumes including notebook instances, jobs, and endpoints.",
+        "distractors": {
+          "A": "EC2 does not encrypt EBS volumes by default; this must be enabled. Lambda is not mentioned as a default-encryption service in this context.",
+          "C": "While SageMaker encrypts by default, EC2 does not automatically encrypt storage volumes.",
+          "D": "While DynamoDB encrypts by default, Lambda is not listed among services with default encryption in this context."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "kms",
+      "scenario": null,
+      "stem": "What happens when a service with default encryption (such as Amazon S3) encrypts data without the customer specifying an AWS KMS key?",
+      "options": [
+        { "key": "A", "text": "The data is stored unencrypted until a KMS key is manually assigned" },
+        { "key": "B", "text": "The service uses keys that are owned by the service, not by the customer" },
+        { "key": "C", "text": "The service generates a customer-managed key automatically in the customer's account" },
+        { "key": "D", "text": "The data is encrypted with the customer's root user credentials" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Services with default encryption use keys owned by the service itself unless the customer specifies an AWS KMS key to use. The customer can optionally provide their own KMS key for more control.",
+        "distractors": {
+          "A": "Services with default encryption always encrypt data. They do not store it unencrypted waiting for a key.",
+          "C": "Service-owned keys are not the same as customer-managed keys. A customer-managed key is only used if explicitly specified.",
+          "D": "Root user credentials are authentication credentials, not encryption keys. Encryption uses KMS keys or service-owned keys."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "kms",
+      "scenario": null,
+      "stem": "What is a security benefit of using AWS KMS customer-managed keys for encrypting S3 data?",
+      "options": [
+        { "key": "A", "text": "It eliminates the need for S3 bucket policies entirely" },
+        { "key": "B", "text": "It adds a layer of protection because access to both the bucket and the KMS key is required to read data" },
+        { "key": "C", "text": "It allows public access to encrypted data since the data is unreadable without the key" },
+        { "key": "D", "text": "It automatically rotates IAM user credentials on a daily basis" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Using KMS keys adds another layer of protection. Even if someone is accidentally granted read permissions to an S3 bucket, they cannot read the data unless they also have permissions to use the KMS key needed to decrypt it.",
+        "distractors": {
+          "A": "KMS encryption does not replace bucket policies. Both access control and encryption work together as defense in depth.",
+          "C": "Public access should still be blocked. Encryption is not a substitute for access control policies.",
+          "D": "KMS manages encryption keys, not IAM user credentials. Key rotation and credential rotation are separate concepts."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "encryption",
+      "scenario": null,
+      "stem": "What is the default behavior of inter-node traffic during SageMaker distributed training?",
+      "options": [
+        { "key": "A", "text": "Inter-node traffic is encrypted by default using TLS" },
+        { "key": "B", "text": "Inter-node traffic is not encrypted by default, but an option exists to enable it" },
+        { "key": "C", "text": "Inter-node traffic is routed through a VPN tunnel automatically" },
+        { "key": "D", "text": "Inter-node traffic is blocked by default and must be explicitly allowed" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "By default, inter-node traffic in SageMaker distributed training is not encrypted. An option exists to enable it, though enabling it can increase training times for some algorithms, particularly deep learning ones.",
+        "distractors": {
+          "A": "While all AWS service endpoints support TLS for API requests, inter-node cluster traffic is not encrypted by default.",
+          "C": "SageMaker does not automatically route inter-node traffic through a VPN. Encryption must be explicitly enabled.",
+          "D": "Inter-node traffic is allowed by default for distributed training to function. It is the encryption that is disabled, not the traffic."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "vpc-security",
+      "scenario": null,
+      "stem": "Which mechanisms can be used to control network traffic when SageMaker Studio is launched in a customer's VPC? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Security groups" },
+        { "key": "B", "text": "AWS KMS key policies" },
+        { "key": "C", "text": "Network access control lists" },
+        { "key": "D", "text": "S3 Block Public Access" },
+        { "key": "E", "text": "IAM user password policies" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "When using your own VPC, you can control traffic using security groups, network access lists, and network firewalls. Security groups and NACLs are the primary VPC-level network controls.",
+        "distractors": {
+          "B": "KMS key policies control access to encryption keys, not network traffic flow.",
+          "D": "S3 Block Public Access controls bucket accessibility, not VPC network traffic.",
+          "E": "IAM password policies govern authentication requirements, not network traffic control."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "vpc-security",
+      "scenario": null,
+      "stem": "Which statements about SageMaker Studio networking are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "SageMaker Studio is launched in a VPC managed by SageMaker and has direct internet access by default" },
+        { "key": "B", "text": "Specifying VPC only for the network access type prevents SageMaker from giving notebook instances internet access" },
+        { "key": "C", "text": "SageMaker Studio cannot be configured to run in a customer's VPC" },
+        { "key": "D", "text": "VPC only mode makes public endpoints for services like S3 and CloudWatch unreachable from Studio" },
+        { "key": "E", "text": "SageMaker Studio always requires internet access to function properly" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SageMaker Studio and notebook instances are launched in a SageMaker-managed VPC with direct internet access by default. Specifying VPC only for the network access type prevents internet access from being granted.",
+        "distractors": {
+          "C": "Customers can create a VPC and specify it when launching SageMaker Studio, which creates an elastic network interface in the customer's VPC.",
+          "D": "While VPC only mode does make public endpoints unreachable, VPC interface endpoints can be used to maintain private access to these services. This is a partial truth but misses the resolution.",
+          "E": "SageMaker Studio can operate without internet access when VPC only mode is used with VPC interface endpoints for required services."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "ai-attacks",
+      "scenario": null,
+      "stem": "Which types of attacks specifically target AI/ML systems? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Data poisoning by introducing malicious data into training datasets" },
+        { "key": "B", "text": "Adversarial inputs that cause a model to misclassify manipulated data" },
+        { "key": "C", "text": "SQL injection attacks against model training code" },
+        { "key": "D", "text": "Model inversion where an attacker infers training data from model outputs" },
+        { "key": "E", "text": "Cross-site scripting attacks on SageMaker endpoints" },
+        { "key": "F", "text": "DDoS attacks against VPC subnets" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "Data poisoning corrupts training data to alter predictions. Adversarial inputs manipulate input data to cause misclassification. Model inversion uses repeated queries to infer training data from model outputs. These are AI-specific attack vectors.",
+        "distractors": {
+          "C": "SQL injection is a general application security vulnerability, not an AI-specific attack vector.",
+          "E": "Cross-site scripting is a web application vulnerability, not specific to AI/ML systems.",
+          "F": "DDoS attacks target availability of any service, not specifically AI/ML model behavior."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "ai-mitigation",
+      "scenario": null,
+      "stem": "Which are recommended practices for mitigating AI-specific security threats? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Train models with adversarial input to improve robustness" },
+        { "key": "B", "text": "Provide detailed model architecture information in the output to help users" },
+        { "key": "C", "text": "Inspect and validate user input data before passing it to the model" },
+        { "key": "D", "text": "Retrain models frequently on new data to undo damage from corrupted training data" },
+        { "key": "E", "text": "Share model weights publicly for transparency and peer review" },
+        { "key": "F", "text": "Disable encryption on training data to improve training performance" }
+      ],
+      "correct": ["A", "C", "D"],
+      "explanation": {
+        "correct": "Training with adversarial input makes models more robust against adversarial attacks. Inspecting and validating user input catches unusual patterns and prompt injection. Frequent retraining on new data helps undo damage from any corrupted training data.",
+        "distractors": {
+          "B": "Providing unnecessary information in model output helps attackers infer information about the model. Output should be minimized.",
+          "E": "Sharing model weights would make it easy for attackers to reverse engineer the model. Access should be limited and controlled.",
+          "F": "Disabling encryption would violate security best practices. Data and artifacts should be encrypted as an extra layer of protection."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "model-monitor",
+      "scenario": null,
+      "stem": "Which capabilities does Amazon SageMaker Model Monitor provide? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Continuously monitors the quality of deployed models in real time" },
+        { "key": "B", "text": "Automatically retrains models when drift is detected" },
+        { "key": "C", "text": "Sets up automated alerts for deviations in model quality such as data drift" },
+        { "key": "D", "text": "Generates new training data to improve model accuracy" },
+        { "key": "E", "text": "Automatically rolls back model deployments when anomalies are detected" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "SageMaker Model Monitor continuously monitors model quality in real time and can set up automated alert systems for deviations such as data drift or anomalies. It compares data and model outputs against baselines.",
+        "distractors": {
+          "B": "Model Monitor detects drift and alerts you, but does not automatically retrain models. Retraining requires separate action.",
+          "D": "Model Monitor monitors existing data quality; it does not generate new training data.",
+          "E": "Model Monitor alerts on anomalies but does not automatically roll back deployments. Prompt action is taken by the team based on alerts."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "encryption",
+      "scenario": "A financial services company is building a fraud detection model using Amazon SageMaker. Their security team requires that all data at rest be encrypted with keys that the company controls, including the ability to rotate keys and revoke access.",
+      "stem": "Which encryption approach meets the security team's requirements?",
+      "options": [
+        { "key": "A", "text": "Rely on SageMaker's default encryption with service-owned keys" },
+        { "key": "B", "text": "Use AWS KMS with customer-managed keys and specify them when configuring SageMaker resources" },
+        { "key": "C", "text": "Enable S3 Block Public Access on all training data buckets" },
+        { "key": "D", "text": "Use IAM policies to restrict who can read the data instead of encrypting it" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "AWS KMS customer-managed keys give the customer control over key policies, IAM policies for the key, key rotation, and the ability to enable or disable the key. Specifying a KMS key overrides the default service-owned key.",
+        "distractors": {
+          "A": "Service-owned keys are managed by AWS, not the customer. The customer cannot control rotation or revoke access with service-owned keys.",
+          "C": "S3 Block Public Access controls who can access data publicly but does not provide customer-controlled encryption keys.",
+          "D": "IAM policies control access but do not encrypt data. If the storage medium is compromised, unencrypted data is readable."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "macie",
+      "scenario": "A healthcare company stores patient records in Amazon S3 for use in training a diagnostic ML model. Their compliance team needs to automatically detect if personally identifiable information such as social security numbers or medical record numbers exists in their training data buckets.",
+      "stem": "Which AWS service should the compliance team use to identify sensitive data in their S3 buckets?",
+      "options": [
+        { "key": "A", "text": "Amazon Macie" },
+        { "key": "B", "text": "Amazon SageMaker Model Monitor" },
+        { "key": "C", "text": "AWS CloudTrail" },
+        { "key": "D", "text": "AWS Key Management Service" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Amazon Macie uses ML and pattern matching to identify and alert on sensitive data such as PII in S3 buckets. It continuously evaluates buckets and generates an inventory of their size, access state, and encryption status.",
+        "distractors": {
+          "B": "SageMaker Model Monitor monitors deployed model quality and data drift, not sensitive data discovery in storage.",
+          "C": "CloudTrail logs API calls for auditing but does not scan data content for PII.",
+          "D": "KMS manages encryption keys but does not detect or classify sensitive data content."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "vpc-security",
+      "scenario": "A machine learning team runs SageMaker Studio in VPC only mode to meet their organization's requirement that no traffic traverses the public internet. They need Studio to access Amazon S3 and the SageMaker API without internet connectivity.",
+      "stem": "Which solution enables private connectivity to these AWS services from VPC only mode?",
+      "options": [
+        { "key": "A", "text": "Configure a NAT gateway in the VPC to route traffic to S3 and the SageMaker API" },
+        { "key": "B", "text": "Create VPC interface endpoints using AWS PrivateLink for the required services" },
+        { "key": "C", "text": "Add an internet gateway to the VPC and restrict traffic with security groups" },
+        { "key": "D", "text": "Use AWS Direct Connect to establish a dedicated connection to the SageMaker public endpoint" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "VPC interface endpoints connect your VPC directly to AWS services using AWS PrivateLink. In VPC only mode, public endpoints are unreachable, so interface endpoints provide the necessary private network path to services like S3 and the SageMaker API.",
+        "distractors": {
+          "A": "A NAT gateway routes traffic to the internet, which contradicts the requirement that no traffic traverses the public internet.",
+          "C": "An internet gateway provides public internet access, which violates the VPC only mode requirement.",
+          "D": "Direct Connect provides a private connection to AWS but connecting to a public endpoint still involves public routing. Interface endpoints are the correct solution for private service access."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "ai-attacks",
+      "scenario": "A security company deploys a facial recognition model for employee access control. A penetration tester demonstrates that by making subtle, carefully designed modifications to a photograph, the model identifies the tester as an authorized employee.",
+      "stem": "Which type of AI-specific attack does this demonstration represent?",
+      "options": [
+        { "key": "A", "text": "Data poisoning" },
+        { "key": "B", "text": "Adversarial inputs" },
+        { "key": "C", "text": "Model inversion" },
+        { "key": "D", "text": "Prompt injection" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Adversarial inputs involve slightly manipulating input data in a way that causes the model to misclassify it. The attacker makes subtle but carefully designed modifications to cause the model to recognize them as someone else.",
+        "distractors": {
+          "A": "Data poisoning involves corrupting training data, not manipulating inputs at inference time.",
+          "C": "Model inversion involves inferring training data from model outputs by repeatedly querying the model. It does not involve modifying input images to fool the model.",
+          "D": "Prompt injection targets large language models by providing malicious instructions in the prompt. It does not apply to image classification models."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "ai-attacks",
+      "scenario": "A bank's fraud detection model was trained on transactions labeled as fraud and not fraud. After a security review, the team discovers that an attacker gained access to the training dataset and added fraudulent transactions labeled as 'not fraud.'",
+      "stem": "Which type of attack has been carried out against this model?",
+      "options": [
+        { "key": "A", "text": "Adversarial inputs" },
+        { "key": "B", "text": "Prompt injection" },
+        { "key": "C", "text": "Data poisoning" },
+        { "key": "D", "text": "Model inversion" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Data poisoning occurs when a malicious actor gains access to training data and introduces data that changes the model's predictions. Adding mislabeled fraudulent transactions to training data causes the model to misclassify similar transactions.",
+        "distractors": {
+          "A": "Adversarial inputs manipulate data at inference time to cause misclassification, not during training.",
+          "B": "Prompt injection targets LLMs through malicious instructions in prompts. It does not involve corrupting training data.",
+          "D": "Model inversion infers training data from model outputs. It does not involve modifying the training dataset."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "ai-attacks",
+      "scenario": "A technology company exposes a facial recognition API that returns an employee's name and a confidence score. Their security team is concerned about an attacker repeatedly querying the API with different facial images to reconstruct employee photos.",
+      "stem": "Which countermeasures should the security team implement to mitigate this model inversion risk? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Limit and control access to the model API to prevent unauthorized querying" },
+        { "key": "B", "text": "Remove the confidence score from the API output to reduce information available to attackers" },
+        { "key": "C", "text": "Encrypt the model weights using AWS KMS" },
+        { "key": "D", "text": "Retrain the model weekly with new employee photos" },
+        { "key": "E", "text": "Deploy the model in a public subnet for better performance" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Limiting access to the model blocks unauthorized querying needed for inversion attacks. Removing unnecessary information like confidence scores from the output reduces what an attacker can use to infer training data.",
+        "distractors": {
+          "C": "Encrypting model weights protects against theft of the model artifact but does not prevent model inversion through the API.",
+          "D": "Retraining with new data helps undo damage from poisoned data but does not prevent inversion attacks through API queries.",
+          "E": "Deploying in a public subnet makes the API more accessible, which would worsen the risk rather than mitigate it."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "ai-attacks",
+      "scenario": "A company deploys a customer service chatbot powered by a large language model. Their red team demonstrates that by crafting specific prompts, they can instruct the LLM to ignore its system prompt and reveal sensitive internal information.",
+      "stem": "Which mitigations should the company implement to defend against this prompt injection attack? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Inspect and validate user input to detect key attack patterns before passing it to the model" },
+        { "key": "B", "text": "Train the model to detect prompt injection patterns and return a safe default response" },
+        { "key": "C", "text": "Enable server-side encryption on the model artifacts in S3" },
+        { "key": "D", "text": "Increase the size of the training dataset to dilute any malicious prompts" },
+        { "key": "E", "text": "Deploy the model on a larger instance type to process prompts faster" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "Input validation inspects user prompts for unusual patterns and known attack signatures. Teaching the LLM to detect prompt injection patterns lets it return a safe response like 'prompt attack detected' instead of following malicious instructions.",
+        "distractors": {
+          "C": "Encrypting model artifacts protects against data theft but does not prevent prompt injection at inference time.",
+          "D": "Increasing training data size does not address runtime prompt injection. The attack manipulates inference inputs, not training data.",
+          "E": "Instance size affects performance, not security. A faster instance would process malicious prompts just as readily."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "model-monitor",
+      "scenario": "An e-commerce company notices that their product recommendation model's click-through rate has dropped significantly over the past month. They want to set up continuous monitoring to detect similar degradations early and identify whether the root cause is data quality issues or model performance decline.",
+      "stem": "Which steps are required to use SageMaker Model Monitor for detecting these issues? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Enable data capture on the inference endpoint to store input and output data in S3" },
+        { "key": "B", "text": "Create a baseline using the training dataset to compare against current data" },
+        { "key": "C", "text": "Retrain the model automatically each time drift is detected" },
+        { "key": "D", "text": "Schedule monitoring jobs that generate statistics for baseline and current datasets" },
+        { "key": "E", "text": "Deploy a separate model specifically for monitoring the primary model's outputs" },
+        { "key": "F", "text": "Disable CloudWatch integration to reduce monitoring overhead" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "To use Model Monitor: (1) enable data capture to store inference input/output in S3, (2) create a baseline from the training dataset, and (3) schedule monitoring jobs that compare current data statistics against the baseline.",
+        "distractors": {
+          "C": "Model Monitor detects drift and generates alerts but does not automatically retrain models. Retraining is a separate action.",
+          "E": "Model Monitor is the monitoring mechanism itself. You do not need to deploy a separate model for monitoring.",
+          "F": "Model Monitor sends statistics and metrics to CloudWatch for visibility and alerting. Disabling CloudWatch would remove critical monitoring capability."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "macie",
+      "scenario": "A data engineering team is preparing training data for a credit scoring model. They store raw customer data in S3 that includes names, addresses, and social security numbers. They need to ensure PII is identified and removed before the data is used for training.",
+      "stem": "At what point in the ML workflow should PII typically be removed from training data?",
+      "options": [
+        { "key": "A", "text": "After model deployment during inference" },
+        { "key": "B", "text": "At the point of data ingestion and transformation" },
+        { "key": "C", "text": "During the model evaluation phase" },
+        { "key": "D", "text": "Only when a compliance audit is scheduled" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "PII should be removed from training data at the point of ingestion and transformation. There is no reason to train a model on credit card numbers, names, addresses, or social security numbers.",
+        "distractors": {
+          "A": "Removing PII after deployment is too late. The model would have already been trained on sensitive data, potentially memorizing it.",
+          "C": "The evaluation phase occurs after training. PII must be removed before it enters the training pipeline.",
+          "D": "PII removal is a continuous data governance practice, not something done only during audits."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "model-monitor",
+      "scenario": "A logistics company's demand forecasting model has been in production for six months. The operations team observes that predictions have shifted significantly from historical patterns but are unsure whether this is due to seasonal changes or a potential data quality attack.",
+      "stem": "Which approach should the team take first to investigate this prediction shift?",
+      "options": [
+        { "key": "A", "text": "Immediately retrain the model on the latest data without further investigation" },
+        { "key": "B", "text": "Investigate the root cause by checking data quality and scanning for anomalies before taking action" },
+        { "key": "C", "text": "Roll back to the original model version and ignore the current predictions" },
+        { "key": "D", "text": "Increase the number of inference instances to handle the prediction shift" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When model predictions change from historical patterns, the occurrence should be investigated to determine whether the root cause is low data quality or an attack. Routinely scanning and monitoring data for quality and anomalies is the recommended first step.",
+        "distractors": {
+          "A": "Retraining immediately without investigation could reinforce corrupted data if the shift was caused by a data poisoning attack.",
+          "C": "Rolling back without investigation does not address the root cause and ignores potentially valid new patterns.",
+          "D": "Adding instances addresses capacity, not prediction accuracy or data quality issues."
+        }
+      }
+    }
+  ]
+}
