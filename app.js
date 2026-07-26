@@ -234,9 +234,11 @@ function $(id) {
 }
 
 function showView(name) {
-  ["home", "topic", "tests", "exam", "report", "auth"].forEach((v) => {
-    $(`view-${v}`).classList.toggle("hidden", v !== name);
-  });
+  ["home", "topic", "tests", "exam", "report", "auth", "history"].forEach(
+    (v) => {
+      $(`view-${v}`).classList.toggle("hidden", v !== name);
+    },
+  );
 }
 
 function setBreadcrumb(crumbs) {
@@ -323,6 +325,9 @@ async function renderHome() {
         ? '<p class="auth-prompt"><a href="#" onclick="showAuthView(); return false;">Sign in</a> to sync progress across devices</p>'
         : ""
     }
+    <div class="home-actions">
+      <button class="btn btn-secondary btn-sm" onclick="renderHistory()">History</button>
+    </div>
     <div class="card-grid">
       ${providers
         .map(
@@ -786,9 +791,254 @@ function goPrev() {
   }
 }
 
+/* ─── Performance History ────────────────────────────────────────── */
+async function saveHistory() {
+  const questions = state.exam.questions;
+  const total = questions.length;
+
+  let score = 0;
+  const perQuestionResults = questions.map((q, i) => {
+    const isCorrect = countCorrect(q, state.answers[i].selected);
+    if (isCorrect) score++;
+    return {
+      questionId: q.id,
+      domain: q.domain,
+      correct: isCorrect,
+      userAnswer: state.answers[i].selected,
+      correctAnswer: q.correct,
+    };
+  });
+
+  const domainBreakdown = {};
+  questions.forEach((q, i) => {
+    if (!domainBreakdown[q.domain])
+      domainBreakdown[q.domain] = { correct: 0, total: 0 };
+    domainBreakdown[q.domain].total++;
+    if (countCorrect(q, state.answers[i].selected))
+      domainBreakdown[q.domain].correct++;
+  });
+
+  const record = {
+    testPath: state.testMeta.path,
+    testLabel: state.testMeta.label,
+    topic: state.exam.topic,
+    provider: state.navPath[0] ? state.navPath[0].id : null,
+    score,
+    total,
+    percentage: Math.round((score / total) * 100),
+    domainBreakdown,
+    perQuestionResults,
+    completedAt: Date.now(),
+  };
+
+  // Save to localStorage (capped at 100 entries)
+  try {
+    const raw = localStorage.getItem("cert_history");
+    const history = raw ? JSON.parse(raw) : [];
+    history.unshift(record);
+    if (history.length > 100) history.length = 100;
+    localStorage.setItem("cert_history", JSON.stringify(history));
+  } catch (e) {
+    /* ignore */
+  }
+
+  // Save to Firestore if authenticated
+  if (state.user && window.firestoreAddDoc) {
+    try {
+      const colRef = window.firestoreCollection(
+        window.firebaseDb,
+        "users",
+        state.user.uid,
+        "history",
+      );
+      await window.firestoreAddDoc(colRef, record);
+    } catch (e) {
+      /* network error — localStorage has it */
+    }
+  }
+}
+
+async function loadHistory() {
+  // If authenticated, load from Firestore
+  if (state.user && window.firestoreGetDocs) {
+    try {
+      const colRef = window.firestoreCollection(
+        window.firebaseDb,
+        "users",
+        state.user.uid,
+        "history",
+      );
+      const q = window.firestoreQuery(
+        colRef,
+        window.firestoreOrderBy("completedAt", "desc"),
+      );
+      const snap = await window.firestoreGetDocs(q);
+      const results = [];
+      snap.forEach((doc) => results.push(doc.data()));
+      return results;
+    } catch (e) {
+      /* fall through to localStorage */
+    }
+  }
+  // Fallback to localStorage
+  try {
+    const raw = localStorage.getItem("cert_history");
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+/* ─── HISTORY VIEW ──────────────────────────────────────────────── */
+async function renderHistory() {
+  showView("history");
+  setBreadcrumb([
+    { label: "Home", action: "renderHome()" },
+    { label: "History" },
+  ]);
+
+  const el = $("view-history");
+  el.innerHTML = `
+    <h1 class="page-title">Performance History</h1>
+    <div class="state-msg">Loading...</div>`;
+
+  const history = await loadHistory();
+
+  if (history.length === 0) {
+    el.innerHTML = `
+      <h1 class="page-title">Performance History</h1>
+      <p class="page-subtitle">No completed tests yet</p>
+      <p class="state-msg">Complete a test to see your performance history here.</p>`;
+    return;
+  }
+
+  // Aggregate stats
+  const totalTests = history.length;
+  const avgScore = Math.round(
+    history.reduce((sum, h) => sum + h.percentage, 0) / totalTests,
+  );
+
+  // Find weakest domains across all attempts
+  const domainAgg = {};
+  history.forEach((h) => {
+    if (h.domainBreakdown) {
+      Object.entries(h.domainBreakdown).forEach(([domain, data]) => {
+        if (!domainAgg[domain]) domainAgg[domain] = { correct: 0, total: 0 };
+        domainAgg[domain].correct += data.correct;
+        domainAgg[domain].total += data.total;
+      });
+    }
+  });
+  const weakDomains = Object.entries(domainAgg)
+    .map(([d, v]) => ({
+      domain: d,
+      pct: Math.round((v.correct / v.total) * 100),
+    }))
+    .sort((a, b) => a.pct - b.pct)
+    .slice(0, 5);
+
+  // Build history list
+  const historyItems = history
+    .map((h, idx) => {
+      const date = new Date(h.completedAt).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+      const time = new Date(h.completedAt).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const pctClass =
+        h.percentage >= 80
+          ? "score-high"
+          : h.percentage >= 60
+            ? "score-mid"
+            : "score-low";
+
+      const domainBars = h.domainBreakdown
+        ? Object.entries(h.domainBreakdown)
+            .map(([d, v]) => {
+              const dpct = Math.round((v.correct / v.total) * 100);
+              return `<div class="history-domain-row">
+              <span class="history-domain-name">${d}</span>
+              <div class="history-bar-track">
+                <div class="history-bar-fill ${
+                  dpct >= 80 ? "bar-high" : dpct >= 60 ? "bar-mid" : "bar-low"
+                }" style="width:${dpct}%"></div>
+              </div>
+              <span class="history-domain-score">${v.correct}/${v.total}</span>
+            </div>`;
+            })
+            .join("")
+        : "";
+
+      return `
+      <div class="history-item">
+        <div class="history-item-header" onclick="toggleHistoryDetail(${idx})">
+          <div class="history-item-info">
+            <span class="history-item-label">${h.testLabel || h.topic}</span>
+            <span class="history-item-date">${date} ${time}</span>
+          </div>
+          <div class="history-item-score ${pctClass}">${h.percentage}%
+            <span class="history-item-raw">(${h.score}/${h.total})</span>
+          </div>
+        </div>
+        <div class="history-item-detail hidden" id="history-detail-${idx}">
+          ${domainBars}
+        </div>
+      </div>`;
+    })
+    .join("");
+
+  // Weak domains section
+  const weakDomainsHTML =
+    weakDomains.length > 0
+      ? `<div class="section-heading">Areas to Improve</div>
+       <div class="weak-domains">
+         ${weakDomains
+           .map(
+             (d) =>
+               `<div class="weak-domain-item"><span>${
+                 d.domain
+               }</span><span class="${
+                 d.pct >= 80
+                   ? "score-high"
+                   : d.pct >= 60
+                     ? "score-mid"
+                     : "score-low"
+               }">${d.pct}%</span></div>`,
+           )
+           .join("")}
+       </div>`
+      : "";
+
+  el.innerHTML = `
+    <h1 class="page-title">Performance History</h1>
+    <div class="history-stats">
+      <div class="stat-card">
+        <div class="stat-value">${totalTests}</div>
+        <div class="stat-label">Tests Taken</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${avgScore}%</div>
+        <div class="stat-label">Average Score</div>
+      </div>
+    </div>
+    ${weakDomainsHTML}
+    <div class="section-heading">All Attempts</div>
+    <div class="history-list">${historyItems}</div>`;
+}
+
+function toggleHistoryDetail(idx) {
+  const detail = document.getElementById(`history-detail-${idx}`);
+  if (detail) detail.classList.toggle("hidden");
+}
+
 /* ─── REPORT VIEW ───────────────────────────────────────────────── */
 function renderReport() {
   clearSession(); // Test complete — no need to resume
+  saveHistory(); // Persist results for performance tracking
   showView("report");
   const crumbs = [{ label: "Home", action: "renderHome()" }];
   state.navPath.forEach((n, i) => {
