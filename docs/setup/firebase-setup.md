@@ -195,6 +195,20 @@ On first sign-in, `migrateLocalData()` runs once:
 
 ---
 
+---
+
+## Authorized Domains
+
+To restrict which domains can use your Firebase project for authentication, go to the Firebase Console → **Security** → **Authentication** → **Settings** → **Authorized domains**. Add your GitHub Pages domain (e.g., `midega-g.github.io`). The following domains are authorized by default:
+
+- `localhost` (for local development)
+- `cert-companion.firebaseapp.com`
+- `cert-companion.web.app`
+
+Note: This is separate from Google Cloud API key restrictions. The authorized domains setting controls where Firebase Auth can be used for sign-in flows.
+
+---
+
 ## GitHub Account
 
 This project uses the `midega-g` GitHub account:

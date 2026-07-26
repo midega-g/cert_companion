@@ -155,6 +155,13 @@ If `order` is omitted, the manifest falls back to sorting by the numeric index i
 
 The JSON schema example shows `"correct": ["A"]` for illustration purposes only. The correct answer(s) must be distributed naturally across all option keys (A–F). Do not default the correct answer to "A" for every question. A realistic exam has correct answers spread across A, B, C, D, E, and F.
 
+**Multi-select answer positioning rule:** For multi-select questions, do NOT cluster the correct answers at the beginning of the options list. Correct answers must be distributed throughout the option positions. For example:
+
+* Select TWO — valid distributions: [A, D], [B, E], [C, E], [A, E], [B, D]. Invalid patterns: [A, B] for every question.
+* Select THREE — valid distributions: [A, C, E], [B, D, F], [A, D, F], [B, C, F]. Invalid patterns: [A, B, C] for every question.
+
+Shuffle the position of correct answers across the full range of options. If you notice a pattern forming (e.g., the first N options are always correct), actively break it by placing correct answers in later positions.
+
 ---
 
 # OPTION COUNT RULES
@@ -180,3 +187,65 @@ When generating in parts:
 3. Final part: close the JSON array and object (`]}`) properly.
 
 Each part must be appended to the same file. The final result must be a single valid JSON file.
+
+---
+
+# SOURCE MATERIAL WORKFLOW
+
+## Obtaining source material
+
+Two methods are available for providing source material:
+
+1. **Links (preferred for token efficiency):** Provide URLs to official documentation. Use `web_fetch` with selective mode to extract relevant sections without loading full page chrome/navigation. Multiple pages can be fetched to build complete coverage.
+
+2. **Document upload:** Paste or upload documentation directly. Use when the content is not available online, when you have curated notes, or when web_fetch cannot extract the needed content cleanly.
+
+Links are preferred because `web_fetch` in selective mode uses fewer tokens than pasting full documents.
+
+## Content assessment before generation
+
+Before generating questions, assess the fetched content to determine:
+
+1. **Content depth per topic:** Categorize each page/section as Low, Medium, High, or Very High depth.
+2. **Key testable concepts:** List the specific facts, behaviors, defaults, commands, and relationships that can become questions.
+3. **Number of tests needed:** Base this on content volume:
+   * Thin content (1-2 short pages) → 1 test
+   * Medium content (3-6 pages with moderate depth) → 2 tests
+   * Dense content (6+ pages with high depth, many testable concepts) → 3 tests
+4. **Test breakdown:** Define what each test will cover before generating anything.
+
+## Validation after generation
+
+After generating a test file, run the following checks:
+
+```bash
+# Validate JSON syntax
+python3 -c "import json; json.load(open('path/to/test_N.json'))"
+
+# Check question count and distribution
+python3 -c "
+import json
+data = json.load(open('path/to/test_N.json'))
+print(f'Questions: {len(data[\"questions\"])}')
+direct_single = sum(1 for q in data['questions'] if q['scenario'] is None and q['type'] == 'single')
+direct_multi = sum(1 for q in data['questions'] if q['scenario'] is None and q['type'] == 'multi')
+scenario_single = sum(1 for q in data['questions'] if q['scenario'] is not None and q['type'] == 'single')
+scenario_multi = sum(1 for q in data['questions'] if q['scenario'] is not None and q['type'] == 'multi')
+print(f'Direct single: {direct_single}, Direct multi: {direct_multi}')
+print(f'Scenario single: {scenario_single}, Scenario multi: {scenario_multi}')
+
+from collections import Counter
+correct_keys = []
+for q in data['questions']:
+    correct_keys.extend(q['correct'])
+print(f'Correct answer distribution: {dict(Counter(correct_keys))}')
+"
+```
+
+Verify:
+* Total = 20 questions
+* Distribution = 3/3/7/7 (direct single / direct multi / scenario single / scenario multi)
+* Correct answers are spread across A–F (not clustered at A/B/C)
+* For multi-select: correct answers are NOT always the first N options
+
+If distribution is off, fix before committing.

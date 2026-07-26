@@ -120,7 +120,7 @@
       "options": [
         {
           "key": "A",
-          "text": "Organization account"
+          "text": "Reader account administrator account"
         },
         {
           "key": "B",
@@ -132,11 +132,11 @@
         },
         {
           "key": "D",
-          "text": "Reader account administrator account"
+          "text": "Data warehouse account"
         },
         {
           "key": "E",
-          "text": "Data warehouse account"
+          "text": "Organization account"
         },
         {
           "key": "F",
@@ -144,15 +144,15 @@
         }
       ],
       "correct": [
-        "A",
         "B",
-        "C"
+        "C",
+        "E"
       ],
       "explanation": {
         "correct": "An organization can consist of three types of accounts: organization accounts (used by organization administrators), regular Snowflake accounts (including trial accounts), and Snowflake Open Catalog accounts (used to manage catalogs in Snowflake Open Catalog).",
         "distractors": {
-          "D": "Reader accounts exist but are a subtype of regular accounts, not a distinct account type at the organization level.",
-          "E": "There is no separate 'data warehouse account' type \u2014 warehouses exist within regular accounts.",
+          "A": "Reader accounts exist but are a subtype of regular accounts, not a distinct account type at the organization level.",
+          "D": "There is no separate 'data warehouse account' type \u2014 warehouses exist within regular accounts.",
           "F": "There is no 'replication controller account' type. Replication is a feature managed through the organization account."
         }
       }
@@ -166,11 +166,11 @@
       "options": [
         {
           "key": "A",
-          "text": "MANAGE ACCOUNTS"
+          "text": "CREATE DATABASE"
         },
         {
           "key": "B",
-          "text": "APPLY TAG"
+          "text": "MANAGE ACCOUNTS"
         },
         {
           "key": "C",
@@ -178,28 +178,28 @@
         },
         {
           "key": "D",
-          "text": "CREATE DATABASE"
-        },
-        {
-          "key": "E",
           "text": "MANAGE WAREHOUSES"
         },
         {
-          "key": "F",
+          "key": "E",
           "text": "IMPORT SHARES"
+        },
+        {
+          "key": "F",
+          "text": "APPLY TAG"
         }
       ],
       "correct": [
-        "A",
         "B",
-        "C"
+        "C",
+        "F"
       ],
       "explanation": {
         "correct": "The GLOBALORGADMIN role can assign MANAGE ACCOUNTS, APPLY TAG, MANAGE LISTING AUTO FULFILLMENT, MANAGE ORGANIZATION CONTACTS, MANAGE ORGANIZATION TERMS, and PURCHASE DATA EXCHANGE LISTING to other roles.",
         "distractors": {
-          "D": "CREATE DATABASE is an account-level privilege, not an organization-level privilege assignable by GLOBALORGADMIN.",
-          "E": "MANAGE WAREHOUSES is not an organization-level privilege \u2014 warehouses are managed within individual accounts.",
-          "F": "IMPORT SHARES is not one of the assignable organization-level privileges."
+          "A": "CREATE DATABASE is an account-level privilege, not an organization-level privilege assignable by GLOBALORGADMIN.",
+          "D": "MANAGE WAREHOUSES is not an organization-level privilege \u2014 warehouses are managed within individual accounts.",
+          "E": "IMPORT SHARES is not one of the assignable organization-level privileges."
         }
       }
     },
@@ -212,7 +212,7 @@
       "options": [
         {
           "key": "A",
-          "text": "Self-service account creation within the organization"
+          "text": "Shared warehouse resources across all accounts"
         },
         {
           "key": "B",
@@ -224,7 +224,7 @@
         },
         {
           "key": "D",
-          "text": "Shared warehouse resources across all accounts"
+          "text": "Self-service account creation within the organization"
         },
         {
           "key": "E",
@@ -232,14 +232,14 @@
         }
       ],
       "correct": [
-        "A",
-        "C"
+        "C",
+        "D"
       ],
       "explanation": {
         "correct": "Organizations provide self-service account creation and a central view of all accounts, along with data replication/failover, cross-region data sharing, and organization-wide usage monitoring.",
         "distractors": {
+          "A": "Warehouse resources are not shared across accounts \u2014 each account has its own warehouses.",
           "B": "Organizations do not provide automatic performance tuning \u2014 each account manages its own performance independently.",
-          "D": "Warehouse resources are not shared across accounts \u2014 each account has its own warehouses.",
           "E": "Data deduplication between accounts is not a feature of organizations."
         }
       }
@@ -397,35 +397,35 @@
       "options": [
         {
           "key": "A",
-          "text": "You must contact Snowflake Support to change the organization name"
-        },
-        {
-          "key": "B",
           "text": "The original account URL can be kept temporarily for up to 90 days if chosen"
         },
         {
-          "key": "C",
+          "key": "B",
           "text": "Organization renaming can be done via ALTER ORGANIZATION command"
         },
         {
-          "key": "D",
+          "key": "C",
           "text": "Renaming the organization immediately invalidates all existing account URLs"
         },
         {
-          "key": "E",
+          "key": "D",
           "text": "The organization can be renamed directly in Snowsight by the GLOBALORGADMIN"
+        },
+        {
+          "key": "E",
+          "text": "You must contact Snowflake Support to change the organization name"
         }
       ],
       "correct": [
         "A",
-        "B"
+        "E"
       ],
       "explanation": {
         "correct": "Changing an organization name requires contacting Snowflake Support. When the name is changed, you can decide whether users can temporarily access accounts using the original account URL, which is automatically dropped after 90 days if kept.",
         "distractors": {
-          "C": "There is no ALTER ORGANIZATION command \u2014 organization renaming requires Snowflake Support.",
-          "D": "The original URL is not immediately invalidated \u2014 it can be kept for up to 90 days by choice.",
-          "E": "Organization renaming cannot be done in Snowsight \u2014 it requires contacting Snowflake Support."
+          "B": "There is no ALTER ORGANIZATION command \u2014 organization renaming requires Snowflake Support.",
+          "C": "The original URL is not immediately invalidated \u2014 it can be kept for up to 90 days by choice.",
+          "D": "Organization renaming cannot be done in Snowsight \u2014 it requires contacting Snowflake Support."
         }
       }
     },
@@ -438,11 +438,11 @@
       "options": [
         {
           "key": "A",
-          "text": "Delete all accounts in the organization except the one being used for the deletion"
+          "text": "Revoke GLOBALORGADMIN from all users first"
         },
         {
           "key": "B",
-          "text": "Contact Snowflake Support to delete the last account and the organization"
+          "text": "Disable premium views before deletion"
         },
         {
           "key": "C",
@@ -450,23 +450,23 @@
         },
         {
           "key": "D",
-          "text": "Disable premium views before deletion"
+          "text": "Delete all accounts in the organization except the one being used for the deletion"
         },
         {
           "key": "E",
-          "text": "Revoke GLOBALORGADMIN from all users first"
+          "text": "Contact Snowflake Support to delete the last account and the organization"
         }
       ],
       "correct": [
-        "A",
-        "B"
+        "D",
+        "E"
       ],
       "explanation": {
         "correct": "To delete an organization, you must first delete all accounts except one, then contact Snowflake Support to delete the last account and the organization itself.",
         "distractors": {
-          "C": "There is no DROP ORGANIZATION command \u2014 the final deletion requires Snowflake Support.",
-          "D": "Disabling premium views is not a required step for organization deletion.",
-          "E": "Revoking GLOBALORGADMIN is not a prerequisite for organization deletion."
+          "A": "Revoking GLOBALORGADMIN is not a prerequisite for organization deletion.",
+          "B": "Disabling premium views is not a required step for organization deletion.",
+          "C": "There is no DROP ORGANIZATION command \u2014 the final deletion requires Snowflake Support."
         }
       }
     },
@@ -515,7 +515,7 @@
       "options": [
         {
           "key": "A",
-          "text": "Billing and Cost management"
+          "text": "Query health"
         },
         {
           "key": "B",
@@ -523,7 +523,7 @@
         },
         {
           "key": "C",
-          "text": "Query health"
+          "text": "Billing and Cost management"
         },
         {
           "key": "D",
@@ -561,19 +561,19 @@
       "options": [
         {
           "key": "A",
-          "text": "Premium views incur additional costs based on how many records were processed"
-        },
-        {
-          "key": "B",
           "text": "Premium views are fully populated immediately after the organization account is created"
         },
         {
+          "key": "B",
+          "text": "Premium views can be accessed from any regular account in the organization"
+        },
+        {
           "key": "C",
-          "text": "Premium views are available by default only in organizations with a capacity contract"
+          "text": "Premium views incur additional costs based on how many records were processed"
         },
         {
           "key": "D",
-          "text": "Premium views can be accessed from any regular account in the organization"
+          "text": "Premium views are available by default only in organizations with a capacity contract"
         },
         {
           "key": "E",
@@ -581,14 +581,14 @@
         }
       ],
       "correct": [
-        "A",
-        "C"
+        "C",
+        "D"
       ],
       "explanation": {
         "correct": "Premium views incur additional costs based on records processed, and by default they are only available in organizations that have a capacity contract. On-demand accounts must contact Snowflake Support to access them.",
         "distractors": {
-          "B": "It can take two weeks from the time the organization account is created until premium views are fully populated with 365 days of historical data.",
-          "D": "Premium views are only available in the ORGANIZATION_USAGE schema of the organization account, not in regular accounts.",
+          "A": "It can take two weeks from the time the organization account is created until premium views are fully populated with 365 days of historical data.",
+          "B": "Premium views are only available in the ORGANIZATION_USAGE schema of the organization account, not in regular accounts.",
           "E": "Premium views are not free \u2014 they incur costs based on the number of records processed."
         }
       }
@@ -602,35 +602,35 @@
       "options": [
         {
           "key": "A",
-          "text": "By default, the ORGADMIN role can be enabled in a maximum of eight accounts"
+          "text": "The ORGADMIN role must be manually enabled for the first account in an organization"
         },
         {
           "key": "B",
-          "text": "The ORGADMIN role can be enabled for reader accounts"
+          "text": "By default, the ORGADMIN role can be enabled in a maximum of eight accounts"
         },
         {
           "key": "C",
-          "text": "The first account in an organization has the ORGADMIN role enabled by default"
+          "text": "The ORGADMIN role can be enabled for reader accounts"
         },
         {
           "key": "D",
-          "text": "The ORGADMIN role can be enabled in an unlimited number of accounts"
+          "text": "The first account in an organization has the ORGADMIN role enabled by default"
         },
         {
           "key": "E",
-          "text": "The ORGADMIN role must be manually enabled for the first account in an organization"
+          "text": "The ORGADMIN role can be enabled in an unlimited number of accounts"
         }
       ],
       "correct": [
-        "A",
-        "C"
+        "B",
+        "D"
       ],
       "explanation": {
         "correct": "By default, the ORGADMIN role can be enabled in a maximum of eight accounts (contact support for more). The first account in an organization has the ORGADMIN role enabled automatically.",
         "distractors": {
-          "B": "The ORGADMIN role cannot be enabled for a reader account.",
-          "D": "The default maximum is eight accounts \u2014 you must contact Snowflake Support to have this limit raised.",
-          "E": "The first account automatically has the ORGADMIN role enabled \u2014 no manual action is needed."
+          "A": "The first account automatically has the ORGADMIN role enabled \u2014 no manual action is needed.",
+          "C": "The ORGADMIN role cannot be enabled for a reader account.",
+          "E": "The default maximum is eight accounts \u2014 you must contact Snowflake Support to have this limit raised."
         }
       }
     },
@@ -679,35 +679,35 @@
       "options": [
         {
           "key": "A",
-          "text": "Create the organization account in the regulated region"
+          "text": "Use separate organizations for regulated and non-regulated accounts"
         },
         {
           "key": "B",
-          "text": "Do not define organization-level objects with sensitive or regulated data"
-        },
-        {
-          "key": "C",
-          "text": "Disable premium views to prevent metadata movement between regions"
-        },
-        {
-          "key": "D",
           "text": "Place all accounts in the same region to avoid compliance issues"
         },
         {
+          "key": "C",
+          "text": "Create the organization account in the regulated region"
+        },
+        {
+          "key": "D",
+          "text": "Disable premium views to prevent metadata movement between regions"
+        },
+        {
           "key": "E",
-          "text": "Use separate organizations for regulated and non-regulated accounts"
+          "text": "Do not define organization-level objects with sensitive or regulated data"
         }
       ],
       "correct": [
-        "A",
-        "B"
+        "C",
+        "E"
       ],
       "explanation": {
         "correct": "Snowflake recommends creating the organization account in the regulated region and not defining organization-level objects with sensitive or regulated data, since metadata might move between regions.",
         "distractors": {
-          "C": "Snowflake does not recommend disabling premium views \u2014 instead, they recommend proper placement of the organization account.",
-          "D": "Snowflake supports multi-region organizations and does not require all accounts be in the same region.",
-          "E": "Snowflake does not recommend separate organizations \u2014 they recommend creating the organization account in the regulated region."
+          "A": "Snowflake does not recommend separate organizations \u2014 they recommend creating the organization account in the regulated region.",
+          "B": "Snowflake supports multi-region organizations and does not require all accounts be in the same region.",
+          "D": "Snowflake does not recommend disabling premium views \u2014 instead, they recommend proper placement of the organization account."
         }
       }
     },
@@ -720,40 +720,40 @@
       "options": [
         {
           "key": "A",
-          "text": "Total cost"
-        },
-        {
-          "key": "B",
-          "text": "Cost by service type"
-        },
-        {
-          "key": "C",
-          "text": "Contract utilization"
-        },
-        {
-          "key": "D",
-          "text": "Credit consumption by user"
-        },
-        {
-          "key": "E",
           "text": "Cost by query type"
         },
         {
-          "key": "F",
+          "key": "B",
           "text": "Warehouse utilization percentage"
+        },
+        {
+          "key": "C",
+          "text": "Cost by service type"
+        },
+        {
+          "key": "D",
+          "text": "Contract utilization"
+        },
+        {
+          "key": "E",
+          "text": "Total cost"
+        },
+        {
+          "key": "F",
+          "text": "Credit consumption by user"
         }
       ],
       "correct": [
-        "A",
-        "B",
-        "C"
+        "C",
+        "D",
+        "E"
       ],
       "explanation": {
         "correct": "The Billing and Cost management section includes Total cost, Cost by service type, Total storage, and Contract utilization tiles. These display trends, breakdowns, and remaining capacity information.",
         "distractors": {
-          "D": "Credit consumption by user is not a tile in the Billing and Cost management section.",
-          "E": "Cost by query type is not a tile \u2014 cost is broken down by service type, not query type.",
-          "F": "Warehouse utilization percentage is not a tile in the Billing and Cost management section."
+          "A": "Cost by query type is not a tile \u2014 cost is broken down by service type, not query type.",
+          "B": "Warehouse utilization percentage is not a tile in the Billing and Cost management section.",
+          "F": "Credit consumption by user is not a tile in the Billing and Cost management section."
         }
       }
     },
