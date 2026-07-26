@@ -207,3 +207,94 @@ Tasks 1–3 are independent and can be done immediately. Tasks 4–7 form a depe
 [Task 2] ──┼── can run in parallel ──→ [Task 4] → [Task 5] → [Task 6] → [Task 7] → [Task 8]
 [Task 3] ──┘
 ```
+
+---
+
+## Additional Tasks (Added During Implementation)
+
+### Task 9: Password show/hide toggle
+
+**Objective:** Allow users to toggle password visibility on the auth form.
+
+**Implementation:** Added a "Show"/"Hide" button inside the password input field that toggles between `type="password"` and `type="text"`.
+
+**Status:** ✅ Complete
+
+---
+
+### Task 10: Required authentication
+
+**Objective:** Enforce sign-in before accessing any app content to prevent data loss and confusion.
+
+**Implementation:**
+- App boots to auth view (sign-in form) instead of home
+- Firebase auth state listener controls access — redirects to home only after authentication confirmed
+- Sign out redirects back to auth view
+- Removed "Continue without signing in" option
+
+**Status:** ✅ Complete
+
+---
+
+### Task 11: localStorage-to-Firestore migration
+
+**Objective:** Migrate any existing localStorage data (sessions + history) to Firestore on first sign-in so no progress is lost.
+
+**Implementation:**
+- On first sign-in, checks for existing `cert_session_*` keys and `cert_history` in localStorage
+- Uploads all found data to Firestore under the user's UID
+- Sets a `cert_migrated_{uid}` flag so migration only runs once per user
+
+**Status:** ✅ Complete
+
+---
+
+### Task 12: Forgot password
+
+**Objective:** Allow users to reset their password via email.
+
+**Implementation:**
+- "Forgot password?" link on auth form
+- Uses Firebase `sendPasswordResetEmail` with the email in the form field
+- Shows success (green) or error (red) message inline
+
+**Status:** ✅ Complete
+
+---
+
+### Task 13: Firestore security rules
+
+**Objective:** Replace test-mode rules (expiring Aug 25, 2026) with production rules that restrict access to authenticated users' own data.
+
+**Implementation:** Deploy rules that allow read/write only to `users/{uid}/**` where `request.auth.uid == uid`.
+
+**Status:** ⬜ Pending
+
+---
+
+### Task 14: Firebase setup documentation
+
+**Objective:** Write `docs/setup/firebase-setup.md` covering project creation, auth config, Firestore setup, security rules deployment, and config values.
+
+**Status:** ⬜ Pending
+
+---
+
+## Task Completion Summary
+
+| Task | Description | Status |
+|------|-------------|--------|
+| 1 | Create SnowPro Core folder structure | ✅ Complete |
+| 2 | Move existing test files | ✅ Complete |
+| 3 | Update question generation rules | ✅ Complete |
+| 4 | Firebase auth integration | ✅ Complete |
+| 5 | Firestore session persistence | ✅ Complete |
+| 6 | Performance history storage | ✅ Complete |
+| 7 | Performance history view | ✅ Complete |
+| 8 | Update skills.md + build_exam_interface.md | ⬜ Pending |
+| 9 | Password show/hide toggle | ✅ Complete |
+| 10 | Required authentication | ✅ Complete |
+| 11 | localStorage-to-Firestore migration | ✅ Complete |
+| 12 | Forgot password | ✅ Complete |
+| 13 | Firestore security rules | ⬜ Pending |
+| 14 | Firebase setup documentation | ⬜ Pending |
