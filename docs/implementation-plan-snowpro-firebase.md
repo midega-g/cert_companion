@@ -268,7 +268,7 @@ Tasks 1–3 are independent and can be done immediately. Tasks 4–7 form a depe
 
 **Implementation:** Deploy rules that allow read/write only to `users/{uid}/**` where `request.auth.uid == uid`.
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 
 ---
 
@@ -291,10 +291,10 @@ Tasks 1–3 are independent and can be done immediately. Tasks 4–7 form a depe
 | 5 | Firestore session persistence | ✅ Complete |
 | 6 | Performance history storage | ✅ Complete |
 | 7 | Performance history view | ✅ Complete |
-| 8 | Update skills.md + build_exam_interface.md | ⬜ Pending |
+| 8 | Update skills.md + build_exam_interface.md | ✅ Complete |
 | 9 | Password show/hide toggle | ✅ Complete |
 | 10 | Required authentication | ✅ Complete |
 | 11 | localStorage-to-Firestore migration | ✅ Complete |
 | 12 | Forgot password | ✅ Complete |
-| 13 | Firestore security rules | ⬜ Pending |
+| 13 | Firestore security rules | ✅ Complete |
 | 14 | Firebase setup documentation | ⬜ Pending |
