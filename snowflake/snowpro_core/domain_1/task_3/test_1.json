@@ -1,0 +1,797 @@
+{
+  "label": "Organizations & Org Accounts \u2014 Part A",
+  "order": 1,
+  "topic": "Snowflake Organizations & Organization Accounts",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "What role is used in the organization account to perform all organization-level tasks?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ORGADMIN"
+        },
+        {
+          "key": "B",
+          "text": "ACCOUNTADMIN"
+        },
+        {
+          "key": "C",
+          "text": "GLOBALORGADMIN"
+        },
+        {
+          "key": "D",
+          "text": "SYSADMIN"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The GLOBALORGADMIN role in the organization account is used to perform all organization-level tasks, including account management and access to premium views.",
+        "distractors": {
+          "A": "ORGADMIN is the legacy role in ORGADMIN-enabled regular accounts and is being phased out for multi-account organizations.",
+          "B": "ACCOUNTADMIN is the highest-level role within a single account but does not manage organization-level tasks.",
+          "D": "SYSADMIN manages databases and warehouses within an account, not organization-level operations."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "Which Snowflake edition is required to use the organization account feature?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Standard"
+        },
+        {
+          "key": "B",
+          "text": "Business Critical"
+        },
+        {
+          "key": "C",
+          "text": "Virtual Private Snowflake (VPS)"
+        },
+        {
+          "key": "D",
+          "text": "Enterprise"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The organization account is an Enterprise Edition feature (or higher). Standard Edition does not support organization accounts.",
+        "distractors": {
+          "A": "Standard Edition does not include the organization account capability.",
+          "B": "Business Critical supports it because it is higher than Enterprise, but Enterprise is the minimum required edition.",
+          "C": "VPS supports it as a higher edition, but Enterprise is the minimum requirement."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "How is a Snowflake organization created for customers who sign up using the self-service option?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The customer must submit a request to Snowflake Support"
+        },
+        {
+          "key": "B",
+          "text": "An organization is automatically created with a system-generated name"
+        },
+        {
+          "key": "C",
+          "text": "The customer creates it manually using the CREATE ORGANIZATION command"
+        },
+        {
+          "key": "D",
+          "text": "The organization is created only after purchasing Enterprise Edition"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "For users who sign up via the self-service option, an organization is automatically created with a system-generated name when the account is created.",
+        "distractors": {
+          "A": "Contacting Snowflake Support is only relevant for entities who work directly with Snowflake personnel to set up accounts with custom names.",
+          "C": "Snowflake customers never directly create an organization; it is always created by Snowflake automatically or by Snowflake personnel.",
+          "D": "Organization creation is not tied to a specific edition purchase \u2014 it happens automatically at account sign-up."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "Which of the following are types of accounts that can exist within a Snowflake organization? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Organization account"
+        },
+        {
+          "key": "B",
+          "text": "Regular Snowflake account"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake Open Catalog account"
+        },
+        {
+          "key": "D",
+          "text": "Reader account administrator account"
+        },
+        {
+          "key": "E",
+          "text": "Data warehouse account"
+        },
+        {
+          "key": "F",
+          "text": "Replication controller account"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "An organization can consist of three types of accounts: organization accounts (used by organization administrators), regular Snowflake accounts (including trial accounts), and Snowflake Open Catalog accounts (used to manage catalogs in Snowflake Open Catalog).",
+        "distractors": {
+          "D": "Reader accounts exist but are a subtype of regular accounts, not a distinct account type at the organization level.",
+          "E": "There is no separate 'data warehouse account' type \u2014 warehouses exist within regular accounts.",
+          "F": "There is no 'replication controller account' type. Replication is a feature managed through the organization account."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "Which privileges can the GLOBALORGADMIN role assign to other roles in the organization account? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "MANAGE ACCOUNTS"
+        },
+        {
+          "key": "B",
+          "text": "APPLY TAG"
+        },
+        {
+          "key": "C",
+          "text": "MANAGE ORGANIZATION TERMS"
+        },
+        {
+          "key": "D",
+          "text": "CREATE DATABASE"
+        },
+        {
+          "key": "E",
+          "text": "MANAGE WAREHOUSES"
+        },
+        {
+          "key": "F",
+          "text": "IMPORT SHARES"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The GLOBALORGADMIN role can assign MANAGE ACCOUNTS, APPLY TAG, MANAGE LISTING AUTO FULFILLMENT, MANAGE ORGANIZATION CONTACTS, MANAGE ORGANIZATION TERMS, and PURCHASE DATA EXCHANGE LISTING to other roles.",
+        "distractors": {
+          "D": "CREATE DATABASE is an account-level privilege, not an organization-level privilege assignable by GLOBALORGADMIN.",
+          "E": "MANAGE WAREHOUSES is not an organization-level privilege \u2014 warehouses are managed within individual accounts.",
+          "F": "IMPORT SHARES is not one of the assignable organization-level privileges."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "Which of the following are benefits of Snowflake organizations? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Self-service account creation within the organization"
+        },
+        {
+          "key": "B",
+          "text": "Automatic performance tuning across all accounts"
+        },
+        {
+          "key": "C",
+          "text": "A central view of all accounts within the organization"
+        },
+        {
+          "key": "D",
+          "text": "Shared warehouse resources across all accounts"
+        },
+        {
+          "key": "E",
+          "text": "Automatic data deduplication between accounts"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Organizations provide self-service account creation and a central view of all accounts, along with data replication/failover, cross-region data sharing, and organization-wide usage monitoring.",
+        "distractors": {
+          "B": "Organizations do not provide automatic performance tuning \u2014 each account manages its own performance independently.",
+          "D": "Warehouse resources are not shared across accounts \u2014 each account has its own warehouses.",
+          "E": "Data deduplication between accounts is not a feature of organizations."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "A large enterprise has recently adopted Snowflake and is setting up their organization. The security team wants to monitor usage data from all accounts in a single location, including query history from each account.",
+      "stem": "Which feature should the enterprise use to access organization-level data collected from all accounts?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ACCOUNT_USAGE schema in any regular account"
+        },
+        {
+          "key": "B",
+          "text": "Premium views in the organization account's ORGANIZATION_USAGE schema"
+        },
+        {
+          "key": "C",
+          "text": "INFORMATION_SCHEMA in the organization account"
+        },
+        {
+          "key": "D",
+          "text": "READER_ACCOUNT_USAGE schema"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Premium views in the organization account's ORGANIZATION_USAGE schema provide organization-level data aggregated from all accounts, including query history that isn't otherwise available in a single view.",
+        "distractors": {
+          "A": "ACCOUNT_USAGE only provides data for the specific account you are querying, not across all accounts.",
+          "C": "INFORMATION_SCHEMA provides metadata about objects in the current database, not organization-wide usage data.",
+          "D": "READER_ACCOUNT_USAGE is not a real schema \u2014 reader accounts are managed within provider accounts."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "A company has been using the ORGADMIN role in a regular account to manage their multi-account organization. They received a notification from Snowflake about upcoming changes.",
+      "stem": "What is Snowflake's recommendation regarding the ORGADMIN role for multi-account organizations?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Continue using ORGADMIN as it provides more granular control"
+        },
+        {
+          "key": "B",
+          "text": "Migrate to using the GLOBALORGADMIN role in the organization account"
+        },
+        {
+          "key": "C",
+          "text": "Replace ORGADMIN with ACCOUNTADMIN in each account"
+        },
+        {
+          "key": "D",
+          "text": "Create a custom role to replace ORGADMIN functionality"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Using the ORGADMIN role in an ORGADMIN-enabled account is being phased out. Snowflake recommends using the GLOBALORGADMIN role in the organization account to perform organization-level tasks.",
+        "distractors": {
+          "A": "Snowflake is phasing out the ORGADMIN role, not recommending continued use.",
+          "C": "ACCOUNTADMIN cannot perform organization-level tasks and is not a replacement for ORGADMIN.",
+          "D": "Custom roles cannot replace ORGADMIN \u2014 the GLOBALORGADMIN role in the organization account is the designated replacement."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "An organization administrator needs to enable the ORGADMIN role in a second account called 'analytics_prod'. They are currently logged into an account that already has the ORGADMIN role enabled.",
+      "stem": "Which SQL command should the administrator execute to enable the ORGADMIN role in the analytics_prod account?",
+      "options": [
+        {
+          "key": "A",
+          "text": "GRANT ROLE ORGADMIN TO ACCOUNT analytics_prod;"
+        },
+        {
+          "key": "B",
+          "text": "ALTER ACCOUNT analytics_prod SET IS_ORG_ADMIN = TRUE;"
+        },
+        {
+          "key": "C",
+          "text": "CREATE ROLE ORGADMIN IN ACCOUNT analytics_prod;"
+        },
+        {
+          "key": "D",
+          "text": "ALTER ACCOUNT analytics_prod ENABLE ORGADMIN;"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The ALTER ACCOUNT command with SET IS_ORG_ADMIN = TRUE enables the ORGADMIN role in the specified account. This must be executed from an account that already has ORGADMIN enabled.",
+        "distractors": {
+          "A": "GRANT ROLE is used to grant roles to users, not to enable the ORGADMIN role in an account.",
+          "C": "The ORGADMIN role is not created manually \u2014 it is enabled on accounts using ALTER ACCOUNT.",
+          "D": "The correct syntax uses SET IS_ORG_ADMIN = TRUE, not ENABLE ORGADMIN."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "A financial institution has a hybrid organization with accounts in both a U.S. SnowGov Region and a commercial region. They are planning to create an organization account.",
+      "stem": "What does Snowflake recommend for organizations with accounts in both regulated and non-regulated regions?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Create the organization account in the commercial region for cost savings"
+        },
+        {
+          "key": "B",
+          "text": "Create separate organization accounts for each region"
+        },
+        {
+          "key": "C",
+          "text": "Create the organization account in the regulated region"
+        },
+        {
+          "key": "D",
+          "text": "Avoid creating an organization account and use ORGADMIN only"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "For hybrid organizations, Snowflake recommends creating the organization account in the regulated region to ensure metadata stays within compliance boundaries.",
+        "distractors": {
+          "A": "Creating in a commercial region could violate compliance requirements by moving metadata from regulated accounts to a non-regulated region.",
+          "B": "Only one organization account can exist per organization \u2014 you cannot create separate ones per region.",
+          "D": "ORGADMIN is being phased out, and an organization account is the recommended path forward."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "A company wants to change the name of their Snowflake organization and is evaluating what happens during and after the rename process.",
+      "stem": "Which statements about changing an organization name are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "You must contact Snowflake Support to change the organization name"
+        },
+        {
+          "key": "B",
+          "text": "The original account URL can be kept temporarily for up to 90 days if chosen"
+        },
+        {
+          "key": "C",
+          "text": "Organization renaming can be done via ALTER ORGANIZATION command"
+        },
+        {
+          "key": "D",
+          "text": "Renaming the organization immediately invalidates all existing account URLs"
+        },
+        {
+          "key": "E",
+          "text": "The organization can be renamed directly in Snowsight by the GLOBALORGADMIN"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Changing an organization name requires contacting Snowflake Support. When the name is changed, you can decide whether users can temporarily access accounts using the original account URL, which is automatically dropped after 90 days if kept.",
+        "distractors": {
+          "C": "There is no ALTER ORGANIZATION command \u2014 organization renaming requires Snowflake Support.",
+          "D": "The original URL is not immediately invalidated \u2014 it can be kept for up to 90 days by choice.",
+          "E": "Organization renaming cannot be done in Snowsight \u2014 it requires contacting Snowflake Support."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "An organization administrator wants to delete their Snowflake organization because the company is decommissioning all Snowflake resources.",
+      "stem": "Which steps are required to delete a Snowflake organization? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Delete all accounts in the organization except the one being used for the deletion"
+        },
+        {
+          "key": "B",
+          "text": "Contact Snowflake Support to delete the last account and the organization"
+        },
+        {
+          "key": "C",
+          "text": "Execute DROP ORGANIZATION from the organization account"
+        },
+        {
+          "key": "D",
+          "text": "Disable premium views before deletion"
+        },
+        {
+          "key": "E",
+          "text": "Revoke GLOBALORGADMIN from all users first"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "To delete an organization, you must first delete all accounts except one, then contact Snowflake Support to delete the last account and the organization itself.",
+        "distractors": {
+          "C": "There is no DROP ORGANIZATION command \u2014 the final deletion requires Snowflake Support.",
+          "D": "Disabling premium views is not a required step for organization deletion.",
+          "E": "Revoking GLOBALORGADMIN is not a prerequisite for organization deletion."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "A global organization administrator wants to create a new organization account. They have an existing account with ORGADMIN enabled and are considering which account to use as the basis for creating the organization account.",
+      "stem": "Which statement is true about creating an organization account?",
+      "options": [
+        {
+          "key": "A",
+          "text": "An existing regular account can be converted to the organization account"
+        },
+        {
+          "key": "B",
+          "text": "The CREATE ORGANIZATION ACCOUNT command must be executed from an ORGADMIN-enabled account"
+        },
+        {
+          "key": "C",
+          "text": "Multiple organization accounts can be created per organization for redundancy"
+        },
+        {
+          "key": "D",
+          "text": "The organization account can only be created by Snowflake Support"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "To create the organization account, you must execute CREATE ORGANIZATION ACCOUNT from an existing account that has the ORGADMIN role enabled.",
+        "distractors": {
+          "A": "You cannot convert an existing ORGADMIN-enabled account to be the organization account \u2014 it must be created as a new account.",
+          "C": "There is only one organization account per organization \u2014 multiple organization accounts are not supported.",
+          "D": "Organization administrators can create the organization account themselves using the CREATE ORGANIZATION ACCOUNT command."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "An organization administrator is reviewing the Organization Hub in Snowsight to understand their organization's posture across multiple dimensions.",
+      "stem": "Which sections are available in the Organization Hub Insights dashboard? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Billing and Cost management"
+        },
+        {
+          "key": "B",
+          "text": "Security"
+        },
+        {
+          "key": "C",
+          "text": "Query health"
+        },
+        {
+          "key": "D",
+          "text": "Data replication status"
+        },
+        {
+          "key": "E",
+          "text": "Warehouse auto-scaling metrics"
+        },
+        {
+          "key": "F",
+          "text": "User login frequency"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The Organization Hub Insights dashboard includes sections for Billing and Cost management, Security, and Query health (among others like Storage). These provide interactive tiles showing trends and alerts across all accounts.",
+        "distractors": {
+          "D": "Data replication status is not a section in the Organization Hub Insights dashboard.",
+          "E": "Warehouse auto-scaling metrics is not a dedicated section in the Organization Hub.",
+          "F": "User login frequency is not a section in the Organization Hub Insights dashboard."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "A company's compliance team is evaluating the premium views feature in the organization account and wants to understand its requirements and limitations.",
+      "stem": "Which statements about premium views in the organization account are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Premium views incur additional costs based on how many records were processed"
+        },
+        {
+          "key": "B",
+          "text": "Premium views are fully populated immediately after the organization account is created"
+        },
+        {
+          "key": "C",
+          "text": "Premium views are available by default only in organizations with a capacity contract"
+        },
+        {
+          "key": "D",
+          "text": "Premium views can be accessed from any regular account in the organization"
+        },
+        {
+          "key": "E",
+          "text": "Premium views are free for all Snowflake editions"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Premium views incur additional costs based on records processed, and by default they are only available in organizations that have a capacity contract. On-demand accounts must contact Snowflake Support to access them.",
+        "distractors": {
+          "B": "It can take two weeks from the time the organization account is created until premium views are fully populated with 365 days of historical data.",
+          "D": "Premium views are only available in the ORGANIZATION_USAGE schema of the organization account, not in regular accounts.",
+          "E": "Premium views are not free \u2014 they incur costs based on the number of records processed."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "A Snowflake administrator is trying to determine the maximum number of accounts that can have the ORGADMIN role enabled in their organization.",
+      "stem": "Which statements about the ORGADMIN role are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "By default, the ORGADMIN role can be enabled in a maximum of eight accounts"
+        },
+        {
+          "key": "B",
+          "text": "The ORGADMIN role can be enabled for reader accounts"
+        },
+        {
+          "key": "C",
+          "text": "The first account in an organization has the ORGADMIN role enabled by default"
+        },
+        {
+          "key": "D",
+          "text": "The ORGADMIN role can be enabled in an unlimited number of accounts"
+        },
+        {
+          "key": "E",
+          "text": "The ORGADMIN role must be manually enabled for the first account in an organization"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "By default, the ORGADMIN role can be enabled in a maximum of eight accounts (contact support for more). The first account in an organization has the ORGADMIN role enabled automatically.",
+        "distractors": {
+          "B": "The ORGADMIN role cannot be enabled for a reader account.",
+          "D": "The default maximum is eight accounts \u2014 you must contact Snowflake Support to have this limit raised.",
+          "E": "The first account automatically has the ORGADMIN role enabled \u2014 no manual action is needed."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "An organization administrator notices that the Organization Hub is not accessible from their regular Snowflake account. They can see the Admin menu but not the Organization Hub option.",
+      "stem": "What is the most likely reason the Organization Hub is not available?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The administrator needs to enable it in Account Settings"
+        },
+        {
+          "key": "B",
+          "text": "The Organization Hub is only accessible from the organization account with GLOBALORGADMIN role and premium views enabled"
+        },
+        {
+          "key": "C",
+          "text": "The Organization Hub requires Business Critical edition"
+        },
+        {
+          "key": "D",
+          "text": "The feature must be enabled by Snowflake Support for each account"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The Organization Hub requires an organization account with premium views enabled. It is accessed by signing into the organization account and switching to the GLOBALORGADMIN role.",
+        "distractors": {
+          "A": "There is no Account Settings toggle for the Organization Hub \u2014 it is inherently tied to the organization account.",
+          "C": "The Organization Hub requires an organization account (Enterprise or higher), not specifically Business Critical.",
+          "D": "The Organization Hub does not require per-account enablement by Snowflake Support \u2014 it is available automatically in the organization account."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "An organization administrator is considering the implications of having a hybrid organization where some accounts are in a U.S. SnowGov Region and others are in commercial regions.",
+      "stem": "What recommendations does Snowflake make for hybrid organizations? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Create the organization account in the regulated region"
+        },
+        {
+          "key": "B",
+          "text": "Do not define organization-level objects with sensitive or regulated data"
+        },
+        {
+          "key": "C",
+          "text": "Disable premium views to prevent metadata movement between regions"
+        },
+        {
+          "key": "D",
+          "text": "Place all accounts in the same region to avoid compliance issues"
+        },
+        {
+          "key": "E",
+          "text": "Use separate organizations for regulated and non-regulated accounts"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Snowflake recommends creating the organization account in the regulated region and not defining organization-level objects with sensitive or regulated data, since metadata might move between regions.",
+        "distractors": {
+          "C": "Snowflake does not recommend disabling premium views \u2014 instead, they recommend proper placement of the organization account.",
+          "D": "Snowflake supports multi-region organizations and does not require all accounts be in the same region.",
+          "E": "Snowflake does not recommend separate organizations \u2014 they recommend creating the organization account in the regulated region."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "A newly hired Snowflake platform engineer needs to understand what tiles are available in the Billing and Cost management section of the Organization Hub.",
+      "stem": "Which tiles are part of the Billing and Cost management section in the Organization Hub Insights dashboard? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Total cost"
+        },
+        {
+          "key": "B",
+          "text": "Cost by service type"
+        },
+        {
+          "key": "C",
+          "text": "Contract utilization"
+        },
+        {
+          "key": "D",
+          "text": "Credit consumption by user"
+        },
+        {
+          "key": "E",
+          "text": "Cost by query type"
+        },
+        {
+          "key": "F",
+          "text": "Warehouse utilization percentage"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The Billing and Cost management section includes Total cost, Cost by service type, Total storage, and Contract utilization tiles. These display trends, breakdowns, and remaining capacity information.",
+        "distractors": {
+          "D": "Credit consumption by user is not a tile in the Billing and Cost management section.",
+          "E": "Cost by query type is not a tile \u2014 cost is broken down by service type, not query type.",
+          "F": "Warehouse utilization percentage is not a tile in the Billing and Cost management section."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "A user with any role in a Snowflake account wants to determine which organization their account belongs to, but they do not have the ORGADMIN or GLOBALORGADMIN role.",
+      "stem": "How can this user find the organization name of their current account?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Execute the CURRENT_ORGANIZATION_NAME function"
+        },
+        {
+          "key": "B",
+          "text": "Query the ORGANIZATIONS table in INFORMATION_SCHEMA"
+        },
+        {
+          "key": "C",
+          "text": "Execute SHOW ACCOUNTS to see the organization name"
+        },
+        {
+          "key": "D",
+          "text": "Contact their account administrator since only ORGADMIN can view this information"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Users with any role can execute the CURRENT_ORGANIZATION_NAME function to return the organization of the current account.",
+        "distractors": {
+          "B": "There is no ORGANIZATIONS table in INFORMATION_SCHEMA.",
+          "C": "SHOW ACCOUNTS requires the ORGADMIN role or GLOBALORGADMIN role \u2014 regular users cannot execute it.",
+          "D": "Any user can find their organization name using the CURRENT_ORGANIZATION_NAME function without needing elevated privileges."
+        }
+      }
+    }
+  ]
+}
