@@ -276,7 +276,7 @@ Tasks 1–3 are independent and can be done immediately. Tasks 4–7 form a depe
 
 **Objective:** Write `docs/setup/firebase-setup.md` covering project creation, auth config, Firestore setup, security rules deployment, and config values.
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 
 ---
 
@@ -297,4 +297,4 @@ Tasks 1–3 are independent and can be done immediately. Tasks 4–7 form a depe
 | 11 | localStorage-to-Firestore migration | ✅ Complete |
 | 12 | Forgot password | ✅ Complete |
 | 13 | Firestore security rules | ✅ Complete |
-| 14 | Firebase setup documentation | ⬜ Pending |
+| 14 | Firebase setup documentation | ✅ Complete |

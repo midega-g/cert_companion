@@ -79,3 +79,4 @@ Summary of what was shipped and when. One entry per meaningful change, grouped b
 | [implementation-plan-snowpro-firebase.md](implementation-plan-snowpro-firebase.md) | SnowPro Core exam restructuring + Firebase progress tracking |
 | [verification-commands.md](verification-commands.md) | Commands for validating changes (JSON, manifest, syntax checks) |
 | [deployment.md](deployment.md) | CI pipeline, GitHub Pages, git troubleshooting |
+| [setup/firebase-setup.md](setup/firebase-setup.md) | Firebase project setup, config, data model, troubleshooting |
