@@ -1,0 +1,792 @@
+{
+  "label": "Accounts, Identifiers & Connectivity \u2014 Part A",
+  "order": 3,
+  "topic": "Snowflake Accounts, Identifiers & Connectivity",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "What is the preferred format for a Snowflake account identifier?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Account locator with region and cloud platform"
+        },
+        {
+          "key": "B",
+          "text": "Organization name followed by the account name"
+        },
+        {
+          "key": "C",
+          "text": "Email address of the account administrator"
+        },
+        {
+          "key": "D",
+          "text": "Cloud platform region code followed by account locator"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The preferred account identifier format is the organization name followed by the account name (e.g., myorg-account123). The account locator format is legacy and its use is discouraged.",
+        "distractors": {
+          "A": "The account locator format with region and cloud is the legacy format \u2014 its use is discouraged.",
+          "C": "Email addresses are not used as account identifiers.",
+          "D": "Region code followed by locator is not a valid identifier format."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "How long does a Snowflake trial account last?",
+      "options": [
+        {
+          "key": "A",
+          "text": "60 days or until free credits are exhausted"
+        },
+        {
+          "key": "B",
+          "text": "14 days regardless of credit consumption"
+        },
+        {
+          "key": "C",
+          "text": "30 days or until free credits are exhausted, whichever comes first"
+        },
+        {
+          "key": "D",
+          "text": "90 days with unlimited credits"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A Snowflake trial continues for 30 days from the sign-up date or until the free usage balance is depleted, whichever occurs first.",
+        "distractors": {
+          "A": "The trial period is 30 days, not 60 days.",
+          "B": "14 days is incorrect, and the trial does end early if credits are exhausted.",
+          "D": "The trial is 30 days (not 90) and credits are limited, not unlimited."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "What is the maximum character length for a Snowflake account identifier string, including organization name, account name, and separator?",
+      "options": [
+        {
+          "key": "A",
+          "text": "128 characters"
+        },
+        {
+          "key": "B",
+          "text": "32 characters"
+        },
+        {
+          "key": "C",
+          "text": "63 characters"
+        },
+        {
+          "key": "D",
+          "text": "255 characters"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The account identifier string length, including the organization name, account name, and separator characters, should not exceed 63 characters.",
+        "distractors": {
+          "A": "128 characters exceeds the actual limit of 63.",
+          "B": "32 characters is too restrictive \u2014 the actual limit is 63.",
+          "D": "255 characters far exceeds the actual limit of 63."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "Which requirements apply to Snowflake account identifiers? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Must be unique within an organization regardless of region"
+        },
+        {
+          "key": "B",
+          "text": "Can contain special characters including @ and #"
+        },
+        {
+          "key": "C",
+          "text": "Must start with an alphabetic character"
+        },
+        {
+          "key": "D",
+          "text": "Can contain underscores but should not end with one"
+        },
+        {
+          "key": "E",
+          "text": "Must include the cloud platform code"
+        },
+        {
+          "key": "F",
+          "text": "Must be at least 8 characters long"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Account identifiers must be unique within an organization (regardless of region), must start with an alphabetic character, and can contain underscores but should not end with one.",
+        "distractors": {
+          "B": "Account identifiers cannot contain special characters except underscores \u2014 @ and # are not allowed.",
+          "E": "The cloud platform code is not part of the preferred account identifier format.",
+          "F": "There is no minimum length requirement of 8 characters for account identifiers."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "Which features are NOT available for Snowflake trial accounts? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Virtual warehouses"
+        },
+        {
+          "key": "B",
+          "text": "External network access"
+        },
+        {
+          "key": "C",
+          "text": "Loading data from cloud storage"
+        },
+        {
+          "key": "D",
+          "text": "Hybrid tables"
+        },
+        {
+          "key": "E",
+          "text": "Creating databases and schemas"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "External network access and hybrid tables are among the current limitations for trial accounts. Virtual warehouses, data loading, and creating databases are all available during trial.",
+        "distractors": {
+          "A": "Virtual warehouses are available and are the primary way to consume trial credits.",
+          "C": "Loading data from cloud storage (S3, Azure, GCS) is fully supported in trial accounts.",
+          "E": "Creating databases and schemas is a basic feature available in all accounts including trial."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "Which of the following are types of Snowflake parameters? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Network parameters"
+        },
+        {
+          "key": "B",
+          "text": "Account parameters"
+        },
+        {
+          "key": "C",
+          "text": "Session parameters"
+        },
+        {
+          "key": "D",
+          "text": "Object parameters"
+        },
+        {
+          "key": "E",
+          "text": "User parameters"
+        },
+        {
+          "key": "F",
+          "text": "Security parameters"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Snowflake provides three types of parameters: account parameters (affect the entire account), session parameters (default to users and their sessions), and object parameters (default to warehouses, databases, schemas, and tables).",
+        "distractors": {
+          "A": "Network parameters is not one of the three Snowflake parameter types.",
+          "E": "User parameters is not a distinct category \u2014 users are affected by session parameters.",
+          "F": "Security parameters is not a distinct category in Snowflake's parameter hierarchy."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "A company uses Okta as their identity provider and has a Snowflake account named 'data_warehouse' in the organization 'acme'. They are configuring the SSO integration URL.",
+      "stem": "What URL format must they use for the Okta SSO configuration?",
+      "options": [
+        {
+          "key": "A",
+          "text": "https://acme-data_warehouse.snowflakecomputing.com"
+        },
+        {
+          "key": "B",
+          "text": "https://acme-data-warehouse.snowflakecomputing.com"
+        },
+        {
+          "key": "C",
+          "text": "https://acme.data_warehouse.snowflakecomputing.com"
+        },
+        {
+          "key": "D",
+          "text": "https://data_warehouse.acme.snowflakecomputing.com"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Okta does not support underscores in URLs. When using Okta, underscores in the account name must be converted to hyphens, resulting in acme-data-warehouse.snowflakecomputing.com.",
+        "distractors": {
+          "A": "This format contains an underscore which Okta does not support in URLs.",
+          "C": "This uses a dot separator between org and account which is not the correct URL format.",
+          "D": "This reverses the order (account before org) and uses a dot separator, which is incorrect."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "A network engineer is setting up AWS PrivateLink connectivity to their Snowflake account. The organization is 'techcorp' and the account name is 'proddb'.",
+      "stem": "What is the correct URL format for private connectivity?",
+      "options": [
+        {
+          "key": "A",
+          "text": "https://techcorp-proddb.private.snowflakecomputing.com"
+        },
+        {
+          "key": "B",
+          "text": "https://techcorp-proddb.snowflakecomputing.com/privatelink"
+        },
+        {
+          "key": "C",
+          "text": "https://techcorp-proddb.privatelink.snowflakecomputing.com"
+        },
+        {
+          "key": "D",
+          "text": "https://private.techcorp-proddb.snowflakecomputing.com"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "For private connectivity, the string 'privatelink' must be appended to the account identifier in the URL, resulting in orgname-account_name.privatelink.snowflakecomputing.com.",
+        "distractors": {
+          "A": "The correct keyword is 'privatelink', not 'private'.",
+          "B": "The privatelink keyword is placed between the identifier and snowflakecomputing.com, not as a path suffix.",
+          "D": "The privatelink keyword goes after the account identifier, not before it."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "A data engineer's trial account has been suspended because the 30-day period expired. They still need to access the data they loaded during the trial.",
+      "stem": "What must they do to reactivate the suspended trial account?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Contact Snowflake Support to extend the trial period"
+        },
+        {
+          "key": "B",
+          "text": "Create a new trial account and transfer the data"
+        },
+        {
+          "key": "C",
+          "text": "Enter a credit card to convert it to a paid account"
+        },
+        {
+          "key": "D",
+          "text": "Wait 24 hours for the account to automatically reactivate"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "To reactivate a suspended trial account, you must enter a credit card, which converts it to a paid account. You can still log into a suspended account but cannot use features until converted.",
+        "distractors": {
+          "A": "Snowflake Support does not extend trial periods \u2014 conversion to paid is required.",
+          "B": "Creating a new trial account would not give access to the data in the original suspended account.",
+          "D": "Suspended trial accounts do not automatically reactivate \u2014 payment information is required."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "An account administrator wants to view all account-level parameters and their current values to audit the account configuration.",
+      "stem": "Which SQL command should they use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "DESCRIBE ACCOUNT PARAMETERS;"
+        },
+        {
+          "key": "B",
+          "text": "LIST PARAMETERS FOR ACCOUNT;"
+        },
+        {
+          "key": "C",
+          "text": "SHOW PARAMETERS IN ACCOUNT;"
+        },
+        {
+          "key": "D",
+          "text": "SELECT * FROM INFORMATION_SCHEMA.PARAMETERS;"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "SHOW PARAMETERS IN ACCOUNT displays all parameters and their current values for the account, along with default values and descriptions.",
+        "distractors": {
+          "A": "DESCRIBE ACCOUNT PARAMETERS is not valid Snowflake SQL syntax.",
+          "B": "LIST PARAMETERS FOR ACCOUNT is not valid Snowflake SQL syntax.",
+          "D": "INFORMATION_SCHEMA.PARAMETERS does not exist \u2014 parameters are viewed using SHOW PARAMETERS."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A trial account user is trying to conserve their free credits and wants to understand what consumes credits and what doesn't.",
+      "stem": "Which statements about trial account credit consumption are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Free credits are consumed by queries running on shared compute resources"
+        },
+        {
+          "key": "B",
+          "text": "Free credits are only consumed by virtual warehouses the user creates"
+        },
+        {
+          "key": "C",
+          "text": "Storage costs are also subtracted from the free usage balance"
+        },
+        {
+          "key": "D",
+          "text": "Credits are consumed even when warehouses are suspended"
+        },
+        {
+          "key": "E",
+          "text": "Larger warehouses consume fewer credits due to parallel efficiency"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Free credits are only consumed by virtual warehouses you create (and only when running). Storage costs are also subtracted from the free usage balance based on standard On-Demand rates.",
+        "distractors": {
+          "A": "There are no shared compute resources in trial \u2014 credits are consumed by your own warehouses.",
+          "D": "Credits are only consumed while warehouses are running, not when suspended.",
+          "E": "Larger warehouses consume more credits, not fewer \u2014 the consumption scales with size."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A company is using the Client Redirect feature and wants to understand the different URL formats supported for connecting to their Snowflake accounts.",
+      "stem": "Which URL formats does Snowflake support for connecting to accounts? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Account name format using organization and account name"
+        },
+        {
+          "key": "B",
+          "text": "Connection name format for Client Redirect"
+        },
+        {
+          "key": "C",
+          "text": "Account locator format (legacy)"
+        },
+        {
+          "key": "D",
+          "text": "IP address format for direct connectivity"
+        },
+        {
+          "key": "E",
+          "text": "DNS CNAME alias format"
+        },
+        {
+          "key": "F",
+          "text": "Service endpoint format using VPC ID"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Snowflake supports three URL formats: account name (orgname-account_name), connection name (for Client Redirect), and the legacy account locator format (accountlocator.region.cloud).",
+        "distractors": {
+          "D": "IP address format is not supported \u2014 Snowflake uses domain-based URLs.",
+          "E": "DNS CNAME aliases are used for private connectivity DNS setup but are not a Snowflake URL format.",
+          "F": "VPC ID-based service endpoint format is not a supported Snowflake URL format."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A startup added a credit card to their trial account on day 15. They want to understand the billing implications after conversion.",
+      "stem": "Which statements about converting a trial account to a paid account are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Remaining free credits continue to be usable until the trial period ends"
+        },
+        {
+          "key": "B",
+          "text": "The trial period immediately ends upon adding a credit card"
+        },
+        {
+          "key": "C",
+          "text": "Unused free balance expires when the 30-day trial period ends"
+        },
+        {
+          "key": "D",
+          "text": "The free credits are converted to a permanent billing credit"
+        },
+        {
+          "key": "E",
+          "text": "Conversion requires contacting Snowflake Support"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Adding a credit card converts the trial without ending the trial period. Free credits remain usable during the remainder. However, any unused free balance expires when the trial period ends.",
+        "distractors": {
+          "B": "Adding a credit card does NOT end the trial period \u2014 free credits can still be used for the remaining days.",
+          "D": "Unused credits expire at the end of the trial period \u2014 they are not converted to permanent billing credit.",
+          "E": "Conversion is self-service \u2014 you add a credit card through Snowsight without contacting support."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A user wants to cancel their Snowflake trial account and is exploring their options.",
+      "stem": "Which statements about canceling a Snowflake trial account are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Trial accounts can be canceled at any time during the trial"
+        },
+        {
+          "key": "B",
+          "text": "Cancellation is available through the Snowsight web interface"
+        },
+        {
+          "key": "C",
+          "text": "You must contact Snowflake Support to cancel a trial account"
+        },
+        {
+          "key": "D",
+          "text": "Cancellation automatically occurs when the trial period ends"
+        },
+        {
+          "key": "E",
+          "text": "Only accounts with remaining credits can be canceled"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "A trial account can be canceled at any time by contacting Snowflake Support. Currently, trial accounts cannot be canceled through the web interface.",
+        "distractors": {
+          "B": "Trial cancellation is NOT available through the web interface \u2014 you must contact Snowflake Support.",
+          "D": "When the trial ends, the account is suspended, not canceled/deleted. It remains accessible for login.",
+          "E": "There is no restriction on canceling based on remaining credit balance."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "An account administrator converted their trial account to paid. After the free credits were exhausted, they noticed multiple charges within a single month beyond the expected monthly billing.",
+      "stem": "Which statements about threshold billing for converted trial accounts are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Threshold payments occur when consumption reaches certain levels before month end"
+        },
+        {
+          "key": "B",
+          "text": "Threshold payments only happen once per calendar month"
+        },
+        {
+          "key": "C",
+          "text": "Email notifications are sent each time a threshold payment is charged"
+        },
+        {
+          "key": "D",
+          "text": "Threshold payments are not credited toward the monthly total"
+        },
+        {
+          "key": "E",
+          "text": "Threshold billing only applies to Enterprise Edition accounts"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Threshold payments are automatically billed when consumption reaches certain thresholds before month end, and can occur multiple times. An email notification is sent each time a threshold payment is charged.",
+        "distractors": {
+          "B": "Threshold payments can occur multiple times in a single month \u2014 they are not limited to once.",
+          "D": "Threshold payments are credited toward that month's total consumption.",
+          "E": "Threshold billing applies to all converted trial (ODSS) accounts regardless of edition."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A Snowflake administrator is overriding session parameter defaults at different levels in the hierarchy.",
+      "stem": "Which statements about the Snowflake parameter hierarchy are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Only ACCOUNTADMIN can override default values at the account level"
+        },
+        {
+          "key": "B",
+          "text": "Session and object parameters can be overridden at each level in the parameter hierarchy"
+        },
+        {
+          "key": "C",
+          "text": "Account parameters can be overridden at the session level by any user"
+        },
+        {
+          "key": "D",
+          "text": "Object parameters only apply to virtual warehouses"
+        },
+        {
+          "key": "E",
+          "text": "Parameter overrides at lower levels always take precedence over account-level settings"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Only the ACCOUNTADMIN role can override default values at the account level. Session and object parameters have a hierarchy where defaults can be overridden at each level.",
+        "distractors": {
+          "C": "Account parameters affect the entire account and are not overridable at session level by regular users.",
+          "D": "Object parameters apply to warehouses, databases, schemas, and tables \u2014 not only warehouses.",
+          "E": "While lower-level overrides generally take precedence, this is an oversimplification \u2014 the behavior depends on the specific parameter."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "A company's Snowflake account has the identifier 'analytics_hub' in the organization 'globalcorp'. A new team member needs to find the organization and account name but does not have the ORGADMIN role.",
+      "stem": "How can the team member find the organization and account name?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Execute SHOW ACCOUNTS to list all accounts in the organization"
+        },
+        {
+          "key": "B",
+          "text": "Use the account selector in Snowsight and select 'View account details'"
+        },
+        {
+          "key": "C",
+          "text": "Query the ORGANIZATION_USAGE.ACCOUNTS view"
+        },
+        {
+          "key": "D",
+          "text": "Contact the organization administrator since this information requires ORGADMIN"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Any user can find the organization and account name through Snowsight by opening the account selector and selecting 'View account details', which displays the account identifier and URL.",
+        "distractors": {
+          "A": "SHOW ACCOUNTS requires the ORGADMIN or GLOBALORGADMIN role \u2014 regular users cannot execute it.",
+          "C": "ORGANIZATION_USAGE views require specific privileges not available to all users.",
+          "D": "The information is accessible to all users through Snowsight \u2014 ORGADMIN is not required."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A DevOps engineer is setting up multiple Snowflake connections and needs to understand the legacy account locator format for backwards compatibility with older tools.",
+      "stem": "Which statements about the legacy account locator format are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The legacy format is no longer supported and will cause connection failures"
+        },
+        {
+          "key": "B",
+          "text": "The legacy format is still supported but its use is discouraged"
+        },
+        {
+          "key": "C",
+          "text": "The legacy URL format is: accountlocator.region.cloud.snowflakecomputing.com"
+        },
+        {
+          "key": "D",
+          "text": "The legacy format includes the organization name as a prefix"
+        },
+        {
+          "key": "E",
+          "text": "The legacy format is required for all private connectivity setups"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The legacy account locator format is still supported for backwards compatibility but its use is discouraged. Its URL format is accountlocator.region.cloud.snowflakecomputing.com.",
+        "distractors": {
+          "A": "The legacy format is still supported \u2014 it has not been removed.",
+          "D": "The legacy format uses the account locator, not the organization name \u2014 organization name is part of the preferred format.",
+          "E": "Private connectivity works with all URL formats (account name, connection name, and legacy locator)."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "A Snowflake user signed up for a trial account selecting Enterprise Edition on AWS in us-east-1. After 20 days, they notice their free credits are nearly exhausted despite moderate usage.",
+      "stem": "What is the most likely explanation for the rapid credit depletion?",
+      "options": [
+        {
+          "key": "A",
+          "text": "AWS us-east-1 has higher credit costs than other regions"
+        },
+        {
+          "key": "B",
+          "text": "Enterprise Edition features consume additional credits beyond basic warehouse usage"
+        },
+        {
+          "key": "C",
+          "text": "Trial accounts are charged double the normal credit rate"
+        },
+        {
+          "key": "D",
+          "text": "The 30-day trial period reduces available credits proportionally each day"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "When signing up for a trial, the edition selection affects credit consumption. Some features available in Enterprise Edition consume additional credits, which can deplete the balance faster.",
+        "distractors": {
+          "A": "While region can affect costs, the documentation specifically notes that edition selection affects how quickly credits are exhausted.",
+          "C": "Trial accounts are not charged at double the rate \u2014 they use standard credit rates.",
+          "D": "Credits are consumed based on actual usage, not reduced proportionally by time."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "A company is using the connection name URL format for Client Redirect. They want to find the name of their connection to configure the URL.",
+      "stem": "Which SQL command should they execute to find the connection name?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SHOW CONNECTIONS;"
+        },
+        {
+          "key": "B",
+          "text": "DESCRIBE CONNECTION;"
+        },
+        {
+          "key": "C",
+          "text": "LIST CONNECTIONS IN ACCOUNT;"
+        },
+        {
+          "key": "D",
+          "text": "SELECT * FROM INFORMATION_SCHEMA.CONNECTIONS;"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "The SHOW CONNECTIONS command displays the connections available in the account, which can be used in the connection name URL format for Client Redirect.",
+        "distractors": {
+          "B": "DESCRIBE CONNECTION requires specifying a connection name \u2014 you would use SHOW CONNECTIONS to find available connections first.",
+          "C": "LIST CONNECTIONS IN ACCOUNT is not valid Snowflake SQL syntax.",
+          "D": "INFORMATION_SCHEMA.CONNECTIONS does not exist \u2014 use SHOW CONNECTIONS instead."
+        }
+      }
+    }
+  ]
+}

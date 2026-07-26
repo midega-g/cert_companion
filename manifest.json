@@ -360,6 +360,11 @@
                       "id": "test_2",
                       "label": "Organization Account Management \u2014 Part A",
                       "path": "snowflake/snowpro_core/domain_1/task_3/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Accounts, Identifiers & Connectivity \u2014 Part A",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_3.json"
                     }
                   ]
                 },
