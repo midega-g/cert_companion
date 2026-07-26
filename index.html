@@ -13,6 +13,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
   </head>
   <body>
+    <!-- Auth Header -->
+    <header id="auth-header" class="auth-header hidden">
+      <span id="auth-user-email" class="auth-email"></span>
+      <button
+        id="auth-logout-btn"
+        class="btn btn-sm btn-secondary"
+        onclick="handleLogout()"
+      >
+        Sign Out
+      </button>
+    </header>
+
     <div id="app">
       <!-- Breadcrumb -->
       <nav
@@ -20,6 +32,63 @@
         class="breadcrumb hidden"
         aria-label="Breadcrumb"
       ></nav>
+
+      <!-- Auth View -->
+      <main id="view-auth" class="view hidden">
+        <div class="auth-container">
+          <h1 class="page-title">Sign In</h1>
+          <p class="page-subtitle">
+            Sign in to sync your progress across devices
+          </p>
+          <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+            <div class="form-group">
+              <label for="auth-email">Email</label>
+              <input
+                type="email"
+                id="auth-email"
+                required
+                autocomplete="email"
+              />
+            </div>
+            <div class="form-group">
+              <label for="auth-password">Password</label>
+              <input
+                type="password"
+                id="auth-password"
+                required
+                autocomplete="current-password"
+                minlength="6"
+              />
+            </div>
+            <div id="auth-error" class="auth-error hidden"></div>
+            <div class="auth-actions">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="auth-submit-btn"
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="auth-toggle-btn"
+                onclick="toggleAuthMode()"
+              >
+                Create Account
+              </button>
+            </div>
+          </form>
+          <div class="auth-footer-links">
+            <button class="btn btn-link" onclick="handleForgotPassword()">
+              Forgot password?
+            </button>
+            <button class="btn btn-link" onclick="skipAuth()">
+              Continue without signing in
+            </button>
+          </div>
+        </div>
+      </main>
 
       <!-- Views -->
       <main id="view-home" class="view"></main>
@@ -29,6 +98,8 @@
       <main id="view-report" class="view hidden"></main>
     </div>
 
+    <!-- Firebase SDK (script tag approach — no build step needed) -->
+    <script type="module" src="firebase-init.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

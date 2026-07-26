@@ -7,16 +7,18 @@ const state = {
   answers: [], // [{ selected: [...keys], submitted: bool }]
   current: 0,
   feedbackOpen: [], // [bool]
+  user: null, // Firebase user object (null = not authenticated)
+  authMode: "signin", // 'signin' or 'signup'
 };
 
-/* ─── Session Persistence (localStorage) ────────────────────────── */
+/* ─── Session Persistence (localStorage + Firestore) ──────────── */
 function sessionKey() {
   if (state.navPath.length === 0 || !state.testMeta) return null;
   const pathIds = state.navPath.map((n) => n.id).join("_");
   return `cert_session_${pathIds}_${state.testMeta.id}`;
 }
 
-function saveSession() {
+async function saveSession() {
   const key = sessionKey();
   if (!key) return;
   const data = {
@@ -25,16 +27,49 @@ function saveSession() {
     feedbackOpen: state.feedbackOpen,
     timestamp: Date.now(),
   };
+  // Always save to localStorage as fallback
   try {
     localStorage.setItem(key, JSON.stringify(data));
   } catch (e) {
     /* quota exceeded — ignore */
   }
+  // If authenticated, also save to Firestore
+  if (state.user && window.firestoreSetDoc) {
+    try {
+      const docRef = window.firestoreDoc(
+        window.firebaseDb,
+        "users",
+        state.user.uid,
+        "sessions",
+        key,
+      );
+      await window.firestoreSetDoc(docRef, data);
+    } catch (e) {
+      /* network error — localStorage fallback is fine */
+    }
+  }
 }
 
-function loadSession() {
+async function loadSession() {
   const key = sessionKey();
   if (!key) return null;
+  // If authenticated, try Firestore first
+  if (state.user && window.firestoreGetDoc) {
+    try {
+      const docRef = window.firestoreDoc(
+        window.firebaseDb,
+        "users",
+        state.user.uid,
+        "sessions",
+        key,
+      );
+      const snap = await window.firestoreGetDoc(docRef);
+      if (snap.exists()) return snap.data();
+    } catch (e) {
+      /* fall through to localStorage */
+    }
+  }
+  // Fallback to localStorage
   try {
     const raw = localStorage.getItem(key);
     if (!raw) return null;
@@ -44,10 +79,154 @@ function loadSession() {
   }
 }
 
-function clearSession() {
+async function clearSession() {
   const key = sessionKey();
-  if (key) localStorage.removeItem(key);
+  if (!key) return;
+  localStorage.removeItem(key);
+  // If authenticated, also clear from Firestore
+  if (state.user && window.firestoreDeleteDoc) {
+    try {
+      const docRef = window.firestoreDoc(
+        window.firebaseDb,
+        "users",
+        state.user.uid,
+        "sessions",
+        key,
+      );
+      await window.firestoreDeleteDoc(docRef);
+    } catch (e) {
+      /* ignore */
+    }
+  }
 }
+
+/* ─── Auth UI ───────────────────────────────────────────────────── */
+function showAuthHeader(user) {
+  const header = $("auth-header");
+  const emailEl = $("auth-user-email");
+  if (user) {
+    // Display username (part before @)
+    const username = user.email.split("@")[0];
+    emailEl.textContent = username;
+    header.classList.remove("hidden");
+  } else {
+    header.classList.add("hidden");
+    emailEl.textContent = "";
+  }
+}
+
+function showAuthView() {
+  showView("auth");
+  setBreadcrumb([]);
+  state.authMode = "signin";
+  updateAuthForm();
+}
+
+function updateAuthForm() {
+  const submitBtn = $("auth-submit-btn");
+  const toggleBtn = $("auth-toggle-btn");
+  const errorEl = $("auth-error");
+  errorEl.classList.add("hidden");
+  if (state.authMode === "signin") {
+    submitBtn.textContent = "Sign In";
+    toggleBtn.textContent = "Create Account";
+  } else {
+    submitBtn.textContent = "Create Account";
+    toggleBtn.textContent = "Back to Sign In";
+  }
+}
+
+function toggleAuthMode() {
+  state.authMode = state.authMode === "signin" ? "signup" : "signin";
+  updateAuthForm();
+}
+
+async function handleAuthSubmit(e) {
+  e.preventDefault();
+  const email = $("auth-email").value.trim();
+  const password = $("auth-password").value;
+  const errorEl = $("auth-error");
+  const submitBtn = $("auth-submit-btn");
+
+  errorEl.classList.add("hidden");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Loading...";
+
+  try {
+    if (state.authMode === "signup") {
+      await window.firebaseSignUp(email, password);
+    } else {
+      await window.firebaseSignIn(email, password);
+    }
+    // Auth state listener will handle the redirect
+  } catch (err) {
+    errorEl.textContent = friendlyAuthError(err.code);
+    errorEl.classList.remove("hidden");
+    submitBtn.disabled = false;
+    updateAuthForm();
+  }
+}
+
+function friendlyAuthError(code) {
+  const map = {
+    "auth/user-not-found": "No account found with this email.",
+    "auth/wrong-password": "Incorrect password.",
+    "auth/invalid-credential": "Invalid email or password.",
+    "auth/email-already-in-use": "An account with this email already exists.",
+    "auth/weak-password": "Password must be at least 6 characters.",
+    "auth/invalid-email": "Please enter a valid email address.",
+    "auth/too-many-requests": "Too many attempts. Please try again later.",
+  };
+  return map[code] || `Authentication error: ${code}`;
+}
+
+async function handleLogout() {
+  try {
+    await window.firebaseSignOut();
+  } catch (e) {
+    /* ignore */
+  }
+}
+
+async function handleForgotPassword() {
+  const email = $("auth-email").value.trim();
+  const errorEl = $("auth-error");
+  if (!email) {
+    errorEl.textContent =
+      "Enter your email address above, then click Forgot password.";
+    errorEl.classList.remove("hidden");
+    return;
+  }
+  try {
+    await window.firebaseResetPassword(email);
+    errorEl.textContent = "Password reset email sent. Check your inbox.";
+    errorEl.classList.remove("hidden");
+    errorEl.style.color = "#16a34a";
+    errorEl.style.background = "#f0fdf4";
+    errorEl.style.borderColor = "#dcfce7";
+  } catch (err) {
+    errorEl.style.color = "";
+    errorEl.style.background = "";
+    errorEl.style.borderColor = "";
+    errorEl.textContent = friendlyAuthError(err.code);
+    errorEl.classList.remove("hidden");
+  }
+}
+
+function skipAuth() {
+  renderHome();
+}
+
+/* ─── Firebase Auth State Listener ──────────────────────────────── */
+window.onFirebaseAuthStateChanged = function (user) {
+  state.user = user || null;
+  showAuthHeader(user);
+  // If user just signed in and we're on the auth view, go home
+  const authView = $("view-auth");
+  if (user && !authView.classList.contains("hidden")) {
+    renderHome();
+  }
+};
 
 /* ─── Helpers ───────────────────────────────────────────────────── */
 function $(id) {
@@ -55,7 +234,7 @@ function $(id) {
 }
 
 function showView(name) {
-  ["home", "topic", "tests", "exam", "report"].forEach((v) => {
+  ["home", "topic", "tests", "exam", "report", "auth"].forEach((v) => {
     $(`view-${v}`).classList.toggle("hidden", v !== name);
   });
 }
@@ -139,6 +318,11 @@ async function renderHome() {
     <h1 class="page-title">Certification Practice</h1>
     <p class="page-subtitle">Select a certification to begin</p>
     <p class="disclaimer">These questions are based on official documentation that may change over time. Some answers may not reflect the latest documentation when you use them.</p>
+    ${
+      !state.user
+        ? '<p class="auth-prompt"><a href="#" onclick="showAuthView(); return false;">Sign in</a> to sync progress across devices</p>'
+        : ""
+    }
     <div class="card-grid">
       ${providers
         .map(
@@ -325,7 +509,7 @@ async function startTest(id) {
   }
 
   // Check for saved session
-  const saved = loadSession();
+  const saved = await loadSession();
   if (saved && saved.answers && saved.answers.some((a) => a.submitted)) {
     // Show resume prompt
     const answeredCount = saved.answers.filter((a) => a.submitted).length;
@@ -345,8 +529,8 @@ async function startTest(id) {
   initFreshExam();
 }
 
-function resumeTest() {
-  const saved = loadSession();
+async function resumeTest() {
+  const saved = await loadSession();
   if (saved) {
     state.answers = saved.answers;
     state.current = saved.current;

@@ -602,3 +602,120 @@ body {
     font-size: 2.2rem;
   }
 }
+
+/* ─── Auth Styles ───────────────────────────────────────────────── */
+.auth-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 8px 24px;
+  background: var(--bg-surface, #f8f9fa);
+  border-bottom: 1px solid var(--border, #e2e8f0);
+}
+
+.auth-email {
+  font-size: 0.85rem;
+  color: var(--text-muted, #6b7280);
+}
+
+.auth-container {
+  max-width: 400px;
+  margin: 80px auto 0;
+  padding: 0 20px;
+}
+
+.auth-container .page-title {
+  margin-bottom: 4px;
+}
+
+.auth-container .page-subtitle {
+  margin-bottom: 28px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text, #1f2937);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 6px;
+  background: var(--bg, #fff);
+  color: var(--text, #1f2937);
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary, #2563eb);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.auth-error {
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 6px;
+}
+
+.auth-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.auth-actions .btn {
+  flex: 1;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--text-muted, #6b7280);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.btn-link:hover {
+  color: var(--primary, #2563eb);
+}
+
+.auth-prompt {
+  font-size: 0.875rem;
+  color: var(--text-muted, #6b7280);
+  margin-bottom: 20px;
+}
+
+.auth-prompt a {
+  color: var(--primary, #2563eb);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-prompt a:hover {
+  text-decoration: underline;
+}
+
+.auth-footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+}
