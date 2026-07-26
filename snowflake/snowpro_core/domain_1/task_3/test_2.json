@@ -1,0 +1,782 @@
+{
+  "label": "Organization Account Management \u2014 Part A",
+  "order": 2,
+  "topic": "Snowflake Organization Account Management",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "What is the default maximum number of On Demand accounts allowed in a Snowflake organization?",
+      "options": [
+        {
+          "key": "A",
+          "text": "10"
+        },
+        {
+          "key": "B",
+          "text": "50"
+        },
+        {
+          "key": "C",
+          "text": "25"
+        },
+        {
+          "key": "D",
+          "text": "100"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "By default, the maximum number of On Demand accounts in an organization is 25. Organizations with a capacity contract have a default maximum of 100.",
+        "distractors": {
+          "A": "10 is not the default limit for On Demand accounts.",
+          "B": "50 is not the default limit \u2014 On Demand organizations are limited to 25 by default.",
+          "D": "100 is the default maximum for organizations with a capacity contract, not On Demand accounts."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "What is the minimum grace period when dropping a Snowflake account?",
+      "options": [
+        {
+          "key": "A",
+          "text": "1 day"
+        },
+        {
+          "key": "B",
+          "text": "7 days"
+        },
+        {
+          "key": "C",
+          "text": "14 days"
+        },
+        {
+          "key": "D",
+          "text": "3 days"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The minimum grace period when dropping an account is 3 days. The maximum is 90 days, not including the current date.",
+        "distractors": {
+          "A": "1 day is below the minimum \u2014 the shortest possible grace period is 3 days.",
+          "B": "7 days is a valid grace period but not the minimum.",
+          "C": "14 days is a valid grace period but not the minimum."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "When creating a new account in an organization, approximately how long does it take for DNS changes to propagate before the account is accessible?",
+      "options": [
+        {
+          "key": "A",
+          "text": "5 minutes"
+        },
+        {
+          "key": "B",
+          "text": "30 seconds"
+        },
+        {
+          "key": "C",
+          "text": "Immediately with no delay"
+        },
+        {
+          "key": "D",
+          "text": "2 minutes"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "It takes about 30 seconds for DNS changes to propagate before a newly created account can be accessed.",
+        "distractors": {
+          "A": "5 minutes is much longer than the actual propagation time of approximately 30 seconds.",
+          "C": "There is a short delay \u2014 the account is not accessible immediately due to DNS propagation.",
+          "D": "2 minutes exceeds the typical propagation time of about 30 seconds."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "Which ADMIN_USER_TYPE values can be specified when creating a new account with the CREATE ACCOUNT command? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "LEGACY"
+        },
+        {
+          "key": "B",
+          "text": "SERVICE"
+        },
+        {
+          "key": "C",
+          "text": "ADMINISTRATOR"
+        },
+        {
+          "key": "D",
+          "text": "PERSON"
+        },
+        {
+          "key": "E",
+          "text": "OPERATOR"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The ADMIN_USER_TYPE can be set to PERSON (human user, MFA enrollment enforced) or SERVICE (non-human, must use RSA key authentication, MFA not enforced).",
+        "distractors": {
+          "A": "LEGACY is not a valid ADMIN_USER_TYPE value.",
+          "C": "ADMINISTRATOR is not a valid ADMIN_USER_TYPE \u2014 the valid values are PERSON and SERVICE.",
+          "E": "OPERATOR is not a valid ADMIN_USER_TYPE value."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "Which statements about downgrading a Snowflake account edition are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "You cannot downgrade an account within the same day after upgrading"
+        },
+        {
+          "key": "B",
+          "text": "You must stop using all features unique to the higher edition before downgrading"
+        },
+        {
+          "key": "C",
+          "text": "Downgrading requires contacting Snowflake Support"
+        },
+        {
+          "key": "D",
+          "text": "You can downgrade while masking policies are still active"
+        },
+        {
+          "key": "E",
+          "text": "Downgrading automatically removes higher-edition features"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "After changing edition, you cannot downgrade the same day. Additionally, you must first stop using all features unique to the higher edition (e.g., delete masking policies before downgrading from Enterprise to Standard).",
+        "distractors": {
+          "C": "Downgrading is done by the organization administrator using ALTER ACCOUNT SET EDITION \u2014 Snowflake Support is only needed for upgrading to VPS.",
+          "D": "You cannot downgrade while masking policies exist \u2014 they must be deleted first since they are Enterprise-only features.",
+          "E": "Downgrading does not automatically remove features \u2014 you must manually remove them before the edition change."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": null,
+      "stem": "Which of the following are steps in the basic workflow for getting organization users into regular accounts? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Create organization users in the organization account"
+        },
+        {
+          "key": "B",
+          "text": "Grant the ORGADMIN role to each organization user"
+        },
+        {
+          "key": "C",
+          "text": "Create an organization user group and add users to it"
+        },
+        {
+          "key": "D",
+          "text": "Import the organization user group into the regular account"
+        },
+        {
+          "key": "E",
+          "text": "Execute CREATE USER for each organization user in the regular account"
+        },
+        {
+          "key": "F",
+          "text": "Set the organization user group visibility to the target accounts"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The workflow is: (1) create organization users in the org account, (2) create an org user group and add users to it, (3) set visibility, (4) account administrators import the group. Creating users, grouping them, and importing the group are the three core steps.",
+        "distractors": {
+          "B": "Organization users do not need the ORGADMIN role \u2014 they are regular users managed at the organization level.",
+          "E": "You do not execute CREATE USER in the regular account \u2014 importing the organization user group automatically creates the user objects.",
+          "F": "Setting visibility is part of the workflow but it happens between creating the group and importing \u2014 the three core steps from the perspective of getting users into accounts are create, group, and import."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "An organization administrator is creating a new account for an automated CI/CD pipeline that will use the ACCOUNTADMIN role. The pipeline authenticates using RSA key pairs and should not be prompted for MFA.",
+      "stem": "Which CREATE ACCOUNT configuration should the administrator use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ADMIN_USER_TYPE = PERSON with ADMIN_RSA_PUBLIC_KEY specified"
+        },
+        {
+          "key": "B",
+          "text": "ADMIN_USER_TYPE = SERVICE with ADMIN_RSA_PUBLIC_KEY specified"
+        },
+        {
+          "key": "C",
+          "text": "ADMIN_USER_TYPE = SERVICE with ADMIN_PASSWORD specified"
+        },
+        {
+          "key": "D",
+          "text": "ADMIN_USER_TYPE = PERSON with MUST_CHANGE_PASSWORD = FALSE"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "For non-human ACCOUNTADMIN users, ADMIN_USER_TYPE = SERVICE prevents MFA enforcement. A service-type user cannot use passwords and must specify ADMIN_RSA_PUBLIC_KEY for authentication.",
+        "distractors": {
+          "A": "PERSON type enforces MFA enrollment, which is not suitable for an automated pipeline.",
+          "C": "SERVICE type users cannot use passwords \u2014 they must authenticate with RSA keys.",
+          "D": "PERSON type still enforces MFA regardless of MUST_CHANGE_PASSWORD setting."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "An organization administrator using the ORGADMIN role wants to drop an account called 'dev_env'. They are currently logged into the dev_env account.",
+      "stem": "What must the administrator do before they can drop the dev_env account?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Switch to the ACCOUNTADMIN role in the dev_env account"
+        },
+        {
+          "key": "B",
+          "text": "Log in to a different ORGADMIN-enabled account"
+        },
+        {
+          "key": "C",
+          "text": "Disable the ORGADMIN role in the dev_env account first"
+        },
+        {
+          "key": "D",
+          "text": "Contact Snowflake Support to initiate the drop"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "An organization administrator using the ORGADMIN role cannot drop an account while logged in to it. They must log in to a different ORGADMIN-enabled account before executing DROP ACCOUNT.",
+        "distractors": {
+          "A": "Switching roles within the same account does not help \u2014 you must be in a different account entirely.",
+          "C": "Disabling ORGADMIN is not required and would prevent you from dropping accounts from that account.",
+          "D": "Snowflake Support is only needed for dropping the last account in an organization."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "A company renamed their Snowflake account from 'old_analytics' to 'analytics_prod' two months ago. They chose to save the original URL during renaming. Now they want to force all users to use the new URL.",
+      "stem": "Which SQL command deletes the saved original account URL?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ALTER ACCOUNT analytics_prod DROP OLD ORGANIZATION URL;"
+        },
+        {
+          "key": "B",
+          "text": "DROP URL FOR ACCOUNT analytics_prod;"
+        },
+        {
+          "key": "C",
+          "text": "ALTER ACCOUNT analytics_prod DROP OLD URL;"
+        },
+        {
+          "key": "D",
+          "text": "ALTER ACCOUNT analytics_prod REMOVE SAVED URL;"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "ALTER ACCOUNT ... DROP OLD URL deletes the original account URL that was saved when the account was renamed.",
+        "distractors": {
+          "A": "DROP OLD ORGANIZATION URL is used when the organization was modified (renamed/merged), not when an account was renamed.",
+          "B": "DROP URL FOR ACCOUNT is not valid Snowflake SQL syntax.",
+          "D": "REMOVE SAVED URL is not valid Snowflake SQL syntax."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "An organization administrator wants to upgrade the 'reporting' account from Standard Edition to Enterprise Edition to enable multi-cluster warehouses.",
+      "stem": "Which SQL command should the administrator execute?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ALTER ACCOUNT reporting UPGRADE TO ENTERPRISE;"
+        },
+        {
+          "key": "B",
+          "text": "ALTER ACCOUNT reporting SET EDITION = 'ENTERPRISE';"
+        },
+        {
+          "key": "C",
+          "text": "UPDATE ACCOUNT reporting SET EDITION = 'ENTERPRISE';"
+        },
+        {
+          "key": "D",
+          "text": "ALTER ACCOUNT reporting CHANGE EDITION ENTERPRISE;"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The ALTER ACCOUNT command with SET EDITION = 'ENTERPRISE' changes the edition of an account. Valid values are STANDARD, ENTERPRISE, and BUSINESS_CRITICAL.",
+        "distractors": {
+          "A": "UPGRADE TO is not valid syntax \u2014 the correct clause is SET EDITION.",
+          "C": "UPDATE ACCOUNT is not a Snowflake SQL command \u2014 ALTER ACCOUNT is used.",
+          "D": "CHANGE EDITION is not valid syntax \u2014 use SET EDITION = 'value'."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "A Snowflake account was accidentally dropped 5 days ago with a 14-day grace period. The team wants to understand what happened and how to recover.",
+      "stem": "Which statements about dropped accounts and their recovery are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The organization continues to pay for storage during the grace period"
+        },
+        {
+          "key": "B",
+          "text": "The dropped account remains fully operational during the grace period"
+        },
+        {
+          "key": "C",
+          "text": "UNDROP ACCOUNT unlocks the account and restores full access"
+        },
+        {
+          "key": "D",
+          "text": "Time Travel can be used to recover the dropped account"
+        },
+        {
+          "key": "E",
+          "text": "The grace period can be shortened after the account is dropped"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "An organization continues to pay for storage costs during the grace period, and UNDROP ACCOUNT restores the account, unlocking it so users can access it as if it had never been dropped.",
+        "distractors": {
+          "B": "A dropped account is locked during the grace period \u2014 it is not operational and users cannot access it.",
+          "D": "Time Travel operates on objects within an account, not on entire accounts.",
+          "E": "To change the grace period, you must undrop the account and then drop it again with the new period."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "An organization administrator renamed an account from 'old_name' to 'new_name' and saved the original URL. Separately, the organization itself was later renamed by Snowflake Support.",
+      "stem": "Which statements correctly describe the difference between saved account URLs and old organization URLs? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Saved account URLs from a rename have no automatic expiration"
+        },
+        {
+          "key": "B",
+          "text": "Old organization URLs are automatically deleted after 90 days"
+        },
+        {
+          "key": "C",
+          "text": "Both URL types expire after 90 days"
+        },
+        {
+          "key": "D",
+          "text": "Old organization URLs can be kept indefinitely by the administrator"
+        },
+        {
+          "key": "E",
+          "text": "Saved account URLs expire after 30 days unless manually extended"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Saved account URLs from a rename have no expiration limit and persist until manually deleted. Old organization URLs (from org rename/merge) are automatically deleted after 90 days.",
+        "distractors": {
+          "C": "Only organization URLs expire after 90 days \u2014 account rename URLs do not expire.",
+          "D": "Old organization URLs cannot be kept indefinitely \u2014 they are automatically deleted after 90 days.",
+          "E": "Saved account URLs have no expiration at all \u2014 the 30-day figure is not applicable."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "A global organization administrator has created an organization user group called 'data_stewards' with IS_GRANTABLE = TRUE and imported it into a regular account.",
+      "stem": "What happens in the regular account when the organization user group is imported?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A database named 'data_stewards' is created containing the user metadata"
+        },
+        {
+          "key": "B",
+          "text": "A role named 'data_stewards' is created and granted to each imported user"
+        },
+        {
+          "key": "C",
+          "text": "Each user is granted the ORGADMIN role automatically"
+        },
+        {
+          "key": "D",
+          "text": "A schema named 'data_stewards' is created in the default database"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "When an organization user group is imported, Snowflake creates an access control role of the same name. Each user imported from the group is granted this role. Because IS_GRANTABLE = TRUE, the account administrator can grant this role to other local roles.",
+        "distractors": {
+          "A": "No database is created \u2014 a role is created with the same name as the organization user group.",
+          "C": "Imported users are not granted ORGADMIN \u2014 they are granted the role named after the organization user group.",
+          "D": "No schema is created \u2014 the import creates a role, not a database object."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "A company needs to drop an account that currently provides listings on the Snowflake Marketplace and shares data with three consumer accounts.",
+      "stem": "What must be done before the account can be dropped? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Notify Snowflake Support about the planned deletion"
+        },
+        {
+          "key": "B",
+          "text": "Delete all listings provided by the account and complete any retirement flows"
+        },
+        {
+          "key": "C",
+          "text": "Transfer all shares to a different provider account"
+        },
+        {
+          "key": "D",
+          "text": "Drop the shares associated with the listings"
+        },
+        {
+          "key": "E",
+          "text": "Migrate all reader accounts to a different provider"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "You cannot drop an account with active listings. You must delete all listings (completing retirement flows for those with retirement policies) and drop the shares associated with the listings before dropping the account.",
+        "distractors": {
+          "A": "Snowflake Support notification is not required for dropping an account \u2014 it is recommended to notify consumers, not Snowflake.",
+          "C": "Shares cannot be transferred to another account \u2014 they must be dropped.",
+          "E": "Reader accounts do not need to be migrated \u2014 they are automatically dropped when the provider account is dropped."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "An organization administrator is setting up organization users for the first time. Some of the people already have user objects in multiple regular accounts.",
+      "stem": "Which statements about importing organization users who already exist in regular accounts are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The existing user objects are automatically overwritten by the organization user"
+        },
+        {
+          "key": "B",
+          "text": "You need to link the organization user with the existing user object after importing"
+        },
+        {
+          "key": "C",
+          "text": "Conflicts must be resolved after importing the organization user group"
+        },
+        {
+          "key": "D",
+          "text": "Existing user objects must be deleted before importing the organization user group"
+        },
+        {
+          "key": "E",
+          "text": "The import will fail if any organization user already has a local user object"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "If organization users already have user objects in regular accounts, you need to link the organization user with the existing user object after importing, and resolve any conflicts that arise.",
+        "distractors": {
+          "A": "Existing user objects are not automatically overwritten \u2014 conflicts must be resolved manually.",
+          "D": "Existing user objects do not need to be deleted \u2014 the linking process handles the association.",
+          "E": "The import does not fail \u2014 it proceeds and conflicts are resolved afterward."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "A global organization administrator wants to make an organization user group called 'platform_engineers' available only to specific accounts in the organization, not all accounts.",
+      "stem": "Which steps must the administrator perform to restrict the group's visibility? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Execute ALTER ORGANIZATION USER GROUP ... SET VISIBILITY = ACCOUNTS followed by the account names"
+        },
+        {
+          "key": "B",
+          "text": "Create the organization user group with IS_GRANTABLE = FALSE"
+        },
+        {
+          "key": "C",
+          "text": "Add organization users to the group before setting visibility"
+        },
+        {
+          "key": "D",
+          "text": "Execute GRANT USAGE ON ORGANIZATION USER GROUP to the target accounts"
+        },
+        {
+          "key": "E",
+          "text": "Set visibility to ORGANIZATION to allow all accounts access"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The administrator must add users to the group (step 2 of the workflow) and then use ALTER ORGANIZATION USER GROUP ... SET VISIBILITY = ACCOUNTS <account_names> to restrict which accounts can see and import the group.",
+        "distractors": {
+          "B": "IS_GRANTABLE controls whether the imported role can be granted to other local roles \u2014 it does not control visibility.",
+          "D": "GRANT USAGE ON ORGANIZATION USER GROUP is not valid syntax \u2014 visibility is set via ALTER ORGANIZATION USER GROUP.",
+          "E": "Setting visibility to ORGANIZATION would allow all accounts access, which is the opposite of the requirement."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "An administrator imports two different organization user groups into the same regular account. Both groups contain the same organization user 'jsmith'.",
+      "stem": "What happens when both groups are imported into the account? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Two separate local user objects are created for jsmith"
+        },
+        {
+          "key": "B",
+          "text": "Only one local user object is created for jsmith"
+        },
+        {
+          "key": "C",
+          "text": "The import of the second group fails due to a conflict"
+        },
+        {
+          "key": "D",
+          "text": "jsmith is granted the roles from both organization user groups"
+        },
+        {
+          "key": "E",
+          "text": "The second group's role overwrites the first group's role for jsmith"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "If multiple organization user groups containing the same user are imported, only one local user is created, and this user is granted the roles from all of the organization user groups.",
+        "distractors": {
+          "A": "Duplicate user objects are not created \u2014 only one local user exists regardless of how many groups contain them.",
+          "C": "The import does not fail \u2014 the system handles duplicate users gracefully.",
+          "E": "Roles are additive, not overwritten \u2014 the user gets roles from all imported groups."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "An organization's account 'prod_main' had its organization modified when the company merged with another entity. The original account URL was saved during the modification.",
+      "stem": "Which statements about the old organization URL are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The old organization URL can be used indefinitely"
+        },
+        {
+          "key": "B",
+          "text": "The old organization URL is automatically deleted after 90 days"
+        },
+        {
+          "key": "C",
+          "text": "The administrator can delete the URL before 90 days using ALTER ACCOUNT ... DROP OLD ORGANIZATION URL"
+        },
+        {
+          "key": "D",
+          "text": "The old organization URL only allows read-only access"
+        },
+        {
+          "key": "E",
+          "text": "The old organization URL is permanently retained unless the account is dropped"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "When an organization is modified, the saved old organization URL can be used for 90 days, after which it is automatically deleted. The administrator can delete it earlier using ALTER ACCOUNT ... DROP OLD ORGANIZATION URL.",
+        "distractors": {
+          "A": "Old organization URLs have a 90-day expiry \u2014 they cannot be used indefinitely (unlike renamed account URLs which have no expiry).",
+          "D": "The old URL provides full access, not read-only.",
+          "E": "The URL is automatically deleted after 90 days \u2014 it is not permanently retained."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "An administrator wants to rename an account but also wants to ensure that existing connections using the original URL stop working immediately.",
+      "stem": "How should the administrator configure the rename operation?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set SAVE_OLD_URL = FALSE when executing ALTER ACCOUNT ... RENAME TO"
+        },
+        {
+          "key": "B",
+          "text": "Execute DROP OLD URL immediately after the rename"
+        },
+        {
+          "key": "C",
+          "text": "Set FORCE_NEW_URL = TRUE when executing ALTER ACCOUNT ... RENAME TO"
+        },
+        {
+          "key": "D",
+          "text": "Contact Snowflake Support to invalidate the old URL"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Setting SAVE_OLD_URL = FALSE during the ALTER ACCOUNT ... RENAME TO command deletes the original URL immediately, forcing users to use the new URL.",
+        "distractors": {
+          "B": "While DROP OLD URL works after the fact, setting SAVE_OLD_URL = FALSE during rename is the direct way to prevent the old URL from ever being saved.",
+          "C": "FORCE_NEW_URL is not a valid parameter \u2014 the correct parameter is SAVE_OLD_URL = FALSE.",
+          "D": "Snowflake Support is not needed \u2014 the SAVE_OLD_URL parameter handles this during the rename."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "organizations",
+      "scenario": "A managed account (reader account) needs to be changed from Standard to Enterprise edition. The organization administrator tries to use ALTER ACCOUNT ... SET EDITION but receives an error.",
+      "stem": "Why does the ALTER ACCOUNT command fail for managed accounts?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Managed accounts cannot have their edition changed under any circumstances"
+        },
+        {
+          "key": "B",
+          "text": "Managed accounts require contacting Snowflake Support to change the edition"
+        },
+        {
+          "key": "C",
+          "text": "The GLOBALORGADMIN role is required instead of ORGADMIN"
+        },
+        {
+          "key": "D",
+          "text": "Managed accounts must be dropped and recreated with the new edition"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Managed accounts (including reader accounts created by a provider) cannot be altered with ALTER ACCOUNT ... SET EDITION. To change the edition on a managed account, you must contact Snowflake Support.",
+        "distractors": {
+          "A": "The edition can be changed \u2014 it just requires Snowflake Support rather than self-service.",
+          "C": "The issue is not about which role is used \u2014 managed accounts simply cannot use the ALTER ACCOUNT SET EDITION command.",
+          "D": "Dropping and recreating is not the solution \u2014 Snowflake Support handles the edition change."
+        }
+      }
+    }
+  ]
+}
