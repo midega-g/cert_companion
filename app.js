@@ -245,12 +245,68 @@ function togglePasswordVisibility() {
 window.onFirebaseAuthStateChanged = function (user) {
   state.user = user || null;
   showAuthHeader(user);
-  // If user just signed in and we're on the auth view, go home
-  const authView = $("view-auth");
-  if (user && !authView.classList.contains("hidden")) {
-    renderHome();
+  if (user) {
+    // User is authenticated — migrate any localStorage data, then go home
+    migrateLocalData(user);
+    const authView = $("view-auth");
+    if (!authView.classList.contains("hidden")) {
+      renderHome();
+    }
+  } else {
+    // Not authenticated — show auth view
+    showAuthView();
   }
 };
+
+/* ─── Migrate localStorage to Firestore on first sign-in ────────── */
+async function migrateLocalData(user) {
+  const migrationKey = `cert_migrated_${user.uid}`;
+  if (localStorage.getItem(migrationKey)) return; // Already migrated
+
+  // Migrate history
+  try {
+    const raw = localStorage.getItem("cert_history");
+    if (raw && window.firestoreAddDoc) {
+      const history = JSON.parse(raw);
+      const colRef = window.firestoreCollection(
+        window.firebaseDb,
+        "users",
+        user.uid,
+        "history",
+      );
+      for (const record of history) {
+        await window.firestoreAddDoc(colRef, record);
+      }
+    }
+  } catch (e) {
+    /* ignore migration errors */
+  }
+
+  // Migrate sessions
+  try {
+    const keys = Object.keys(localStorage).filter((k) =>
+      k.startsWith("cert_session_"),
+    );
+    for (const key of keys) {
+      const data = JSON.parse(localStorage.getItem(key));
+      if (data && window.firestoreSetDoc) {
+        const docRef = window.firestoreDoc(
+          window.firebaseDb,
+          "users",
+          user.uid,
+          "sessions",
+          key,
+        );
+        await window.firestoreSetDoc(docRef, data);
+      }
+    }
+  } catch (e) {
+    /* ignore migration errors */
+  }
+
+  // Mark as migrated so we don't repeat
+  localStorage.setItem(migrationKey, "true");
+}
 
 /* ─── Helpers ───────────────────────────────────────────────────── */
 function $(id) {
@@ -344,11 +400,6 @@ async function renderHome() {
     <h1 class="page-title">Certification Practice</h1>
     <p class="page-subtitle">Select a certification to begin</p>
     <p class="disclaimer">These questions are based on official documentation that may change over time. Some answers may not reflect the latest documentation when you use them.</p>
-    ${
-      !state.user
-        ? '<p class="auth-prompt"><a href="#" onclick="showAuthView(); return false;">Sign in</a> to sync progress across devices</p>'
-        : ""
-    }
     <div class="home-actions">
       <button class="btn btn-secondary btn-sm" onclick="renderHistory()">History</button>
     </div>
@@ -1223,4 +1274,8 @@ function downloadPDF() {
 }
 
 /* ─── Boot ──────────────────────────────────────────────────────── */
-document.addEventListener("DOMContentLoaded", renderHome);
+document.addEventListener("DOMContentLoaded", () => {
+  // Show auth view by default — Firebase auth state listener
+  // will redirect to home once authentication is confirmed
+  showAuthView();
+});
