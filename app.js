@@ -217,6 +217,30 @@ function skipAuth() {
   renderHome();
 }
 
+function togglePasswordVisibility() {
+  const input = $("auth-password");
+  const icon = $("password-toggle-icon");
+  if (input.type === "password") {
+    input.type = "text";
+    icon.textContent = "Hide";
+  } else {
+    input.type = "password";
+    icon.textContent = "Show";
+  }
+}
+
+function togglePasswordVisibility() {
+  const input = $("auth-password");
+  const icon = $("password-toggle-icon");
+  if (input.type === "password") {
+    input.type = "text";
+    icon.textContent = "Hide";
+  } else {
+    input.type = "password";
+    icon.textContent = "Show";
+  }
+}
+
 /* ─── Firebase Auth State Listener ──────────────────────────────── */
 window.onFirebaseAuthStateChanged = function (user) {
   state.user = user || null;
