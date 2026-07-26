@@ -13,15 +13,15 @@ Do not output prose, markdown fences, explanations, comments, or notes outside t
 * Generate exactly 20 questions per session.
 * Distribution:
 
-  * 10 direct questions (no scenario):
+  * 6 direct questions (no scenario):
 
-    * 5 single-select
-    * 5 multi-select
-  * 10 scenario-based questions (begin with a realistic scenario):
+    * 3 single-select
+    * 3 multi-select
+  * 14 scenario-based questions (begin with a realistic scenario):
 
-    * 5 single-select
-    * 5 multi-select
-* Definitional or straightforward recall questions are allowed but capped at 3 total and must come from the direct single-select pool.
+    * 7 single-select
+    * 7 multi-select
+* Definitional or straightforward recall questions are allowed but capped at 2 total and must come from the direct single-select pool.
 * Direct questions must set `scenario` to `null`.
 * Scenario-based questions must set `scenario` to a non-null string containing the realistic situation before the question stem.
 * All questions must be derived strictly from the provided source material.
@@ -151,6 +151,12 @@ If `order` is omitted, the manifest falls back to sorting by the numeric index i
 
 ---
 
+# CORRECT ANSWER DISTRIBUTION
+
+The JSON schema example shows `"correct": ["A"]` for illustration purposes only. The correct answer(s) must be distributed naturally across all option keys (A–F). Do not default the correct answer to "A" for every question. A realistic exam has correct answers spread across A, B, C, D, E, and F.
+
+---
+
 # OPTION COUNT RULES
 
 * Single-select (direct or scenario):
@@ -160,3 +166,17 @@ If `order` is omitted, the manifest falls back to sorting by the numeric index i
 
   * 5 options (A–E) for Select TWO
   * 6 options (A–F) for Select THREE
+
+---
+
+# LARGE FILE GENERATION
+
+If the output exceeds 250 lines, generate the file in sequential parts (e.g., questions 1–10 first, then 11–20) rather than attempting the entire file in a single pass. This prevents generation failures and context-window loops.
+
+When generating in parts:
+
+1. First part: output the JSON opening (`{`, metadata fields, `"questions": [`) and the first batch of questions.
+2. Subsequent parts: continue from where the previous part ended, maintaining valid JSON structure.
+3. Final part: close the JSON array and object (`]}`) properly.
+
+Each part must be appended to the same file. The final result must be a single valid JSON file.

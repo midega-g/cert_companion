@@ -325,76 +325,87 @@
       "label": "Snowflake",
       "children": [
         {
-          "id": "cloning",
-          "label": "Cloning",
-          "tests": [
+          "id": "snowpro_core",
+          "label": "SnowPro Core",
+          "description": "Snowflake SnowPro Core Certification (COF-C02)",
+          "children": [
             {
-              "id": "test_1",
-              "label": "Snowflake Cloning Considerations \u2014 Part A",
-              "path": "snowflake/cloning/test_1.json"
-            }
-          ]
-        },
-        {
-          "id": "editions",
-          "label": "Editions",
-          "tests": [
-            {
-              "id": "test_1",
-              "label": "Snowflake Editions \u2014 Part A",
-              "path": "snowflake/editions/test_1.json"
-            }
-          ]
-        },
-        {
-          "id": "micro_partition_and_clustering",
-          "label": "Micro Partition And Clustering",
-          "tests": [
-            {
-              "id": "test_1",
-              "label": "Micro-Partitions & Clustering \u2014 Part A",
-              "path": "snowflake/micro_partition_and_clustering/test_1.json"
-            },
-            {
-              "id": "test_4",
-              "label": "Micro-Partitions & Clustering \u2014 Part B",
-              "path": "snowflake/micro_partition_and_clustering/test_4.json"
-            },
-            {
-              "id": "test_2",
-              "label": "Clustering Keys & Clustered Tables \u2014 Part A",
-              "path": "snowflake/micro_partition_and_clustering/test_2.json"
-            },
-            {
-              "id": "test_5",
-              "label": "Clustering Keys & Clustered Tables \u2014 Part B",
-              "path": "snowflake/micro_partition_and_clustering/test_5.json"
-            },
-            {
-              "id": "test_3",
-              "label": "Automatic Clustering \u2014 Part A",
-              "path": "snowflake/micro_partition_and_clustering/test_3.json"
-            },
-            {
-              "id": "test_6",
-              "label": "Automatic Clustering \u2014 Part B",
-              "path": "snowflake/micro_partition_and_clustering/test_6.json"
-            }
-          ]
-        },
-        {
-          "id": "virtual_warehouses",
-          "label": "Virtual Warehouses",
-          "tests": [
-            {
-              "id": "test_1",
-              "label": "Virtual Warehouse Considerations \u2014 Part A",
-              "path": "snowflake/virtual_warehouses/test_1.json"
-            },
-            {
-              "id": "test_2",
-              "label": "Virtual Warehouse Considerations \u2014 Part B",
-              "path": "snowflake/virtual_warehouses/test_2.json"
+              "id": "domain_1",
+              "label": "Domain 1",
+              "description": "Snowflake AI Data Cloud Features and Architecture",
+              "children": [
+                {
+                  "id": "task_1",
+                  "label": "Task 1.1",
+                  "description": "Describe and Use the Snowflake Architecture",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Snowflake Editions \u2014 Part A",
+                      "path": "snowflake/snowpro_core/domain_1/task_1/test_1.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_4",
+                  "label": "Task 1.4",
+                  "description": "Configure Virtual Warehouses",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Virtual Warehouse Considerations \u2014 Part A",
+                      "path": "snowflake/snowpro_core/domain_1/task_4/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Virtual Warehouse Considerations \u2014 Part B",
+                      "path": "snowflake/snowpro_core/domain_1/task_4/test_2.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_5",
+                  "label": "Task 1.5",
+                  "description": "Explain Snowflake Storage Concepts",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Micro-Partitions & Clustering \u2014 Part A",
+                      "path": "snowflake/snowpro_core/domain_1/task_5/test_1.json"
+                    },
+                    {
+                      "id": "test_4",
+                      "label": "Micro-Partitions & Clustering \u2014 Part B",
+                      "path": "snowflake/snowpro_core/domain_1/task_5/test_4.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Clustering Keys & Clustered Tables \u2014 Part A",
+                      "path": "snowflake/snowpro_core/domain_1/task_5/test_2.json"
+                    },
+                    {
+                      "id": "test_5",
+                      "label": "Clustering Keys & Clustered Tables \u2014 Part B",
+                      "path": "snowflake/snowpro_core/domain_1/task_5/test_5.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Automatic Clustering \u2014 Part A",
+                      "path": "snowflake/snowpro_core/domain_1/task_5/test_3.json"
+                    },
+                    {
+                      "id": "test_6",
+                      "label": "Automatic Clustering \u2014 Part B",
+                      "path": "snowflake/snowpro_core/domain_1/task_5/test_6.json"
+                    },
+                    {
+                      "id": "test_7",
+                      "label": "Snowflake Cloning Considerations \u2014 Part A",
+                      "path": "snowflake/snowpro_core/domain_1/task_5/test_7.json"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }

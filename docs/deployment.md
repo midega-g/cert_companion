@@ -16,31 +16,9 @@ npx serve .
 # Open http://localhost:3000
 ```
 
-### Regenerating the manifest locally
+### Validation commands
 
-After adding or moving test files, regenerate the manifest to verify the structure before pushing:
-
-```bash
-python3 .github/scripts/generate_manifest.py
-```
-
-This writes `manifest.json` to the repo root and prints the output for inspection.
-
-### Validating JSON files
-
-```bash
-# Check a single file
-python3 -c "import json; json.load(open('path/to/test_1.json'))"
-
-# Check all test files
-find . -name "test_*.json" -exec python3 -c "import json,sys; json.load(open(sys.argv[1])); print(f'OK: {sys.argv[1]}')" {} \;
-```
-
-### Validating app.js syntax
-
-```bash
-node --check app.js
-```
+See [verification-commands.md](verification-commands.md) for all validation steps (manifest regeneration, JSON validation, syntax checks, pre-push checklist).
 
 ---
 
@@ -162,15 +140,17 @@ Only use this on branches you own. Avoid on `main` unless you're the sole contri
 
 ---
 
-## Pre-push Checklist
+## GitHub Account
 
-Before pushing to `main`:
+This project uses the `midega-g` GitHub account. If you have multiple accounts configured, switch before pushing:
 
-1. Run the manifest generator and verify output looks correct
-2. Validate JSON syntax on any new/modified test files
-3. Run `node --check app.js` if you touched the app
-4. Open the app locally and click through the navigation to the new content
-5. `git pull --rebase` to pick up any CI commits
+```bash
+# Check which account is active
+gh auth status
+
+# Switch to midega-g if not already active
+gh auth switch --user midega-g
+```
 
 ---
 
