@@ -213,6 +213,12 @@ Before generating questions, assess the fetched content to determine:
    * Medium content (3-6 pages with moderate depth) → 2 tests
    * Dense content (6+ pages with high depth, many testable concepts) → 3 tests
 4. **Test breakdown:** Define what each test will cover before generating anything.
+5. **Gap analysis:** After all planned tests for a task are generated, review the source material for concepts that were not covered or only lightly touched. If significant gaps exist, create a supplementary test (labeled "— Gap Coverage") to achieve full or near-full coverage. Check for:
+   * SQL commands or functions mentioned in the docs but not tested
+   * Edge cases, limitations, or "gotchas" that weren't addressed
+   * Configuration options or parameters not covered
+   * Behavioral details (defaults, error conditions, prerequisites) that were skipped
+   * Entire sections or sub-topics that received zero questions
 
 ## Validation after generation
 
