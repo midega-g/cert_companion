@@ -1,0 +1,460 @@
+{
+  "label": "Materialized Views",
+  "order": 9,
+  "topic": "Snowflake Materialized Views — Creation Limitations, Optimizer Rewrite, Maintenance, Costs, Clustering",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": null,
+      "stem": "Which Snowflake edition is required to use materialized views?",
+      "options": [
+        { "key": "A", "text": "Standard Edition" },
+        { "key": "B", "text": "Enterprise Edition" },
+        { "key": "C", "text": "Business Critical Edition" },
+        { "key": "D", "text": "Virtual Private Snowflake" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Materialized views require Enterprise Edition or higher.",
+        "distractors": {
+          "A": "Standard Edition does not include materialized views.",
+          "C": "Business Critical includes materialized views, but Enterprise Edition is the minimum requirement.",
+          "D": "VPS includes the feature, but Enterprise Edition is the documented minimum."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": null,
+      "stem": "How many tables can a materialized view query?",
+      "options": [
+        { "key": "A", "text": "Up to 4 tables with inner joins" },
+        { "key": "B", "text": "Any number of tables, provided joins are not self-joins" },
+        { "key": "C", "text": "Only a single table — joins are not supported" },
+        { "key": "D", "text": "Two tables when both reside in the same schema" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "A materialized view can query only a single table. Joins, including self-joins, are not supported.",
+        "distractors": {
+          "A": "No joins of any kind are permitted in a materialized view definition.",
+          "B": "Self-joins are specifically prohibited, and so are all other joins.",
+          "D": "Schema colocation does not enable joins in materialized views."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": null,
+      "stem": "Which command shows when a materialized view was last refreshed and how far behind the base table it is?",
+      "options": [
+        { "key": "A", "text": "DESCRIBE MATERIALIZED VIEW" },
+        { "key": "B", "text": "SHOW MATERIALIZED VIEWS" },
+        { "key": "C", "text": "SELECT * FROM INFORMATION_SCHEMA.VIEWS" },
+        { "key": "D", "text": "ALTER MATERIALIZED VIEW ... STATUS" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "SHOW MATERIALIZED VIEWS returns the REFRESHED_ON, COMPACTED_ON, and BEHIND_BY columns, which indicate refresh state and lag behind the base table.",
+        "distractors": {
+          "A": "DESCRIBE returns column metadata, not refresh timing.",
+          "C": "INFORMATION_SCHEMA.VIEWS does not show materialized views at all; they appear in INFORMATION_SCHEMA.TABLES.",
+          "D": "There is no STATUS clause for ALTER MATERIALIZED VIEW."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": null,
+      "stem": "Which THREE SQL constructs are NOT allowed in a materialized view definition? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "SUM aggregate function" },
+        { "key": "B", "text": "HAVING clause" },
+        { "key": "C", "text": "WHERE clause with a range filter" },
+        { "key": "D", "text": "ORDER BY clause" },
+        { "key": "E", "text": "GROUP BY on a key included in the SELECT list" },
+        { "key": "F", "text": "Window functions" }
+      ],
+      "correct": ["B", "D", "F"],
+      "explanation": {
+        "correct": "HAVING clauses, ORDER BY clauses, and window functions are all prohibited in materialized view definitions.",
+        "distractors": {
+          "A": "SUM is one of the supported aggregate functions in materialized views.",
+          "C": "WHERE clauses with range filters are supported and enable optimizer range subsumption.",
+          "E": "GROUP BY is allowed as long as all GROUP BY keys are part of the SELECT list."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": null,
+      "stem": "Which TWO DML-related restrictions apply to materialized views? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "DML on the base table is blocked while a materialized view exists" },
+        { "key": "B", "text": "COPY into a materialized view requires the ACCOUNTADMIN role" },
+        { "key": "C", "text": "INSERT, UPDATE, DELETE, and MERGE are prohibited on the materialized view" },
+        { "key": "D", "text": "DELETE on a materialized view requires suspending it first" },
+        { "key": "E", "text": "Truncating a materialized view is not supported" }
+      ],
+      "correct": ["C", "E"],
+      "explanation": {
+        "correct": "Standard DML operations (COPY, DELETE, INSERT, MERGE, UPDATE) are prohibited on materialized views, and truncating a materialized view is not supported.",
+        "distractors": {
+          "A": "DML on the base table is fully permitted; the background maintenance service propagates those changes to the view.",
+          "B": "COPY into a materialized view is prohibited entirely, regardless of role.",
+          "D": "Suspending does not enable DML; DML on materialized views is never permitted."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": null,
+      "stem": "Which THREE conditions suggest creating a materialized view rather than a regular view? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "The results of the view change frequently" },
+        { "key": "B", "text": "The query consumes a lot of processing time or credits" },
+        { "key": "C", "text": "The results of the view are used often relative to how often they change" },
+        { "key": "D", "text": "The query is inexpensive to re-run on demand" },
+        { "key": "E", "text": "The base table for the view does not change often" },
+        { "key": "F", "text": "The view must reflect data from three joined tables" }
+      ],
+      "correct": ["B", "C", "E"],
+      "explanation": {
+        "correct": "Materialized views are appropriate when the query is resource intensive, results are used frequently relative to their rate of change, and the base table changes infrequently.",
+        "distractors": {
+          "A": "Frequently changing results favor a regular view, since maintenance costs would be high.",
+          "D": "If the query is cheap to re-run, a regular view avoids storage and maintenance costs.",
+          "F": "Materialized views cannot join tables at all, so this would rule out a materialized view."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": "A materialized view is defined as SELECT * FROM table1 WHERE column_1 BETWEEN 100 AND 400. A user then runs SELECT * FROM table1 WHERE column_1 BETWEEN 200 AND 300 against the base table.",
+      "stem": "What can the query optimizer do?",
+      "options": [
+        { "key": "A", "text": "Nothing — the filters do not match exactly so the base table must be scanned" },
+        { "key": "B", "text": "Rewrite the query to scan the materialized view, since its filter is more restrictive than the view's range" },
+        { "key": "C", "text": "Merge the materialized view and base table results to guarantee completeness" },
+        { "key": "D", "text": "Return an error because the query filter conflicts with the view filter" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "This is range subsumption. Because the query's filter selects only rows already contained in the materialized view, the optimizer can choose to scan the materialized view instead of the entire table.",
+        "distractors": {
+          "A": "Exact filter matching is not required; the optimizer supports subsumption when the query range falls inside the view range.",
+          "C": "No merging is needed because the materialized view fully contains the requested rows.",
+          "D": "There is no conflict; the query range is a subset of the view range."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": "A team adds a new column to a base table that has a materialized view defined with SELECT * FROM that table.",
+      "stem": "What happens to the materialized view?",
+      "options": [
+        { "key": "A", "text": "The new column is automatically added because the definition uses SELECT *" },
+        { "key": "B", "text": "The materialized view is suspended and must be recreated" },
+        { "key": "C", "text": "The new column is not propagated, and the materialized view is not suspended" },
+        { "key": "D", "text": "The materialized view is invalidated and returns errors on query" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Adding a column to the base table does not propagate to the materialized view — the view's columns were fixed at definition time even with SELECT *. Adding a column also does not suspend the view.",
+        "distractors": {
+          "A": "SELECT * is not re-interpreted dynamically; columns are resolved when the view is created.",
+          "B": "Suspension occurs when columns are changed or dropped, not when they are added.",
+          "D": "The view remains valid and queryable; it simply lacks the new column."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": "A base table is altered to drop a column that was not referenced by an existing materialized view on that table.",
+      "stem": "What is the impact on the materialized view?",
+      "options": [
+        { "key": "A", "text": "No impact, because the dropped column was not part of the view" },
+        { "key": "B", "text": "The view is suspended and can be restored with ALTER MATERIALIZED VIEW ... RESUME" },
+        { "key": "C", "text": "The view is suspended and cannot be resumed — it must be recreated" },
+        { "key": "D", "text": "The view continues working but its BEHIND_BY value grows indefinitely" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "If existing columns in a base table are changed or dropped, all materialized views on that table are suspended — even if the affected column was not part of the view. Such views cannot be resumed and must be recreated.",
+        "distractors": {
+          "A": "The suspension applies regardless of whether the modified column was referenced by the view.",
+          "B": "RESUME does not work after a column change or drop; recreation is required.",
+          "D": "The view is suspended outright rather than falling progressively behind."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": "A DBA needs to recreate a suspended materialized view while preserving all privileges previously granted on it.",
+      "stem": "Which approach is most efficient?",
+      "options": [
+        { "key": "A", "text": "DROP MATERIALIZED VIEW, then CREATE MATERIALIZED VIEW, then re-run all GRANT statements" },
+        { "key": "B", "text": "CREATE OR REPLACE MATERIALIZED VIEW ... COPY GRANTS" },
+        { "key": "C", "text": "ALTER MATERIALIZED VIEW ... RESUME WITH GRANTS" },
+        { "key": "D", "text": "CREATE MATERIALIZED VIEW ... CLONE from the suspended view" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "CREATE OR REPLACE MATERIALIZED VIEW ... COPY GRANTS recreates the view and preserves privileges in a single statement, which is more efficient than dropping, recreating, and re-granting separately.",
+        "distractors": {
+          "A": "This works but requires three or more separate operations and is explicitly described as less efficient.",
+          "C": "There is no RESUME WITH GRANTS clause, and RESUME cannot recover a view suspended by column changes.",
+          "D": "Materialized views cannot be directly cloned with CREATE MATERIALIZED VIEW ... CLONE."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": "A team suspends a materialized view to defer maintenance costs during a period of heavy base table DML, then attempts to query it.",
+      "stem": "What is the result?",
+      "options": [
+        { "key": "A", "text": "The query succeeds using the last refreshed snapshot" },
+        { "key": "B", "text": "The query falls back to scanning the base table automatically" },
+        { "key": "C", "text": "The query fails until maintenance is resumed" },
+        { "key": "D", "text": "The query succeeds but returns only the unchanged partitions" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "If you suspend maintenance of a materialized view, you cannot query the view until you resume maintenance. Queries return a compilation error stating the view is invalid.",
+        "distractors": {
+          "A": "Suspension blocks queries entirely rather than serving stale results.",
+          "B": "There is no automatic fallback to the base table for a suspended materialized view referenced directly.",
+          "D": "Partial results are not returned; the query fails outright."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": "A materialized view is defined as SELECT TO_TIMESTAMP(n) FROM t1. Later, the session parameter TIMESTAMP_TYPE_MAPPING is changed and queries against the view begin to fail.",
+      "stem": "How should the view definition be corrected?",
+      "options": [
+        { "key": "A", "text": "Add a WHERE clause to filter out affected rows" },
+        { "key": "B", "text": "Cast the output to an explicit type, such as TO_TIMESTAMP(n)::TIMESTAMP_NTZ" },
+        { "key": "C", "text": "Set TIMESTAMP_TYPE_MAPPING at the account level instead of the session level" },
+        { "key": "D", "text": "Recreate the view as a secure materialized view" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Force the expression to a value that does not depend on session variables by casting to an explicit data type. Column expressions in materialized views are evaluated and stored at creation, so parameter-dependent types cause failures when the parameter changes.",
+        "distractors": {
+          "A": "Filtering rows does not address the data type dependency on the session parameter.",
+          "C": "Moving the parameter to account level does not remove the dependency baked into the stored view definition.",
+          "D": "The SECURE property is unrelated to session parameter dependencies."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": "A team needs to audit historical data in a materialized view as it existed two days ago.",
+      "stem": "What is supported?",
+      "options": [
+        { "key": "A", "text": "Querying the materialized view with an AT clause for that timestamp" },
+        { "key": "B", "text": "Using BEFORE(STATEMENT => ...) against the materialized view" },
+        { "key": "C", "text": "Cloning a database or schema containing the materialized view at that point in time" },
+        { "key": "D", "text": "Running UNDROP MATERIALIZED VIEW to recover the prior state" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Time Travel cannot be used to query materialized views at a point in the past, but you can use Time Travel to clone a database or schema containing a materialized view at a specific past point.",
+        "distractors": {
+          "A": "The AT clause is not supported when querying materialized views directly.",
+          "B": "The BEFORE clause with STATEMENT is likewise unsupported for materialized view queries.",
+          "D": "UNDROP recovers dropped objects; it does not retrieve historical data states."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": "A base table receives 100 new appended rows that land in one or two new micro-partitions. A materialized view on that table is clustered by postal code, which is independent of the insertion order.",
+      "stem": "What is the likely cost impact?",
+      "options": [
+        { "key": "A", "text": "Minimal, because only the same one or two micro-partitions need updating in the view" },
+        { "key": "B", "text": "None, because clustered materialized views defer maintenance until queried" },
+        { "key": "C", "text": "Substantial, because those rows might require rewriting a far larger number of micro-partitions in the clustered view" },
+        { "key": "D", "text": "Substantial, but only for storage — maintenance compute is unaffected" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "When a materialized view is clustered differently from the base table, the number of micro-partitions changed in the view can be substantially larger than in the base table. 100 scattered rows might require rewriting 100 micro-partitions in the clustered view.",
+        "distractors": {
+          "A": "Independent clustering means the new rows scatter across many view micro-partitions rather than concentrating in a few.",
+          "B": "Maintenance is performed by a background process on a schedule optimized for workload, not deferred until query time.",
+          "D": "Both compute (for rewriting partitions) and storage are impacted."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": "A cost management team is investigating credit consumption attributed to materialized views.",
+      "stem": "Which THREE statements about materialized view costs are correct? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Maintenance uses Snowflake-provided compute resources and is billed in 1-second increments" },
+        { "key": "B", "text": "Resource monitors can cap the credits consumed by materialized view maintenance" },
+        { "key": "C", "text": "Costs can be viewed through the MATERIALIZED_VIEW_REFRESH_HISTORY view in Account Usage" },
+        { "key": "D", "text": "Each materialized view adds to monthly storage usage because results are stored" },
+        { "key": "E", "text": "Snowflake provides a function to precisely estimate maintenance costs before creation" },
+        { "key": "F", "text": "Suspending a materialized view permanently eliminates its accrued maintenance work" }
+      ],
+      "correct": ["A", "C", "D"],
+      "explanation": {
+        "correct": "Maintenance runs on Snowflake-managed compute billed in 1-second increments, costs are visible via MATERIALIZED_VIEW_REFRESH_HISTORY, and stored results add to monthly storage usage.",
+        "distractors": {
+          "B": "Resource monitors cannot control credit usage for Snowflake-provided warehouses such as MATERIALIZED_VIEW_MAINTENANCE.",
+          "E": "There are no tools to estimate the costs of maintaining materialized views.",
+          "F": "Suspending typically only defers costs — the longer maintenance is deferred, the more work accumulates."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": "An engineer clones a database that contains both a materialized view and its base table in the same CREATE DATABASE ... CLONE operation, and separately clones only the schema containing a materialized view whose base table lives in a different schema.",
+      "stem": "Which TWO outcomes are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Materialized views are skipped entirely when cloning a database or schema" },
+        { "key": "B", "text": "Cloning the database together with both objects produces a cloned view that references the cloned base table" },
+        { "key": "C", "text": "Cloning a materialized view converts it into a regular view in the clone" },
+        { "key": "D", "text": "Cloning only the view's schema produces a cloned view that references the original base table" },
+        { "key": "E", "text": "Cloned materialized views lose all previously granted privileges" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "When the view and base table are cloned together in one operation, the cloned view references the cloned base table. When only the view's schema is cloned, the cloned view still references the original base table.",
+        "distractors": {
+          "A": "Materialized views ARE cloned when you clone a containing schema or database, even though they cannot be cloned directly.",
+          "C": "The object type is preserved; a cloned materialized view remains a materialized view.",
+          "E": "Privileges on child objects are inherited when a database or schema is cloned."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": "A DBA is reviewing best practices for clustering materialized views and their base tables.",
+      "stem": "Which THREE recommendations align with Snowflake guidance? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Cluster as many materialized views as possible to maximize pruning" },
+        { "key": "B", "text": "If materialized views are accessed frequently and the base table rarely, avoid clustering the base table" },
+        { "key": "C", "text": "Consider removing clustering from a base table that has materialized views, since base table reclustering triggers view refreshes" },
+        { "key": "D", "text": "Create clustered materialized views last, after loading as much data as possible" },
+        { "key": "E", "text": "Always cluster the base table before clustering any materialized view on it" },
+        { "key": "F", "text": "Clustering a materialized view eliminates its maintenance costs" }
+      ],
+      "correct": ["B", "C", "D"],
+      "explanation": {
+        "correct": "Avoid clustering a rarely-accessed base table when views are accessed frequently, consider removing base table clustering because reclustering forces view refreshes, and create clustered materialized views after loading data to save on the initial load.",
+        "distractors": {
+          "A": "Snowflake advises not clustering more materialized views than needed, since clustering increases costs.",
+          "E": "The recommendation is the opposite — start by clustering only the materialized views and monitor before clustering the base table.",
+          "F": "Clustering adds maintenance costs rather than eliminating them."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": "A query against a materialized view returns the error 'Materialized View MY_MV is invalid. Invalidation reason: Division by zero'.",
+      "stem": "Which TWO actions form the correct remediation path? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Increase the warehouse size to allow the refresh to complete" },
+        { "key": "B", "text": "Grant the SELECT privilege on the base table to the querying role" },
+        { "key": "C", "text": "Address the underlying data problem described in the error message" },
+        { "key": "D", "text": "Run ALTER MATERIALIZED VIEW ... RESUME after correcting the data" },
+        { "key": "E", "text": "Set USE_CACHED_RESULT = FALSE for the session" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "When the background process invalidates a view due to a user error such as division by zero, fix the data problem described in the message and then resume the view with ALTER MATERIALIZED VIEW ... RESUME.",
+        "distractors": {
+          "A": "Warehouse sizing is irrelevant — maintenance runs on Snowflake-managed serverless compute and the failure is a data error.",
+          "B": "Users need privileges only on the view; the invalidation is a data issue, not a privilege issue.",
+          "E": "The result cache setting has no bearing on materialized view invalidation."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": "An architect wants to reduce the ongoing maintenance cost of materialized views defined on a table that receives frequent small DML operations.",
+      "stem": "Which TWO practices does Snowflake recommend? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Define the views with SELECT * to minimize definition complexity" },
+        { "key": "B", "text": "Enable the Query Acceleration Service on the base table" },
+        { "key": "C", "text": "Batch DELETE operations, for example daily rather than hourly" },
+        { "key": "D", "text": "Convert the materialized views to secure materialized views" },
+        { "key": "E", "text": "Batch INSERT, UPDATE, and MERGE statements on the base table" }
+      ],
+      "correct": ["C", "E"],
+      "explanation": {
+        "correct": "Snowflake recommends batching DML operations on the base table. Less frequent, larger DELETE batches and batched INSERT/UPDATE/MERGE statements both reduce materialized view maintenance costs.",
+        "distractors": {
+          "A": "Using SELECT * to define a materialized view is typically expensive and can lead to future errors when columns are added.",
+          "B": "The Query Acceleration Service does not reduce materialized view maintenance costs.",
+          "D": "The SECURE property does not affect maintenance cost; it affects visibility and optimization."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": "A provider shares a table with a consumer account, and the consumer creates a materialized view over the shared table.",
+      "stem": "Which TWO statements are correct about this arrangement? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Creating a materialized view on shared data is not permitted" },
+        { "key": "B", "text": "Maintenance charges for the consumer's view are billed to the provider account" },
+        { "key": "C", "text": "The materialized view must be recreated after every provider-side DML operation" },
+        { "key": "D", "text": "The consumer can create a materialized view on the shared table" },
+        { "key": "E", "text": "Changes to the provider's shared table result in maintenance charges to the consumer" }
+      ],
+      "correct": ["D", "E"],
+      "explanation": {
+        "correct": "A consumer can create a materialized view on shared data. Because maintenance consumes credits, changes to the provider's shared table result in charges to the consumer who owns the materialized view.",
+        "distractors": {
+          "A": "Creating materialized views on shared data is explicitly supported.",
+          "B": "Maintenance charges accrue to the account that owns the materialized view, which is the consumer.",
+          "C": "The background maintenance service updates the view automatically; recreation is not required for ordinary DML."
+        }
+      }
+    }
+  ]
+}

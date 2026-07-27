@@ -1,0 +1,461 @@
+{
+  "label": "Databases, Tables & Views — Supplemental",
+  "order": 11,
+  "topic": "Gap Coverage — Micro-Partition DML, Clustering Functions, Table Types, External Tables, Hybrid Tables, Views, Cloning, Storage",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "table-structures",
+      "scenario": null,
+      "stem": "Which operation on a standard Snowflake table is handled as a metadata-only operation?",
+      "options": [
+        { "key": "A", "text": "Updating a single column value across all rows" },
+        { "key": "B", "text": "Deleting all rows from the table" },
+        { "key": "C", "text": "Inserting a batch of new rows" },
+        { "key": "D", "text": "Merging a staging table into the target table" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "All DML operations take advantage of micro-partition metadata, and some operations such as deleting all rows from a table are metadata-only operations.",
+        "distractors": {
+          "A": "Updating column values requires rewriting the affected micro-partitions, not just metadata.",
+          "C": "Inserting rows creates new micro-partitions and writes actual data.",
+          "D": "MERGE reads and rewrites micro-partitions rather than operating purely on metadata."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": null,
+      "stem": "Which data type is not supported for any column in a hybrid table, whether indexed or not?",
+      "options": [
+        { "key": "A", "text": "GEOGRAPHY" },
+        { "key": "B", "text": "VARIANT" },
+        { "key": "C", "text": "UUID" },
+        { "key": "D", "text": "TIMESTAMP_TZ" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The UUID data type is not supported for any column in a hybrid table. Other restricted types such as GEOGRAPHY and VARIANT are permitted in non-indexed columns.",
+        "distractors": {
+          "A": "GEOGRAPHY is unsupported only in indexed columns; hybrid table columns support it if not indexed.",
+          "B": "VARIANT is unsupported only in indexed columns and is allowed in non-indexed columns.",
+          "D": "TIMESTAMP_TZ is unsupported for UNIQUE, PRIMARY KEY, and FOREIGN KEY columns but is supported for secondary indexes."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "materialized-views",
+      "scenario": null,
+      "stem": "Which column name is not allowed in a materialized view definition?",
+      "options": [
+        { "key": "A", "text": "MV_SOURCE_ID" },
+        { "key": "B", "text": "SYS_MV_SOURCE_PARTITION" },
+        { "key": "C", "text": "SOURCE_PARTITION_KEY" },
+        { "key": "D", "text": "MATERIALIZED_ROW_ID" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The column name SYS_MV_SOURCE_PARTITION is not allowed in a materialized view, along with names starting with SYSTEM$ or METADATA$ and names containing $SYS_FACADE$. Define an alias for such columns.",
+        "distractors": {
+          "A": "MV_SOURCE_ID is not among the reserved names for materialized views.",
+          "C": "SOURCE_PARTITION_KEY is a permitted column name.",
+          "D": "MATERIALIZED_ROW_ID is not a reserved materialized view column name."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": null,
+      "stem": "Which THREE objects cannot be cloned in Snowflake? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "An individual masking policy object" },
+        { "key": "B", "text": "A database role that does not yet exist in the target database" },
+        { "key": "C", "text": "A backup set used in Write Once Read Many (WORM) backups" },
+        { "key": "D", "text": "An external named stage" },
+        { "key": "E", "text": "An instance of a Snowflake class other than CUSTOM_CLASSIFIER" },
+        { "key": "F", "text": "A table with the Search Optimization Service enabled" }
+      ],
+      "correct": ["A", "C", "E"],
+      "explanation": {
+        "correct": "Cloning an individual policy object is not supported, WORM backup set and backup policy objects cannot be cloned, and cloning instances of Snowflake classes other than CUSTOM_CLASSIFIER is not supported.",
+        "distractors": {
+          "B": "A database role CAN be cloned with CREATE DATABASE ROLE ... CLONE provided it does not already exist in the target database.",
+          "D": "External named stages can be cloned individually; cloning has no impact on the referenced cloud storage.",
+          "F": "Tables with search optimization can be cloned; the search access path becomes a zero-copy clone."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": null,
+      "stem": "Which THREE higher-order functions are not supported in queries against hybrid tables? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "FLATTEN" },
+        { "key": "B", "text": "FILTER" },
+        { "key": "C", "text": "ARRAY_AGG" },
+        { "key": "D", "text": "REDUCE" },
+        { "key": "E", "text": "TRANSFORM" },
+        { "key": "F", "text": "OBJECT_CONSTRUCT" }
+      ],
+      "correct": ["B", "D", "E"],
+      "explanation": {
+        "correct": "The FILTER, REDUCE, and TRANSFORM higher-order functions are not supported in queries against hybrid tables.",
+        "distractors": {
+          "A": "FLATTEN is a table function, not a higher-order function, and is not listed among the hybrid table restrictions.",
+          "C": "ARRAY_AGG is an aggregate function and is not among the unsupported higher-order functions.",
+          "F": "OBJECT_CONSTRUCT is a semi-structured constructor function and is not restricted for hybrid tables."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "storage-considerations",
+      "scenario": null,
+      "stem": "Which TWO statements about data files staged in Snowflake internal stages are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "They are subject to Time Travel and Fail-safe costs like table data" },
+        { "key": "B", "text": "They incur standard data storage costs" },
+        { "key": "C", "text": "They are automatically purged 24 hours after a successful load" },
+        { "key": "D", "text": "They can be removed with the REMOVE command after loading" },
+        { "key": "E", "text": "They are stored free of charge because they are transient by nature" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "Staged files in internal stages are not subject to Time Travel and Fail-safe costs but do incur standard data storage costs. They can be removed during loading via COPY INTO or afterwards with the REMOVE command.",
+        "distractors": {
+          "A": "Internal stage files are specifically exempt from Time Travel and Fail-safe costs.",
+          "C": "Staged files are not automatically purged; Snowflake recommends monitoring and removing them explicitly.",
+          "E": "Staged files do incur standard storage charges and are not free."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "clustering",
+      "scenario": "A data engineer wants to evaluate whether a table without any explicit clustering key would benefit from clustering on two specific columns.",
+      "stem": "How should they use SYSTEM$CLUSTERING_INFORMATION?",
+      "options": [
+        { "key": "A", "text": "The function cannot be used on tables without an explicit clustering key" },
+        { "key": "B", "text": "Pass the desired columns as an additional input argument alongside the table name" },
+        { "key": "C", "text": "Define a clustering key first, then call the function with only the table name" },
+        { "key": "D", "text": "Call SYSTEM$CLUSTERING_DEPTH instead, which accepts column arguments" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "SYSTEM$CLUSTERING_INFORMATION can be run on any columns of any table regardless of whether an explicit clustering key exists. When no key exists (or you want other columns), pass the desired columns as an additional input argument.",
+        "distractors": {
+          "A": "The function works on tables with or without an explicit clustering key.",
+          "C": "Defining a key first is unnecessary and would trigger reclustering costs before knowing whether clustering helps.",
+          "D": "SYSTEM$CLUSTERING_DEPTH returns depth values; SYSTEM$CLUSTERING_INFORMATION is the function documented for this evaluation workflow."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "clustering",
+      "scenario": "A team wants to add a clustering key using an expression to a table that is already populated with data, but is unsure whether the function they want to use is permitted.",
+      "stem": "How can they verify this?",
+      "options": [
+        { "key": "A", "text": "Query the CLUSTERING_KEY column in the TABLES view" },
+        { "key": "B", "text": "Run SHOW FUNCTIONS and check the valid_for_clustering column" },
+        { "key": "C", "text": "Call SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS with the expression" },
+        { "key": "D", "text": "Attempt the ALTER TABLE and inspect the AUTO_CLUSTERING_ON column afterwards" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Run SHOW FUNCTIONS LIKE '<function_name>' and check the valid_for_clustering column at the end of the output, which indicates whether the function can be used in a clustering key for a populated table.",
+        "distractors": {
+          "A": "CLUSTERING_KEY shows the currently defined key, not which functions are permitted.",
+          "C": "The cost estimation function predicts credits, not expression validity.",
+          "D": "AUTO_CLUSTERING_ON reports the Automatic Clustering state, not whether an expression was valid."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "temporary-transient-tables",
+      "scenario": "A workload generates thousands of temporary tables per hour. Users report that queries against the Information Schema have become very slow.",
+      "stem": "Which practice does Snowflake recommend to resolve this?",
+      "options": [
+        { "key": "A", "text": "Increase the warehouse size and enable the Query Acceleration Service" },
+        { "key": "B", "text": "Convert the temporary tables to transient tables and add clustering keys" },
+        { "key": "C", "text": "Drop temporary tables explicitly before sessions end, and ensure users log out of inactive sessions" },
+        { "key": "D", "text": "Set DATA_RETENTION_TIME_IN_DAYS=0 and query Account Usage instead" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "High volumes of temporary tables degrade performance when querying the COLUMNS or TABLES views in the Information Schema. Snowflake recommends explicitly dropping temporary tables before sessions end and ensuring users log out of inactive sessions.",
+        "distractors": {
+          "A": "The degradation stems from metadata volume, not compute capacity, so scaling does not address it.",
+          "B": "Transient tables persist until dropped, which would worsen metadata accumulation rather than help.",
+          "D": "Changing retention does not reduce the count of temporary table metadata entries causing the slowdown."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "temporary-transient-tables",
+      "scenario": "A permanent table is cloned to create a transient table. Some time later the permanent table is dropped. The team expects all of its bytes to enter Fail-safe immediately.",
+      "stem": "What actually happens to the shared micro-partitions?",
+      "options": [
+        { "key": "A", "text": "They enter Fail-safe immediately along with the rest of the table" },
+        { "key": "B", "text": "They are deleted immediately because transient clones have no Fail-safe" },
+        { "key": "C", "text": "They enter Fail-safe only when the transient table clone is deleted" },
+        { "key": "D", "text": "They are converted to transient storage and skip Fail-safe entirely" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "If a transient table clone shares micro-partitions with the permanent table when it is deleted, those shared bytes only enter Fail-safe when the transient table is deleted, delaying the transition.",
+        "distractors": {
+          "A": "Shared bytes are held back because the transient clone still references them.",
+          "B": "Micro-partitions still referenced by the clone are not deleted; the clone depends on them.",
+          "D": "The shared bytes retain their Fail-safe obligation from the permanent table; they are not reclassified."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A team queries a CSV-based external table and notices that some records are silently missing from results. Investigation reveals the source files contain invalid UTF-8 byte sequences.",
+      "stem": "Which file format option prevents records from being omitted?",
+      "options": [
+        { "key": "A", "text": "BINARY_AS_TEXT = FALSE" },
+        { "key": "B", "text": "REPLACE_INVALID_CHARACTERS = TRUE" },
+        { "key": "C", "text": "ON_ERROR = CONTINUE" },
+        { "key": "D", "text": "SKIP_BYTE_ORDER_MARK = TRUE" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake omits query results for records containing invalid UTF-8 data and continues scanning without an error. Setting REPLACE_INVALID_CHARACTERS = TRUE replaces invalid characters with the Unicode replacement character so records are returned.",
+        "distractors": {
+          "A": "BINARY_AS_TEXT = FALSE applies to Parquet columns with no defined logical type, making Snowflake interpret them as binary rather than UTF-8 text.",
+          "C": "ON_ERROR governs COPY INTO loading behavior, not external table query behavior.",
+          "D": "SKIP_BYTE_ORDER_MARK handles BOM characters, not arbitrary invalid UTF-8 sequences."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A developer wants to alter an existing external table to remove columns that are no longer needed.",
+      "stem": "Which columns cannot be dropped?",
+      "options": [
+        { "key": "A", "text": "Any virtual columns defined as expressions on VALUE" },
+        { "key": "B", "text": "Partition columns defined in the PARTITION BY clause" },
+        { "key": "C", "text": "The VALUE column and the METADATA$FILENAME and METADATA$FILE_ROW_NUMBER pseudocolumns" },
+        { "key": "D", "text": "Columns referenced by any materialized view over the external table" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The default VALUE column and the METADATA$FILENAME and METADATA$FILE_ROW_NUMBER pseudocolumns cannot be dropped from an external table.",
+        "distractors": {
+          "A": "Virtual columns can be added and removed using ALTER TABLE ... ADD COLUMN and DROP COLUMN.",
+          "B": "The restriction documented for external tables concerns the default VALUE column and pseudocolumns, not partition columns generally.",
+          "D": "Snowflake does not block external table column drops because a dependent materialized view exists."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "An application requires that every read reflects the very latest committed writes from all sessions, with no tolerance for the default sub-100ms staleness window.",
+      "stem": "How should this be configured?",
+      "options": [
+        { "key": "A", "text": "Enable Dedicated Storage Mode for the hybrid table" },
+        { "key": "B", "text": "Set USE_CACHED_RESULT = FALSE at the session level" },
+        { "key": "C", "text": "Set READ_LATEST_WRITES = true at the statement or session level" },
+        { "key": "D", "text": "Wrap all reads in an explicit transaction block" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Hybrid tables use a session-based consistency model by default, with under 100ms of possible staleness for changes made outside the session. Setting READ_LATEST_WRITES = true at the statement or session level avoids staleness, at the cost of a few milliseconds of latency.",
+        "distractors": {
+          "A": "Dedicated Storage Mode addresses Tri-Secret Secure compatibility, not read consistency.",
+          "B": "Hybrid table queries do not use the results cache at all, so this parameter has no effect.",
+          "D": "Transactions provide atomicity but do not change the cross-session staleness behavior."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A CTAS statement loading a hybrid table with indexes on 100 columns fails with the error 'The value is too long for index \"IDX_HT100_COLS\"'.",
+      "stem": "Which remediation addresses the root cause?",
+      "options": [
+        { "key": "A", "text": "Increase the warehouse size to allow larger index builds" },
+        { "key": "B", "text": "Reduce record size by not indexing wide VARCHAR columns, or index fewer columns" },
+        { "key": "C", "text": "Switch from CTAS to INSERT ALL for the initial load" },
+        { "key": "D", "text": "Request a hybrid storage quota increase from Snowflake Support" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Row-based storage imposes a limit on data and metadata per record. To reduce record size, avoid specifying large columns such as wide VARCHAR columns as indexed columns, or create indexes on fewer columns. Using INCLUDE columns can also help.",
+        "distractors": {
+          "A": "Warehouse size does not change the per-record size limit imposed by row-based storage.",
+          "C": "INSERT ALL is not supported for bulk loading hybrid tables at all.",
+          "D": "The error concerns index width per record, not the 2 TB storage quota."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": "A team is tuning row group pruning for a Parquet-based external table and reviewing which WHERE clause constructs are eligible.",
+      "stem": "Which THREE statements about filtering records in Parquet external tables are correct? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "The clause cannot include any VARIANT columns" },
+        { "key": "B", "text": "The recommended Parquet row group size is 16 to 256 MB" },
+        { "key": "C", "text": "Only the =, >, and < comparison operators are supported" },
+        { "key": "D", "text": "BETWEEN and IN conditions enable row group pruning" },
+        { "key": "E", "text": "Row group pruning requires a user-defined partition type" },
+        { "key": "F", "text": "The clause may not contain any logical or Boolean operators" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The WHERE clause cannot include VARIANT columns, can only include the =, >, and < comparison operators, and Parquet row groups should be sized 16 to 256 MB so Snowflake can process each row group on a different server.",
+        "distractors": {
+          "D": "BETWEEN and IN are not among the supported comparison operators for Parquet row group pruning; those conditions apply to hybrid table secondary indexes.",
+          "E": "Row group pruning is independent of the partition type; partition columns, regular columns, or both may appear in the clause.",
+          "F": "Logical and Boolean operators ARE permitted, as is the STARTSWITH function."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "materialized-views",
+      "scenario": "A DBA is documenting the access control model for materialized views in a governed schema.",
+      "stem": "Which TWO statements about materialized view privileges are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "A materialized view automatically inherits the privileges of its base table" },
+        { "key": "B", "text": "SELECT is the privilege that can be granted on a materialized view" },
+        { "key": "C", "text": "Creating one requires the CREATE MATERIALIZED VIEW privilege on the containing schema" },
+        { "key": "D", "text": "Users must hold privileges on both the view and its base table to query the view" },
+        { "key": "E", "text": "Only the ACCOUNTADMIN role can grant privileges on materialized views" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "SELECT is the privilege that can be granted on a materialized view, and creating one requires the CREATE MATERIALIZED VIEW privilege on the schema that will contain it.",
+        "distractors": {
+          "A": "As with non-materialized views, a materialized view does not automatically inherit its base table's privileges; grants must be explicit.",
+          "D": "A user needs privileges only on the view, not on the underlying objects it references.",
+          "E": "Any role with the appropriate grant authority can grant privileges; ACCOUNTADMIN is not required."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A team clones a database containing streams, event tables, and internal named stages.",
+      "stem": "Which THREE outcomes are correct? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Unconsumed records in the cloned streams are inaccessible" },
+        { "key": "B", "text": "An event table can be cloned only to another event table" },
+        { "key": "C", "text": "Internal named stages are cloned only when the INCLUDE INTERNAL STAGES clause is used" },
+        { "key": "D", "text": "Data files present in table stages in the source are copied to the clone" },
+        { "key": "E", "text": "Streams in the clone retain full history from before the clone point" },
+        { "key": "F", "text": "Event tables can be cloned into regular tables to simplify querying" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Unconsumed stream records in a clone are inaccessible, event tables can be cloned only to and from event tables, and internal named stages are cloned only with the INCLUDE INTERNAL STAGES clause.",
+        "distractors": {
+          "D": "Data files present in a table stage in the source are NOT copied; cloned table stages are empty.",
+          "E": "Historical data for a cloned object begins at the point the clone was created, consistent with Time Travel behavior for tables.",
+          "F": "You cannot clone from an event table to a regular table, nor the reverse."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "An engineer runs CREATE DATABASE ... CLONE without specifying an AT or BEFORE clause on a very large database, and separately attempts a Time Travel clone of a database containing hybrid tables.",
+      "stem": "Which TWO statements are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Without an AT clause, each child object is cloned as of the moment it is individually processed" },
+        { "key": "B", "text": "Cloned objects never inherit object parameters from their source" },
+        { "key": "C", "text": "Without an AT clause, the operation internally sets the AT value to the statement initiation timestamp" },
+        { "key": "D", "text": "Hybrid tables are silently skipped during any Time Travel clone" },
+        { "key": "E", "text": "The hybrid table clone fails unless the IGNORE HYBRID TABLES parameter is specified" }
+      ],
+      "correct": ["C", "E"],
+      "explanation": {
+        "correct": "To ensure consistent behavior in long cloning operations, Snowflake internally sets the AT clause value to the timestamp when the statement was initiated. Time Travel cloning fails if hybrid tables exist and the IGNORE HYBRID TABLES parameter is not specified.",
+        "distractors": {
+          "A": "Snowflake pins a single timestamp for the whole operation rather than processing children at differing points.",
+          "B": "Cloned objects DO inherit object parameters that were set on the source object.",
+          "D": "Hybrid tables are not silently skipped; the operation fails unless the ignore parameter is explicitly provided."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "table-design",
+      "scenario": "A modeler is documenting constraints on a set of standard tables so that BI tools can build correct joins automatically.",
+      "stem": "Which TWO methods retrieve the constraints currently defined on those tables? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "SHOW CONSTRAINTS IN SCHEMA" },
+        { "key": "B", "text": "DESCRIBE TABLE output" },
+        { "key": "C", "text": "The GET_DDL function for the table" },
+        { "key": "D", "text": "The CLUSTERING_KEY column in the TABLES view" },
+        { "key": "E", "text": "The TABLE_CONSTRAINTS view in the Information Schema" }
+      ],
+      "correct": ["C", "E"],
+      "explanation": {
+        "correct": "GET_DDL returns a DDL statement that includes the constraints currently set on a table, and the TABLE_CONSTRAINTS view in the Information Schema lists all table constraints by schema or across a database.",
+        "distractors": {
+          "A": "SHOW CONSTRAINTS IN SCHEMA is not a documented command for this purpose.",
+          "B": "DESCRIBE TABLE returns column metadata such as types and defaults, not the full constraint definitions.",
+          "D": "CLUSTERING_KEY reports the clustering key, which is unrelated to referential constraints."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "storage-considerations",
+      "scenario": "A data architect is classifying tables to plan CDP storage costs across a warehouse schema.",
+      "stem": "Which THREE statements about fact and dimension table storage patterns are correct? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Fact tables are typically large with a low degree of row-level churn" },
+        { "key": "B", "text": "CDP is well suited to fact tables, providing full protection at low storage cost" },
+        { "key": "C", "text": "Dimension tables experience more frequent row updates and deletions" },
+        { "key": "D", "text": "For most dimension tables, CDP costs are unreasonable and should be avoided" },
+        { "key": "E", "text": "Fact tables accumulate more Fail-safe storage than dimension tables per byte of active data" },
+        { "key": "F", "text": "Every table with a high FAILSAFE_BYTES to ACTIVE_BYTES ratio should be made transient" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Fact tables are typically very large with low churn (mostly inserts), making CDP ideal at low storage cost. Dimension tables see much more frequent updates and deletions, which drives micro-partition recreation.",
+        "distractors": {
+          "D": "For the vast majority of dimension tables, CDP storage costs are reasonable and the benefits outweigh them.",
+          "E": "This is reversed — high-churn dimension tables accumulate disproportionate Time Travel and Fail-safe storage relative to active bytes.",
+          "F": "Even with a high ratio, the preferred option is usually permanent tables with CDP, because most high-churn tables consume modest total storage."
+        }
+      }
+    }
+  ]
+}

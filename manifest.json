@@ -385,6 +385,26 @@
                       "id": "test_7",
                       "label": "Hybrid Tables",
                       "path": "snowflake/snowpro_core/domain_1/task_3/test_7.json"
+                    },
+                    {
+                      "id": "test_8",
+                      "label": "Views & Secure Views",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_8.json"
+                    },
+                    {
+                      "id": "test_9",
+                      "label": "Materialized Views",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_9.json"
+                    },
+                    {
+                      "id": "test_10",
+                      "label": "Cloning, Table Design & Storage Considerations",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_10.json"
+                    },
+                    {
+                      "id": "test_11",
+                      "label": "Databases, Tables & Views \u2014 Supplemental",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_11.json"
                     }
                   ]
                 },

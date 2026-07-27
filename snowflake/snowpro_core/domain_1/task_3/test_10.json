@@ -1,0 +1,460 @@
+{
+  "label": "Cloning, Table Design & Storage Considerations",
+  "order": 10,
+  "topic": "Snowflake Cloning Considerations, Table Design Best Practices, and CDP Storage Costs",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": null,
+      "stem": "When a database is cloned, which object does NOT inherit the privileges granted on its source?",
+      "options": [
+        { "key": "A", "text": "The cloned database container itself" },
+        { "key": "B", "text": "Views contained in the database" },
+        { "key": "C", "text": "Tables contained in the database" },
+        { "key": "D", "text": "Schemas contained in the database" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The clone of the container itself (database or schema) does not inherit the privileges granted on the source container. Child objects such as schemas, tables, and views do inherit their grants.",
+        "distractors": {
+          "B": "Cloned views inherit granted privileges from their source in the same way.",
+          "C": "Cloned tables inherit granted privileges from their source when the parent database or schema is cloned.",
+          "D": "Cloned schemas within a cloned database inherit the privileges granted on their source schemas."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "table-design",
+      "scenario": null,
+      "stem": "Which constraints are enforced on standard Snowflake tables?",
+      "options": [
+        { "key": "A", "text": "PRIMARY KEY and FOREIGN KEY only" },
+        { "key": "B", "text": "NOT NULL and CHECK only" },
+        { "key": "C", "text": "UNIQUE and PRIMARY KEY only" },
+        { "key": "D", "text": "All declared constraints are enforced" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "On standard tables, NOT NULL and CHECK constraints are enforced. Referential integrity constraints defined by primary-key/foreign-key relationships are informational only and are not enforced.",
+        "distractors": {
+          "A": "PRIMARY KEY and FOREIGN KEY are informational on standard tables and are not enforced.",
+          "C": "UNIQUE and PRIMARY KEY are not enforced on standard tables, only on hybrid tables.",
+          "D": "Only NOT NULL and CHECK are enforced; the rest serve as metadata for schema understanding and BI tools."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "storage-considerations",
+      "scenario": null,
+      "stem": "Which view provides the most detailed breakdown of table storage across the Active, Time Travel, and Fail-safe states?",
+      "options": [
+        { "key": "A", "text": "SHOW TABLES output" },
+        { "key": "B", "text": "INFORMATION_SCHEMA.TABLES" },
+        { "key": "C", "text": "ACCOUNT_USAGE.STORAGE_USAGE" },
+        { "key": "D", "text": "TABLE_STORAGE_METRICS" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "TABLE_STORAGE_METRICS provides the most detailed information, including ACTIVE_BYTES, TIME_TRAVEL_BYTES, and FAILSAFE_BYTES columns, plus columns distinguishing owned from referenced storage.",
+        "distractors": {
+          "A": "SHOW TABLES returns byte totals but not the CDP life-cycle breakdown.",
+          "B": "INFORMATION_SCHEMA.TABLES lacks the detailed CDP state breakdown.",
+          "C": "STORAGE_USAGE reports account-level storage, not per-table CDP state detail."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": null,
+      "stem": "Which THREE objects are suspended or paused by default in a clone? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Views" },
+        { "key": "B", "text": "Tasks" },
+        { "key": "C", "text": "Alerts" },
+        { "key": "D", "text": "Sequences" },
+        { "key": "E", "text": "Automatic Clustering on tables with clustering keys" },
+        { "key": "F", "text": "Stages" }
+      ],
+      "correct": ["B", "C", "E"],
+      "explanation": {
+        "correct": "Tasks in a clone are suspended by default, alerts in a clone are suspended by default, and Automatic Clustering is suspended for a cloned table that has a clustering key.",
+        "distractors": {
+          "A": "Views have no suspended state; they are cloned and immediately usable.",
+          "D": "Sequences are not suspended; cloned tables either reference the cloned or the source sequence depending on scope.",
+          "F": "Stages are not suspended; external stages are cloned and internal named stages require the INCLUDE INTERNAL STAGES clause."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "table-design",
+      "scenario": null,
+      "stem": "Which TWO reasons justify defining an appropriate column length rather than always using the maximum? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Smaller declarations significantly reduce stored data size" },
+        { "key": "B", "text": "Queries run measurably faster against smaller precision columns" },
+        { "key": "C", "text": "Data loading operations are more likely to detect issues such as columns loaded out of order" },
+        { "key": "D", "text": "Some third-party tools anticipate the maximum size, increasing client-side memory usage" },
+        { "key": "E", "text": "Snowflake charges a premium for maximum-length VARCHAR columns" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "Appropriate column lengths help data loading operations detect errors such as a 50-character string loaded into a VARCHAR(10) column, and they prevent third-party tools from over-allocating client-side memory based on the declared maximum.",
+        "distractors": {
+          "A": "Snowflake compresses column data effectively, so oversized declarations have minimal impact on stored size.",
+          "B": "There is no query performance difference between a maximum-length declaration and a smaller precision.",
+          "E": "Snowflake does not charge differently based on declared column length."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "storage-considerations",
+      "scenario": null,
+      "stem": "Which THREE statements about temporary table storage costs are correct? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "A Snowflake session times out after 4 hours of inactivity" },
+        { "key": "B", "text": "Disconnecting from Snowflake terminates all active sessions" },
+        { "key": "C", "text": "The maximum total CDP charges for a temporary table are 1 day" },
+        { "key": "D", "text": "Temporary tables incur Fail-safe charges for 7 days after being dropped" },
+        { "key": "E", "text": "Snowflake recommends dropping temporary tables when they are no longer required" },
+        { "key": "F", "text": "Temporary tables are exempt from all data storage charges" }
+      ],
+      "correct": ["A", "C", "E"],
+      "explanation": {
+        "correct": "A Snowflake session times out after 4 hours of inactivity, maximum CDP charges for a temporary table are 1 day, and Snowflake recommends dropping temporary tables when no longer needed to avoid unexpected costs.",
+        "distractors": {
+          "B": "Disconnecting does NOT terminate active sessions; a session persists until explicitly terminated or timed out, so long-lived temporary tables can accrue costs.",
+          "D": "Temporary tables have no Fail-safe period at all.",
+          "F": "Temporary tables do contribute to overall data storage charges while they exist."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A team clones a table that has a clustering key defined. After the clone completes, they want reclustering to run on the new table.",
+      "stem": "What must they do?",
+      "options": [
+        { "key": "A", "text": "Nothing — Automatic Clustering carries over from the source table" },
+        { "key": "B", "text": "Redefine the clustering key with ALTER TABLE ... CLUSTER BY" },
+        { "key": "C", "text": "Run ALTER TABLE ... RESUME RECLUSTER on the cloned table" },
+        { "key": "D", "text": "Recreate the clone with the COPY GRANTS clause" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "A cloned table is created with the clustering key, but Automatic Clustering is suspended by default. Run ALTER TABLE ... RESUME RECLUSTER to enable it.",
+        "distractors": {
+          "A": "Automatic Clustering does not carry over; it starts suspended on the clone regardless of the source state.",
+          "B": "The clustering key is already present on the clone; redefining it would trigger reclustering but is unnecessary and may add cost.",
+          "D": "COPY GRANTS affects privilege copying, not the clustering state."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "An administrator sets DATA_RETENTION_TIME_IN_DAYS=0 on all tables in a schema to minimize storage costs. They then attempt to clone the schema while ETL jobs continue writing to the source tables. The clone fails with 'Data is not available.'",
+      "stem": "What is the recommended workaround?",
+      "options": [
+        { "key": "A", "text": "Increase the warehouse size to complete the clone faster" },
+        { "key": "B", "text": "Set DATA_RETENTION_TIME_IN_DAYS=1 on all tables before starting the clone" },
+        { "key": "C", "text": "Use the IGNORE TABLES WITH INSUFFICIENT DATA RETENTION parameter" },
+        { "key": "D", "text": "Clone each table individually rather than the whole schema" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "With retention set to 0, data changed by DML during the cloning operation is purged and becomes unavailable. Setting DATA_RETENTION_TIME_IN_DAYS=1 before cloning preserves the data needed to complete the operation.",
+        "distractors": {
+          "A": "Cloning is a metadata operation; warehouse size does not affect it or resolve purged-data errors.",
+          "C": "That parameter addresses Time Travel cloning where child objects have aged out of retention, not concurrent DML purging during a current-state clone.",
+          "D": "Individual table clones face the same purging problem while DML continues."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A clone group consists of table T1 cloned to T2, which was then cloned to T3. T2 and T3 share some micro-partitions. The team drops T2.",
+      "stem": "What happens to the storage ownership of the shared micro-partitions?",
+      "options": [
+        { "key": "A", "text": "The shared micro-partitions are deleted immediately, breaking T3" },
+        { "key": "B", "text": "Ownership transfers to T3 as soon as the DROP statement completes" },
+        { "key": "C", "text": "Ownership transfers back to T1 because it is the oldest table in the group" },
+        { "key": "D", "text": "Ownership transfers to T3 when the Time Travel retention period expires" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Ownership of storage is transferred to another table in the clone group at the time the micro-partitions exit the Time Travel state and would otherwise enter Fail-safe. Here they transfer from T2 to T3.",
+        "distractors": {
+          "A": "Shared micro-partitions are never deleted while another clone in the group still references them.",
+          "B": "The transfer happens at Time Travel expiry, not at the moment of the DROP.",
+          "C": "Ownership transfers to a table that actually shares those micro-partitions — T3 in this case, not necessarily the oldest table."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "table-design",
+      "scenario": "A team needs to convert an existing permanent table to a transient table while preserving the data, column defaults, and granted privileges.",
+      "stem": "Which approach accomplishes all three?",
+      "options": [
+        { "key": "A", "text": "ALTER TABLE my_table SET TRANSIENT = TRUE" },
+        { "key": "B", "text": "CREATE TRANSIENT TABLE my_new_table LIKE my_old_table COPY GRANTS, then INSERT the data" },
+        { "key": "C", "text": "CREATE TRANSIENT TABLE my_new_table AS SELECT * FROM my_old_table" },
+        { "key": "D", "text": "ALTER TABLE my_table UNSET DATA_RETENTION_TIME_IN_DAYS" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The TRANSIENT property is set at creation and cannot be altered. Using CREATE TRANSIENT TABLE ... LIKE ... COPY GRANTS preserves column defaults and privileges, and INSERT then copies the data.",
+        "distractors": {
+          "A": "It is not possible to change a permanent table to a transient table using ALTER TABLE.",
+          "C": "CTAS preserves the data but not the granted privileges or other characteristics such as column defaults.",
+          "D": "Unsetting the retention parameter does not change the table type or its Fail-safe behavior."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "storage-considerations",
+      "scenario": "A 200 GB dimension table has every row updated 20 times per day, producing roughly 4 TB of Time Travel and 28 TB of Fail-safe storage.",
+      "stem": "What approach does Snowflake recommend to control these excessive CDP costs?",
+      "options": [
+        { "key": "A", "text": "Convert the table to a temporary table and rebuild it each session" },
+        { "key": "B", "text": "Create the table as transient with DATA_RETENTION_TIME_IN_DAYS=0 and periodically copy it into a permanent backup table" },
+        { "key": "C", "text": "Add a clustering key to consolidate the affected micro-partitions" },
+        { "key": "D", "text": "Enable the Search Optimization Service to reduce micro-partition churn" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "For large, high-churn dimension tables with excessive CDP costs, create them as transient with zero Time Travel retention and periodically copy them into a permanent table, which serves as a CDP-protected full backup.",
+        "distractors": {
+          "A": "Temporary tables vanish with the session, making them unsuitable for a persistent dimension table.",
+          "C": "Clustering does not reduce churn; reclustering itself creates additional micro-partition turnover and CDP storage.",
+          "D": "The Search Optimization Service improves point-lookup performance and does not reduce CDP storage from updates."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "storage-considerations",
+      "scenario": "A DBA wants to identify which tables in the account are high-churn candidates for cost optimization.",
+      "stem": "Which calculation identifies high-churn tables?",
+      "options": [
+        { "key": "A", "text": "The ratio of ACTIVE_BYTES divided by TIME_TRAVEL_BYTES" },
+        { "key": "B", "text": "The ratio of FAILSAFE_BYTES divided by ACTIVE_BYTES" },
+        { "key": "C", "text": "The count of micro-partitions divided by row count" },
+        { "key": "D", "text": "The ratio of RETAINED_FOR_CLONE_BYTES divided by ACTIVE_BYTES" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "High-churn dimension tables are identified by calculating FAILSAFE_BYTES divided by ACTIVE_BYTES in the TABLE_STORAGE_METRICS view. A large ratio indicates a high-churn table.",
+        "distractors": {
+          "A": "This ratio is inverted and does not surface Fail-safe accumulation, which is the dominant cost in high-churn tables.",
+          "C": "Micro-partition to row ratios do not reveal update and delete churn.",
+          "D": "RETAINED_FOR_CLONE_BYTES relates to clone group storage ownership, not churn."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A team is loading data using INSERT and COPY operations into a newly created permanent table and notices TIME_TRAVEL_BYTES and FAILSAFE_BYTES accruing even though no rows have been updated or deleted.",
+      "stem": "What explains this?",
+      "options": [
+        { "key": "A", "text": "Time Travel bytes are always pre-allocated at table creation" },
+        { "key": "B", "text": "Small micro-partition defragmentation deletes small micro-partitions and creates a consolidated replacement" },
+        { "key": "C", "text": "COPY operations create a hidden shadow copy of each file loaded" },
+        { "key": "D", "text": "The table is inheriting CDP bytes from another table in its clone group" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Small micro-partition defragmentation deletes small micro-partitions and creates a new micro-partition containing the same data. The deleted micro-partitions contribute to TIME_TRAVEL_BYTES and FAILSAFE_BYTES.",
+        "distractors": {
+          "A": "CDP bytes are not pre-allocated; they accrue as micro-partitions transition through life-cycle states.",
+          "C": "COPY does not create shadow copies of loaded files within table storage.",
+          "D": "A newly created table with no clones has identical ID and CLONE_GROUP_ID and inherits nothing."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "table-design",
+      "scenario": "A team is loading semi-structured JSON that contains non-ISO 8601 timestamp strings, numbers embedded in strings, and arrays. They want the best pruning and lowest storage consumption.",
+      "stem": "What does Snowflake recommend?",
+      "options": [
+        { "key": "A", "text": "Store everything in a single VARIANT column since storage requirements are equivalent" },
+        { "key": "B", "text": "Store the data in a VARIANT column and add a clustering key on the VARIANT column directly" },
+        { "key": "C", "text": "Flatten the object and key data into separate relational columns" },
+        { "key": "D", "text": "Convert the JSON to XML before loading for better compression" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "For better pruning and less storage consumption, Snowflake recommends flattening object and key data into separate relational columns when the data includes non-native values such as non-ISO dates, numbers within strings, and arrays.",
+        "distractors": {
+          "A": "Storage and performance are similar to relational only for mostly-regular data using native types (strings and integers), which is not the case here.",
+          "B": "Clustering keys cannot be defined directly on VARIANT columns; only expressions on paths with a target type cast are supported.",
+          "D": "XML is not supported by external tables and offers no compression advantage here."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A team clones a database that contains pipes referencing both internal and external stages.",
+      "stem": "Which THREE statements about cloned pipes are correct? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Pipes referencing internal Snowflake stages are not cloned" },
+        { "key": "B", "text": "Pipes referencing external stages are cloned" },
+        { "key": "C", "text": "All pipes are cloned regardless of stage type" },
+        { "key": "D", "text": "A cloned pipe with AUTO_INGEST = FALSE is paused by default" },
+        { "key": "E", "text": "A cloned pipe with AUTO_INGEST = TRUE starts in the RUNNING state" },
+        { "key": "F", "text": "Cloned pipes referencing internal stages are set to STOPPED_CLONED" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "Pipes referencing internal stages are not cloned, pipes referencing external stages are cloned, and a cloned pipe with AUTO_INGEST = FALSE is paused by default.",
+        "distractors": {
+          "C": "Internal-stage pipes are specifically excluded from cloning.",
+          "E": "A cloned pipe with AUTO_INGEST = TRUE is set to the STOPPED_CLONED state, not RUNNING.",
+          "F": "Internal-stage pipes are not cloned at all, so they have no state in the clone; STOPPED_CLONED applies to cloned AUTO_INGEST = TRUE pipes."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A governance team is verifying how masking policies and tags behave when schemas are cloned.",
+      "stem": "Which THREE statements are correct? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Cloning an individual policy object is supported" },
+        { "key": "B", "text": "Cloning a schema results in the cloning of all policies within the schema" },
+        { "key": "C", "text": "A cloned table referencing a policy in the same schema maps to the cloned policy" },
+        { "key": "D", "text": "Tag associations in the source object are maintained in the cloned objects" },
+        { "key": "E", "text": "Tags are stripped from cloned objects for security reasons" },
+        { "key": "F", "text": "Policies referenced across schemas are duplicated into the target schema" }
+      ],
+      "correct": ["B", "C", "D"],
+      "explanation": {
+        "correct": "Cloning a schema clones all policies within it, a cloned table referencing a same-schema policy maps to the corresponding cloned policy, and tag associations are maintained in cloned objects.",
+        "distractors": {
+          "A": "Cloning an individual policy object is not supported.",
+          "E": "Tags are preserved, not stripped, when objects are cloned.",
+          "F": "If the source table references a policy in a different schema (a foreign reference), the cloned table retains the foreign reference rather than duplicating the policy."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A team attempts to clone a database using Time Travel at a point 2 days in the past. The database retention is 7 days, but one child table has a 1-day retention period.",
+      "stem": "Which TWO statements describe the situation and its resolution? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The clone succeeds because the parent database retention governs all children" },
+        { "key": "B", "text": "The clone fails because the child table's historical data is no longer in Time Travel" },
+        { "key": "C", "text": "The IGNORE TABLES WITH INSUFFICIENT DATA RETENTION parameter skips such tables" },
+        { "key": "D", "text": "Setting the parent database retention to 90 days retroactively restores the child data" },
+        { "key": "E", "text": "The clone succeeds but the affected table is created empty" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "A child object with shorter retention has its historical data moved out of Time Travel before the parent's. The clone fails, and the IGNORE TABLES WITH INSUFFICIENT DATA RETENTION parameter of CREATE ... CLONE skips tables lacking available history.",
+        "distractors": {
+          "A": "Child objects have their own retention periods that are not overridden by the parent.",
+          "D": "Retention changes are not retroactive; purged historical data cannot be recovered.",
+          "E": "Without the ignore parameter the entire operation fails rather than producing an empty table."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A DBA is planning a large database clone and wants to avoid name resolution conflicts.",
+      "stem": "Which TWO statements about DDL during cloning are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Cloning is instantaneous, so concurrent DDL cannot interfere" },
+        { "key": "B", "text": "Snowflake records the object names present when cloning started to resolve conflicts" },
+        { "key": "C", "text": "DDL executed on source objects during cloning may not be represented in the clone" },
+        { "key": "D", "text": "Renaming an object to a name previously used by a dropped object can cause an 'already exists' error" },
+        { "key": "E", "text": "Concurrent DDL is queued automatically until the clone completes" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "Because cloning takes time for large objects, DDL executed on source objects during the operation may not appear in the clone. Renaming to a previously-used name can compete with the clone and produce an 'Object already exists' error.",
+        "distractors": {
+          "A": "Cloning is fast but not instantaneous, particularly for large objects such as tables.",
+          "B": "Snowflake does not record which object names were present when cloning started or which names changed.",
+          "E": "DDL statements are atomic and are not queued behind in-progress cloning operations."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "table-design",
+      "scenario": "An architect is deciding whether to specify a clustering key on several new tables.",
+      "stem": "Which TWO conditions suggest specifying a clustering key? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The table is small but queried very frequently" },
+        { "key": "B", "text": "The data load order does not match the dimension by which the table is most commonly queried" },
+        { "key": "C", "text": "Query Profile shows a significant percentage of query duration spent scanning" },
+        { "key": "D", "text": "The table contains only semi-structured VARIANT data" },
+        { "key": "E", "text": "The table is loaded and queried along the same date dimension" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "Consider a clustering key when the load order does not match the most common query dimension, or when Query Profile shows a significant portion of query duration spent scanning for filtered queries.",
+        "distractors": {
+          "A": "Clustering a small table typically does not improve query performance significantly.",
+          "D": "Clustering keys cannot be defined directly on VARIANT columns without path expressions and target type casts.",
+          "E": "When data is loaded and queried along the same dimension, Snowflake's automatic micro-partitioning already handles it — no clustering key is necessary."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A team clones a schema containing tables that reference sequences and have foreign key constraints, where all referenced objects reside in that same schema.",
+      "stem": "Which TWO outcomes occur? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The cloned tables reference the source sequences" },
+        { "key": "B", "text": "The cloned tables reference the source primary key tables" },
+        { "key": "C", "text": "The cloned tables reference the cloned sequences" },
+        { "key": "D", "text": "Foreign key constraints are dropped during cloning" },
+        { "key": "E", "text": "The cloned foreign key tables reference the primary keys in the cloned tables" }
+      ],
+      "correct": ["C", "E"],
+      "explanation": {
+        "correct": "When the schema containing both the table and the sequence is cloned, the cloned table references the cloned sequence. Likewise, when both the foreign key table and the primary key table are cloned together, the foreign key references the cloned primary key table.",
+        "distractors": {
+          "A": "Source sequences are referenced only when the sequence is outside the cloned scope, such as in a different schema or when cloning just the table.",
+          "B": "Source primary key tables are referenced only when the tables reside in separate databases or schemas outside the clone scope.",
+          "D": "Foreign key constraints are preserved through cloning, not dropped."
+        }
+      }
+    }
+  ]
+}

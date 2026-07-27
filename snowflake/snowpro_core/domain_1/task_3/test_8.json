@@ -1,0 +1,459 @@
+{
+  "label": "Views & Secure Views",
+  "order": 8,
+  "topic": "Snowflake Views — Non-Materialized, Recursive, Secure Views, and View Type Comparison",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "views",
+      "scenario": null,
+      "stem": "When a CREATE VIEW statement references a table without specifying a schema, which schema does Snowflake assume the table belongs to?",
+      "options": [
+        { "key": "A", "text": "The currently active schema in the session" },
+        { "key": "B", "text": "The PUBLIC schema of the current database" },
+        { "key": "C", "text": "The same schema as the view being created" },
+        { "key": "D", "text": "The schema of the role that owns the view" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Snowflake assumes the table is in the same schema as the view. If the active schema were used instead, the view could refer to different tables at different times.",
+        "distractors": {
+          "A": "Using the active schema would make the view resolve to different tables depending on session context, which Snowflake avoids.",
+          "B": "PUBLIC is not a fallback schema for unqualified view references.",
+          "D": "Role ownership does not determine schema resolution for unqualified object names in view definitions."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "views",
+      "scenario": null,
+      "stem": "Which type of view in Snowflake can be defined as recursive?",
+      "options": [
+        { "key": "A", "text": "Non-materialized views only" },
+        { "key": "B", "text": "Materialized views only" },
+        { "key": "C", "text": "Both materialized and non-materialized views" },
+        { "key": "D", "text": "Secure materialized views only" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Only non-materialized views can be recursive (refer to themselves). A recursive view can be created with the RECURSIVE keyword or by using a recursive CTE.",
+        "distractors": {
+          "B": "Materialized views cannot be recursive; they also cannot query other views at all.",
+          "C": "Recursion is restricted to non-materialized views only.",
+          "D": "The SECURE property is independent of recursion, and materialized views cannot be recursive regardless of security setting."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "views",
+      "scenario": null,
+      "stem": "How can the definition of an existing view be changed in Snowflake?",
+      "options": [
+        { "key": "A", "text": "Using ALTER VIEW ... AS SELECT with the new query" },
+        { "key": "B", "text": "Using ALTER VIEW ... MODIFY DEFINITION" },
+        { "key": "C", "text": "The view must be recreated with the new definition" },
+        { "key": "D", "text": "Using ALTER VIEW ... REBUILD" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The definition of a view cannot be updated using ALTER VIEW or ALTER MATERIALIZED VIEW. To change a view definition, you must recreate the view.",
+        "distractors": {
+          "A": "ALTER VIEW cannot change the underlying query definition; it can only modify properties such as the SECURE keyword or comments.",
+          "B": "There is no MODIFY DEFINITION clause for ALTER VIEW in Snowflake.",
+          "D": "There is no REBUILD clause for views; that concept does not exist in Snowflake view DDL."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "secure-views",
+      "scenario": null,
+      "stem": "Which TWO are reasons to define a view as secure? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Secure views execute faster than non-secure views" },
+        { "key": "B", "text": "Internal query optimizations in non-secure views can indirectly expose underlying data" },
+        { "key": "C", "text": "Secure views automatically apply masking policies to all columns" },
+        { "key": "D", "text": "The view definition of a non-secure view is visible to other users" },
+        { "key": "E", "text": "Secure views eliminate the need to grant privileges on the view" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "Secure views prevent internal optimizations that could indirectly expose hidden data, and they restrict visibility of the view definition to authorized users (those granted the owning role).",
+        "distractors": {
+          "A": "Secure views can execute more slowly than non-secure views because they forgo certain optimizations.",
+          "C": "Secure views do not automatically apply masking policies; masking policies are a separate governance feature.",
+          "E": "Privileges must still be granted on secure views for users to query them."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "secure-views",
+      "scenario": null,
+      "stem": "Which THREE commands or views hide the definition of a secure view from unauthorized users? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "SHOW VIEWS command" },
+        { "key": "B", "text": "GET_DDL utility function" },
+        { "key": "C", "text": "ACCOUNT_USAGE.VIEWS view" },
+        { "key": "D", "text": "INFORMATION_SCHEMA.VIEWS view" },
+        { "key": "E", "text": "SELECT statements against the view" },
+        { "key": "F", "text": "DESCRIBE TABLE command" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "SHOW VIEWS, GET_DDL, and the INFORMATION_SCHEMA.VIEWS view all hide the definition of a secure view from unauthorized users.",
+        "distractors": {
+          "C": "Users with IMPORTED PRIVILEGES on the SNOWFLAKE database, the ACCOUNTADMIN role, or the SNOWFLAKE.OBJECT_VIEWER database role CAN see secure view definitions through the Account Usage VIEWS view.",
+          "E": "SELECT statements return data (subject to the view's filters); they do not expose the view definition text at all.",
+          "F": "DESCRIBE TABLE returns column metadata, not the view definition query text."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "views",
+      "scenario": null,
+      "stem": "Which TWO characteristics apply to regular (non-materialized) views but NOT to materialized views? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "They provide security benefits by exposing or hiding data at row or column level" },
+        { "key": "B", "text": "They simplify query logic" },
+        { "key": "C", "text": "They consume no storage" },
+        { "key": "D", "text": "They incur no credits for background maintenance" },
+        { "key": "E", "text": "They support clustering keys" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "Regular views consume no storage and require no background maintenance credits. Materialized views consume both storage and maintenance credits.",
+        "distractors": {
+          "A": "Both regular views and materialized views provide security benefits through row and column level data exposure control.",
+          "B": "Both regular views and materialized views simplify query logic.",
+          "E": "Clustering is supported by materialized views but NOT by regular views — this is reversed."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "secure-views",
+      "scenario": "A user has access to only red widgets through a non-secure view. They run a query with the predicate 1/iff(color = 'Purple', 0, 1) = 1 and receive a division-by-zero error.",
+      "stem": "What has the user been able to infer, and why did this happen?",
+      "options": [
+        { "key": "A", "text": "Nothing — the error is unrelated to the underlying data" },
+        { "key": "B", "text": "That the view definition contains a syntax error" },
+        { "key": "C", "text": "That purple widgets have been deleted from the base table" },
+        { "key": "D", "text": "That at least one purple widget exists, because the optimizer reordered predicates allowing the user's filter to execute first" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "In a non-secure view, the optimizer can reorder predicates so the user's WHERE clause executes before the view's filter. The division-by-zero error reveals that at least one purple widget exists in the base table.",
+        "distractors": {
+          "A": "The error is directly caused by data the user should not see, making this a genuine information leak.",
+          "B": "A syntax error would surface at view creation or as a compilation error, not as a runtime division-by-zero.",
+          "C": "The error indicates purple widgets DO exist; if none existed, the IFF would never return 0."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "secure-views",
+      "scenario": "A data provider is sharing a secure view with several consumer accounts and wants to restrict which rows each consuming account can see.",
+      "stem": "Which context function should be used in the secure view definition?",
+      "options": [
+        { "key": "A", "text": "CURRENT_ROLE" },
+        { "key": "B", "text": "CURRENT_USER" },
+        { "key": "C", "text": "CURRENT_SESSION" },
+        { "key": "D", "text": "CURRENT_ACCOUNT" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "When using secure views with Secure Data Sharing, CURRENT_ACCOUNT authorizes users from a specific account to access rows. CURRENT_ROLE and CURRENT_USER return NULL in shared secure views.",
+        "distractors": {
+          "A": "CURRENT_ROLE returns NULL in shared secure views because the provider does not control roles in the consumer account.",
+          "B": "CURRENT_USER also returns NULL in shared secure views for the same reason.",
+          "C": "CURRENT_SESSION is not the appropriate function for account-level row authorization in data sharing."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "secure-views",
+      "scenario": "A security architect wants to confirm whether a specific materialized view named MY_MV has been defined as secure.",
+      "stem": "Which command returns this information?",
+      "options": [
+        { "key": "A", "text": "SHOW VIEWS LIKE 'my_mv'" },
+        { "key": "B", "text": "SHOW MATERIALIZED VIEWS LIKE 'my_mv'" },
+        { "key": "C", "text": "SELECT is_secure FROM INFORMATION_SCHEMA.VIEWS WHERE table_name = 'MY_MV'" },
+        { "key": "D", "text": "DESCRIBE MATERIALIZED VIEW my_mv" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "For materialized views, use SHOW MATERIALIZED VIEWS and check the IS_SECURE column. Non-materialized views use SHOW VIEWS or the IS_SECURE column in INFORMATION_SCHEMA.VIEWS.",
+        "distractors": {
+          "A": "SHOW VIEWS returns information about both view types, but the documented method for checking materialized view security is SHOW MATERIALIZED VIEWS.",
+          "C": "INFORMATION_SCHEMA.VIEWS does not show materialized views; materialized views appear in INFORMATION_SCHEMA.TABLES.",
+          "D": "DESCRIBE returns column metadata, not the security property of the view."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "views",
+      "scenario": "A hospital has a table containing patient records with both medical and billing data. Medical staff should see diagnosis and treatment but not billing details, and accounting staff should see billing but not diagnosis.",
+      "stem": "How do views enable this access pattern?",
+      "options": [
+        { "key": "A", "text": "Roles must be granted SELECT on the base table plus a masking policy per column" },
+        { "key": "B", "text": "Privileges can be granted on each view without granting the role privileges on the underlying table" },
+        { "key": "C", "text": "Each view automatically inherits and filters the base table privileges of the querying role" },
+        { "key": "D", "text": "Views require the querying role to hold SELECT on both the view and the base table" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Views allow granting privileges on a particular view to a particular role without the grantee role having privileges on the underlying table(s). Each role sees only the columns exposed by its view.",
+        "distractors": {
+          "A": "Granting SELECT on the base table would expose all columns, defeating the purpose; views avoid this need entirely.",
+          "C": "Views do not inherit base table privileges; privileges must be granted explicitly on the view.",
+          "D": "A user needs privileges only on the view, not on the underlying objects, provided the view owner role has access to the base table."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "views",
+      "scenario": "A developer creates a view on a table, then later drops one of the columns that the view references from the base table.",
+      "stem": "What happens to the view?",
+      "options": [
+        { "key": "A", "text": "The view is automatically updated to exclude the dropped column" },
+        { "key": "B", "text": "The dropped column is automatically restored to preserve the view" },
+        { "key": "C", "text": "The view might become invalid because table changes are not propagated to views" },
+        { "key": "D", "text": "The DROP COLUMN operation is blocked while the view exists" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Changes to a table are not automatically propagated to views created on that table. If you drop a column in a table, views referencing that column might become invalid.",
+        "distractors": {
+          "A": "Snowflake does not automatically rewrite view definitions when base table columns change.",
+          "B": "Dropping a column does not trigger any restoration; the data remains in storage but the column is logically removed.",
+          "D": "Snowflake does not block DDL on base tables because dependent views exist."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "secure-views",
+      "scenario": "A team owns a secure view and wants to review its execution internals in the Query Profile to tune performance.",
+      "stem": "What will they observe?",
+      "options": [
+        { "key": "A", "text": "The internals are not exposed, even to the owner of the secure view" },
+        { "key": "B", "text": "Full internals, since they are the owner of the secure view" },
+        { "key": "C", "text": "Internals are shown only when the ACCOUNTADMIN role is active" },
+        { "key": "D", "text": "Internals are shown but micro-partition counts are redacted" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The internals of a secure view are not exposed in Query Profile, even for the owner of the secure view, because non-owners might have access to an owner's Query Profile.",
+        "distractors": {
+          "B": "Ownership does not grant access to secure view internals in Query Profile.",
+          "C": "The ACCOUNTADMIN role does not unlock secure view internals in Query Profile.",
+          "D": "The entire internals are hidden, not just partition counts — though scanned data volume is also not exposed."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "views",
+      "scenario": "A team needs to delete rows from a base table where the cost exceeds the average cost calculated by an existing view.",
+      "stem": "Is this operation possible, and how?",
+      "options": [
+        { "key": "A", "text": "No — views cannot be referenced in any DML statement" },
+        { "key": "B", "text": "Yes — by running DELETE directly against the view" },
+        { "key": "C", "text": "Yes — by using the view in a subquery within a DELETE against the base table" },
+        { "key": "D", "text": "No — the view must first be converted to a materialized view" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Views are read-only, so you cannot execute DML directly on them. However, you can use a view in a subquery within a DML statement that updates the underlying base table.",
+        "distractors": {
+          "A": "Views CAN be referenced in subqueries within DML statements; only direct DML on the view is prohibited.",
+          "B": "DELETE cannot be executed directly against a view because views are read-only.",
+          "D": "Materialized views are also read-only and prohibit DML; conversion would not help."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "secure-views",
+      "scenario": "A secure view exposes an ID column populated by a sequence. A user with access to only a subset of rows notices IDs 315 and 1455 in their results, created 8 days apart.",
+      "stem": "What risk does this present?",
+      "options": [
+        { "key": "A", "text": "The user could reconstruct the full contents of hidden rows" },
+        { "key": "B", "text": "The user could deduce approximately how many total records were created between those timestamps" },
+        { "key": "C", "text": "The user could bypass the secure view's WHERE clause" },
+        { "key": "D", "text": "The user could determine which roles have access to other rows" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Sequence-generated identifiers let a user infer the volume of records created between two visible rows (here roughly 1,140 records), leaking information about the underlying data distribution.",
+        "distractors": {
+          "A": "Sequence gaps reveal only counts, not the actual content of hidden rows.",
+          "C": "The secure view's WHERE clause still executes first and cannot be bypassed through ID inspection.",
+          "D": "Sequence values contain no information about role grants or access rules."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "secure-views",
+      "scenario": "A data owner wants to prevent users of a secure view from inferring anything about the volume of underlying data.",
+      "stem": "Which TWO statements are correct about scanned data size and secure views? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Snowflake exposes the exact byte count scanned so users can optimize their own queries" },
+        { "key": "B", "text": "Snowflake does not expose the amount of data scanned for queries containing secure views" },
+        { "key": "C", "text": "Users might still make approximate observations based on query performance characteristics" },
+        { "key": "D", "text": "Secure views encrypt the row count metadata using account master keys" },
+        { "key": "E", "text": "Enabling a resource monitor prevents any timing-based inference" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "Snowflake withholds the amount of data scanned (bytes and micro-partitions) for secure view queries, but users may still approximate data volume from query performance characteristics such as execution duration.",
+        "distractors": {
+          "A": "Snowflake deliberately hides scanned data volume for secure views to protect users who have access to only a subset of data.",
+          "D": "There is no encryption of row count metadata; the information is simply not surfaced.",
+          "E": "Resource monitors govern warehouse credit usage and have no bearing on timing-based inference."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "views",
+      "scenario": "An architect is deciding between a view, a materialized view, and a dynamic table for a transformation pipeline.",
+      "stem": "Which THREE statements correctly describe these objects? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "A view is simple to define and consumes no storage but requires compute to generate results each time" },
+        { "key": "B", "text": "A materialized view is always up to date but incurs compute for maintenance and consumes storage" },
+        { "key": "C", "text": "A dynamic table offers no control over refresh timing" },
+        { "key": "D", "text": "A dynamic table provides fine control over refresh and can express complex transformations" },
+        { "key": "E", "text": "A materialized view consumes no storage because results are cached in memory" },
+        { "key": "F", "text": "A view provides the fastest possible results retrieval of the three" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "Views are simple and storage-free but need compute per query. Materialized views are always current but cost storage plus maintenance compute. Dynamic tables allow fine refresh control and complex transformations.",
+        "distractors": {
+          "C": "Dynamic tables specifically provide fine control over refresh criteria — this is one of their key advantages.",
+          "E": "Materialized views store results persistently, which adds to monthly storage usage; they are not memory-only caches.",
+          "F": "Views are the slowest of the three because results are computed at query time rather than pre-computed."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "views",
+      "scenario": "A data engineer wants to break a large, difficult-to-debug query into manageable pieces using views.",
+      "stem": "Which TWO benefits does this modular approach provide? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Each view is automatically materialized to improve performance" },
+        { "key": "B", "text": "Queries can be debugged one view at a time rather than as a single large statement" },
+        { "key": "C", "text": "Views can be layered so one view references other views, creating hierarchies" },
+        { "key": "D", "text": "Each view creates an independent copy of the data for isolation" },
+        { "key": "E", "text": "View hierarchies eliminate the need for warehouse compute" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "Decomposing a query into views makes code easier to understand and lets you debug one view at a time. Views can also be layered into hierarchies where one view references others, increasing code re-use.",
+        "distractors": {
+          "A": "Views are not automatically materialized; materialization requires explicitly creating a materialized view.",
+          "D": "Non-materialized views store no data at all; they hold only a query definition.",
+          "E": "Querying views still consumes warehouse compute since results are generated at query time."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "views",
+      "scenario": "A team is reviewing view access behavior in a schema where the view owner role and the querying roles have differing base table access.",
+      "stem": "Which TWO statements accurately describe view query behavior? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "A user with access to the view but not the base table cannot query the view if the view's owner role also lacks base table access" },
+        { "key": "B", "text": "A user must always hold SELECT on the base table to query any view built on it" },
+        { "key": "C", "text": "A user with access to both the view and the base table can query the view regardless of the owner role's base table access" },
+        { "key": "D", "text": "View ownership is irrelevant to whether a query on the view succeeds" },
+        { "key": "E", "text": "Only the ACCOUNTADMIN role can query views whose owner lacks base table access" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "If the querying user lacks base table access, the view owner role must have that access for the query to succeed. If the user has access to both the view and the base table, the query succeeds regardless of the owner role's access.",
+        "distractors": {
+          "B": "Users generally need privileges only on the view, not the base table — that is a primary benefit of views.",
+          "D": "Owner role access to the base table matters specifically when the querying user lacks that access.",
+          "E": "ACCOUNTADMIN has no special exemption from this ownership chain behavior."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "secure-views",
+      "scenario": "A governance team is drafting guidelines on when developers should apply the SECURE keyword to views.",
+      "stem": "Which THREE guidelines align with Snowflake recommendations? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Apply SECURE to views specifically designated for data privacy" },
+        { "key": "B", "text": "Apply SECURE to every view in the account as a default policy" },
+        { "key": "C", "text": "Avoid SECURE for views created solely for query convenience" },
+        { "key": "D", "text": "Weigh the trade-off between data privacy and query performance" },
+        { "key": "E", "text": "Apply SECURE only to materialized views, since regular views cannot be secured" },
+        { "key": "F", "text": "Apply SECURE whenever a view is expected to run faster than the base table query" }
+      ],
+      "correct": ["A", "C", "D"],
+      "explanation": {
+        "correct": "Views should be secured when designated for data privacy, should not be secured when created only for query convenience, and the decision should weigh data privacy against query performance impact.",
+        "distractors": {
+          "B": "Blanket application of SECURE is discouraged because secure views can execute more slowly than non-secure views.",
+          "E": "Both non-materialized and materialized views can be defined as secure.",
+          "F": "The SECURE keyword does not improve performance; it typically reduces it by disabling certain optimizations."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "secure-views",
+      "scenario": "An extremely high-security environment requires that users cannot infer anything at all about data outside their authorized subset — not even approximate volumes.",
+      "stem": "Which TWO approaches address this requirement? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Convert the secure view to a non-secure view to reduce query variance" },
+        { "key": "B", "text": "Replace sequence-generated identifiers with randomized values such as UUID_STRING output" },
+        { "key": "C", "text": "Grant every role the ACCOUNTADMIN role to normalize access patterns" },
+        { "key": "D", "text": "Materialize data into a separate table per role, granting each role access only to its table" },
+        { "key": "E", "text": "Increase the warehouse size so all queries complete in similar time" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "Randomized identifiers prevent inference of record volume from ID gaps, and materializing a separate table per role removes the shared base data entirely — the recommended approach for extremely high-security situations.",
+        "distractors": {
+          "A": "Removing the SECURE property makes exposure worse by re-enabling optimizations that can leak data.",
+          "C": "Granting ACCOUNTADMIN broadly is a severe security regression that grants full access to all data.",
+          "E": "Warehouse sizing does not reliably equalize query durations and does not address the underlying inference risk."
+        }
+      }
+    }
+  ]
+}
