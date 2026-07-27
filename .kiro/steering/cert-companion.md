@@ -176,12 +176,34 @@ python3 .github/scripts/generate_manifest.py
 
 ---
 
-## Current State (SnowPro Core)
+## Discovering Current State
 
-Domain 1, Task 1.3 has 4 tests (80 questions):
-- test_1: Organizations & Org Accounts — Part A
-- test_2: Organizations & Org Accounts — Part B
-- test_3: Accounts, Identifiers & Connectivity — Part A
-- test_4: Accounts, Identifiers & Connectivity — Part B
+Don't maintain a static list of tests — it goes stale. Instead, discover the live state:
 
-Next: more topics for remaining tasks/domains.
+```bash
+# See all test files
+find snowflake aws -name "test_*.json" | sort
+
+# See folder structure
+find snowflake aws -name "_meta.json" | sort
+
+# Count tests per domain
+python3 .github/scripts/generate_manifest.py > /dev/null && python3 -c "
+import json
+with open('manifest.json') as f:
+    m = json.load(f)
+def count_tests(node):
+    total = 0
+    if 'tests' in node: total += len(node['tests'])
+    if 'children' in node:
+        for c in node['children']: total += count_tests(c)
+    return total
+for p in m['providers']:
+    print(f'{p[\"label\"]}:')
+    if 'children' in p:
+        for cert in p['children']:
+            if 'children' in cert:
+                for domain in cert['children']:
+                    print(f'  {domain[\"label\"]}: {count_tests(domain)} tests')
+"
+```
