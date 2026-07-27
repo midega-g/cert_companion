@@ -415,6 +415,11 @@
                       "id": "test_13",
                       "label": "Stored Procedure Rights & Security Model",
                       "path": "snowflake/snowpro_core/domain_1/task_3/test_13.json"
+                    },
+                    {
+                      "id": "test_14",
+                      "label": "Sequences",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_14.json"
                     }
                   ]
                 },
