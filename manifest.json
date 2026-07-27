@@ -365,6 +365,11 @@
                       "id": "test_3",
                       "label": "Accounts, Identifiers & Connectivity \u2014 Part A",
                       "path": "snowflake/snowpro_core/domain_1/task_3/test_3.json"
+                    },
+                    {
+                      "id": "test_4",
+                      "label": "User Management & Domain Verification \u2014 Part A",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_4.json"
                     }
                   ]
                 },

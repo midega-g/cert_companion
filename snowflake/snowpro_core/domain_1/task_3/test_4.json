@@ -1,0 +1,787 @@
+{
+  "label": "User Management & Domain Verification \u2014 Part A",
+  "order": 4,
+  "topic": "Snowflake User Management & Domain Verification",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "Which user TYPE property value indicates a non-human service that cannot use password or SAML authentication?",
+      "options": [
+        {
+          "key": "A",
+          "text": "PERSON"
+        },
+        {
+          "key": "B",
+          "text": "LEGACY_SERVICE"
+        },
+        {
+          "key": "C",
+          "text": "SERVICE"
+        },
+        {
+          "key": "D",
+          "text": "SNOWFLAKE_SERVICE"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Users with TYPE = SERVICE represent non-human services that cannot log in using passwords or SAML SSO, cannot enroll in MFA, and must authenticate using key-pair authentication.",
+        "distractors": {
+          "A": "PERSON is for human users who can use passwords and must enroll in MFA.",
+          "B": "LEGACY_SERVICE is similar to SERVICE but allows password and SAML authentication \u2014 it is being deprecated.",
+          "D": "SNOWFLAKE_SERVICE is created by Snowflake for Snowpark Container Services and cannot be created by administrators."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "Which system role has the default privilege to create new users in a Snowflake account?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SYSADMIN"
+        },
+        {
+          "key": "B",
+          "text": "SECURITYADMIN"
+        },
+        {
+          "key": "C",
+          "text": "USERADMIN"
+        },
+        {
+          "key": "D",
+          "text": "PUBLIC"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The USERADMIN system role can create users using SQL (CREATE USER). Custom roles can also create users if granted the CREATE USER privilege on the account.",
+        "distractors": {
+          "A": "SYSADMIN manages databases and warehouses, not users.",
+          "B": "SECURITYADMIN manages grants and role hierarchy but USERADMIN is the designated role for user creation.",
+          "D": "PUBLIC is a base role assigned to all users and has no administrative privileges."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "What function does domain verification serve in Snowflake?",
+      "options": [
+        {
+          "key": "A",
+          "text": "It restricts which email domains can be used to create user accounts"
+        },
+        {
+          "key": "B",
+          "text": "It proves ownership of an email domain so all users with that domain are treated as having verified emails"
+        },
+        {
+          "key": "C",
+          "text": "It enables single sign-on for all users in the email domain"
+        },
+        {
+          "key": "D",
+          "text": "It encrypts all communications between Snowflake and the email domain"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Domain verification lets an account administrator prove ownership of an email domain through a DNS TXT record. After verification, every user across every account in the organization with that email domain is treated as having a verified email automatically.",
+        "distractors": {
+          "A": "Domain verification does not restrict which domains can be used \u2014 it verifies ownership for notification purposes.",
+          "C": "Domain verification is not related to SSO configuration \u2014 it's about email verification status.",
+          "D": "Domain verification does not involve encryption of communications."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "Which properties CANNOT be set on a user with TYPE = SERVICE? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "LOGIN_NAME"
+        },
+        {
+          "key": "B",
+          "text": "PASSWORD"
+        },
+        {
+          "key": "C",
+          "text": "FIRST_NAME"
+        },
+        {
+          "key": "D",
+          "text": "DEFAULT_WAREHOUSE"
+        },
+        {
+          "key": "E",
+          "text": "MUST_CHANGE_PASSWORD"
+        },
+        {
+          "key": "F",
+          "text": "RSA_PUBLIC_KEY"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "SERVICE type users cannot have PASSWORD, FIRST_NAME (or MIDDLE_NAME, LAST_NAME), or MUST_CHANGE_PASSWORD set. They are designed for non-interactive use and cannot use password authentication.",
+        "distractors": {
+          "A": "LOGIN_NAME can be set on SERVICE users \u2014 they still need an identifier for key-pair authentication.",
+          "D": "DEFAULT_WAREHOUSE can be set on any user type including SERVICE.",
+          "F": "RSA_PUBLIC_KEY is specifically how SERVICE users authenticate \u2014 it must be set on them."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "Which statements about domain verification scope are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Domain verification applies only to the account that performed it"
+        },
+        {
+          "key": "B",
+          "text": "Domain verification is an organization-wide operation"
+        },
+        {
+          "key": "C",
+          "text": "Only the account that originally verified a domain can unverify it"
+        },
+        {
+          "key": "D",
+          "text": "Any account in the organization can modify another account's domain verification"
+        },
+        {
+          "key": "E",
+          "text": "Each account must independently verify the same domain"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Domain verification is organization-wide \u2014 when one account verifies a domain, all accounts in the organization treat matching users as having verified emails. However, only the account that originally verified the domain can unverify or re-verify it.",
+        "distractors": {
+          "A": "Verification is not limited to one account \u2014 it applies across the entire organization.",
+          "D": "Other accounts see the verification but cannot modify it \u2014 only the originating account can.",
+          "E": "One account verifies the domain once on behalf of the whole organization \u2014 independent verification is not needed."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": null,
+      "stem": "Which user TYPE values represent non-interactive users that cannot use password authentication? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "PERSON"
+        },
+        {
+          "key": "B",
+          "text": "SERVICE"
+        },
+        {
+          "key": "C",
+          "text": "LEGACY_SERVICE"
+        },
+        {
+          "key": "D",
+          "text": "SERVICE_AGENT"
+        },
+        {
+          "key": "E",
+          "text": "NULL"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Both SERVICE and SERVICE_AGENT users cannot log in using passwords or SAML SSO. They must use key-pair authentication or workload identity federation.",
+        "distractors": {
+          "A": "PERSON represents human users who can use passwords and must enroll in MFA.",
+          "C": "LEGACY_SERVICE allows password and SAML authentication \u2014 it is being deprecated in favor of SERVICE.",
+          "E": "NULL functions the same as PERSON \u2014 it represents a human user with password access."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "A security administrator is creating a user account for an automated ETL pipeline that runs nightly. The pipeline uses RSA key-pair authentication and should never be prompted for MFA.",
+      "stem": "Which user TYPE should the administrator assign to this user?",
+      "options": [
+        {
+          "key": "A",
+          "text": "PERSON"
+        },
+        {
+          "key": "B",
+          "text": "LEGACY_SERVICE"
+        },
+        {
+          "key": "C",
+          "text": "SERVICE"
+        },
+        {
+          "key": "D",
+          "text": "NULL"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "SERVICE type users are designed for non-interactive services. They cannot use passwords, cannot enroll in MFA, and authenticate via key-pair, making them ideal for automated pipelines.",
+        "distractors": {
+          "A": "PERSON would require MFA enrollment, which is inappropriate for an automated pipeline.",
+          "B": "LEGACY_SERVICE allows password authentication and is being deprecated \u2014 SERVICE is the correct choice.",
+          "D": "NULL functions as PERSON, which would enforce MFA enrollment."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "An organization has 500 users with @company.com email addresses spread across 12 Snowflake accounts. The security team wants all users to receive MFA enrollment prompts and resource monitor alerts without requiring each user to individually verify their email.",
+      "stem": "What is the most efficient solution?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Have each account administrator send verification emails to all users"
+        },
+        {
+          "key": "B",
+          "text": "Verify the company.com domain using SYSTEM$VERIFY_DNS_DOMAIN from one account"
+        },
+        {
+          "key": "C",
+          "text": "Create a custom notification integration for each account"
+        },
+        {
+          "key": "D",
+          "text": "Configure SSO to automatically verify email addresses"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Verifying the domain once using SYSTEM$VERIFY_DNS_DOMAIN from any one account confers verified-email status on all users with that email domain across every account in the organization \u2014 eliminating the need for individual verification.",
+        "distractors": {
+          "A": "Having 500 users individually verify is operationally expensive \u2014 domain verification does this in one step.",
+          "C": "Custom notification integrations do not solve the email verification requirement.",
+          "D": "SSO does not automatically verify email addresses \u2014 domain verification is the correct mechanism."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "An administrator verified their company domain 2 weeks ago. Today they noticed the DNS TXT record was accidentally deleted by the network team 3 days ago.",
+      "stem": "What is the current status of the domain verification?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Unverified \u2014 users immediately lost verified email status when the record was deleted"
+        },
+        {
+          "key": "B",
+          "text": "Grace period (48 hours) \u2014 the domain is still treated as verified"
+        },
+        {
+          "key": "C",
+          "text": "Grace period (7 days) \u2014 a warning notification has been sent"
+        },
+        {
+          "key": "D",
+          "text": "Verified \u2014 Snowflake only checks the record once during initial verification"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The DNS record was deleted 3 days ago (72 hours). Since the initial 48-hour grace period has passed, the domain moves to the 7-day grace period where Snowflake sends a warning notification. The domain is still treated as verified during this window.",
+        "distractors": {
+          "A": "Verification is not immediately revoked \u2014 grace periods exist to handle transient DNS issues.",
+          "B": "The 48-hour window starts when re-verification first fails. After 3 days (72 hours), the domain has moved past the initial 48-hour window.",
+          "D": "Snowflake periodically re-checks the DNS TXT record \u2014 it does not rely only on the initial check."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "A company wants to build an AI agent that interacts with Snowflake using its own identity and privileges. The agent needs to be distinguishable from human users for data governance purposes.",
+      "stem": "Which user TYPE should be used for this AI agent?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SERVICE"
+        },
+        {
+          "key": "B",
+          "text": "SERVICE_AGENT"
+        },
+        {
+          "key": "C",
+          "text": "PERSON"
+        },
+        {
+          "key": "D",
+          "text": "SNOWFLAKE_SERVICE"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "SERVICE_AGENT is designed for automated AI agents with their own identity and privileges. Every session is automatically agent-active, and IS_AGENT_ACTIVATED returns TRUE, enabling agent-aware data governance in masking policies.",
+        "distractors": {
+          "A": "SERVICE is for general non-interactive services but does not have the agent-specific features like automatic agent-active sessions.",
+          "C": "PERSON is for human users and would require MFA enrollment.",
+          "D": "SNOWFLAKE_SERVICE is created by Snowflake for Snowpark Container Services \u2014 administrators cannot create this type."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A Snowflake administrator is reviewing ACCOUNTADMIN role assignments after a security audit flagged that only one user has the role and it's set as their default role.",
+      "stem": "Which changes should the administrator make to follow Snowflake best practices? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Remove ACCOUNTADMIN from all users and rely on SYSADMIN"
+        },
+        {
+          "key": "B",
+          "text": "Assign ACCOUNTADMIN to at least one additional user"
+        },
+        {
+          "key": "C",
+          "text": "Change the existing user's default role to a lower-level role"
+        },
+        {
+          "key": "D",
+          "text": "Set ACCOUNTADMIN as default for all users with administrative duties"
+        },
+        {
+          "key": "E",
+          "text": "Disable the ACCOUNTADMIN role entirely and use custom roles"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Best practices require ACCOUNTADMIN to be assigned to at least two users (for continuity) and never set as a default role. The administrator should add a second user and change the default role to a lower-level role.",
+        "distractors": {
+          "A": "Removing ACCOUNTADMIN from all users eliminates the ability to perform critical account-level tasks.",
+          "D": "ACCOUNTADMIN should never be set as a default role \u2014 this is explicitly against Snowflake best practices.",
+          "E": "ACCOUNTADMIN cannot be disabled \u2014 it is a required system role for account administration."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A security team implemented domain verification for company.com three weeks ago. Today they checked the status and found the domain is 'Unverified'. The DNS TXT record was accidentally removed during infrastructure changes.",
+      "stem": "Which statements describe what happened and how to recover? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The total grace period (48 hours + 7 days) elapsed without the DNS record being restored"
+        },
+        {
+          "key": "B",
+          "text": "Users in the domain immediately lost verified email status when the record was first removed"
+        },
+        {
+          "key": "C",
+          "text": "To recover, fix the DNS record and call SYSTEM$VERIFY_DNS_DOMAIN again"
+        },
+        {
+          "key": "D",
+          "text": "The domain cannot be re-verified once it becomes Unverified"
+        },
+        {
+          "key": "E",
+          "text": "A new domain must be registered since the original verification token has expired"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "After the total grace period (~9 days) passes without successful re-verification, the domain becomes Unverified. To recover, fix the DNS record and call SYSTEM$VERIFY_DNS_DOMAIN again to trigger a fresh verification.",
+        "distractors": {
+          "B": "Users do not immediately lose status \u2014 grace periods (48h + 7 days) protect against transient DNS issues.",
+          "D": "Domains can be re-verified \u2014 fix the DNS and call the function again.",
+          "E": "A new domain registration is not needed \u2014 the same verification process can be repeated."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "An administrator needs to modify the DEFAULT_WAREHOUSE property of a user named 'analyst_jane'. They are currently using the USERADMIN role.",
+      "stem": "Can the administrator modify this user property with their current role?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Yes \u2014 USERADMIN can modify all user properties"
+        },
+        {
+          "key": "B",
+          "text": "No \u2014 only the role with OWNERSHIP privilege on the user can modify properties"
+        },
+        {
+          "key": "C",
+          "text": "No \u2014 only ACCOUNTADMIN can modify user properties"
+        },
+        {
+          "key": "D",
+          "text": "Yes \u2014 any role with the CREATE USER privilege can also modify users"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Only the role with the OWNERSHIP privilege on a user can modify most user properties using ALTER USER. USERADMIN can create users but modifying requires OWNERSHIP.",
+        "distractors": {
+          "A": "USERADMIN can create users but does not automatically have OWNERSHIP to modify all users.",
+          "C": "ACCOUNTADMIN inherits all privileges but the specific requirement is OWNERSHIP on the user, not the ACCOUNTADMIN role itself.",
+          "D": "CREATE USER privilege only grants the ability to create new users, not modify existing ones."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A company is planning their domain verification strategy. They want to understand the grace period behavior if their DNS record is accidentally removed.",
+      "stem": "Which statements about the domain verification grace period are correct? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The initial grace period is 48 hours and is intentionally silent (no notifications)"
+        },
+        {
+          "key": "B",
+          "text": "After the 48-hour window, a 7-day grace period begins with a warning notification"
+        },
+        {
+          "key": "C",
+          "text": "The domain remains treated as verified throughout both grace periods"
+        },
+        {
+          "key": "D",
+          "text": "Notifications are sent immediately when re-verification first fails"
+        },
+        {
+          "key": "E",
+          "text": "The total grace period before unverification is 30 days"
+        },
+        {
+          "key": "F",
+          "text": "Once unverified, the domain can be recovered by fixing DNS and calling SYSTEM$VERIFY_DNS_DOMAIN again"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The grace period has two phases: 48 hours (silent, no notifications) followed by 7 days (warning sent). The domain remains verified throughout both periods, giving administrators time to fix DNS issues.",
+        "distractors": {
+          "D": "The first 48 hours are intentionally silent to avoid noise from brief DNS outages \u2014 no notification is sent.",
+          "E": "The total grace period is 48 hours + 7 days (approximately 9 days total), not 30 days.",
+          "F": "While recovering a domain is possible by fixing DNS and calling the function again, this statement describes post-grace behavior, not grace period behavior."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "An organization is auditing their user types to comply with a new security policy requiring all non-human accounts to use key-pair authentication exclusively.",
+      "stem": "Which user types need to be reviewed because they allow password authentication? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "SERVICE"
+        },
+        {
+          "key": "B",
+          "text": "PERSON"
+        },
+        {
+          "key": "C",
+          "text": "LEGACY_SERVICE"
+        },
+        {
+          "key": "D",
+          "text": "SERVICE_AGENT"
+        },
+        {
+          "key": "E",
+          "text": "SNOWFLAKE_SERVICE"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "PERSON (and NULL) users can use passwords, and LEGACY_SERVICE users also allow password authentication despite being non-interactive. Both need review. SERVICE and SERVICE_AGENT already prohibit passwords.",
+        "distractors": {
+          "A": "SERVICE users already cannot use password authentication \u2014 no review needed.",
+          "D": "SERVICE_AGENT users cannot use passwords \u2014 they use key-pair or workload identity federation.",
+          "E": "SNOWFLAKE_SERVICE is managed by Snowflake and cannot be modified by administrators."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A platform team is creating a SERVICE_AGENT user for their new AI assistant that will interact with Snowflake. They want to understand what distinguishes SERVICE_AGENT from regular SERVICE users.",
+      "stem": "Which features are unique to SERVICE_AGENT users compared to SERVICE users? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Every session is automatically agent-active (IS_AGENT_ACTIVATED returns TRUE)"
+        },
+        {
+          "key": "B",
+          "text": "They can use password authentication unlike SERVICE users"
+        },
+        {
+          "key": "C",
+          "text": "They support workload identity federation without requiring a network policy for programmatic access tokens"
+        },
+        {
+          "key": "D",
+          "text": "They can be created by any role without special privileges"
+        },
+        {
+          "key": "E",
+          "text": "They have access to all databases in the account by default"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "SERVICE_AGENT users have automatic agent-active sessions (IS_AGENT_ACTIVATED returns TRUE for governance), and unlike SERVICE users, they do not require a network policy before a programmatic access token can be created.",
+        "distractors": {
+          "B": "SERVICE_AGENT users cannot use passwords \u2014 they share the non-interactive characteristics of SERVICE users.",
+          "D": "SERVICE_AGENT users are created using CREATE USER with appropriate privileges, like any other user.",
+          "E": "SERVICE_AGENT users follow normal access control \u2014 they do not get automatic access to all databases."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "A Snowflake administrator is reviewing their account's security posture. They notice that several users have ACCOUNTADMIN as their default role.",
+      "stem": "Which best practices does Snowflake recommend for the ACCOUNTADMIN role? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Assign ACCOUNTADMIN to at least two users for continuity"
+        },
+        {
+          "key": "B",
+          "text": "Set ACCOUNTADMIN as default role for quick access to administrative functions"
+        },
+        {
+          "key": "C",
+          "text": "Designate a lower-level administrative or custom role as the user's default role"
+        },
+        {
+          "key": "D",
+          "text": "Remove ACCOUNTADMIN from all users and use SYSADMIN for all tasks"
+        },
+        {
+          "key": "E",
+          "text": "Assign ACCOUNTADMIN to every user who manages databases"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Snowflake recommends assigning ACCOUNTADMIN to at least two users (for redundancy) and never setting it as anyone's default role \u2014 a lower-level role should be the default to minimize accidental privileged actions.",
+        "distractors": {
+          "B": "ACCOUNTADMIN should never be designated as a default role \u2014 this is explicitly against best practices.",
+          "D": "Removing ACCOUNTADMIN from all users is not recommended \u2014 at least two users should have it.",
+          "E": "ACCOUNTADMIN should be strictly controlled, not broadly assigned to database managers."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "accounts",
+      "scenario": "An organization's compliance officer wants to understand why Snowflake requires verified email addresses and what notifications users miss without them.",
+      "stem": "Which types of notifications require a verified email address to be delivered? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "MFA enrollment prompts"
+        },
+        {
+          "key": "B",
+          "text": "Query completion notifications"
+        },
+        {
+          "key": "C",
+          "text": "Resource monitor alerts"
+        },
+        {
+          "key": "D",
+          "text": "Warehouse auto-suspend confirmations"
+        },
+        {
+          "key": "E",
+          "text": "Daily credit consumption summaries"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Snowflake delivers security and operational notifications (including MFA enrollment prompts and resource monitor alerts) only to users with verified email addresses. Without verification, users silently miss these notifications.",
+        "distractors": {
+          "B": "Query completion notifications are not specifically gated on email verification.",
+          "D": "Warehouse auto-suspend confirmations are not a notification type requiring verified email.",
+          "E": "Daily credit consumption summaries are not listed as notifications requiring verified email."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "An administrator is creating a new user in Snowsight and notices that a password field is required. However, the user should be a service account that uses key-pair authentication only.",
+      "stem": "How should the administrator create this service user without a password?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Use Snowsight and enter a temporary password, then remove it later"
+        },
+        {
+          "key": "B",
+          "text": "Use the CREATE USER SQL command with TYPE = SERVICE and specify RSA_PUBLIC_KEY instead"
+        },
+        {
+          "key": "C",
+          "text": "Create the user in Snowsight as PERSON type, then change to SERVICE type"
+        },
+        {
+          "key": "D",
+          "text": "Use Snowsight and leave the password field blank"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Snowsight requires a password when creating users. To create a SERVICE user without a password, use the CREATE USER SQL command with TYPE = SERVICE and specify the RSA_PUBLIC_KEY for authentication.",
+        "distractors": {
+          "A": "SERVICE users cannot have passwords \u2014 you cannot set one and remove it later.",
+          "C": "Changing a user from PERSON to SERVICE after setting a password is not the recommended approach.",
+          "D": "Snowsight requires a password field to be filled \u2014 it cannot be left blank."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "accounts",
+      "scenario": "A company's LEGACY_SERVICE user type accounts are being flagged by their security audit as non-compliant because they allow password authentication for non-interactive services.",
+      "stem": "What is Snowflake's guidance regarding LEGACY_SERVICE user types?",
+      "options": [
+        {
+          "key": "A",
+          "text": "LEGACY_SERVICE is the recommended type for all automated services"
+        },
+        {
+          "key": "B",
+          "text": "LEGACY_SERVICE is being deprecated and should be replaced with SERVICE type"
+        },
+        {
+          "key": "C",
+          "text": "LEGACY_SERVICE should be upgraded to SERVICE_AGENT for better security"
+        },
+        {
+          "key": "D",
+          "text": "LEGACY_SERVICE accounts should be converted to PERSON type with MFA"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The LEGACY_SERVICE type is being deprecated. Snowflake recommends using the SERVICE type for services and applications, which prohibits password and SAML authentication entirely.",
+        "distractors": {
+          "A": "LEGACY_SERVICE is being deprecated \u2014 it is not recommended for any use.",
+          "C": "SERVICE_AGENT is for AI agents with specific governance needs, not a general replacement for LEGACY_SERVICE.",
+          "D": "Non-interactive services should not be PERSON type \u2014 SERVICE is the correct replacement."
+        }
+      }
+    }
+  ]
+}
