@@ -81,12 +81,32 @@ git push
 
 ### Preventing the issue
 
-The simplest prevention: after pushing, wait a few seconds for CI to commit, then pull before making more changes:
+**Always pull before pushing.** The CI auto-commit happens ~5-10 seconds after your push. If you make another commit and try to push without pulling, it will be rejected.
+
+**Required workflow before every commit and push:**
 
 ```bash
+# 1. Pull remote changes (CI manifest commits) BEFORE committing
+git pull --rebase
+
+# 2. Stage and commit your changes
+git add <files>
+git commit -m "message"
+
+# 3. Push
 git push
-# wait ~10 seconds
-git pull
+```
+
+If you have unstaged changes that prevent `git pull --rebase`:
+
+```bash
+# Stash, pull, pop, then commit
+git stash
+git pull --rebase
+git stash pop
+git add <files>
+git commit -m "message"
+git push
 ```
 
 Or just always `git pull --rebase` before pushing.

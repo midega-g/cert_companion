@@ -213,12 +213,27 @@ Before generating questions, assess the fetched content to determine:
    * Medium content (3-6 pages with moderate depth) → 2 tests
    * Dense content (6+ pages with high depth, many testable concepts) → 3 tests
 4. **Test breakdown:** Define what each test will cover before generating anything.
-5. **Gap analysis:** After all planned tests for a task are generated, review the source material for concepts that were not covered or only lightly touched. If significant gaps exist, create a supplementary test (labeled "— Gap Coverage") to achieve full or near-full coverage. Check for:
+5. **Gap analysis:** After all planned tests for a task are generated, review the source material for concepts that were not covered or only lightly touched. If significant gaps exist (enough to generate a full 20-question test), create a supplementary test to achieve full or near-full coverage. If the gaps only yield fewer than 20 questions, a supplementary test is not needed. Check for:
    * SQL commands or functions mentioned in the docs but not tested
    * Edge cases, limitations, or "gotchas" that weren't addressed
    * Configuration options or parameters not covered
    * Behavioral details (defaults, error conditions, prerequisites) that were skipped
    * Entire sections or sub-topics that received zero questions
+
+## Test naming conventions
+
+Tests are organized as Part A / Part B pairs when a topic spans multiple tests:
+
+* `"Organizations & Org Accounts — Part A"` (overview, types, administrators)
+* `"Organizations & Org Accounts — Part B"` (account management, creation, deletion)
+* `"Accounts, Identifiers & Connectivity — Part A"` (identifiers, URLs, trial accounts)
+* `"Accounts, Identifiers & Connectivity — Part B"` (user management, domain verification)
+
+**Supplementary tests** (for gap coverage) use the parent topic name with "— Supplemental":
+
+* `"Organizations & Accounts — Supplemental"` (covers gaps across both Part A and Part B)
+
+Supplementary tests are only created when the uncovered content can fill a full 20-question test.
 
 ## Validation after generation
 

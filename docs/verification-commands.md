@@ -186,7 +186,22 @@ for provider in m['providers']:
 
 ---
 
-## Pre-push Checklist (All in One)
+## Pre-commit and Pre-push Checklist
+
+### Step 1: Pull remote changes first
+
+```bash
+git pull --rebase
+```
+
+**Why:** CI auto-commits manifest changes after every push. If you don't pull first, your push will be rejected with "remote contains work that you do not have locally." Always pull before committing.
+
+If you have unstaged changes blocking the pull:
+```bash
+git stash && git pull --rebase && git stash pop
+```
+
+### Step 2: Validate files
 
 ```bash
 python3 .github/scripts/generate_manifest.py > /dev/null && \
@@ -195,6 +210,21 @@ node --check app.js && \
 echo "All checks passed ✓"
 ```
 
+### Step 3: Stage, commit (pre-commit hooks run automatically), push
+
+```bash
+git add <files>
+git commit -m "message"    # pre-commit hooks run here (prettier, trailing whitespace, JSON check)
+git push
+```
+
+If pre-commit hooks modify files (e.g., fixing trailing newlines), re-stage and commit again:
+```bash
+git add <modified files>
+git commit -m "message"    # hooks pass on second attempt
+git push
+```
+
 **Purpose:** Runs all validation steps in sequence. If any step fails, the chain stops and reports the error. If all pass, prints the success message.
 
-**When to run:** Before every `git push`.
+**When to run:** Before every `git commit` and `git push`.
