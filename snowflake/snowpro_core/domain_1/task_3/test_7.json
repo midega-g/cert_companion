@@ -1,0 +1,458 @@
+{
+  "label": "Hybrid Tables",
+  "order": 7,
+  "topic": "Snowflake Hybrid Tables — Architecture, Constraints, Indexes, Limitations, Costs",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": null,
+      "stem": "What is the primary data layout used by hybrid tables?",
+      "options": [
+        { "key": "A", "text": "Columnar micro-partitions" },
+        { "key": "B", "text": "Key-value store with hash-based partitioning" },
+        { "key": "C", "text": "Row-oriented storage with secondary columnar storage" },
+        { "key": "D", "text": "Document-based storage with JSON indexing" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Hybrid tables use a row store as the primary data store for operational query performance. Data is asynchronously copied to object storage in columnar format for analytical queries.",
+        "distractors": {
+          "A": "Columnar micro-partitions are the storage format for standard Snowflake tables, not hybrid tables.",
+          "B": "Hybrid tables do not use key-value or hash-based partitioning; they use a row store ordered by primary key.",
+          "D": "Hybrid tables are not document-based; they are relational tables with row-oriented primary storage."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": null,
+      "stem": "Which constraint is required when creating a hybrid table?",
+      "options": [
+        { "key": "A", "text": "UNIQUE constraint" },
+        { "key": "B", "text": "FOREIGN KEY constraint" },
+        { "key": "C", "text": "NOT NULL constraint on all columns" },
+        { "key": "D", "text": "PRIMARY KEY constraint" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Every hybrid table requires a PRIMARY KEY constraint. Data in hybrid tables is ordered by this primary key. UNIQUE and FOREIGN KEY constraints are optional.",
+        "distractors": {
+          "A": "UNIQUE constraints are optional for hybrid tables; only PRIMARY KEY is required.",
+          "B": "FOREIGN KEY constraints are optional and only needed when referencing other hybrid tables.",
+          "C": "NOT NULL is only required on PRIMARY KEY columns automatically; it is optional for other columns."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": null,
+      "stem": "What type of locking do hybrid tables use for concurrent write operations?",
+      "options": [
+        { "key": "A", "text": "Table-level locking" },
+        { "key": "B", "text": "Partition-level locking" },
+        { "key": "C", "text": "Row-level locking" },
+        { "key": "D", "text": "Column-level locking" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Hybrid tables provide row-level locking for high concurrency, compared to standard tables which use partition or table-level locking.",
+        "distractors": {
+          "A": "Table-level locking is too coarse; hybrid tables use row-level locking for better concurrency.",
+          "B": "Partition-level locking is used by standard tables, not hybrid tables.",
+          "D": "Column-level locking is not a locking mechanism used in Snowflake."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": null,
+      "stem": "Which THREE constraints are enforced on hybrid tables but NOT enforced on standard tables? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "NOT NULL" },
+        { "key": "B", "text": "PRIMARY KEY" },
+        { "key": "C", "text": "FOREIGN KEY" },
+        { "key": "D", "text": "CHECK" },
+        { "key": "E", "text": "UNIQUE" },
+        { "key": "F", "text": "DEFAULT" }
+      ],
+      "correct": ["B", "C", "E"],
+      "explanation": {
+        "correct": "Hybrid tables enforce PRIMARY KEY, FOREIGN KEY (referential integrity), and UNIQUE constraints. Standard tables declare these constraints but do not enforce them. NOT NULL is enforced on both table types.",
+        "distractors": {
+          "A": "NOT NULL is enforced on both standard tables and hybrid tables — it is not unique to hybrid tables.",
+          "D": "CHECK constraints are not mentioned as a specific enforcement difference between hybrid and standard tables.",
+          "F": "DEFAULT is a column property for value generation, not a constraint that is enforced differently."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": null,
+      "stem": "Which TWO data types are NOT supported in hybrid table indexed columns (PRIMARY KEY, UNIQUE, or secondary indexes)? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "VARCHAR" },
+        { "key": "B", "text": "VARIANT" },
+        { "key": "C", "text": "NUMBER" },
+        { "key": "D", "text": "GEOGRAPHY" },
+        { "key": "E", "text": "TIMESTAMP_NTZ" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "VARIANT (and other semi-structured types like ARRAY and OBJECT) and geospatial types (GEOGRAPHY, GEOMETRY) are not supported in indexed columns of hybrid tables. These types can exist in non-indexed columns.",
+        "distractors": {
+          "A": "VARCHAR is fully supported in hybrid table indexes.",
+          "C": "NUMBER is a standard supported data type for hybrid table indexes.",
+          "E": "TIMESTAMP_NTZ is supported for secondary indexes on hybrid tables."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": null,
+      "stem": "Which TWO query predicate conditions can leverage secondary indexes on hybrid tables? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "ILIKE pattern matching" },
+        { "key": "B", "text": "Regular expression matching with RLIKE" },
+        { "key": "C", "text": "Equality and comparison operators (=, >, <)" },
+        { "key": "D", "text": "STARTSWITH conditions" },
+        { "key": "E", "text": "Full-text search with CONTAINS" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "Secondary indexes accelerate lookups using comparison operators (=, >, >=, <, <=), IN, BETWEEN, and STARTSWITH conditions, as well as prefix patterns (LIKE '<prefix>%').",
+        "distractors": {
+          "A": "ILIKE patterns do not qualify for index use and require a full table scan.",
+          "B": "Regular expression matching (RLIKE) cannot leverage secondary indexes.",
+          "E": "Full-text search with CONTAINS is not a supported index-accelerated operation for hybrid tables."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A development team creates a hybrid table and later needs to add a secondary index on a column used for frequent lookups. The table is actively serving production queries with data already loaded.",
+      "stem": "How should they add the secondary index?",
+      "options": [
+        { "key": "A", "text": "Use ALTER TABLE ... ADD INDEX to add the index inline" },
+        { "key": "B", "text": "Drop and recreate the table with the index defined in CREATE HYBRID TABLE" },
+        { "key": "C", "text": "Use CREATE INDEX which builds the index concurrently without locking the table" },
+        { "key": "D", "text": "Use ALTER TABLE ... ADD COLUMN with an INDEX constraint" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The CREATE INDEX command builds indexes concurrently without locking the table during the operation, making it safe for production tables that are actively serving queries.",
+        "distractors": {
+          "A": "ALTER TABLE ... ADD INDEX is not the correct command; CREATE INDEX is used for adding indexes to existing hybrid tables.",
+          "B": "Dropping and recreating the table causes downtime and data loss risk; CREATE INDEX avoids this.",
+          "D": "ALTER TABLE ... ADD COLUMN adds columns, not indexes; the correct command is CREATE INDEX."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A team has a hybrid table with a secondary index on the temperature column. They run a query that selects temperature, vibration, and motor_rpm with a WHERE clause on temperature. The query profile shows a probe scan on the hybrid table in addition to the index scan.",
+      "stem": "What would eliminate the probe scan and allow the query to use only the secondary index?",
+      "options": [
+        { "key": "A", "text": "Add vibration and motor_rpm as INCLUDE columns on the secondary index" },
+        { "key": "B", "text": "Add vibration and motor_rpm to the PRIMARY KEY" },
+        { "key": "C", "text": "Create a materialized view with the three columns" },
+        { "key": "D", "text": "Add a clustering key on temperature" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "INCLUDE columns are stored with the index records. When a query only needs the indexed columns plus INCLUDE columns, it can be satisfied entirely from the index without scanning the table itself.",
+        "distractors": {
+          "B": "Adding columns to the PRIMARY KEY would change the table's ordering and is not practical for eliminating probe scans on secondary index queries.",
+          "C": "Materialized views are not supported on hybrid tables.",
+          "D": "Clustering keys are not supported on hybrid tables; data is ordered by primary key only."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "An application team is evaluating hybrid tables for a high-concurrency workload. They need to understand the throughput limitations before deployment.",
+      "stem": "What is the approximate operations-per-second quota for hybrid tables per database?",
+      "options": [
+        { "key": "A", "text": "1,000 operations per second" },
+        { "key": "B", "text": "4,000 operations per second" },
+        { "key": "C", "text": "16,000 operations per second" },
+        { "key": "D", "text": "100,000 operations per second" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Hybrid tables support approximately 16,000 operations per second per database for a balanced workload of 80% point reads and 20% point writes.",
+        "distractors": {
+          "A": "1,000 ops/sec is far below the actual quota of approximately 16,000.",
+          "B": "4,000 ops/sec is significantly below the documented quota.",
+          "D": "100,000 ops/sec exceeds the documented quota; Snowflake may throttle workloads above 16,000 ops/sec."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A team wants to use hybrid tables for a transactional workload that spans tables across two different Snowflake databases within the same account.",
+      "stem": "What limitation will they encounter?",
+      "options": [
+        { "key": "A", "text": "Hybrid tables cannot participate in transactions at all" },
+        { "key": "B", "text": "All hybrid tables in a transaction must reside in the same database" },
+        { "key": "C", "text": "Cross-database transactions require Enterprise Edition" },
+        { "key": "D", "text": "Each hybrid table in a transaction requires its own dedicated warehouse" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "For hybrid tables, the transaction scope is the database. All hybrid tables referenced in a transaction must reside in the same database. Standard tables in the same transaction may reside in different databases.",
+        "distractors": {
+          "A": "Hybrid tables fully support transactions; the limitation is on cross-database scope for hybrid tables.",
+          "C": "This is not an edition limitation; it is an architectural constraint of hybrid tables regardless of edition.",
+          "D": "Hybrid tables do not require dedicated warehouses per table in a transaction."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A data architect is comparing hybrid tables and standard tables for a new application. The application needs to run both point lookups by customer ID and nightly analytical aggregations across all customers.",
+      "stem": "How does Snowflake optimize read paths for hybrid tables to handle both workload types?",
+      "options": [
+        { "key": "A", "text": "Users must manually choose between row store and columnar reads via a query hint" },
+        { "key": "B", "text": "Point lookups require a separate OLTP warehouse while analytics use the standard warehouse" },
+        { "key": "C", "text": "Hybrid tables duplicate all data in both row and columnar format synchronously" },
+        { "key": "D", "text": "The query optimizer automatically decides where to read data from — row store, object storage, or columnar cache — for best performance" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "The Snowflake query optimizer automatically decides where to read data — row store for point lookups, object storage or columnar cache for scans — providing one consistent view without user intervention.",
+        "distractors": {
+          "A": "There are no query hints needed; the optimizer handles read path selection transparently.",
+          "B": "There is no requirement for separate OLTP and analytics warehouses; both query types run on the same warehouse.",
+          "C": "Data is copied to object storage asynchronously, not synchronously; the optimizer handles consistency."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A team attempts to create a hybrid table within a transient schema. The CREATE HYBRID TABLE statement fails.",
+      "stem": "Why did the table creation fail?",
+      "options": [
+        { "key": "A", "text": "Hybrid tables cannot be created within transient schemas or databases" },
+        { "key": "B", "text": "Hybrid tables require a clustering key that transient schemas do not support" },
+        { "key": "C", "text": "The schema has reached its maximum object count" },
+        { "key": "D", "text": "Hybrid tables require Enterprise Edition which the account does not have" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Hybrid tables cannot be created as temporary or transient objects. They also cannot be created within transient schemas or transient databases.",
+        "distractors": {
+          "B": "Hybrid tables do not support clustering keys at all; this is unrelated to the transient schema issue.",
+          "C": "There is no hard limit on schema object count in Snowflake.",
+          "D": "Hybrid tables are available in commercial AWS and Azure regions; the issue is the transient schema, not the edition."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A team is loading 5 million rows into an empty hybrid table. They want to achieve the fastest possible load time and also need to create secondary indexes.",
+      "stem": "What is the most efficient approach?",
+      "options": [
+        { "key": "A", "text": "Load data first with INSERT INTO ... SELECT, then create indexes with CREATE INDEX" },
+        { "key": "B", "text": "Create the table with indexes defined in CREATE HYBRID TABLE and use CTAS to bulk load" },
+        { "key": "C", "text": "Use Snowpipe Streaming to load data incrementally while indexes are built" },
+        { "key": "D", "text": "Create indexes first, then load data row-by-row with individual INSERT statements" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "For tables in development/test mode where some downtime is acceptable, recreating the table with indexes defined in CREATE HYBRID TABLE and using CTAS bulk load is more efficient than online index building with CREATE INDEX afterward.",
+        "distractors": {
+          "A": "While this works, CREATE INDEX builds indexes online which is slower than building them during bulk load via CTAS.",
+          "C": "Snowpipe Streaming is not supported for hybrid tables.",
+          "D": "Row-by-row INSERTs are extremely slow for bulk loading; this approach wastes resources and time."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": "A data architect needs to understand which Snowflake features are NOT available with hybrid tables to properly plan their hybrid table deployment.",
+      "stem": "Which THREE features are unsupported for hybrid tables? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Clustering keys" },
+        { "key": "B", "text": "Data sharing" },
+        { "key": "C", "text": "Joins with standard tables" },
+        { "key": "D", "text": "Materialized views" },
+        { "key": "E", "text": "Secondary indexes" },
+        { "key": "F", "text": "COPY INTO for data loading" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "Hybrid tables do not support clustering keys (data is ordered by primary key), data sharing, or materialized views. They also lack support for streams, replication, Snowpipe, and the Query Acceleration Service.",
+        "distractors": {
+          "C": "Joins between hybrid tables and standard tables are fully supported and execute natively in the same query engine.",
+          "E": "Secondary indexes are a key feature of hybrid tables for performance optimization.",
+          "F": "COPY INTO is supported for loading data into hybrid tables (with ABORT_STATEMENT as the only ON_ERROR option)."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": "A team wants to use Time Travel with their hybrid tables for auditing purposes. They need to understand the specific limitations.",
+      "stem": "Which THREE Time Travel limitations apply to hybrid tables? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Only the TIMESTAMP parameter is supported in the AT clause" },
+        { "key": "B", "text": "The BEFORE clause is not supported" },
+        { "key": "C", "text": "Time Travel is completely unavailable for hybrid tables" },
+        { "key": "D", "text": "The UNDROP TABLE command is not supported" },
+        { "key": "E", "text": "Time Travel queries require a dedicated warehouse" },
+        { "key": "F", "text": "The OFFSET and STATEMENT parameters are not supported" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "Hybrid table Time Travel only supports the TIMESTAMP parameter in the AT clause. The BEFORE clause, UNDROP TABLE, and the OFFSET/STATEMENT/STREAM parameters are not supported.",
+        "distractors": {
+          "C": "Time Travel IS available for hybrid tables, just with specific limitations on syntax.",
+          "E": "Time Travel queries on hybrid tables do not require a dedicated warehouse.",
+          "F": "While OFFSET and STATEMENT are not supported, this answer is also correct — but only three can be selected, and F overlaps with the TIMESTAMP-only limitation stated in A."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": "A startup is designing their application backend and considering hybrid tables for storing user session data with high-concurrency random reads and writes.",
+      "stem": "Which TWO characteristics make hybrid tables suitable for this workload? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Columnar compression provides minimal storage footprint" },
+        { "key": "B", "text": "Row-level locking enables high concurrency without contention" },
+        { "key": "C", "text": "Automatic clustering optimizes read patterns over time" },
+        { "key": "D", "text": "Index-based random reads deliver low latency for point lookups" },
+        { "key": "E", "text": "Fail-safe ensures 7-day disaster recovery for session data" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "Row-level locking enables high-concurrency writes without blocking, and index-based random reads provide low-latency point lookups — both essential for session management workloads.",
+        "distractors": {
+          "A": "Hybrid tables actually have a larger storage footprint than standard tables because row-based storage achieves lower compression.",
+          "C": "Automatic clustering is not supported for hybrid tables; data is ordered by primary key.",
+          "E": "Hybrid tables do not have Fail-safe; this is listed as an unsupported feature."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": "A database administrator is setting up hybrid tables and wants to understand the storage quota and how to manage it when approaching limits.",
+      "stem": "Which TWO statements about hybrid table storage quotas are correct? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The default storage quota is 2 TB per Snowflake database" },
+        { "key": "B", "text": "The storage quota applies to both row store and object storage combined" },
+        { "key": "C", "text": "Exceeding the quota blocks write operations until storage is reduced" },
+        { "key": "D", "text": "Dropping or truncating tables reclaims space within seconds" },
+        { "key": "E", "text": "The storage quota is 2 TB per Snowflake account" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "The hybrid storage quota is 2 TB per Snowflake database (not per account). If exceeded, write operations that add data are temporarily blocked until consumption is brought under quota.",
+        "distractors": {
+          "B": "The 2 TB quota applies only to active hybrid table data in the row store, not to object storage.",
+          "D": "While DROP and TRUNCATE reclaim space quickly (seconds), DELETE operations require hours for background compaction to recover space.",
+          "E": "The quota is per database, not per account. You can have up to 200 databases with hybrid tables per account."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": "A team is planning to use COPY INTO to bulk load a hybrid table from staged files. They need to understand the specific constraints for this operation.",
+      "stem": "Which TWO constraints apply when using COPY INTO with hybrid tables? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "COPY INTO is limited to loading a maximum of 1 million rows per execution" },
+        { "key": "B", "text": "ABORT_STATEMENT is the only supported ON_ERROR option" },
+        { "key": "C", "text": "A running warehouse must be specified as the current warehouse for the session" },
+        { "key": "D", "text": "COPY INTO requires the table to be empty before loading" },
+        { "key": "E", "text": "Only Parquet format files are supported for COPY INTO with hybrid tables" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "For COPY INTO with hybrid tables, ABORT_STATEMENT is the only ON_ERROR option (SKIP_FILE returns an error), and a running warehouse must be specified for the session when creating or loading hybrid tables.",
+        "distractors": {
+          "A": "There is no documented row limit per COPY INTO execution for hybrid tables.",
+          "D": "COPY INTO works with hybrid tables whether they are empty or already contain data; optimized bulk loading applies in both cases.",
+          "E": "COPY INTO supports any format that the standard COPY INTO command supports, not just Parquet."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A team runs a query against a hybrid table but finds that the result set is always recomputed instead of being served from the result cache, even for identical repeated queries.",
+      "stem": "What explains this behavior?",
+      "options": [
+        { "key": "A", "text": "The warehouse size is too small to maintain a result cache" },
+        { "key": "B", "text": "The USE_CACHED_RESULT parameter has been set to FALSE" },
+        { "key": "C", "text": "Hybrid tables do not use the persisted query results cache" },
+        { "key": "D", "text": "The table has not been clustered, preventing cache eligibility" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Queries against hybrid tables do not use the persisted query results cache. Each query is recomputed regardless of the USE_CACHED_RESULT parameter setting.",
+        "distractors": {
+          "A": "Warehouse size does not affect result cache eligibility; the cache is a platform-level feature.",
+          "B": "Even if USE_CACHED_RESULT is TRUE, hybrid table queries bypass the result cache by design.",
+          "D": "Clustering is not supported on hybrid tables, but that is not the reason for cache bypass."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "An architect is designing a system that needs both real-time transactional operations on customer records and nightly batch analytics across all customer data. They want to avoid data federation or replication between systems.",
+      "stem": "Which approach allows both workload types within a single Snowflake platform?",
+      "options": [
+        { "key": "A", "text": "Store all data in standard tables and use the Search Optimization Service for point lookups" },
+        { "key": "B", "text": "Store all data in external tables with row-level access" },
+        { "key": "C", "text": "Use hybrid tables for transactional data and standard tables for analytics, joining them in queries" },
+        { "key": "D", "text": "Use dynamic tables to replicate hybrid table data for analytics" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Hybrid tables and standard tables can be joined natively in the same query engine without federation. Hybrid tables handle transactional workloads while standard tables optimize analytical queries, and atomic transactions can span both types.",
+        "distractors": {
+          "A": "The Search Optimization Service helps with point lookups on standard tables but does not provide the row-level locking and enforced constraints needed for true transactional workloads.",
+          "B": "External tables are read-only and do not support transactional writes at all.",
+          "D": "Dynamic tables are not supported with hybrid tables as a source."
+        }
+      }
+    }
+  ]
+}

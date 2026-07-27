@@ -1,0 +1,461 @@
+{
+  "label": "Micro-Partitions, Clustering & Table Types",
+  "order": 5,
+  "topic": "Snowflake Micro-Partitions, Clustering Keys, Automatic Clustering, Temporary & Transient Tables",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "table-structures",
+      "scenario": null,
+      "stem": "What is the uncompressed size range of a Snowflake micro-partition?",
+      "options": [
+        { "key": "A", "text": "10 MB to 100 MB" },
+        { "key": "B", "text": "50 MB to 500 MB" },
+        { "key": "C", "text": "100 MB to 1 GB" },
+        { "key": "D", "text": "500 MB to 5 GB" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Each micro-partition contains between 50 MB and 500 MB of uncompressed data. The actual stored size is smaller because Snowflake always stores data in compressed form.",
+        "distractors": {
+          "A": "10 MB to 100 MB is too small; Snowflake micro-partitions start at 50 MB uncompressed.",
+          "C": "100 MB to 1 GB overstates the lower bound and upper bound of micro-partition sizing.",
+          "D": "500 MB to 5 GB overstates both bounds significantly; 500 MB is the upper limit, not the lower."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "table-structures",
+      "scenario": null,
+      "stem": "Which metadata does Snowflake store for each micro-partition?",
+      "options": [
+        { "key": "A", "text": "Only the total row count per partition" },
+        { "key": "B", "text": "The range of values for each column, the number of distinct values, and additional optimization properties" },
+        { "key": "C", "text": "Only column-level min/max values without distinct value counts" },
+        { "key": "D", "text": "Full index entries for every row in the partition" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake stores the range of values for each column, the number of distinct values, and additional properties used for optimization and efficient query processing in each micro-partition.",
+        "distractors": {
+          "A": "Snowflake stores far more than just total row count — it tracks per-column ranges and distinct values.",
+          "C": "This is incomplete; Snowflake also tracks the number of distinct values in addition to ranges.",
+          "D": "Snowflake does not maintain full row-level index entries for micro-partitions; it uses column-level metadata for pruning."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "clustering",
+      "scenario": null,
+      "stem": "What is the maximum number of columns Snowflake recommends per clustering key?",
+      "options": [
+        { "key": "A", "text": "1 or 2 columns" },
+        { "key": "B", "text": "3 or 4 columns" },
+        { "key": "C", "text": "5 or 6 columns" },
+        { "key": "D", "text": "8 or more columns" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake recommends a maximum of 3 or 4 columns or expressions per clustering key. Adding more columns tends to increase costs more than benefits.",
+        "distractors": {
+          "A": "While 1-2 columns may be effective, the documented recommendation allows up to 3 or 4.",
+          "C": "5 or 6 columns exceeds the recommendation; adding more than 3-4 increases costs disproportionately.",
+          "D": "8 or more is far beyond the recommended maximum and would significantly increase reclustering costs."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "clustering",
+      "scenario": null,
+      "stem": "Which TWO statements are true about Automatic Clustering in Snowflake? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "It requires designating a virtual warehouse for reclustering operations" },
+        { "key": "B", "text": "It uses serverless compute resources managed by Snowflake" },
+        { "key": "C", "text": "It does not block DML statements on tables being reclustered" },
+        { "key": "D", "text": "It requires manual monitoring to trigger reclustering" },
+        { "key": "E", "text": "It starts immediately after a clustered table is defined, regardless of table state" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "Automatic Clustering uses Snowflake-managed serverless compute resources (no user warehouse needed) and is non-blocking — DML operations can continue while reclustering occurs.",
+        "distractors": {
+          "A": "Automatic Clustering does NOT require a user-designated warehouse; Snowflake internally manages compute resources.",
+          "D": "Snowflake automatically monitors and evaluates tables — no manual monitoring is required.",
+          "E": "Reclustering does not necessarily start immediately; Snowflake only reclusters if the table will benefit from the operation."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "temporary-transient-tables",
+      "scenario": null,
+      "stem": "Which TWO characteristics differentiate transient tables from permanent tables? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Transient tables have no Fail-safe period" },
+        { "key": "B", "text": "Transient tables exist only for the duration of the session" },
+        { "key": "C", "text": "Transient tables support a maximum Time Travel retention of 1 day" },
+        { "key": "D", "text": "Transient tables cannot be accessed by other users" },
+        { "key": "E", "text": "Transient tables support up to 90 days of Time Travel" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Transient tables have no Fail-safe period (0 days) and support a maximum Time Travel retention of 0 or 1 day, compared to permanent tables which have 7-day Fail-safe and up to 90-day Time Travel on Enterprise Edition.",
+        "distractors": {
+          "B": "Transient tables persist until explicitly dropped — they are NOT session-scoped. That describes temporary tables.",
+          "D": "Transient tables are available to all users with appropriate privileges, unlike temporary tables which are session-specific.",
+          "E": "Only permanent tables on Enterprise Edition support up to 90 days of Time Travel; transient tables are limited to 0 or 1 day."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "clustering",
+      "scenario": null,
+      "stem": "Which THREE data types cannot be used in a clustering key expression? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "GEOGRAPHY" },
+        { "key": "B", "text": "VARCHAR" },
+        { "key": "C", "text": "VARIANT (directly without path expression)" },
+        { "key": "D", "text": "NUMBER" },
+        { "key": "E", "text": "OBJECT" },
+        { "key": "F", "text": "DATE" }
+      ],
+      "correct": ["A", "C", "E"],
+      "explanation": {
+        "correct": "Clustering keys cannot contain GEOGRAPHY, VARIANT (directly without a path expression), or OBJECT data types. VARIANT columns can only be used via expressions on paths with a target type cast.",
+        "distractors": {
+          "B": "VARCHAR is a supported data type for clustering keys, though only the first 5 bytes are used for standard tables.",
+          "D": "NUMBER is fully supported as a clustering key column.",
+          "F": "DATE is a common and fully supported data type for clustering keys, especially for time-series data."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "table-structures",
+      "scenario": "A data engineer notices that queries on a 50 TB fact table have degraded significantly over the past month after heavy daily INSERT and UPDATE operations.",
+      "stem": "What is the most likely cause of the performance degradation?",
+      "options": [
+        { "key": "A", "text": "The virtual warehouse has been downsized" },
+        { "key": "B", "text": "The micro-partitions have grown beyond 500 MB each" },
+        { "key": "C", "text": "Time Travel retention is consuming query processing resources" },
+        { "key": "D", "text": "The table's natural clustering has degraded due to DML operations, increasing micro-partition overlap" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Over time, particularly as DML is performed on very large tables, data may no longer cluster optimally on desired dimensions. The increased overlap of micro-partitions means more partitions must be scanned for queries.",
+        "distractors": {
+          "A": "Warehouse size changes affect compute capacity but would not cause gradual degradation correlated with DML activity.",
+          "B": "Micro-partitions are automatically sized by Snowflake within the 50-500 MB range; they do not grow beyond this.",
+          "C": "Time Travel retention affects storage costs, not query performance on current data."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "clustering",
+      "scenario": "A team wants to define a clustering key on a table that has a TIMESTAMP column with nanosecond precision. The table receives millions of rows daily.",
+      "stem": "What approach does Snowflake recommend for the clustering key?",
+      "options": [
+        { "key": "A", "text": "Use the TIMESTAMP column directly as the clustering key" },
+        { "key": "B", "text": "Create a secondary index on the TIMESTAMP column instead" },
+        { "key": "C", "text": "Cast the TIMESTAMP column to DATE using TO_DATE() to reduce cardinality" },
+        { "key": "D", "text": "Partition the table manually by timestamp ranges" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "For very high cardinality columns like nanosecond timestamps, Snowflake recommends using an expression that reduces cardinality while preserving ordering — such as TO_DATE(c_timestamp) — to reduce the total number of distinct values for better pruning.",
+        "distractors": {
+          "A": "A nanosecond timestamp has too many distinct values (very high cardinality) and is not a good direct clustering key candidate.",
+          "B": "Secondary indexes are a hybrid table feature; standard tables use clustering keys and the Search Optimization Service, not secondary indexes.",
+          "D": "Snowflake does not support manual partitioning; it uses micro-partitions managed automatically."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "clustering",
+      "scenario": "An administrator clones a database containing several tables with clustering keys defined. After the clone completes, they notice that Automatic Clustering is not running on the cloned tables.",
+      "stem": "What explains this behavior?",
+      "options": [
+        { "key": "A", "text": "Clustering keys are not preserved during cloning operations" },
+        { "key": "B", "text": "Cloned tables start with Automatic Clustering suspended, even if it was active on the source" },
+        { "key": "C", "text": "The cloned database must be explicitly activated before Automatic Clustering begins" },
+        { "key": "D", "text": "Automatic Clustering only works on tables created with CREATE TABLE, not cloned tables" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Tables created by cloning from a source that has clustering keys start with Automatic Clustering suspended — even if it was not suspended on the source table. The administrator must explicitly resume it.",
+        "distractors": {
+          "A": "Clustering keys ARE preserved during cloning; only the Automatic Clustering state is suspended.",
+          "C": "There is no database-level activation step; Automatic Clustering is resumed per-table using ALTER TABLE ... RESUME RECLUSTER.",
+          "D": "Automatic Clustering works on cloned tables once resumed; it is not restricted by creation method."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "temporary-transient-tables",
+      "scenario": "A developer creates a temporary table named STAGING_DATA in a session. Another developer already has a permanent table with the same name in the same schema.",
+      "stem": "What happens when the first developer queries the STAGING_DATA table in their session?",
+      "options": [
+        { "key": "A", "text": "The query fails with a naming conflict error" },
+        { "key": "B", "text": "The query returns results from the permanent table" },
+        { "key": "C", "text": "The query returns results from the temporary table, which takes precedence in the session" },
+        { "key": "D", "text": "Snowflake prompts the user to specify which table to query" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "When a temporary table has the same name as a non-temporary table in the same schema, the temporary table takes precedence within the session. All queries and operations reference the temporary table.",
+        "distractors": {
+          "A": "Snowflake allows temporary and non-temporary tables with the same name — it does not raise a conflict error.",
+          "B": "The permanent table is effectively hidden by the temporary table for the duration of the session.",
+          "D": "Snowflake does not prompt users; precedence is automatic — the temporary table always wins in the session."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "clustering",
+      "scenario": "A data analyst runs SYSTEM$CLUSTERING_INFORMATION on a large table and sees a clustering depth of 15 on the primary query columns. Queries on this table scan significantly more micro-partitions than expected.",
+      "stem": "What does the high clustering depth indicate?",
+      "options": [
+        { "key": "A", "text": "The table has too many columns defined" },
+        { "key": "B", "text": "The table has exceeded the maximum number of micro-partitions" },
+        { "key": "C", "text": "There is significant overlap of micro-partition value ranges for the specified columns" },
+        { "key": "D", "text": "The table's Time Travel retention period is too long" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Clustering depth measures the average depth of overlapping micro-partitions for specified columns. A higher depth means more micro-partitions have overlapping value ranges, requiring more scanning.",
+        "distractors": {
+          "A": "The number of columns in a table does not affect clustering depth; it measures value overlap in specified columns.",
+          "B": "There is no documented maximum number of micro-partitions; tables can have millions of micro-partitions.",
+          "D": "Time Travel retention affects storage costs, not the clustering depth metric."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "clustering",
+      "scenario": "A Snowflake administrator wants to monitor and manage the cost of Automatic Clustering on several large production tables.",
+      "stem": "Which TWO approaches can the administrator use? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Use resource monitors to cap Automatic Clustering credit usage" },
+        { "key": "B", "text": "Query the AUTOMATIC_CLUSTERING_HISTORY view in Account Usage to see historical credit consumption" },
+        { "key": "C", "text": "Set a warehouse timeout to limit reclustering duration" },
+        { "key": "D", "text": "Call SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS to predict future costs before enabling clustering" },
+        { "key": "E", "text": "Suspend Automatic Clustering during periods of heavy DML to avoid charges" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "The AUTOMATIC_CLUSTERING_HISTORY view shows actual historical credit consumption, and SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS provides forward-looking cost estimates before enabling or changing clustering.",
+        "distractors": {
+          "A": "Resource monitors control virtual warehouse credits only; they cannot control serverless features like Automatic Clustering.",
+          "C": "Automatic Clustering uses Snowflake-managed serverless resources, not user warehouses, so warehouse timeouts do not apply.",
+          "E": "While suspending is possible via ALTER TABLE ... SUSPEND RECLUSTER, this is not a cost monitoring approach — it stops clustering entirely, potentially degrading query performance."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "temporary-transient-tables",
+      "scenario": "A company wants to minimize storage costs for ETL staging tables that hold intermediate data for 3-5 days before being reprocessed. The data can be reconstructed from source systems if lost.",
+      "stem": "Which table type is most appropriate for this use case?",
+      "options": [
+        { "key": "A", "text": "Permanent table with 90-day Time Travel" },
+        { "key": "B", "text": "Temporary table" },
+        { "key": "C", "text": "External table" },
+        { "key": "D", "text": "Transient table" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Transient tables persist until explicitly dropped, have no Fail-safe costs, and support 0-1 day Time Travel. They are ideal for transitory data that needs to persist beyond a session but does not require full data protection.",
+        "distractors": {
+          "A": "A permanent table with 90-day Time Travel adds unnecessary Fail-safe and Time Travel storage costs for reconstructable data.",
+          "B": "Temporary tables are session-scoped and would be purged when the session ends — not suitable for data needed across multiple days.",
+          "C": "External tables store data outside Snowflake and are read-only; they are not designed for ETL staging workflows."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "clustering",
+      "scenario": "A team defines a multi-column clustering key as CLUSTER BY (high_cardinality_col, low_cardinality_col) on a large analytics table. They notice that queries filtering on low_cardinality_col are not benefiting from pruning.",
+      "stem": "What is the most likely cause?",
+      "options": [
+        { "key": "A", "text": "Snowflake does not support multi-column clustering keys" },
+        { "key": "B", "text": "The columns should be ordered from lowest to highest cardinality in the CLUSTER BY clause" },
+        { "key": "C", "text": "The low cardinality column needs a separate clustering key" },
+        { "key": "D", "text": "Multi-column clustering keys only benefit the first column listed" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake recommends ordering columns from lowest to highest cardinality in the CLUSTER BY clause. Putting a higher cardinality column first reduces the effectiveness of clustering on subsequent columns.",
+        "distractors": {
+          "A": "Snowflake fully supports multi-column clustering keys with up to 3-4 recommended columns.",
+          "C": "A separate clustering key is not needed; reordering the columns in the existing key should resolve the issue.",
+          "D": "All columns in a multi-column clustering key can benefit queries, but column order affects effectiveness."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "table-structures",
+      "scenario": "A Snowflake architect is explaining micro-partition benefits to a team migrating from a traditional data warehouse that uses static partitioning.",
+      "stem": "Which THREE are benefits of Snowflake's micro-partitioning compared to traditional static partitioning? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Micro-partitions are derived automatically without upfront definition" },
+        { "key": "B", "text": "Their small uniform size helps prevent data skew" },
+        { "key": "C", "text": "Users can explicitly define partition boundaries for optimal control" },
+        { "key": "D", "text": "Columns are stored and compressed independently within each micro-partition" },
+        { "key": "E", "text": "Micro-partitions require manual rebalancing when data grows unevenly" },
+        { "key": "F", "text": "Static partition DDL syntax is required to manage micro-partitions" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "Micro-partitions are automatically derived (no manual definition), their uniform small size (50-500 MB) prevents skew, and columns are stored and compressed independently within each partition enabling efficient columnar scanning.",
+        "distractors": {
+          "C": "Users cannot define micro-partition boundaries; Snowflake manages them automatically based on data insertion order.",
+          "E": "Micro-partitions never require manual rebalancing; Snowflake handles this transparently.",
+          "F": "No partition DDL is required; micro-partitioning is fully automatic and transparent to users."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "temporary-transient-tables",
+      "scenario": "A database administrator is reviewing the data protection characteristics of different table types in Snowflake Enterprise Edition to advise on storage cost optimization.",
+      "stem": "Which THREE statements are correct about temporary tables? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "They persist until explicitly dropped by the user" },
+        { "key": "B", "text": "They have a Fail-safe period of 0 days" },
+        { "key": "C", "text": "They support Time Travel retention of 0 or 1 day" },
+        { "key": "D", "text": "They are visible to all users with appropriate privileges" },
+        { "key": "E", "text": "They exist only within the session in which they were created" },
+        { "key": "F", "text": "They can be converted to permanent tables after creation" }
+      ],
+      "correct": ["B", "C", "E"],
+      "explanation": {
+        "correct": "Temporary tables have 0-day Fail-safe, support 0 or 1 day Time Travel retention, and exist only within the session that created them — they are purged when the session ends.",
+        "distractors": {
+          "A": "Temporary tables do NOT persist until explicitly dropped; they are purged when the session ends.",
+          "D": "Temporary tables are NOT visible to other users or sessions; they are session-specific.",
+          "F": "After creation, temporary tables cannot be converted to any other table type."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "clustering",
+      "scenario": "A data platform team is evaluating whether to add clustering keys to several tables. They need to understand which tables are good candidates for clustering.",
+      "stem": "Which TWO criteria indicate a table is a good candidate for clustering? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The table has fewer than 100 rows but is queried frequently" },
+        { "key": "B", "text": "The table receives millions of small INSERT operations per hour" },
+        { "key": "C", "text": "The table stores unstructured binary data" },
+        { "key": "D", "text": "The table contains multiple terabytes of data across many micro-partitions" },
+        { "key": "E", "text": "A high percentage of queries filter or sort on the same few columns" }
+      ],
+      "correct": ["D", "E"],
+      "explanation": {
+        "correct": "Clustering is best for tables with a large number of micro-partitions (typically multi-terabyte) where a high percentage of queries benefit from the same clustering key columns through filtering or sorting.",
+        "distractors": {
+          "A": "A table with fewer than 100 rows would have very few micro-partitions and would not benefit from clustering.",
+          "B": "Very frequent DML makes clustering more expensive to maintain; clustering is most cost-effective for tables queried frequently but updated infrequently.",
+          "C": "Unstructured binary data does not benefit from clustering since clustering relies on value-range-based pruning."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "clustering",
+      "scenario": "A Snowflake team is configuring Automatic Clustering for a cloned table and wants to understand the cost implications.",
+      "stem": "Which TWO statements correctly describe Automatic Clustering costs? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Automatic Clustering credits are billed as virtual warehouse compute time" },
+        { "key": "B", "text": "Reclustering can increase Fail-safe storage costs due to new micro-partitions being created" },
+        { "key": "C", "text": "Automatic Clustering charges are based on serverless compute resources consumed" },
+        { "key": "D", "text": "Resource monitors can be used to cap Automatic Clustering credit consumption" },
+        { "key": "E", "text": "Changing a clustering key never triggers additional reclustering charges" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "Automatic Clustering uses serverless compute resources (billed for actual credits consumed) and reclustering creates new micro-partitions while marking originals as deleted, which can increase Fail-safe storage until those originals are purged.",
+        "distractors": {
+          "A": "Automatic Clustering does NOT consume virtual warehouse compute; it uses Snowflake-managed serverless resources.",
+          "D": "Resource monitors control virtual warehouse credit usage but cannot control serverless feature consumption like Automatic Clustering.",
+          "E": "Changing a clustering key can trigger significant reclustering activity and corresponding credit charges."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "table-structures",
+      "scenario": "A team is troubleshooting a query that scans 80% of micro-partitions despite having a WHERE clause that should only match 5% of the data.",
+      "stem": "Which TWO factors could explain why query pruning is ineffective? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The query is using a SELECT * statement" },
+        { "key": "B", "text": "The table has too many columns defined" },
+        { "key": "C", "text": "The data was loaded in random order causing high overlap across micro-partitions" },
+        { "key": "D", "text": "The filter predicate uses a subquery that resolves to a constant" },
+        { "key": "E", "text": "The WHERE clause filters on a column with Boolean values only" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "Snowflake does not prune based on predicates with subqueries (even if they resolve to constants), and data loaded in random order creates high micro-partition overlap, defeating range-based pruning.",
+        "distractors": {
+          "A": "SELECT * affects which columns are scanned but does not prevent micro-partition pruning based on WHERE clause predicates.",
+          "B": "The number of columns does not affect pruning effectiveness; pruning is based on filter predicates and micro-partition metadata.",
+          "E": "While Boolean columns have low cardinality, they can still enable some pruning if the data is well-clustered on that column."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "temporary-transient-tables",
+      "scenario": "A Snowflake architect is designing a transient database for a data science team. They need to understand how transient objects interact with other Snowflake features.",
+      "stem": "Which THREE statements are true about transient databases and their contained objects? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "All tables created in a transient database are transient by definition" },
+        { "key": "B", "text": "All schemas created in a transient database are transient by definition" },
+        { "key": "C", "text": "Transient databases support up to 90 days of Time Travel" },
+        { "key": "D", "text": "Hybrid tables cannot be created within a transient database" },
+        { "key": "E", "text": "Transient databases have a 7-day Fail-safe period" },
+        { "key": "F", "text": "Transient databases can contain permanent tables if explicitly specified" }
+      ],
+      "correct": ["A", "B", "D"],
+      "explanation": {
+        "correct": "All schemas in a transient database are transient, all tables in a transient schema are transient, and hybrid tables cannot be created within transient schemas or databases.",
+        "distractors": {
+          "C": "Transient objects support only 0 or 1 day of Time Travel, not 90 days.",
+          "E": "Transient objects have NO Fail-safe period (0 days) — that is their key cost advantage.",
+          "F": "You cannot create permanent tables within a transient database; all contained tables inherit the transient property."
+        }
+      }
+    }
+  ]
+}

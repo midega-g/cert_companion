@@ -370,6 +370,21 @@
                       "id": "test_4",
                       "label": "Accounts, Identifiers & Connectivity \u2014 Part B",
                       "path": "snowflake/snowpro_core/domain_1/task_3/test_4.json"
+                    },
+                    {
+                      "id": "test_5",
+                      "label": "Micro-Partitions, Clustering & Table Types",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_5.json"
+                    },
+                    {
+                      "id": "test_6",
+                      "label": "External Tables",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_6.json"
+                    },
+                    {
+                      "id": "test_7",
+                      "label": "Hybrid Tables",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_7.json"
                     }
                   ]
                 },

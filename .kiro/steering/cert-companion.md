@@ -116,10 +116,18 @@ print(f'Correct answer distribution: {dict(Counter(correct_keys))}')
 for q in data['questions']:
     if q['type'] == 'multi':
         print(f'  Q{q[\"id\"]}: correct={q[\"correct\"]}')
+# Check multi-select first-choice distribution (max 4 per letter)
+first_choices = [q['correct'][0] for q in data['questions'] if q['type'] == 'multi']
+fc_counts = Counter(first_choices)
+print(f'Multi-select first-choice distribution: {dict(fc_counts)}')
+if any(v > 4 for v in fc_counts.values()):
+    print('  ❌ VIOLATION: a letter appears as first correct choice more than 4 times')
+else:
+    print('  ✅ OK')
 "
 ```
 
-Fix distribution (must be 3/3/7/7) and answer clustering before committing.
+Fix distribution (must be 3/3/x/y where x+y=14 and both ≥5) and answer clustering before committing.
 
 ### Manifest regeneration
 

@@ -1,0 +1,459 @@
+{
+  "label": "External Tables",
+  "order": 6,
+  "topic": "Snowflake External Tables — Schema-on-Read, Partitioning, Auto-Refresh, Delta Lake, Materialized Views",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": null,
+      "stem": "What type of operations can be performed on external tables in Snowflake?",
+      "options": [
+        { "key": "A", "text": "INSERT, UPDATE, DELETE, and SELECT" },
+        { "key": "B", "text": "SELECT and JOIN operations only — external tables are read-only" },
+        { "key": "C", "text": "SELECT, INSERT, and MERGE operations" },
+        { "key": "D", "text": "All DML operations when the external stage has write access" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "External tables are read-only. You cannot perform DML operations on them, but you can use them for query and join operations, and you can create views against them.",
+        "distractors": {
+          "A": "External tables do not support INSERT, UPDATE, or DELETE — they are strictly read-only.",
+          "C": "INSERT and MERGE are DML operations not supported on external tables.",
+          "D": "Write access on the stage does not enable DML on external tables; they are architecturally read-only."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": null,
+      "stem": "Which columns are automatically included in every external table definition?",
+      "options": [
+        { "key": "A", "text": "METADATA$FILENAME, METADATA$FILE_ROW_NUMBER, and a VARIANT column named VALUE" },
+        { "key": "B", "text": "Only METADATA$FILENAME and METADATA$FILE_ROW_NUMBER" },
+        { "key": "C", "text": "A VALUE column and a PARTITION_ID column" },
+        { "key": "D", "text": "METADATA$FILENAME, METADATA$FILE_SIZE, and METADATA$LAST_MODIFIED" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "All external tables include three default columns: VALUE (VARIANT type representing a single row), METADATA$FILENAME (file path in stage), and METADATA$FILE_ROW_NUMBER (row number within each file).",
+        "distractors": {
+          "B": "This is incomplete — the VALUE column (VARIANT) is also always included as the primary data column.",
+          "C": "There is no automatic PARTITION_ID column; partitions are defined through user-specified partition column expressions.",
+          "D": "METADATA$FILE_SIZE and METADATA$LAST_MODIFIED are not default columns in external tables."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": null,
+      "stem": "Which file format is NOT supported by external tables in Snowflake?",
+      "options": [
+        { "key": "A", "text": "Parquet" },
+        { "key": "B", "text": "XML" },
+        { "key": "C", "text": "CSV" },
+        { "key": "D", "text": "JSON" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "External tables can access data in any format the COPY INTO command supports except XML.",
+        "distractors": {
+          "A": "Parquet is fully supported and commonly used with external tables.",
+          "C": "CSV is a supported format for external tables.",
+          "D": "JSON is a supported format for external tables."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": null,
+      "stem": "Which TWO methods can be used to add partitions to an external table? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Automatically via expressions on METADATA$FILENAME that are evaluated during metadata refresh" },
+        { "key": "B", "text": "Using ALTER EXTERNAL TABLE ... REPARTITION to redistribute data" },
+        { "key": "C", "text": "Manually using ALTER EXTERNAL TABLE ... ADD PARTITION with PARTITION_TYPE = USER_SPECIFIED" },
+        { "key": "D", "text": "By defining partition columns as clustering keys" },
+        { "key": "E", "text": "By running COPY INTO with a PARTITION BY clause" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Partitions can be added automatically (Snowflake computes them from METADATA$FILENAME expressions during refresh) or manually (with PARTITION_TYPE = USER_SPECIFIED and ALTER EXTERNAL TABLE ... ADD PARTITION).",
+        "distractors": {
+          "B": "There is no REPARTITION command for external tables; partitions are added via refresh or ADD PARTITION.",
+          "D": "Clustering keys are a separate feature for standard tables; external tables use partition columns, not clustering keys.",
+          "E": "COPY INTO loads data into internal tables; it is not used to manage external table partitions."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": null,
+      "stem": "Which THREE privileges or objects are required to create an external table? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "USAGE privilege on the database" },
+        { "key": "B", "text": "OWNERSHIP privilege on the storage integration" },
+        { "key": "C", "text": "USAGE privilege on the schema" },
+        { "key": "D", "text": "CREATE EXTERNAL TABLE privilege on the schema" },
+        { "key": "E", "text": "ACCOUNTADMIN role" },
+        { "key": "F", "text": "USAGE privilege on the stage (if using an existing stage)" }
+      ],
+      "correct": ["A", "C", "D"],
+      "explanation": {
+        "correct": "Creating an external table requires USAGE on the database, USAGE on the schema, and CREATE EXTERNAL TABLE on the schema. USAGE on an existing stage is also needed if referencing one.",
+        "distractors": {
+          "B": "OWNERSHIP on the storage integration is not required; USAGE on the stage suffices for the stage reference.",
+          "E": "ACCOUNTADMIN is not specifically required; any role with the appropriate schema-level privileges can create external tables.",
+          "F": "While USAGE on the stage is needed when using an existing stage, the minimum required set for the table creation itself is USAGE on database, USAGE on schema, and CREATE EXTERNAL TABLE on schema."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": null,
+      "stem": "Which TWO actions invalidate the persisted query result cache for external tables? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Running SELECT * on the external table" },
+        { "key": "B", "text": "Any DDL operation that modifies the external table definition" },
+        { "key": "C", "text": "Automatic or manual refresh of the external table metadata" },
+        { "key": "D", "text": "Scaling up the virtual warehouse" },
+        { "key": "E", "text": "Granting SELECT privileges to a new role" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "The query result cache is invalidated by DDL that modifies the table definition (including CREATE OR REPLACE) and by changes in registered files detected through automatic or manual metadata refresh.",
+        "distractors": {
+          "A": "Running queries reads from the cache; it does not invalidate it.",
+          "D": "Warehouse scaling affects compute capacity but does not invalidate cached query results.",
+          "E": "Granting privileges is an access control change that does not affect the query result cache."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A data engineer creates an external table pointing to an S3 bucket with AUTO_REFRESH enabled. After transferring ownership of the external table to a different role using GRANT OWNERSHIP, they notice that new files are no longer being registered automatically.",
+      "stem": "What caused the automatic refresh to stop?",
+      "options": [
+        { "key": "A", "text": "The new role does not have USAGE privilege on the stage" },
+        { "key": "B", "text": "Ownership transfer via GRANT OWNERSHIP sets AUTO_REFRESH to FALSE" },
+        { "key": "C", "text": "The S3 event notification was deleted during ownership transfer" },
+        { "key": "D", "text": "AUTO_REFRESH requires the ACCOUNTADMIN role as the owner" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "When ownership of an external table is transferred using GRANT OWNERSHIP, the AUTO_REFRESH property is automatically set to FALSE. You must re-enable it with ALTER EXTERNAL TABLE ... SET AUTO_REFRESH = TRUE.",
+        "distractors": {
+          "A": "While the new role needs stage access, the specific issue here is that ownership transfer resets AUTO_REFRESH to FALSE.",
+          "C": "The S3 event notification configuration is not affected by Snowflake ownership transfers.",
+          "D": "AUTO_REFRESH does not require ACCOUNTADMIN; it works with any role that owns the external table."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A company stores Parquet files in cloud storage and wants to create an external table. They need to optimize query performance for analytical queries that filter on specific columns.",
+      "stem": "What is the recommended Parquet file size for external tables?",
+      "options": [
+        { "key": "A", "text": "1 MB to 10 MB" },
+        { "key": "B", "text": "16 MB to 64 MB" },
+        { "key": "C", "text": "64 MB to 128 MB" },
+        { "key": "D", "text": "256 MB to 512 MB" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "For Parquet files used with external tables, Snowflake recommends a file size of 256-512 MB to optimize parallel scanning operations.",
+        "distractors": {
+          "A": "1-10 MB files are too small for optimal parallelism with external tables.",
+          "B": "16-64 MB is the recommended range for Parquet row groups, not entire Parquet files.",
+          "C": "64-128 MB is below the recommended file size for Parquet; this range does not appear in the documentation."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A team has an external table referencing Delta Lake files in S3. They want to keep the external table metadata synchronized with changes in the Delta transaction logs.",
+      "stem": "How should they refresh the metadata for a Delta Lake external table?",
+      "options": [
+        { "key": "A", "text": "Configure an S3 event notification for automatic refresh" },
+        { "key": "B", "text": "Periodically run ALTER EXTERNAL TABLE ... REFRESH manually" },
+        { "key": "C", "text": "Use Snowpipe to trigger refreshes on new Delta log files" },
+        { "key": "D", "text": "Set AUTO_REFRESH = TRUE on the external table for Delta Lake integration" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Automated refreshes are not supported for Delta Lake external tables because the ordering of event notifications from DDL operations in cloud storage is not guaranteed. You must periodically run ALTER EXTERNAL TABLE ... REFRESH manually.",
+        "distractors": {
+          "A": "S3 event notifications do not support automatic refresh for Delta Lake tables due to ordering guarantees.",
+          "C": "Snowpipe is not used to refresh external table metadata; it is used for data loading into standard tables.",
+          "D": "AUTO_REFRESH is not supported for Delta Lake external tables specifically."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "An analytics team frequently queries an external table and finds that query performance is significantly slower than querying equivalent internal tables. They want to improve performance without loading the data into Snowflake.",
+      "stem": "Which approach is recommended to improve query performance on external tables?",
+      "options": [
+        { "key": "A", "text": "Add a clustering key to the external table" },
+        { "key": "B", "text": "Create a materialized view over the external table" },
+        { "key": "C", "text": "Increase the warehouse size to X-Large" },
+        { "key": "D", "text": "Enable the Search Optimization Service on the external table" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Materialized views over external tables can provide significantly faster performance for frequent or complex queries by precomputing and storing results internally.",
+        "distractors": {
+          "A": "Clustering keys cannot be added to external tables; they apply only to standard Snowflake tables.",
+          "C": "While a larger warehouse adds compute, it does not address the fundamental I/O overhead of reading external storage.",
+          "D": "The Search Optimization Service is not supported on external tables."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A company wants to synchronize their Apache Hive metastore with Snowflake. They need to query data managed by Hive from within Snowflake while letting the Hive metastore remain the system of record for table definitions.",
+      "stem": "Which Snowflake feature enables this integration?",
+      "options": [
+        { "key": "A", "text": "Snowflake Data Sharing with Hive connector" },
+        { "key": "B", "text": "External tables with Apache Hive metastore integration" },
+        { "key": "C", "text": "Snowpipe continuous loading from Hive-managed files" },
+        { "key": "D", "text": "Dynamic tables with Hive catalog source" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake supports integrating Apache Hive metastores with external tables. The Hive connector detects metastore events and transmits them to Snowflake to keep external tables synchronized.",
+        "distractors": {
+          "A": "Data Sharing does not have a Hive connector; it enables sharing between Snowflake accounts.",
+          "C": "Snowpipe loads data into internal tables and does not integrate with Hive metastore events.",
+          "D": "Dynamic tables derive data from queries on other Snowflake tables; they do not connect to external Hive catalogs."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A data engineer is creating an external table with user-defined partitions (PARTITION_TYPE = USER_SPECIFIED) and wants to automatically synchronize it with new files arriving in cloud storage.",
+      "stem": "What limitation applies to this configuration?",
+      "options": [
+        { "key": "A", "text": "The table cannot have more than 10 partition columns" },
+        { "key": "B", "text": "User-defined partition external tables cannot be queried with JOIN operations" },
+        { "key": "C", "text": "User-defined partitions require Enterprise Edition or higher" },
+        { "key": "D", "text": "Automatic refresh is not supported; partitions must be added manually via ALTER EXTERNAL TABLE ... ADD PARTITION" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Automatically refreshing an external table with user-defined partitions is not supported. Attempting to manually refresh produces a user error. Partitions must be added using ALTER EXTERNAL TABLE ... ADD PARTITION.",
+        "distractors": {
+          "A": "There is no documented limit of 10 partition columns for user-defined partitions.",
+          "B": "User-defined partition external tables support all read operations including JOINs.",
+          "C": "User-defined partitions are not restricted to Enterprise Edition."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A team is querying a Parquet-based external table with virtual columns defined. They notice that some queries use an optimized vectorized scanner while others do not.",
+      "stem": "Which query pattern uses the vectorized scanner for Parquet external tables?",
+      "options": [
+        { "key": "A", "text": "SELECT value FROM ext_table" },
+        { "key": "B", "text": "SELECT value:col_name FROM ext_table" },
+        { "key": "C", "text": "SELECT * FROM ext_table WHERE value IS NOT NULL" },
+        { "key": "D", "text": "SELECT value:col_name::string FROM ext_table" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Queries in the form value:<path>::<data type> (with explicit type casting) use the vectorized scanner. Queries that reference just value or value:<path> without a cast use the non-vectorized scanner.",
+        "distractors": {
+          "A": "Selecting the raw value column without path or cast does not use the vectorized scanner.",
+          "B": "Using value:<path> without an explicit data type cast uses the non-vectorized scanner.",
+          "C": "This query pattern does not trigger the optimized vectorized scanner for Parquet files."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": "A cloud architect is setting up automatic refresh for an external table on Amazon S3 and needs to understand the billing implications.",
+      "stem": "Which TWO statements correctly describe the billing for external table metadata operations? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Automatic refresh is billed as virtual warehouse compute time" },
+        { "key": "B", "text": "Manual refresh of standard external tables is a cloud services operation" },
+        { "key": "C", "text": "Automatic refresh charges appear as Snowpipe charges because Snowpipe handles event notifications" },
+        { "key": "D", "text": "Manual refresh is always free for all external table types" },
+        { "key": "E", "text": "Automatic refresh charges are billed under the Automatic Clustering category" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "Automatic refresh overhead appears as Snowpipe charges in billing since Snowpipe handles event notifications. Manual refreshes of standard external tables are cloud services operations billed under the standard cloud services model.",
+        "distractors": {
+          "A": "Automatic refresh does not use virtual warehouse compute; it uses the Snowpipe-based event notification infrastructure.",
+          "D": "Manual refresh is not free — it incurs a small cloud services charge. Delta Lake manual refreshes additionally require a virtual warehouse.",
+          "E": "External table refresh charges are not categorized under Automatic Clustering; they appear as Snowpipe or cloud services charges."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": "A team is migrating their Delta Lake external tables to Apache Iceberg tables. They have three Delta tables under the same S3 bucket and need to plan the migration.",
+      "stem": "Which THREE steps are part of the migration workflow? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Create an external volume pointing to the S3 storage location" },
+        { "key": "B", "text": "Run ALTER EXTERNAL TABLE ... CONVERT TO ICEBERG on each table" },
+        { "key": "C", "text": "Create a catalog integration for Delta tables" },
+        { "key": "D", "text": "Use CREATE ICEBERG TABLE with BASE_LOCATION referencing the Delta files" },
+        { "key": "E", "text": "Export all Delta files to a new bucket in Iceberg format" },
+        { "key": "F", "text": "Run COPY INTO to reload all data from Delta to Iceberg tables" }
+      ],
+      "correct": ["A", "C", "D"],
+      "explanation": {
+        "correct": "The migration requires creating an external volume (pointing to the storage), creating a catalog integration for Delta tables, and using CREATE ICEBERG TABLE with BASE_LOCATION pointing to the Delta file location.",
+        "distractors": {
+          "B": "There is no CONVERT TO ICEBERG command; you create a new Iceberg table and then drop the old external table.",
+          "E": "Data does not need to be exported or reformatted; Iceberg tables can reference existing Delta files in place.",
+          "F": "COPY INTO is not used in this migration; Iceberg tables read Delta transaction logs directly."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": "A security team wants to protect sensitive data in external tables while allowing broader access for non-sensitive columns.",
+      "stem": "Which TWO data protection features can be applied to external tables? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Dynamic data masking with conditional columns" },
+        { "key": "B", "text": "Encryption of external stage files via Snowflake-managed keys" },
+        { "key": "C", "text": "Column-level masking policies" },
+        { "key": "D", "text": "Row access policies" },
+        { "key": "E", "text": "Cell-level security with tag-based access" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "External tables support both masking policies (column-level data masking) and row access policies to protect data while allowing broader access patterns.",
+        "distractors": {
+          "A": "Dynamic data masking with conditional columns is not a distinct feature name; masking policies cover this use case.",
+          "B": "Snowflake does not manage encryption of external stage files; encryption is handled by the cloud storage provider.",
+          "E": "Cell-level security with tag-based access is not a feature available for external tables."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": "A data platform team is designing an external table strategy for their S3 data lake. They want to ensure optimal query performance and need to understand partitioning best practices.",
+      "stem": "Which THREE statements about external table partitioning are correct? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Snowflake strongly recommends partitioning external tables" },
+        { "key": "B", "text": "Partition columns must be defined at table creation and the method cannot be changed afterwards" },
+        { "key": "C", "text": "Automatic partitions are computed from expressions that parse METADATA$FILENAME" },
+        { "key": "D", "text": "External tables can have only one partition column" },
+        { "key": "E", "text": "Partitioning requires data to be stored in a specific Snowflake-managed format" },
+        { "key": "F", "text": "Partitions are stored in the external table metadata" }
+      ],
+      "correct": ["A", "C", "F"],
+      "explanation": {
+        "correct": "Snowflake strongly recommends partitioning external tables for performance. Automatic partitions are computed from expressions on METADATA$FILENAME during refresh, and partition information is stored in the external table metadata.",
+        "distractors": {
+          "B": "While the partitioning method cannot be changed after creation, this answer incorrectly implies partition columns themselves are immutable — you can add/drop columns.",
+          "D": "External tables support multiple partition columns that impose a multi-dimensional structure on the data.",
+          "E": "Partitioning does not require any special file format; it relies on logical path organization in cloud storage."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": "A team notices that query results from their external table are outdated. Files have been added and removed from the cloud storage location, but the external table still shows old data.",
+      "stem": "Which TWO conditions could cause stale query results from an external table? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The warehouse was suspended between queries" },
+        { "key": "B", "text": "AUTO_REFRESH is set to FALSE and no manual refresh has been performed" },
+        { "key": "C", "text": "The automatic refresh event notification is not configured correctly" },
+        { "key": "D", "text": "The external table has too many virtual columns defined" },
+        { "key": "E", "text": "The underlying Parquet files use an unsupported compression codec" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "Stale results occur when AUTO_REFRESH is disabled without manual refreshes, or when the event notification service is misconfigured so changes in cloud storage are not detected.",
+        "distractors": {
+          "A": "Warehouse suspension does not affect external table metadata freshness; metadata refresh is separate from query execution.",
+          "D": "The number of virtual columns does not affect metadata staleness.",
+          "E": "Unsupported compression would cause query errors, not stale results."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": "A company is evaluating whether to use Apache Iceberg tables or external tables for querying Parquet files stored in S3.",
+      "stem": "Which TWO advantages do Iceberg tables offer over standard external tables for Parquet data? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Iceberg tables support DML write operations on the external data" },
+        { "key": "B", "text": "Iceberg tables support clustering keys for improved query performance" },
+        { "key": "C", "text": "Iceberg tables provide optimal query performance for Parquet workloads" },
+        { "key": "D", "text": "Iceberg tables eliminate the need for an external stage definition" },
+        { "key": "E", "text": "Iceberg tables use Snowflake as an optional catalog for metadata management" }
+      ],
+      "correct": ["C", "E"],
+      "explanation": {
+        "correct": "Snowflake documentation recommends Iceberg tables for optimal query performance with Parquet files, and Iceberg tables offer the flexibility of using Snowflake as the catalog or an external catalog for metadata management.",
+        "distractors": {
+          "A": "While some Iceberg table configurations support writes, this is not universally true for all catalog types.",
+          "B": "Clustering keys are a standard table feature; Iceberg tables do not use clustering keys in the same way.",
+          "D": "Iceberg tables use external volumes (similar concept to stages) to reference cloud storage locations."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A data engineer sets up an external table on Google Cloud Storage and needs to enable automatic metadata refresh. They are configuring the required components in Snowflake.",
+      "stem": "What Snowflake object must be created to receive GCS event notifications for automatic refresh?",
+      "options": [
+        { "key": "A", "text": "A storage integration" },
+        { "key": "B", "text": "A pipe object" },
+        { "key": "C", "text": "A notification integration" },
+        { "key": "D", "text": "An event table" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "For Google Cloud Storage (and Azure), a notification integration must be created in Snowflake. It provides an interface between Snowflake and the cloud message queuing service (Pub/Sub for GCS).",
+        "distractors": {
+          "A": "A storage integration grants Snowflake access to cloud storage but does not handle event notifications for auto-refresh.",
+          "B": "Pipe objects are used for Snowpipe data loading, not for external table metadata refresh notifications.",
+          "D": "Event tables store event data for logging purposes; they are not used for cloud storage notifications."
+        }
+      }
+    }
+  ]
+}

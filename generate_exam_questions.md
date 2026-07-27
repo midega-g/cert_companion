@@ -19,8 +19,8 @@ Do not output prose, markdown fences, explanations, comments, or notes outside t
     * 3 multi-select
   * 14 scenario-based questions (begin with a realistic scenario):
 
-    * 7 single-select
-    * 7 multi-select
+    * Split flexibly between single-select and multi-select
+    * Each type must have at least 5 (e.g., 7/7, 6/8, 8/6, 5/9 are all acceptable)
 * Definitional or straightforward recall questions are allowed but capped at 2 total and must come from the direct single-select pool.
 * Direct questions must set `scenario` to `null`.
 * Scenario-based questions must set `scenario` to a non-null string containing the realistic situation before the question stem.
@@ -162,6 +162,8 @@ The JSON schema example shows `"correct": ["A"]` for illustration purposes only.
 
 Shuffle the position of correct answers across the full range of options. If you notice a pattern forming (e.g., the first N options are always correct), actively break it by placing correct answers in later positions.
 
+**Multi-select first-choice distribution rule:** Across all multi-select questions in a test, no single letter may appear as the first correct answer (i.e., the lowest alphabetical key in the `correct` array) more than 4 times. If a letter appears as the first choice more than 4 times, redistribute by reordering options in some questions so a different letter becomes the first correct answer.
+
 ---
 
 # OPTION COUNT RULES
@@ -260,12 +262,21 @@ correct_keys = []
 for q in data['questions']:
     correct_keys.extend(q['correct'])
 print(f'Correct answer distribution: {dict(Counter(correct_keys))}')
+
+# Check multi-select first-choice distribution (max 4 per letter)
+first_choices = [q['correct'][0] for q in data['questions'] if q['type'] == 'multi']
+fc_counts = Counter(first_choices)
+print(f'Multi-select first-choice distribution: {dict(fc_counts)}')
+if any(v > 4 for v in fc_counts.values()):
+    print('  ❌ VIOLATION: a letter appears as first correct choice more than 4 times')
+else:
+    print('  ✅ OK')
 "
 ```
 
 Verify:
 * Total = 20 questions
-* Distribution = 3/3/7/7 (direct single / direct multi / scenario single / scenario multi)
+* Distribution = 3/3/x/y where x+y=14 and both ≥5 (direct single / direct multi / scenario single / scenario multi)
 * Correct answers are spread across A–F (not clustered at A/B/C)
 * For multi-select: correct answers are NOT always the first N options
 
