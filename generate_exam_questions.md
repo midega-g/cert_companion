@@ -164,6 +164,8 @@ Shuffle the position of correct answers across the full range of options. If you
 
 **Multi-select first-choice distribution rule:** Across all multi-select questions in a test, no single letter may appear as the first correct answer (i.e., the lowest alphabetical key in the `correct` array) more than 4 times. If a letter appears as the first choice more than 4 times, redistribute by reordering options in some questions so a different letter becomes the first correct answer.
 
+**Overall correct-answer distribution rule:** The correct answers across all 20 questions (single + multi) must include every letter from A through D at minimum. No single letter should account for more than 40% of total correct keys. If a letter is missing entirely or one letter dominates, reorder options to rebalance. Prefer fixing by reordering existing options rather than regenerating questions — it is faster and preserves distractor quality.
+
 ---
 
 # OPTION COUNT RULES

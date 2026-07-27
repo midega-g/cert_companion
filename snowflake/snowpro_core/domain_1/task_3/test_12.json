@@ -1,0 +1,458 @@
+{
+  "label": "UDFs & Stored Procedures — Overview & Privileges",
+  "order": 12,
+  "topic": "Snowflake UDFs and Stored Procedures — Variations, Handler Languages, Access Control, Calling Conventions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "udfs",
+      "scenario": null,
+      "stem": "What does a scalar user-defined function (UDF) return?",
+      "options": [
+        { "key": "A", "text": "One output row with a single column/value for each input row" },
+        { "key": "B", "text": "A tabular result set with multiple columns and rows" },
+        { "key": "C", "text": "A status message indicating success or failure" },
+        { "key": "D", "text": "Multiple rows grouped by an aggregation key" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A scalar UDF returns one output row for each input row. The returned row consists of a single column/value.",
+        "distractors": {
+          "B": "Tabular results with multiple columns and rows are returned by a UDTF, not a scalar UDF.",
+          "C": "UDFs return explicit values from expressions, not status messages.",
+          "D": "Aggregation across multiple rows is performed by a UDAF, not a scalar UDF."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "udfs",
+      "scenario": null,
+      "stem": "Which TWO handler languages produce UDFs that are sharable with Snowflake Secure Data Sharing?",
+      "options": [
+        { "key": "A", "text": "Java and Python" },
+        { "key": "B", "text": "Python and Scala" },
+        { "key": "C", "text": "Java and JavaScript" },
+        { "key": "D", "text": "JavaScript and SQL" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Only JavaScript and SQL handlers produce UDFs that are sharable with Secure Data Sharing. Java, Python, and Scala UDFs have limitations on sharing.",
+        "distractors": {
+          "A": "Java and Python UDFs have documented limitations that prevent sharing.",
+          "B": "Neither Python nor Scala UDFs are sharable.",
+          "C": "Java UDFs have sharing limitations; only JavaScript UDFs are sharable among non-SQL languages."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "stored-procedures",
+      "scenario": null,
+      "stem": "What privilege is required on a schema to create a stored procedure?",
+      "options": [
+        { "key": "A", "text": "CREATE TABLE" },
+        { "key": "B", "text": "CREATE PROCEDURE" },
+        { "key": "C", "text": "OWNERSHIP on the database" },
+        { "key": "D", "text": "ACCOUNTADMIN role" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Creating a stored procedure requires the CREATE PROCEDURE privilege on the schema, along with USAGE on the database and schema.",
+        "distractors": {
+          "A": "CREATE TABLE is for table creation, not stored procedures.",
+          "C": "OWNERSHIP on the database is far more privileged than needed.",
+          "D": "ACCOUNTADMIN is not required; any role with CREATE PROCEDURE can create procedures."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "udfs",
+      "scenario": null,
+      "stem": "Which THREE UDF variations are available in Snowflake? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "User-defined index function (UDIF)" },
+        { "key": "B", "text": "User-defined aggregate function (UDAF)" },
+        { "key": "C", "text": "User-defined trigger function (UDTRF)" },
+        { "key": "D", "text": "User-defined table function (UDTF)" },
+        { "key": "E", "text": "Vectorized user-defined function" },
+        { "key": "F", "text": "User-defined constraint function (UDCF)" }
+      ],
+      "correct": ["B", "D", "E"],
+      "explanation": {
+        "correct": "Snowflake supports UDAFs (aggregate across rows), UDTFs (return tabular values), and vectorized UDFs (receive Pandas DataFrames for batch processing), in addition to scalar UDFs.",
+        "distractors": {
+          "A": "There is no user-defined index function concept in Snowflake.",
+          "C": "Snowflake does not support triggers or user-defined trigger functions.",
+          "F": "There is no user-defined constraint function in Snowflake."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "stored-procedures",
+      "scenario": null,
+      "stem": "Which TWO ways can you create a stored procedure without requiring CREATE PROCEDURE privilege? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Create a stored procedure with EXECUTE AS CALLER" },
+        { "key": "B", "text": "Create a stored procedure owned by the PUBLIC role" },
+        { "key": "C", "text": "Create a temporary stored procedure using the TEMP or TEMPORARY parameter" },
+        { "key": "D", "text": "Create an anonymous procedure using CALL (with anonymous procedure)" },
+        { "key": "E", "text": "Create a stored procedure in the INFORMATION_SCHEMA" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "Temporary procedures (TEMP/TEMPORARY) and anonymous procedures (CALL WITH) do not require the CREATE PROCEDURE privilege.",
+        "distractors": {
+          "A": "EXECUTE AS CALLER affects the rights execution model, not whether CREATE PROCEDURE privilege is needed.",
+          "B": "Assigning ownership to PUBLIC does not bypass the privilege requirement.",
+          "E": "Users cannot create stored procedures in INFORMATION_SCHEMA."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "udfs",
+      "scenario": null,
+      "stem": "Which THREE privileges are required by a role to call a UDF? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "USAGE on the database containing the UDF" },
+        { "key": "B", "text": "CREATE FUNCTION on the schema" },
+        { "key": "C", "text": "USAGE on the schema containing the UDF" },
+        { "key": "D", "text": "OWNERSHIP on the function" },
+        { "key": "E", "text": "USAGE on the function itself" },
+        { "key": "F", "text": "READ on the internal stage holding dependencies" }
+      ],
+      "correct": ["A", "C", "E"],
+      "explanation": {
+        "correct": "Calling a UDF requires USAGE on the database, USAGE on the schema, and USAGE on the function.",
+        "distractors": {
+          "B": "CREATE FUNCTION is needed for creation, not for calling an existing UDF.",
+          "D": "OWNERSHIP is not required to call a function; USAGE on the function suffices.",
+          "F": "Stage READ is needed only when the function depends on staged files, and is in addition to the core three."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "udfs",
+      "scenario": "A developer writes a Python UDF that references CURRENT_DATABASE() within the handler code. The UDF is created in database ANALYTICS_DB but is called from a session where the active database is SALES_DB.",
+      "stem": "Which database name does CURRENT_DATABASE() return inside the handler?",
+      "options": [
+        { "key": "A", "text": "ANALYTICS_DB — the database that contains the UDF" },
+        { "key": "B", "text": "SALES_DB — the caller's active database" },
+        { "key": "C", "text": "NULL — context functions are not available in UDF handlers" },
+        { "key": "D", "text": "An error is raised because CURRENT_DATABASE() is not permitted in handlers" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "If CURRENT_DATABASE or CURRENT_SCHEMA is specified in UDF handler code, the function returns the database or schema that contains the UDF, not the one in use for the session.",
+        "distractors": {
+          "B": "The caller's session context does not determine what CURRENT_DATABASE returns inside a UDF handler.",
+          "C": "These context functions are available and return the UDF's own location.",
+          "D": "No error is raised; the functions work but resolve to the UDF's containing database/schema."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "stored-procedures",
+      "scenario": "A team needs to call a stored procedure with three arguments, but only wants to provide the first and third, using the default for the second.",
+      "stem": "How should they call the procedure?",
+      "options": [
+        { "key": "A", "text": "Pass NULL as the second argument in positional notation" },
+        { "key": "B", "text": "Omit the second argument in positional notation and list only the first and third" },
+        { "key": "C", "text": "Use named arguments, specifying only the first and third by name" },
+        { "key": "D", "text": "Set a session variable for the second argument before calling" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "When you need to omit an optional argument and specify a later one, you must use named arguments. Positional notation does not allow skipping middle arguments.",
+        "distractors": {
+          "A": "Passing NULL is not the same as using the default value; the parameter would receive NULL.",
+          "B": "Positional notation requires arguments in order — you cannot skip a middle argument.",
+          "D": "Session variables are not used to supply stored procedure argument defaults."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "stored-procedures",
+      "scenario": "A stored procedure failed halfway through its execution. The first three statements succeeded, but the fourth raised an error.",
+      "stem": "What is the state of the changes made by the first three statements?",
+      "options": [
+        { "key": "A", "text": "All three are automatically rolled back because stored procedures are atomic" },
+        { "key": "B", "text": "Only DDL statements from the first three are rolled back; DML remains" },
+        { "key": "C", "text": "The outcome depends on whether the procedure runs with owner's or caller's rights" },
+        { "key": "D", "text": "The first three statements remain committed because stored procedures are NOT atomic" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Stored procedures are not atomic. If one statement fails, the other statements are not necessarily rolled back.",
+        "distractors": {
+          "A": "Stored procedures are explicitly documented as not atomic.",
+          "B": "There is no DDL-specific rollback behavior; all successful statements persist.",
+          "C": "The rights model does not affect atomicity behavior."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "stored-procedures",
+      "scenario": "A developer wants to call a stored procedure and use its return value within a SELECT statement outside of a Snowflake Scripting block.",
+      "stem": "Is this possible?",
+      "options": [
+        { "key": "A", "text": "Yes — CALL can be used as a subquery in any SELECT" },
+        { "key": "B", "text": "No — outside a Snowflake Scripting block, the CALL return value cannot be part of an expression" },
+        { "key": "C", "text": "Yes — by wrapping the CALL in a CTE" },
+        { "key": "D", "text": "Yes — if the procedure is defined as a UDTF" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Outside of a Snowflake Scripting block, the value returned by a stored procedure cannot be used because the CALL cannot be part of an expression.",
+        "distractors": {
+          "A": "CALL statements cannot be embedded as subqueries in standard SQL SELECT statements.",
+          "C": "CTEs do not support CALL statements as their source.",
+          "D": "A UDTF is a function, not a stored procedure; stored procedures are called with CALL."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "udfs",
+      "scenario": "A team wants to write a UDF with a Python handler and store the handler code on a stage rather than inline.",
+      "stem": "Is this supported?",
+      "options": [
+        { "key": "A", "text": "No — Python handlers must always be inline" },
+        { "key": "B", "text": "Only if the UDF is defined as a UDTF" },
+        { "key": "C", "text": "Yes — Python supports both inline and staged handler locations" },
+        { "key": "D", "text": "Only if the Python version is 3.8 or higher" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Python handlers support both inline and staged handler locations. Java and Scala also support staged handlers.",
+        "distractors": {
+          "A": "Python is one of the languages that supports staged handlers.",
+          "B": "Both scalar UDFs and UDTFs with Python handlers can use staged code.",
+          "D": "The handler location support is independent of the specific Python runtime version."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "stored-procedures",
+      "scenario": "Two stored procedures in the same schema have the same name but accept different argument types.",
+      "stem": "How does Snowflake resolve which procedure to execute?",
+      "options": [
+        { "key": "A", "text": "The most recently created procedure is always chosen" },
+        { "key": "B", "text": "An error is raised because duplicate procedure names are not allowed" },
+        { "key": "C", "text": "The caller must specify the procedure's internal ID" },
+        { "key": "D", "text": "Procedures are resolved by their argument types (overloading), and named arguments can further disambiguate" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Stored procedures are identified and resolved by both their name and argument types (overloading). Named arguments can further disambiguate if types overlap.",
+        "distractors": {
+          "A": "Creation order does not determine resolution.",
+          "B": "Duplicate names with different signatures are explicitly allowed — this is overloading.",
+          "C": "There is no internal ID-based calling mechanism."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "udfs",
+      "scenario": "A UDF accesses staged files during query execution. During the query, another user modifies one of the referenced staged files.",
+      "stem": "What happens?",
+      "options": [
+        { "key": "A", "text": "The UDF automatically uses the modified version of the file" },
+        { "key": "B", "text": "The query continues with the original version of the file" },
+        { "key": "C", "text": "The query is paused until the file modification completes" },
+        { "key": "D", "text": "The function call fails with an error" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "If staged files referenced in a query are modified or deleted while the query is running, the function call fails with an error.",
+        "distractors": {
+          "A": "The UDF does not automatically pick up modified files mid-query.",
+          "B": "Snowflake does not snapshot staged files for the duration of the query.",
+          "C": "There is no pause mechanism; the concurrent modification results in an error."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "udfs",
+      "scenario": "A data engineer is evaluating which handler languages support ONLY inline handler code for UDFs.",
+      "stem": "Which TWO handler languages support ONLY inline handler code? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Java" },
+        { "key": "B", "text": "Python" },
+        { "key": "C", "text": "JavaScript" },
+        { "key": "D", "text": "SQL" },
+        { "key": "E", "text": "Scala" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "JavaScript and SQL handlers support inline handler code only. Java, Python, and Scala support both inline and staged.",
+        "distractors": {
+          "A": "Java supports both inline and staged handler locations.",
+          "B": "Python supports both inline and staged handler locations.",
+          "E": "Scala supports both inline and staged handler locations."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "stored-procedures",
+      "scenario": "A platform team is comparing UDFs and stored procedures to decide which to use for a new feature.",
+      "stem": "Which THREE characteristics differentiate stored procedures from UDFs? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Stored procedures are always faster than UDFs" },
+        { "key": "B", "text": "Stored procedures can execute with owner's rights, delegating privileged operations" },
+        { "key": "C", "text": "Stored procedures return tabular results by default" },
+        { "key": "D", "text": "Stored procedures can perform branching, looping, and other procedural constructs" },
+        { "key": "E", "text": "Stored procedures are called with CALL statements and cannot be used in expressions" },
+        { "key": "F", "text": "Stored procedures are always atomic" }
+      ],
+      "correct": ["B", "D", "E"],
+      "explanation": {
+        "correct": "Stored procedures can run with owner's rights, support procedural code, and are invoked with CALL (not usable in expressions outside Snowflake Scripting).",
+        "distractors": {
+          "A": "Performance depends on the workload; stored procedures are not inherently faster.",
+          "C": "Stored procedures return a single value by default; tabular returns are supported only in specific handler languages.",
+          "F": "Stored procedures are explicitly documented as NOT atomic."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "stored-procedures",
+      "scenario": "A team wants to automate a nightly cleanup task that deletes old data from multiple tables, where the cutoff date is passed as a parameter.",
+      "stem": "Which TWO advantages does a stored procedure provide for this use case? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The procedure automatically retries failed statements" },
+        { "key": "B", "text": "The procedure encapsulates multiple DELETE statements in a single callable object" },
+        { "key": "C", "text": "The procedure prevents any data loss by creating automatic backups" },
+        { "key": "D", "text": "The procedure can be granted to roles that lack direct DELETE privileges on the tables" },
+        { "key": "E", "text": "The procedure runs without consuming warehouse credits" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "An owner's rights stored procedure can delegate DELETE operations to roles without direct table privileges, and it encapsulates all cleanup logic in a single callable, reusable object.",
+        "distractors": {
+          "A": "Stored procedures do not automatically retry failed statements; they are not atomic.",
+          "C": "Stored procedures do not create automatic backups; Time Travel handles data recovery.",
+          "E": "Stored procedures use the caller's current warehouse and do consume credits."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "udfs",
+      "scenario": "A governance team is documenting the privilege model for UDF ownership.",
+      "stem": "Which TWO privileges must the UDF owner role maintain after creation? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "CREATE FUNCTION on the schema" },
+        { "key": "B", "text": "USAGE on the function for the owner" },
+        { "key": "C", "text": "USAGE on the database containing the UDF" },
+        { "key": "D", "text": "USAGE on the schema containing the UDF" },
+        { "key": "E", "text": "SELECT on any tables the UDF references" }
+      ],
+      "correct": ["C", "D"],
+      "explanation": {
+        "correct": "After a UDF is created, the owner must maintain USAGE on both the database and the schema, plus OWNERSHIP on the function itself.",
+        "distractors": {
+          "A": "CREATE FUNCTION is needed only at creation time, not for ongoing ownership.",
+          "B": "The owner has OWNERSHIP which inherently includes USAGE; no separate USAGE grant is needed.",
+          "E": "Required privileges depend on what the handler does, not a blanket SELECT requirement."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "stored-procedures",
+      "scenario": "A developer wants to store handler code on a stage for versioning. They need to know which handler languages for stored procedures support ONLY inline code.",
+      "stem": "Which TWO handler languages support ONLY inline code for stored procedures? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "Java" },
+        { "key": "B", "text": "JavaScript" },
+        { "key": "C", "text": "Python" },
+        { "key": "D", "text": "Scala" },
+        { "key": "E", "text": "Snowflake Scripting" }
+      ],
+      "correct": ["B", "E"],
+      "explanation": {
+        "correct": "JavaScript and Snowflake Scripting handlers support inline code only for stored procedures. Java, Python, and Scala support both inline and staged.",
+        "distractors": {
+          "A": "Java supports both inline and staged handlers for stored procedures.",
+          "C": "Python supports both inline and staged handlers for stored procedures.",
+          "D": "Scala supports both inline and staged handlers for stored procedures."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "stored-procedures",
+      "scenario": "A Snowflake Scripting stored procedure creates a procedure-scoped temporary table inside its body to hold intermediate results.",
+      "stem": "When does this table get removed?",
+      "options": [
+        { "key": "A", "text": "When the session ends" },
+        { "key": "B", "text": "After the Time Travel retention period expires" },
+        { "key": "C", "text": "When the procedure's execution completes — it is automatically removed" },
+        { "key": "D", "text": "It must be explicitly dropped with a DROP TABLE statement inside the procedure" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "A procedure-scoped temporary table exists only for the duration of a single execution of the procedure and is removed automatically when the procedure's scope ends.",
+        "distractors": {
+          "A": "Session-scoped temporary tables last for the session, but procedure-scoped ones are removed when the procedure completes.",
+          "B": "Procedure-scoped tables do not enter Time Travel; they are discarded at procedure completion.",
+          "D": "Procedure-scoped temporary tables are self-contained and removed automatically."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "stored-procedures",
+      "scenario": "A team calls a stored procedure specifying two arguments by name and one by position in the same CALL statement.",
+      "stem": "What is the result?",
+      "options": [
+        { "key": "A", "text": "The call fails because you must specify ALL arguments either by name or by position, not both" },
+        { "key": "B", "text": "The call succeeds because Snowflake can infer the position of the unnamed argument" },
+        { "key": "C", "text": "Only the positional argument is used; the named arguments are ignored" },
+        { "key": "D", "text": "The call succeeds if the positional argument is listed first" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "You must either specify all arguments by name or by position. You cannot mix named and positional arguments in the same CALL statement.",
+        "distractors": {
+          "B": "Snowflake does not infer positions when mixing named and positional notation.",
+          "C": "Snowflake does not silently ignore named arguments; mixed notation causes an error.",
+          "D": "The order does not matter — mixing named and positional notation is always prohibited."
+        }
+      }
+    }
+  ]
+}

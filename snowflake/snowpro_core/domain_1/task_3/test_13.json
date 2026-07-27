@@ -1,0 +1,459 @@
+{
+  "label": "Stored Procedure Rights & Security Model",
+  "order": 13,
+  "topic": "Snowflake Stored Procedure Rights — Owner's Rights, Caller's Rights, Restricted Caller's Rights, Session Behavior, Nesting",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": null,
+      "stem": "What is the default execution rights model when a stored procedure is created without specifying EXECUTE AS?",
+      "options": [
+        { "key": "A", "text": "Caller's rights" },
+        { "key": "B", "text": "Restricted caller's rights" },
+        { "key": "C", "text": "Owner's rights" },
+        { "key": "D", "text": "The rights of the SYSADMIN role" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The default execution model for stored procedures is owner's rights. The creator can specify caller's rights or restricted caller's rights explicitly using EXECUTE AS.",
+        "distractors": {
+          "A": "Caller's rights must be explicitly specified with EXECUTE AS CALLER.",
+          "B": "Restricted caller's rights must be explicitly specified with EXECUTE AS RESTRICTED CALLER.",
+          "D": "No default role like SYSADMIN is used; the owner's role privileges apply."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": null,
+      "stem": "Which database and schema does an owner's rights stored procedure use when executing SQL statements?",
+      "options": [
+        { "key": "A", "text": "The caller's currently active database and schema" },
+        { "key": "B", "text": "The database and schema where the stored procedure was created" },
+        { "key": "C", "text": "The PUBLIC schema in the caller's active database" },
+        { "key": "D", "text": "The database and schema specified in the CALL statement" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Owner's rights procedures use the database and schema that the stored procedure is created in, not the database and schema that the caller is currently using.",
+        "distractors": {
+          "A": "Caller's rights procedures use the caller's current database/schema, but owner's rights do not.",
+          "C": "There is no fallback to the PUBLIC schema for owner's rights procedures.",
+          "D": "The CALL statement does not specify a database/schema context for the procedure's internal execution."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": null,
+      "stem": "Can a caller's rights stored procedure view and set the caller's session variables?",
+      "options": [
+        { "key": "A", "text": "It can view but not set session variables" },
+        { "key": "B", "text": "It can neither view nor set session variables" },
+        { "key": "C", "text": "It can set but not view session variables" },
+        { "key": "D", "text": "It can view, set, and unset the caller's session variables" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Caller's rights stored procedures can view, set, and unset the caller's session variables. Changes made to session state can persist after the CALL completes.",
+        "distractors": {
+          "A": "Caller's rights procedures have full access to session variables — both read and write.",
+          "B": "This describes owner's rights behavior, not caller's rights.",
+          "C": "Both viewing and setting are permitted for caller's rights procedures."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "stored-procedure-rights",
+      "scenario": null,
+      "stem": "Which THREE restrictions apply to owner's rights stored procedures regarding session state? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Cannot view the caller's session variables" },
+        { "key": "B", "text": "Cannot set or unset the caller's session parameters" },
+        { "key": "C", "text": "Cannot inherit the caller's current warehouse" },
+        { "key": "D", "text": "Cannot change the session state" },
+        { "key": "E", "text": "Do not allow non-owners to view procedure information from the PROCEDURES view" },
+        { "key": "F", "text": "Cannot execute any SQL statements" }
+      ],
+      "correct": ["A", "B", "E"],
+      "explanation": {
+        "correct": "Owner's rights procedures cannot access the caller's session variables, cannot set/unset session parameters, and hide procedure information from non-owners in the PROCEDURES view.",
+        "distractors": {
+          "C": "Owner's rights procedures DO inherit the caller's current warehouse.",
+          "D": "Owner's rights procedures can change their own internal state but cannot change the caller's session state — the option is too broad.",
+          "F": "Owner's rights procedures can execute a subset of SQL statements including SELECT, DML, DDL, and GRANT/REVOKE."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "stored-procedure-rights",
+      "scenario": null,
+      "stem": "Which TWO SQL statement types can be executed from inside an owner's rights stored procedure? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "USE ROLE" },
+        { "key": "B", "text": "DDL (CREATE, ALTER, DROP)" },
+        { "key": "C", "text": "ALTER SESSION" },
+        { "key": "D", "text": "GRANT/REVOKE" },
+        { "key": "E", "text": "SHOW VARIABLES" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "Owner's rights procedures support SELECT, DML, DDL, GRANT/REVOKE, variable assignment, and limited DESCRIBE/SHOW commands.",
+        "distractors": {
+          "A": "USE ROLE is not permitted in owner's rights stored procedures.",
+          "C": "ALTER SESSION is not permitted in owner's rights stored procedures.",
+          "E": "SHOW VARIABLES reads from the current session and is therefore not permitted."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "stored-procedure-rights",
+      "scenario": null,
+      "stem": "Which THREE built-in functions or commands are restricted in owner's rights stored procedures when called by non-owners? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "CURRENT_TIMESTAMP()" },
+        { "key": "B", "text": "GET_DDL()" },
+        { "key": "C", "text": "SYSTEM$ENABLE_BEHAVIOR_CHANGE_BUNDLE()" },
+        { "key": "D", "text": "SYSTEM$DISABLE_BEHAVIOR_CHANGE_BUNDLE()" },
+        { "key": "E", "text": "CURRENT_ROLE()" },
+        { "key": "F", "text": "SHOW TABLES" }
+      ],
+      "correct": ["B", "C", "D"],
+      "explanation": {
+        "correct": "Non-owners cannot call GET_DDL() (prevents viewing source code), SYSTEM$ENABLE_BEHAVIOR_CHANGE_BUNDLE(), or SYSTEM$DISABLE_BEHAVIOR_CHANGE_BUNDLE() from within owner's rights procedures.",
+        "distractors": {
+          "A": "CURRENT_TIMESTAMP() is a standard function with no special restriction.",
+          "E": "CURRENT_ROLE() is not specifically restricted; it returns the owner's role context.",
+          "F": "SHOW TABLES is generally permitted in owner's rights procedures as it does not read session state."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": "A role named 'Nurse' calls an owner's rights stored procedure owned by the 'Doctor' role. The procedure attempts to delete rows older than 7 years from the medical_records table. The Nurse role does not have DELETE privilege on that table.",
+      "stem": "What happens?",
+      "options": [
+        { "key": "A", "text": "The procedure fails because the calling role lacks DELETE privilege" },
+        { "key": "B", "text": "The procedure succeeds only if the Nurse role is granted temporary elevated privileges" },
+        { "key": "C", "text": "The procedure succeeds because it runs with the Doctor role's privileges" },
+        { "key": "D", "text": "The procedure fails unless ACCOUNTADMIN approves the execution" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "An owner's rights procedure runs with the privileges of the owner role (Doctor). Since the Doctor role has DELETE on the table, the procedure succeeds even when called by a role without that privilege.",
+        "distractors": {
+          "A": "This would be the case for a caller's rights procedure, not an owner's rights procedure.",
+          "B": "No temporary privilege elevation is needed; the owner's rights model provides the privilege.",
+          "D": "ACCOUNTADMIN is not involved in owner's rights execution decisions."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": "An owner's rights stored procedure needs to access a table that the caller has privileges on but the owner does not.",
+      "stem": "What mechanism allows this?",
+      "options": [
+        { "key": "A", "text": "The procedure automatically inherits the caller's table privileges" },
+        { "key": "B", "text": "The caller passes a reference to the table, allowing the procedure to act on it" },
+        { "key": "C", "text": "The owner must first be granted privileges on the table" },
+        { "key": "D", "text": "The procedure must be converted to caller's rights" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "You can have the caller pass a reference to a table, view, or function. This allows the owner's rights procedure to perform actions on objects the caller has access to.",
+        "distractors": {
+          "A": "Owner's rights procedures do not automatically inherit caller privileges — that would defeat the security model.",
+          "C": "While granting privileges to the owner works, the documented mechanism for this scenario is passing references.",
+          "D": "Converting to caller's rights changes the entire security model and may not be appropriate."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": "A caller's rights stored procedure is called from within an owner's rights stored procedure.",
+      "stem": "How does the inner caller's rights procedure behave?",
+      "options": [
+        { "key": "A", "text": "It runs with caller's rights as defined" },
+        { "key": "B", "text": "It behaves as an owner's rights procedure because it was called from an owner's rights context" },
+        { "key": "C", "text": "It fails because nesting different rights models is not supported" },
+        { "key": "D", "text": "It inherits a combination of both the owner's and caller's privileges" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Any stored procedure called directly or indirectly from an owner's rights stored procedure behaves as an owner's rights stored procedure. A procedure only behaves as caller's rights if it AND the entire call hierarchy above it are caller's rights.",
+        "distractors": {
+          "A": "The nesting rules override the declared rights model when called from an owner's rights context.",
+          "C": "Nesting is fully supported; the rules simply determine which model applies.",
+          "D": "There is no privilege combination; the owner's rights model takes precedence in the hierarchy."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": "An administrator wants to create a stored procedure that runs with caller's rights but restricts which of the caller's privileges the procedure can actually exercise.",
+      "stem": "Which EXECUTE AS option should be used?",
+      "options": [
+        { "key": "A", "text": "EXECUTE AS CALLER" },
+        { "key": "B", "text": "EXECUTE AS OWNER" },
+        { "key": "C", "text": "EXECUTE AS RESTRICTED CALLER" },
+        { "key": "D", "text": "EXECUTE AS LIMITED" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "EXECUTE AS RESTRICTED CALLER creates a procedure that runs with caller's rights but restricts which privileges are exercised based on caller grants defined by administrators.",
+        "distractors": {
+          "A": "EXECUTE AS CALLER gives full caller's rights without any restriction mechanism.",
+          "B": "EXECUTE AS OWNER runs with the owner's privileges, not the caller's.",
+          "D": "EXECUTE AS LIMITED is not a valid Snowflake option."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": "An administrator grants a caller grant using GRANT CALLER SELECT ON TABLE t1 TO owner_role. A user with INSERT and SELECT on t1 calls a restricted caller's rights procedure owned by owner_role that attempts to INSERT into t1.",
+      "stem": "What happens?",
+      "options": [
+        { "key": "A", "text": "The INSERT succeeds because the caller has INSERT privilege on t1" },
+        { "key": "B", "text": "The INSERT fails because the caller grant only permits SELECT, not INSERT" },
+        { "key": "C", "text": "The INSERT fails because restricted caller's rights procedures cannot perform DML" },
+        { "key": "D", "text": "The INSERT succeeds because owner_role always has full privileges" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "A caller grant doesn't give privileges — it restricts which of the caller's existing privileges the executable can use. Since only SELECT was granted as a caller grant, the procedure cannot exercise the caller's INSERT privilege.",
+        "distractors": {
+          "A": "The caller has INSERT, but the caller grant restricts which privileges the procedure can exercise.",
+          "C": "Restricted caller's rights procedures can perform DML if an appropriate caller grant allows it.",
+          "D": "In restricted caller's rights mode, the owner's privileges are not used; only restricted caller privileges apply."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": "A caller's rights stored procedure sets a session variable inside the procedure. After the CALL completes, a subsequent SQL statement in the same session references that variable.",
+      "stem": "What happens?",
+      "options": [
+        { "key": "A", "text": "The variable is not accessible because it was scoped to the procedure" },
+        { "key": "B", "text": "The variable is accessible because caller's rights procedures can modify session state that persists after the CALL" },
+        { "key": "C", "text": "An error is raised because session variables cannot be set inside procedures" },
+        { "key": "D", "text": "The variable is accessible only if the procedure explicitly exports it" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "If a caller's rights stored procedure makes changes to the session (including setting variables), those changes persist after the CALL completes.",
+        "distractors": {
+          "A": "Session variables set in caller's rights procedures are NOT scoped to the procedure; they persist in the session.",
+          "C": "Session variables can be set inside caller's rights procedures.",
+          "D": "There is no explicit export mechanism; persistence is automatic."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": "An owner's rights stored procedure needs to read a value from a session variable that the caller set before the CALL statement.",
+      "stem": "How should this be handled?",
+      "options": [
+        { "key": "A", "text": "Reference the session variable directly inside the procedure" },
+        { "key": "B", "text": "Convert the procedure to restricted caller's rights to access session variables" },
+        { "key": "C", "text": "Pass the session variable's value as an explicit argument to the procedure" },
+        { "key": "D", "text": "Grant the procedure USAGE on the session" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Owner's rights procedures cannot access SQL variables created outside the procedure. If a value from a session variable is needed, it should be passed as an explicit argument.",
+        "distractors": {
+          "A": "Owner's rights procedures do not have access to the caller's session variables.",
+          "B": "Restricted caller's rights procedures also cannot access session variables — this is one of their limitations.",
+          "D": "There is no concept of granting USAGE on a session."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "stored-procedure-rights",
+      "scenario": "An administrator is reviewing the limitations of executables with restricted caller's rights.",
+      "stem": "Which THREE operations are prohibited for restricted caller's rights executables? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "Executing USE ROLE and USE SECONDARY ROLES commands" },
+        { "key": "B", "text": "Executing SELECT statements" },
+        { "key": "C", "text": "Creating stored procedures or other objects that run with owner's/caller's/restricted caller's rights" },
+        { "key": "D", "text": "Using or reading session variables" },
+        { "key": "E", "text": "Executing DML statements on tables with caller grants" },
+        { "key": "F", "text": "Calling other stored procedures" }
+      ],
+      "correct": ["A", "C", "D"],
+      "explanation": {
+        "correct": "Restricted caller's rights executables cannot execute USE ROLE/USE SECONDARY ROLES, cannot create objects that run with any rights model, and cannot use or read session variables.",
+        "distractors": {
+          "B": "SELECT statements are permitted if an appropriate caller grant exists.",
+          "E": "DML is permitted if the corresponding caller grant allows it.",
+          "F": "Calling other procedures is permitted; the restriction is on creating new ones."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "stored-procedure-rights",
+      "scenario": "A security team is defining caller grants for a restricted caller's rights procedure that needs SELECT and INSERT access to all tables in a schema.",
+      "stem": "Which TWO GRANT CALLER statements would establish the necessary grants? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "GRANT CALLER SELECT, INSERT ON ALL TABLES IN SCHEMA to the procedure's owner role" },
+        { "key": "B", "text": "GRANT SELECT, INSERT ON SCHEMA to the owner role" },
+        { "key": "C", "text": "GRANT INHERITED CALLER SELECT, INSERT ON ALL TABLES IN SCHEMA to the owner role" },
+        { "key": "D", "text": "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA to the owner role" },
+        { "key": "E", "text": "GRANT ALL INHERITED CALLER PRIVILEGES ON ALL TABLES IN SCHEMA to the owner role" }
+      ],
+      "correct": ["C", "E"],
+      "explanation": {
+        "correct": "GRANT INHERITED CALLER SELECT, INSERT ON ALL TABLES IN SCHEMA grants specific caller privileges on all current and future tables. GRANT ALL INHERITED CALLER PRIVILEGES provides all caller privileges on all tables — either approach works depending on the scope desired.",
+        "distractors": {
+          "A": "GRANT CALLER (without INHERITED) applies to a specific named object, not to all tables in a schema.",
+          "B": "This is a standard privilege grant, not a caller grant — it gives the owner actual privileges rather than restricting the caller's.",
+          "D": "This grants actual privileges to the owner role, which is a standard GRANT, not a caller grant mechanism."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "stored-procedure-rights",
+      "scenario": "A DBA is choosing between owner's rights and caller's rights for a new stored procedure.",
+      "stem": "Which TWO criteria favor creating an owner's rights stored procedure? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "The procedure needs to read the caller's session variables" },
+        { "key": "B", "text": "You want to delegate a specific task to users who don't have the required direct privileges" },
+        { "key": "C", "text": "You want to prevent callers from viewing the source code of the procedure" },
+        { "key": "D", "text": "The procedure operates only on objects that the caller already has privileges on" },
+        { "key": "E", "text": "The procedure needs to use the caller's environment such as session parameters" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "Owner's rights is appropriate when delegating tasks (users run with owner's elevated privileges) and when you want to hide the procedure's source code from callers.",
+        "distractors": {
+          "A": "Reading caller's session variables requires a caller's rights procedure.",
+          "D": "When the procedure operates only on caller-owned objects, caller's rights is more appropriate.",
+          "E": "Owner's rights procedures have restricted access to caller's session parameters."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "stored-procedure-rights",
+      "scenario": "An administrator wants to list and audit all caller grants that have been configured in the account.",
+      "stem": "Which TWO SHOW CALLER GRANTS variations are available? (Select TWO)",
+      "options": [
+        { "key": "A", "text": "SHOW CALLER GRANTS ON TABLE t1 — lists caller grants on a specific object" },
+        { "key": "B", "text": "SHOW CALLER GRANTS TO ROLE owner_role — lists all caller grants granted to a role" },
+        { "key": "C", "text": "SHOW CALLER GRANTS IN SESSION — lists caller grants active in the current session" },
+        { "key": "D", "text": "SHOW CALLER GRANTS FROM ACCOUNT — lists grants revoked at account level" },
+        { "key": "E", "text": "SHOW CALLER GRANTS HISTORY — lists historical grant/revoke operations" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "SHOW CALLER GRANTS ON <object> lists all grants on a specific object, and SHOW CALLER GRANTS TO <role> lists all caller grants granted to a specific owner role.",
+        "distractors": {
+          "C": "There is no session-scoped variation of SHOW CALLER GRANTS.",
+          "D": "There is no FROM ACCOUNT syntax for listing revoked grants.",
+          "E": "There is no HISTORY variation; use SHOW CALLER GRANTS ON/TO for current state."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "stored-procedure-rights",
+      "scenario": "A team is troubleshooting why specific SHOW commands fail inside an owner's rights stored procedure.",
+      "stem": "Which THREE SHOW commands are NOT permitted in owner's rights stored procedures? (Select THREE)",
+      "options": [
+        { "key": "A", "text": "SHOW TABLES" },
+        { "key": "B", "text": "SHOW PARAMETERS FOR SESSION" },
+        { "key": "C", "text": "SHOW VARIABLES" },
+        { "key": "D", "text": "SHOW GRANTS (without IN, ON, TO, or OF clause)" },
+        { "key": "E", "text": "SHOW DATABASES" },
+        { "key": "F", "text": "SHOW SCHEMAS" }
+      ],
+      "correct": ["B", "C", "D"],
+      "explanation": {
+        "correct": "SHOW PARAMETERS FOR SESSION reads session state, SHOW VARIABLES reads session variables, and SHOW GRANTS without a qualifying clause implicitly references the current user — all three are prohibited.",
+        "distractors": {
+          "A": "SHOW TABLES does not read from the current session or depend on the current user, so it is permitted.",
+          "E": "SHOW DATABASES is permitted as it does not reference session state.",
+          "F": "SHOW SCHEMAS is permitted for the same reason."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": "A team wants to use the LIST command inside an owner's rights stored procedure. The procedure has a JavaScript handler.",
+      "stem": "Is this possible?",
+      "options": [
+        { "key": "A", "text": "Yes — LIST is always permitted in owner's rights procedures" },
+        { "key": "B", "text": "No — LIST cannot be used in any owner's rights stored procedure regardless of handler language" },
+        { "key": "C", "text": "No — LIST cannot be used in Snowflake Scripting or JavaScript handlers of owner's rights procedures, but works in other languages" },
+        { "key": "D", "text": "Yes — but only if the owner has USAGE on the stage" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The LIST command cannot be used in the Snowflake Scripting or JavaScript handler code of an owner's rights stored procedure. It can be used when the handler is written in Java, Python, or Scala.",
+        "distractors": {
+          "A": "LIST has handler-language-specific restrictions in owner's rights procedures.",
+          "B": "The restriction applies only to Snowflake Scripting and JavaScript — other languages can use LIST.",
+          "D": "Stage privileges are separate from the language-specific restriction on LIST."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "stored-procedure-rights",
+      "scenario": "A stored procedure is created as owner's rights. The owner wants to change it to caller's rights without recreating it.",
+      "stem": "How can this be done?",
+      "options": [
+        { "key": "A", "text": "Execute ALTER PROCEDURE ... SET EXECUTE AS CALLER" },
+        { "key": "B", "text": "Grant USAGE on the procedure to the caller's role" },
+        { "key": "C", "text": "Drop and recreate the procedure with EXECUTE AS CALLER" },
+        { "key": "D", "text": "It cannot be changed; the procedure must be recreated" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "The owner can change the procedure from owner's rights to caller's rights (or vice versa) by executing an ALTER PROCEDURE command.",
+        "distractors": {
+          "B": "Granting USAGE allows calling the procedure but does not change its rights model.",
+          "C": "Drop and recreate works but is unnecessary since ALTER PROCEDURE supports this change.",
+          "D": "The ALTER PROCEDURE command supports changing the rights model without recreation."
+        }
+      }
+    }
+  ]
+}

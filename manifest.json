@@ -405,6 +405,16 @@
                       "id": "test_11",
                       "label": "Databases, Tables & Views \u2014 Supplemental",
                       "path": "snowflake/snowpro_core/domain_1/task_3/test_11.json"
+                    },
+                    {
+                      "id": "test_12",
+                      "label": "UDFs & Stored Procedures \u2014 Overview & Privileges",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_12.json"
+                    },
+                    {
+                      "id": "test_13",
+                      "label": "Stored Procedure Rights & Security Model",
+                      "path": "snowflake/snowpro_core/domain_1/task_3/test_13.json"
                     }
                   ]
                 },
