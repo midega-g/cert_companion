@@ -437,6 +437,26 @@
                       "id": "test_2",
                       "label": "Virtual Warehouse Considerations \u2014 Part B",
                       "path": "snowflake/snowpro_core/domain_1/task_4/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Warehouse Sizing, Gen2 & Snowpark-Optimized",
+                      "path": "snowflake/snowpro_core/domain_1/task_4/test_3.json"
+                    },
+                    {
+                      "id": "test_4",
+                      "label": "Multi-cluster Warehouses & Query Acceleration",
+                      "path": "snowflake/snowpro_core/domain_1/task_4/test_4.json"
+                    },
+                    {
+                      "id": "test_5",
+                      "label": "Adaptive & Interactive Warehouses",
+                      "path": "snowflake/snowpro_core/domain_1/task_4/test_5.json"
+                    },
+                    {
+                      "id": "test_6",
+                      "label": "Warehouse Operations & Load Monitoring",
+                      "path": "snowflake/snowpro_core/domain_1/task_4/test_6.json"
                     }
                   ]
                 },

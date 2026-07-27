@@ -1,0 +1,777 @@
+{
+  "label": "Warehouse Sizing, Gen2 & Snowpark-Optimized",
+  "order": 3,
+  "topic": "Virtual Warehouse Configuration",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What is the default warehouse size when creating a warehouse using CREATE WAREHOUSE?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Small"
+        },
+        {
+          "key": "B",
+          "text": "X-Small"
+        },
+        {
+          "key": "C",
+          "text": "Medium"
+        },
+        {
+          "key": "D",
+          "text": "Large"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The default size for warehouses created using CREATE WAREHOUSE is X-Small.",
+        "distractors": {
+          "A": "Small is the next size up from X-Small and consumes 2 credits per hour, but it is not the default.",
+          "C": "Medium consumes 4 credits per hour and is not the default for CREATE WAREHOUSE.",
+          "D": "Large consumes 8 credits per hour and is not the default size."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "How does credit consumption change as you increase warehouse size by one step?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Credits increase by 50% per size increment"
+        },
+        {
+          "key": "B",
+          "text": "Credits triple with each size increment"
+        },
+        {
+          "key": "D",
+          "text": "Credits increase by a fixed 4 credits per size increment"
+        },
+        {
+          "key": "C",
+          "text": "Credits double with each size increment"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Credit consumption doubles with each increase to the next larger warehouse size (e.g., X-Small=1, Small=2, Medium=4, Large=8).",
+        "distractors": {
+          "A": "Credits do not increase by 50%; the scaling factor is 2x (doubling) per size step.",
+          "B": "Credits do not triple; they double with each size increment.",
+          "C": "The increase is multiplicative (doubling), not a fixed additive amount."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A data engineer needs to run ML training workloads using Snowpark stored procedures that require large amounts of memory on a single node.",
+      "stem": "Which warehouse type is recommended for this workload?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Standard warehouse with X-Large size"
+        },
+        {
+          "key": "B",
+          "text": "Adaptive warehouse"
+        },
+        {
+          "key": "C",
+          "text": "Interactive warehouse"
+        },
+        {
+          "key": "D",
+          "text": "Snowpark-optimized warehouse"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Snowpark-optimized warehouses are recommended for workloads that have large memory requirements such as ML training use cases using stored procedures on a single virtual warehouse node.",
+        "distractors": {
+          "A": "A standard warehouse does not provide the additional memory per node that Snowpark-optimized warehouses offer.",
+          "B": "Adaptive warehouses handle general analytics workloads but are not specifically designed for single-node high-memory Snowpark workloads.",
+          "C": "Interactive warehouses are optimized for low-latency, high-concurrency queries, not memory-intensive ML training."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO statements about Gen2 standard warehouses are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Gen2 warehouses are available for sizes up to 6X-Large"
+        },
+        {
+          "key": "D",
+          "text": "Altering an existing Gen1 warehouse to Gen2 automatically enables QAS"
+        },
+        {
+          "key": "B",
+          "text": "Gen2 is the default generation when creating a new standard warehouse if available in the region"
+        },
+        {
+          "key": "C",
+          "text": "Gen2 warehouses automatically enable QAS with a default scale factor of 2 at creation time"
+        },
+        {
+          "key": "E",
+          "text": "Gen2 applies to both standard and Snowpark-optimized warehouse types"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The default GENERATION for new standard warehouses is '2' (Gen2) where available, and Gen2 warehouses have QAS enabled by default with a scale factor of 2 at creation time.",
+        "distractors": {
+          "A": "Gen2 warehouses are NOT available for sizes X5Large and X6Large.",
+          "B": "Altering an existing Gen1 warehouse to Gen2 does NOT enable QAS; QAS remains in its previous state.",
+          "E": "Gen2 applies only to standard warehouses, not Snowpark-optimized warehouses."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A team wants to convert their Gen1 standard warehouse to Gen2 without causing downtime for currently running queries.",
+      "stem": "What happens to queries already running on the warehouse when the conversion occurs while the warehouse is running?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Running queries are immediately cancelled and must be resubmitted"
+        },
+        {
+          "key": "C",
+          "text": "Running queries are paused and automatically resumed on Gen2 resources"
+        },
+        {
+          "key": "B",
+          "text": "Running queries continue on Gen1 resources while new queries use Gen2 resources, and the account is charged for both"
+        },
+        {
+          "key": "D",
+          "text": "The warehouse is automatically suspended and then resumed on Gen2 hardware"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "When converting from Gen1 to Gen2 without suspending first, existing queries continue to run to completion on Gen1 resources while new queries run on Gen2 resources, and you are charged for both sets of resources during this period.",
+        "distractors": {
+          "A": "Running queries are not cancelled; they continue executing on their original Gen1 resources.",
+          "B": "Queries are not paused; they complete on the original resource type.",
+          "D": "The warehouse is not automatically suspended; the conversion can happen while the warehouse is running."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO clauses can be used to specify a Gen2 standard warehouse when creating or altering a warehouse? (Select TWO)",
+      "options": [
+        {
+          "key": "B",
+          "text": "RESOURCE_CONSTRAINT = STANDARD_GEN_2"
+        },
+        {
+          "key": "A",
+          "text": "WAREHOUSE_TYPE = 'GEN2'"
+        },
+        {
+          "key": "D",
+          "text": "WAREHOUSE_GENERATION = 'NEXT'"
+        },
+        {
+          "key": "C",
+          "text": "GENERATION = '2'"
+        },
+        {
+          "key": "E",
+          "text": "ENGINE_VERSION = '2'"
+        }
+      ],
+      "correct": [
+        "A",
+        "D"
+      ],
+      "explanation": {
+        "correct": "You can specify a Gen2 warehouse using either the GENERATION = '2' clause (recommended) or the RESOURCE_CONSTRAINT = STANDARD_GEN_2 clause.",
+        "distractors": {
+          "B": "There is no WAREHOUSE_TYPE = 'GEN2' value; WAREHOUSE_TYPE accepts values like STANDARD, SNOWPARK-OPTIMIZED, or ADAPTIVE.",
+          "C": "WAREHOUSE_GENERATION is not a valid property in Snowflake.",
+          "E": "ENGINE_VERSION is not a valid warehouse property."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A developer creates a Snowpark-optimized warehouse without specifying a RESOURCE_CONSTRAINT value.",
+      "stem": "What is the default memory configuration for this warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "MEMORY_1X providing up to 16GB per node"
+        },
+        {
+          "key": "D",
+          "text": "MEMORY_4X providing up to 64GB per node"
+        },
+        {
+          "key": "C",
+          "text": "MEMORY_64X providing up to 1TB per node"
+        },
+        {
+          "key": "B",
+          "text": "MEMORY_16X providing up to 256GB per node"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The default RESOURCE_CONSTRAINT for a Snowpark-optimized warehouse is MEMORY_16X, providing up to 256GB of memory per node.",
+        "distractors": {
+          "A": "MEMORY_1X provides up to 16GB per node and is an available option but not the default.",
+          "B": "MEMORY_4X is not a valid RESOURCE_CONSTRAINT value for Snowpark-optimized warehouses.",
+          "C": "MEMORY_64X provides up to 1TB per node but is a preview feature and not the default."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator is evaluating whether to use a Snowpark-optimized warehouse for several workloads across the organization.",
+      "stem": "Which THREE workload types are appropriate for Snowpark-optimized warehouses? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Standard SQL analytics queries on large datasets"
+        },
+        {
+          "key": "B",
+          "text": "ML training using Snowpark Python stored procedures"
+        },
+        {
+          "key": "C",
+          "text": "Low-latency dashboard queries requiring sub-second response"
+        },
+        {
+          "key": "D",
+          "text": "Workloads using Python UDFs with large memory requirements"
+        },
+        {
+          "key": "E",
+          "text": "Code that has dependencies on a specific CPU architecture"
+        },
+        {
+          "key": "F",
+          "text": "Bulk data loading from external stages"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Snowpark-optimized warehouses are recommended for ML training via stored procedures, UDFs/UDTFs with large memory requirements, and workloads with dependencies on specific CPU architecture.",
+        "distractors": {
+          "A": "Standard SQL analytics queries do not typically benefit from Snowpark-optimized warehouses and run fine on standard warehouses.",
+          "C": "Low-latency dashboard queries are better served by interactive warehouses, not Snowpark-optimized warehouses.",
+          "F": "Bulk data loading performance is influenced more by the number and size of files than by memory capacity, making standard warehouses sufficient."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What is the minimum billing duration each time this warehouse starts?",
+      "options": [
+        {
+          "key": "A",
+          "text": "30 seconds"
+        },
+        {
+          "key": "B",
+          "text": "60 seconds"
+        },
+        {
+          "key": "C",
+          "text": "120 seconds"
+        },
+        {
+          "key": "D",
+          "text": "300 seconds"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Snowflake uses per-second billing with a 60-second (1-minute) minimum each time the warehouse starts or resumes.",
+        "distractors": {
+          "A": "30 seconds is below the minimum billing threshold; the minimum is 60 seconds.",
+          "C": "120 seconds is not the minimum billing period; it is 60 seconds.",
+          "D": "300 seconds (5 minutes) is not the minimum; Snowflake bills with a 60-second minimum."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An organization is planning to convert a Gen2 standard warehouse of size MEDIUM to a Snowpark-optimized warehouse.",
+      "stem": "Which RESOURCE_CONSTRAINT value provides the same memory capacity as the Gen2 standard warehouse had?",
+      "options": [
+        {
+          "key": "B",
+          "text": "MEMORY_1X"
+        },
+        {
+          "key": "A",
+          "text": "MEMORY_16X"
+        },
+        {
+          "key": "C",
+          "text": "MEMORY_64X"
+        },
+        {
+          "key": "D",
+          "text": "STANDARD_GEN_2"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "STANDARD_GEN_1 provides the same memory capacity for standard warehouses as MEMORY_1X does for Snowpark-optimized warehouses, and Gen2 has the same baseline memory as Gen1. So converting from Gen2 standard to Snowpark-optimized with equivalent memory uses MEMORY_1X.",
+        "distractors": {
+          "B": "MEMORY_16X provides 16 times the memory of a standard warehouse, which is far more than the equivalent Gen2 standard capacity.",
+          "C": "MEMORY_64X provides up to 1TB per node, which is much more than the standard warehouse equivalent.",
+          "D": "STANDARD_GEN_2 is a RESOURCE_CONSTRAINT for standard warehouses, not Snowpark-optimized warehouses."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A warehouse administrator notices that increasing warehouse size from Small to Large did not significantly improve data loading performance for their daily CSV ingestion of 50 files.",
+      "stem": "What is the most likely explanation for this behavior?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The warehouse was not suspended and resumed after resizing"
+        },
+        {
+          "key": "C",
+          "text": "Large warehouses cannot perform COPY INTO operations"
+        },
+        {
+          "key": "B",
+          "text": "Data loading performance is influenced more by the number and size of files than by warehouse size"
+        },
+        {
+          "key": "D",
+          "text": "The warehouse needs to be converted to Gen2 before loading benefits apply"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Data loading performance is influenced more by the number of files being loaded and the size of each file than by the size of the warehouse. A smaller warehouse is generally sufficient unless bulk loading hundreds or thousands of files concurrently.",
+        "distractors": {
+          "A": "Resizing takes effect immediately for new operations; suspending and resuming is not required.",
+          "B": "Warehouses of all sizes can perform COPY INTO operations.",
+          "D": "Gen2 is not a prerequisite for data loading performance."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO statements about warehouse session precedence are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The user's default warehouse always takes highest precedence over any client setting"
+        },
+        {
+          "key": "B",
+          "text": "A warehouse specified in client connection parameters overrides the user's default warehouse"
+        },
+        {
+          "key": "C",
+          "text": "The USE WAREHOUSE command can change the current warehouse at any time during a session"
+        },
+        {
+          "key": "D",
+          "text": "If no warehouse is specified anywhere, Snowflake assigns the SYSTEM$COMPUTE_WH automatically"
+        },
+        {
+          "key": "E",
+          "text": "Configuration file settings override connection parameters passed at session initiation"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Connection parameters (command line or driver parameters) override configuration file settings, which override the user's default warehouse. Additionally, USE WAREHOUSE can change the session warehouse at any time.",
+        "distractors": {
+          "A": "The user's default warehouse has the lowest precedence; it is overridden by client configuration files and connection parameters.",
+          "D": "Snowflake does not automatically assign a warehouse; a session without a warehouse simply cannot execute queries until one is set.",
+          "E": "Configuration file settings are overridden by connection parameters, not the other way around."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator creates a Snowpark-optimized warehouse that needs up to 1TB of memory per node for a large ML training job.",
+      "stem": "Which TWO statements about the MEMORY_64X resource constraint for Snowpark-optimized warehouses are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "It requires a minimum warehouse size of Medium"
+        },
+        {
+          "key": "B",
+          "text": "It provides up to 512GB of memory per node"
+        },
+        {
+          "key": "C",
+          "text": "It requires a minimum warehouse size of Large"
+        },
+        {
+          "key": "D",
+          "text": "It is currently available only on the AWS cloud platform"
+        },
+        {
+          "key": "E",
+          "text": "It is generally available across all cloud platforms"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "MEMORY_64X requires a minimum warehouse size of Large, and the 1TB memory option is currently available only on AWS as a preview feature.",
+        "distractors": {
+          "A": "Medium is the minimum size for MEMORY_16X (256GB), not MEMORY_64X.",
+          "B": "MEMORY_64X provides up to 1TB of memory per node, not 512GB.",
+          "E": "The 1TB option is NOT generally available across all platforms; it is only available on AWS."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A company runs notebooks extensively across their Snowflake account. They want to understand the system-provisioned warehouse available for notebook workloads.",
+      "stem": "What is the maximum number of clusters configured for the SYSTEM$STREAMLIT_NOTEBOOK_WH warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "5 clusters"
+        },
+        {
+          "key": "D",
+          "text": "3 clusters"
+        },
+        {
+          "key": "C",
+          "text": "20 clusters"
+        },
+        {
+          "key": "B",
+          "text": "10 clusters"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The SYSTEM$STREAMLIT_NOTEBOOK_WH is a multi-cluster X-Small warehouse with a maximum of 10 clusters and a 60-second default timeout.",
+        "distractors": {
+          "A": "The maximum is 10 clusters, not 5.",
+          "B": "3 clusters is below the actual maximum of 10.",
+          "C": "20 clusters exceeds the configured maximum of 10 for this system warehouse."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A data platform team is standardizing their warehouse configurations. They want to understand which warehouse properties can be specified in Snowsight versus SQL only.",
+      "stem": "Which THREE properties or settings must be configured using SQL commands and are NOT available in Snowsight? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Warehouse size"
+        },
+        {
+          "key": "B",
+          "text": "GENERATION clause for Gen2 warehouses"
+        },
+        {
+          "key": "C",
+          "text": "RESOURCE_CONSTRAINT clause"
+        },
+        {
+          "key": "D",
+          "text": "Auto-suspend timeout"
+        },
+        {
+          "key": "E",
+          "text": "MAX_CLUSTER_COUNT values greater than 10"
+        },
+        {
+          "key": "F",
+          "text": "Scaling policy"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "The GENERATION clause, the RESOURCE_CONSTRAINT clause (STANDARD_GEN_1/STANDARD_GEN_2), and MAX_CLUSTER_COUNT values greater than 10 are not available in Snowsight and must be specified via SQL commands.",
+        "distractors": {
+          "A": "Warehouse size can be configured in both Snowsight and SQL.",
+          "D": "Auto-suspend timeout is configurable through Snowsight.",
+          "F": "Scaling policy is available in the Snowsight multi-cluster warehouse configuration."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "An engineer resizes a running warehouse from Medium to X-Large to improve performance for a complex query that is currently executing.",
+      "stem": "Which TWO statements correctly describe the effects of resizing a running warehouse? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Running queries immediately benefit from additional compute resources"
+        },
+        {
+          "key": "B",
+          "text": "New resources are available only for queued and newly submitted queries"
+        },
+        {
+          "key": "C",
+          "text": "Running queries are cancelled and resubmitted automatically"
+        },
+        {
+          "key": "D",
+          "text": "The WAIT_FOR_COMPLETION parameter can verify when new resources are fully provisioned"
+        },
+        {
+          "key": "E",
+          "text": "Resizing a running warehouse causes it to auto-suspend briefly"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "New compute resources are used only for queued and future statements, not currently executing ones. The WAIT_FOR_COMPLETION parameter on ALTER WAREHOUSE can verify when additional resources are fully provisioned.",
+        "distractors": {
+          "A": "Running queries do not benefit from added resources; only new or queued queries use them.",
+          "C": "Running queries are not cancelled during a resize operation.",
+          "E": "Resizing does not cause a warehouse to suspend; it continues running."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A database administrator wants to give a custom role the ability to alter, suspend, and monitor all warehouses in the account without granting ownership.",
+      "stem": "Which privilege should be granted to achieve this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "OPERATE on each individual warehouse"
+        },
+        {
+          "key": "B",
+          "text": "MANAGE WAREHOUSES on the account"
+        },
+        {
+          "key": "C",
+          "text": "SYSADMIN role membership"
+        },
+        {
+          "key": "D",
+          "text": "CREATE WAREHOUSE on the account"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The MANAGE WAREHOUSES privilege is equivalent to granting MODIFY, MONITOR, and OPERATE on all warehouses in the account, enabling the role to alter, suspend, and monitor without ownership.",
+        "distractors": {
+          "A": "OPERATE on each warehouse would need to be granted individually and does not include MODIFY or MONITOR capabilities.",
+          "C": "SYSADMIN is a built-in role, not a privilege, and granting it provides broader access than just warehouse management.",
+          "D": "CREATE WAREHOUSE allows creating new warehouses but does not grant management capabilities on existing ones."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A Snowflake administrator is reviewing billing for their standard warehouses and wants to understand the per-second billing model.",
+      "stem": "Which TWO statements about warehouse billing are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Credit consumption is reported in 60-minute hourly increments"
+        },
+        {
+          "key": "B",
+          "text": "The minimum billing charge each time a warehouse resumes is 60 seconds"
+        },
+        {
+          "key": "C",
+          "text": "Credits are consumed starting from the moment ALTER WAREHOUSE RESUME is executed"
+        },
+        {
+          "key": "D",
+          "text": "Warehouses consume credits even when no queries are running if they remain in Started state"
+        },
+        {
+          "key": "E",
+          "text": "Per-second billing only applies to warehouses of size Medium or larger"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Credits are billed per-second with a 60-second minimum each time the warehouse is resumed, and credit consumption is reported in 60-minute (hourly) increments.",
+        "distractors": {
+          "C": "Credits are consumed once all compute resources are provisioned for the warehouse, not from the moment the RESUME command is issued.",
+          "D": "While warehouses do consume credits while running regardless of query activity, this describes auto-suspend behavior not billing mechanics per se. The question focuses on the billing model specifics.",
+          "E": "Per-second billing applies to all warehouse sizes, not just Medium or larger."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A team resizes a suspended Large warehouse to X-Large.",
+      "stem": "What happens immediately after the resize command is executed on the suspended warehouse?",
+      "options": [
+        {
+          "key": "B",
+          "text": "No resources are provisioned; Snowflake provisions the additional resources when the warehouse is next resumed"
+        },
+        {
+          "key": "A",
+          "text": "New compute resources are provisioned immediately in the background"
+        },
+        {
+          "key": "C",
+          "text": "The warehouse automatically resumes to apply the new size"
+        },
+        {
+          "key": "D",
+          "text": "A validation check runs to ensure the new size is available in the region"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Resizing a suspended warehouse does not provision any new compute resources. It instructs Snowflake to provision the additional resources when the warehouse is next resumed.",
+        "distractors": {
+          "B": "No resources are provisioned while the warehouse remains suspended.",
+          "C": "The warehouse does not automatically resume when resized; it remains suspended.",
+          "D": "No special validation check is described; the command simply records the new size for the next resume."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "During warehouse startup, some compute resources fail to provision. The warehouse has 50% of its requested resources available.",
+      "stem": "How does Snowflake handle SQL statement execution in this situation?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Snowflake waits indefinitely until all resources are provisioned before executing any statements"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake cancels the warehouse start and returns an error to all sessions"
+        },
+        {
+          "key": "B",
+          "text": "Snowflake begins executing statements once 50% or more of the requested resources are successfully provisioned"
+        },
+        {
+          "key": "D",
+          "text": "Snowflake automatically resizes the warehouse to a smaller size that can be fully provisioned"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "If any compute resources fail to provision during start-up, Snowflake attempts to repair them. During repair, the warehouse starts processing SQL statements once 50% or more of the requested resources are successfully provisioned.",
+        "distractors": {
+          "A": "Snowflake does not wait indefinitely; it begins processing once at least 50% of resources are available.",
+          "B": "The warehouse start is not cancelled; Snowflake attempts to repair failed resources.",
+          "D": "Snowflake does not automatically resize; it repairs the failed resources while using the available ones."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,777 @@
+{
+  "label": "Adaptive & Interactive Warehouses",
+  "order": 5,
+  "topic": "Virtual Warehouse Configuration",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What is the default value for MAX_QUERY_PERFORMANCE_LEVEL on an Adaptive Warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "MEDIUM"
+        },
+        {
+          "key": "B",
+          "text": "LARGE"
+        },
+        {
+          "key": "C",
+          "text": "XLARGE"
+        },
+        {
+          "key": "D",
+          "text": "XXLARGE"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The default MAX_QUERY_PERFORMANCE_LEVEL for an Adaptive Warehouse is XLARGE.",
+        "distractors": {
+          "A": "MEDIUM is not the default; it is a lower performance bound option.",
+          "B": "LARGE is available but not the default value.",
+          "D": "XXLARGE is above the default; it provides a higher performance bound."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What is the default value for QUERY_THROUGHPUT_MULTIPLIER on an Adaptive Warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "0 (unlimited)"
+        },
+        {
+          "key": "B",
+          "text": "1"
+        },
+        {
+          "key": "C",
+          "text": "4"
+        },
+        {
+          "key": "D",
+          "text": "2"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The default QUERY_THROUGHPUT_MULTIPLIER is 2.",
+        "distractors": {
+          "A": "A value of 0 means unlimited throughput but is not the default.",
+          "B": "1 is not the default value.",
+          "C": "4 is not the default; it must be explicitly set."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What is the minimum AUTO_SUSPEND value for an interactive warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "600 seconds (10 minutes)"
+        },
+        {
+          "key": "B",
+          "text": "3600 seconds (1 hour)"
+        },
+        {
+          "key": "C",
+          "text": "86400 seconds (24 hours)"
+        },
+        {
+          "key": "D",
+          "text": "300 seconds (5 minutes)"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The minimum AUTO_SUSPEND value for an interactive warehouse is 86400 seconds (24 hours) to ensure the cache stays warm long enough for consistent low-latency performance.",
+        "distractors": {
+          "A": "600 seconds applies to standard warehouses but is far below the interactive warehouse minimum.",
+          "B": "3600 seconds is below the 24-hour minimum required for interactive warehouses.",
+          "D": "300 seconds is the default for standard warehouses but not applicable to interactive warehouses."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which THREE properties are automatically managed by Adaptive Warehouses, eliminating the need for manual configuration? (Select THREE)",
+      "options": [
+        {
+          "key": "D",
+          "text": "Suspend and resume policies"
+        },
+        {
+          "key": "B",
+          "text": "Multi-cluster warehouse settings"
+        },
+        {
+          "key": "C",
+          "text": "Query Acceleration Service settings"
+        },
+        {
+          "key": "A",
+          "text": "Warehouse size (XSMALL, SMALL, MEDIUM, etc.)"
+        },
+        {
+          "key": "E",
+          "text": "STATEMENT_QUEUED_TIMEOUT_IN_SECONDS"
+        },
+        {
+          "key": "F",
+          "text": "Resource monitors and budgets"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Adaptive Warehouses automatically manage warehouse size, multi-cluster settings, QAS settings, and suspend/resume policies. The question asks for three.",
+        "distractors": {
+          "A": "Suspend and resume policies are also automatically managed, but the question asks for three of the listed properties.",
+          "E": "STATEMENT_QUEUED_TIMEOUT_IN_SECONDS can still be set on Adaptive Warehouses as an optional property.",
+          "F": "Resource monitors and budgets are separate cost governance tools that still require manual configuration."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO statements about interactive warehouses are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Interactive warehouses can query both standard tables and interactive tables"
+        },
+        {
+          "key": "B",
+          "text": "Queries exceeding 5 seconds are automatically cancelled on an interactive warehouse"
+        },
+        {
+          "key": "C",
+          "text": "Interactive warehouses support CALL commands for stored procedures"
+        },
+        {
+          "key": "D",
+          "text": "A fallback warehouse can be configured to automatically retry timed-out queries"
+        },
+        {
+          "key": "E",
+          "text": "Interactive warehouses use the same billing model as standard warehouses"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Interactive warehouses have a fixed 5-second statement timeout, and a fallback warehouse can be configured to transparently retry queries that exceed this limit.",
+        "distractors": {
+          "A": "Interactive warehouses can only query interactive tables; you must switch to a standard warehouse for standard tables.",
+          "C": "You cannot run CALL commands to call stored procedures in an interactive warehouse.",
+          "E": "Interactive warehouses have different billing (1-hour minimum on resume, per-second after) compared to the 60-second minimum for standard warehouses."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A company wants to convert their existing standard warehouse to an Adaptive Warehouse without disrupting running queries.",
+      "stem": "Which SQL command performs this conversion?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE ADAPTIVE WAREHOUSE my_wh CLONE my_standard_wh"
+        },
+        {
+          "key": "B",
+          "text": "ALTER WAREHOUSE my_wh SET WAREHOUSE_TYPE = 'ADAPTIVE'"
+        },
+        {
+          "key": "C",
+          "text": "DROP WAREHOUSE my_wh; CREATE ADAPTIVE WAREHOUSE my_wh"
+        },
+        {
+          "key": "D",
+          "text": "ALTER WAREHOUSE my_wh SET GENERATION = 'ADAPTIVE'"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "ALTER WAREHOUSE with SET WAREHOUSE_TYPE = 'ADAPTIVE' converts a standard warehouse to Adaptive without downtime or interrupting running queries.",
+        "distractors": {
+          "A": "CLONE is not a valid syntax for converting warehouse types.",
+          "C": "Dropping and recreating would cause downtime and lose the existing warehouse configuration.",
+          "D": "GENERATION is used for Gen1/Gen2 standard warehouses, not for Adaptive type conversion."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator disables an Adaptive Warehouse using ALTER WAREHOUSE my_wh DISABLE.",
+      "stem": "What happens to queries that are already running on the warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Running queries are immediately cancelled"
+        },
+        {
+          "key": "B",
+          "text": "Running queries continue to completion; only new jobs are rejected"
+        },
+        {
+          "key": "C",
+          "text": "Running queries are paused and can be resumed after enabling"
+        },
+        {
+          "key": "D",
+          "text": "The warehouse enters a suspended state and all queries queue"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "When an Adaptive Warehouse is disabled, new jobs are rejected but queries already running can continue to completion.",
+        "distractors": {
+          "A": "Running queries are not cancelled; they complete normally.",
+          "C": "Queries cannot be paused and resumed; they either complete or would need to be resubmitted.",
+          "D": "DISABLE is different from SUSPEND; it specifically rejects new jobs while allowing current work to finish."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A data platform team is creating an interactive table for their real-time dashboard that filters on a customer_id column.",
+      "stem": "Which TWO requirements must be met when creating this interactive table? (Select TWO)",
+      "options": [
+        {
+          "key": "C",
+          "text": "The interactive table must be smaller than 1TB"
+        },
+        {
+          "key": "B",
+          "text": "A CLUSTER BY clause must be specified in the CREATE INTERACTIVE TABLE command"
+        },
+        {
+          "key": "A",
+          "text": "The table must be created using a standard warehouse, not an interactive warehouse"
+        },
+        {
+          "key": "D",
+          "text": "The table requires a PRIMARY KEY constraint"
+        },
+        {
+          "key": "E",
+          "text": "An interactive warehouse must already exist before creating the table"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Interactive tables are created using a standard warehouse (not an interactive one), and the CREATE INTERACTIVE TABLE command requires a CLUSTER BY clause specifying columns for query optimization.",
+        "distractors": {
+          "A": "There is no documented 1TB size limit for interactive tables.",
+          "D": "No PRIMARY KEY constraint is required for interactive tables.",
+          "E": "An interactive warehouse does not need to exist before creating the interactive table."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A company has multiple Adaptive Warehouses: one for the finance team and another for engineering. They notice that all jobs across these warehouses draw from the same compute pool.",
+      "stem": "Which statement correctly describes this shared compute pool?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The pool is shared with other accounts in the same organization"
+        },
+        {
+          "key": "B",
+          "text": "The pool is shared with standard and interactive warehouses in the same account"
+        },
+        {
+          "key": "C",
+          "text": "The pool is dedicated to the account and not shared with other accounts or warehouse types"
+        },
+        {
+          "key": "D",
+          "text": "Each Adaptive Warehouse has its own isolated compute pool"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "All Adaptive Warehouses in an account share a single pool of compute resources that is dedicated to the account \u2014 it is not shared with other accounts or used by other warehouse types like standard or interactive.",
+        "distractors": {
+          "A": "The pool is not shared across accounts in the organization; it is account-dedicated.",
+          "B": "The pool is not shared with standard, interactive, or Snowpark-optimized warehouses.",
+          "D": "Multiple Adaptive Warehouses in the same account share the same pool; they do not have isolated pools."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An interactive warehouse has a table with 120TB of compressed data representing 1 year. The team mostly queries the last 7 days of data.",
+      "stem": "Based on the working set calculation, what warehouse size should they choose?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Small (600GB cache)"
+        },
+        {
+          "key": "B",
+          "text": "Large (2.5TB cache)"
+        },
+        {
+          "key": "C",
+          "text": "Medium (1.2TB cache)"
+        },
+        {
+          "key": "D",
+          "text": "X-Large (5.5TB cache)"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The working set is approximately 120TB / 365 days * 7 days = 2.3TB. A Large interactive warehouse provides approximately 2.5TB of cache, which fits this working set.",
+        "distractors": {
+          "A": "Small provides only 600GB of cache, far less than the ~2.3TB working set.",
+          "C": "Medium provides 1.2TB of cache, which is smaller than the ~2.3TB working set.",
+          "D": "X-Large provides 5.5TB, which is more than needed and would be unnecessarily expensive."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A company wants to migrate all their standard warehouses matching a name pattern to Adaptive Warehouses. They want to preview the change before applying it.",
+      "stem": "Which function and execution mode should they use for the preview?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SYSTEM$BULK_UPDATE_WH with execution_mode 'DRY_RUN'"
+        },
+        {
+          "key": "B",
+          "text": "SYSTEM$MIGRATE_WAREHOUSES with mode 'PREVIEW'"
+        },
+        {
+          "key": "C",
+          "text": "SYSTEM$BULK_UPDATE_WH with execution_mode 'TEST'"
+        },
+        {
+          "key": "D",
+          "text": "SYSTEM$CONVERT_WAREHOUSE with mode 'SIMULATE'"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "SYSTEM$BULK_UPDATE_WH with 'DRY_RUN' execution mode previews the migration without making changes, showing which warehouses would be affected.",
+        "distractors": {
+          "B": "SYSTEM$MIGRATE_WAREHOUSES is not a valid Snowflake function.",
+          "C": "The valid execution modes are 'DRY_RUN' and 'ACTIVE', not 'TEST'.",
+          "D": "SYSTEM$CONVERT_WAREHOUSE is not a valid Snowflake function."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A team is evaluating whether to convert their standard Gen2 warehouse to an Adaptive Warehouse.",
+      "stem": "Which TWO workload characteristics make a warehouse a good candidate for Adaptive Compute? (Select TWO)",
+      "options": [
+        {
+          "key": "B",
+          "text": "Mixed BI and ETL workloads with bursty, varied query shapes"
+        },
+        {
+          "key": "A",
+          "text": "Workloads primarily consisting of HTAP (hybrid transactional/analytical processing)"
+        },
+        {
+          "key": "C",
+          "text": "Workloads requiring very low latency for user-facing dashboard queries"
+        },
+        {
+          "key": "D",
+          "text": "Workloads with high size variance where queries range from XSMALL to XLARGE equivalent"
+        },
+        {
+          "key": "E",
+          "text": "High-memory Snowpark ML training workloads on a single node"
+        }
+      ],
+      "correct": [
+        "A",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Adaptive Warehouses are ideal for mixed BI/ETL workloads with varied query shapes and workloads with high size variance where per-query resource allocation is beneficial.",
+        "distractors": {
+          "B": "Warehouses used primarily for HTAP should use standard Gen2 warehouses instead.",
+          "C": "Very low latency for dashboards is better served by interactive warehouses.",
+          "E": "High-memory single-node Snowpark workloads should use Snowpark-optimized warehouses."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator sets QUERY_THROUGHPUT_MULTIPLIER to 0 on their Adaptive Warehouse.",
+      "stem": "What effect does this setting have?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The warehouse rejects all new queries"
+        },
+        {
+          "key": "B",
+          "text": "The warehouse has unlimited throughput with no cap on burst capacity"
+        },
+        {
+          "key": "C",
+          "text": "The warehouse operates at minimum throughput to reduce costs"
+        },
+        {
+          "key": "D",
+          "text": "The setting is invalid and generates an error"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Setting QUERY_THROUGHPUT_MULTIPLIER to 0 means unlimited throughput \u2014 the warehouse can use as much burst capacity as available with no cap.",
+        "distractors": {
+          "A": "A value of 0 does not disable the warehouse; it removes the throughput limit.",
+          "C": "A value of 0 means no limit, not minimum throughput.",
+          "D": "0 is a valid value; it represents unlimited throughput."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A team has added an interactive table to their interactive warehouse and notices queries are slow immediately after resuming the warehouse.",
+      "stem": "Which TWO factors explain the slow initial performance? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The data cache needs time to warm after the warehouse resumes"
+        },
+        {
+          "key": "B",
+          "text": "Interactive warehouses require a software update on each resume"
+        },
+        {
+          "key": "C",
+          "text": "Cache warming speed depends on warehouse size and table size"
+        },
+        {
+          "key": "D",
+          "text": "The interactive table must be re-created after each warehouse resume"
+        },
+        {
+          "key": "E",
+          "text": "Interactive warehouses require network reinitialization on resume"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "After resuming, the data cache needs warming which causes initially slow queries. Warming speed depends on warehouse size (bigger = faster) and table data size (bigger = longer).",
+        "distractors": {
+          "B": "No software update occurs on resume; the issue is purely cache-related.",
+          "D": "Interactive tables persist independently; they do not need re-creation after warehouse resume.",
+          "E": "Network reinitialization is not a documented factor in interactive warehouse resume latency."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A company converts their standard warehouse to Adaptive and wants to understand how billing works.",
+      "stem": "Which statement correctly describes the Adaptive Warehouse billing model?",
+      "options": [
+        {
+          "key": "A",
+          "text": "You are charged a fixed hourly rate based on MAX_QUERY_PERFORMANCE_LEVEL"
+        },
+        {
+          "key": "B",
+          "text": "You are charged per query based on compute and software resources used"
+        },
+        {
+          "key": "C",
+          "text": "You are charged per cluster-hour similar to multi-cluster warehouses"
+        },
+        {
+          "key": "D",
+          "text": "You are charged only when QUERY_THROUGHPUT_MULTIPLIER exceeds its limit"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Adaptive Warehouses use a query-based billing model where cost depends on factors like the amount of compute and software resources each query uses.",
+        "distractors": {
+          "A": "There is no fixed hourly rate; billing is per-query based on actual resources consumed.",
+          "C": "Adaptive Warehouses do not use cluster-based billing; they use per-query billing.",
+          "D": "Charges occur for all queries, not only when exceeding throughput limits."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A team creates an interactive materialized view on their interactive table to speed up a common aggregation query.",
+      "stem": "Which TWO requirements must be met for the interactive materialized view to work correctly? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Both the materialized view and base interactive table must be added to the same interactive warehouse"
+        },
+        {
+          "key": "B",
+          "text": "The materialized view must include a JOIN with at least one other table"
+        },
+        {
+          "key": "C",
+          "text": "The CREATE MATERIALIZED VIEW command must include the INTERACTIVE keyword"
+        },
+        {
+          "key": "D",
+          "text": "The materialized view must be smaller than 100GB"
+        },
+        {
+          "key": "E",
+          "text": "The base table must have a PRIMARY KEY defined"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Interactive materialized views require the INTERACTIVE keyword in CREATE MATERIALIZED VIEW, and both the view and its base interactive table must be added to the same interactive warehouse.",
+        "distractors": {
+          "B": "Joins are NOT supported in materialized views, whether interactive or standard.",
+          "D": "There is no documented 100GB size limit for interactive materialized views.",
+          "E": "No PRIMARY KEY is required on the base table."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "An Adaptive Warehouse is disabled due to a resource monitor action. The administrator wants to check why it was disabled.",
+      "stem": "Which TWO columns in the SHOW WAREHOUSES output are specific to Adaptive Warehouses? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "SCALING_POLICY"
+        },
+        {
+          "key": "D",
+          "text": "WAREHOUSE_SIZE"
+        },
+        {
+          "key": "C",
+          "text": "MAX_QUERY_PERFORMANCE_LEVEL"
+        },
+        {
+          "key": "B",
+          "text": "DISABLED_REASONS"
+        },
+        {
+          "key": "E",
+          "text": "MAX_CLUSTER_COUNT"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "DISABLED_REASONS and MAX_QUERY_PERFORMANCE_LEVEL are columns specific to Adaptive Warehouses in SHOW WAREHOUSES output.",
+        "distractors": {
+          "A": "SCALING_POLICY is a standard/multi-cluster warehouse property, shown as NULL for Adaptive Warehouses.",
+          "B": "WAREHOUSE_SIZE applies to standard warehouses and is shown as NULL for Adaptive Warehouses.",
+          "E": "MAX_CLUSTER_COUNT is a multi-cluster warehouse property, not specific to Adaptive."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A developer creates an interactive table with TARGET_LAG = '20 minutes' and specifies both WAREHOUSE and INITIALIZATION_WAREHOUSE.",
+      "stem": "What is the purpose of specifying a separate INITIALIZATION_WAREHOUSE?",
+      "options": [
+        {
+          "key": "A",
+          "text": "To run queries against the interactive table during initial setup"
+        },
+        {
+          "key": "B",
+          "text": "To handle the initial refresh which often processes more data, allowing use of a larger warehouse"
+        },
+        {
+          "key": "C",
+          "text": "To serve as a failover warehouse if the primary warehouse fails"
+        },
+        {
+          "key": "D",
+          "text": "To run DDL commands required during table creation"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "INITIALIZATION_WAREHOUSE runs the initial refresh on a separate (typically larger) warehouse since initial refreshes often process more data than ongoing maintenance refreshes.",
+        "distractors": {
+          "A": "Queries run through an interactive warehouse, not the initialization warehouse.",
+          "C": "INITIALIZATION_WAREHOUSE is not a failover mechanism; it handles only the first refresh.",
+          "D": "DDL commands use the standard warehouse context, not a separate initialization warehouse."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which THREE operations are NOT supported on interactive tables? (Select THREE)",
+      "options": [
+        {
+          "key": "D",
+          "text": "Adding a row access policy"
+        },
+        {
+          "key": "B",
+          "text": "Creating streams on the table"
+        },
+        {
+          "key": "C",
+          "text": "Using the table as a source for a dynamic table"
+        },
+        {
+          "key": "A",
+          "text": "UPDATE and DELETE DML commands"
+        },
+        {
+          "key": "E",
+          "text": "Renaming the table with ALTER TABLE"
+        },
+        {
+          "key": "F",
+          "text": "Querying with Time Travel"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Interactive tables do not support DML commands like UPDATE/DELETE, cannot be used with streams, and cannot serve as the source for a dynamic table.",
+        "distractors": {
+          "A": "Row access policies can be added to interactive tables via ALTER TABLE.",
+          "E": "Renaming an interactive table with ALTER TABLE is supported.",
+          "F": "Time Travel can be used with interactive tables."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "During property conversion from a standard warehouse to Adaptive, the system automatically computes MAX_QUERY_PERFORMANCE_LEVEL and QUERY_THROUGHPUT_MULTIPLIER.",
+      "stem": "Which property of the original standard warehouse does the system use to derive the Adaptive Warehouse settings?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Only the warehouse size"
+        },
+        {
+          "key": "B",
+          "text": "Only MAX_CLUSTER_COUNT and SCALING_POLICY"
+        },
+        {
+          "key": "C",
+          "text": "Warehouse size, MAX_CLUSTER_COUNT, QAS scale factor, and warehouse generation"
+        },
+        {
+          "key": "D",
+          "text": "The number of queries processed in the last 24 hours"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The system derives Adaptive properties from the original warehouse size, MAX_CLUSTER_COUNT (for multi-cluster), QAS scale factor, and warehouse generation (hardware/software generation).",
+        "distractors": {
+          "A": "Warehouse size alone is insufficient; multi-cluster settings and QAS configuration are also factored in.",
+          "B": "Warehouse size and generation are also used, not just cluster count and scaling policy.",
+          "D": "Query history is not used to derive the initial Adaptive Warehouse properties."
+        }
+      }
+    }
+  ]
+}

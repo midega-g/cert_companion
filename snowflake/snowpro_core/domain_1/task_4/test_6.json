@@ -1,0 +1,777 @@
+{
+  "label": "Warehouse Operations & Load Monitoring",
+  "order": 6,
+  "topic": "Virtual Warehouse Configuration",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What privilege is required to view the warehouse load monitoring chart in Snowsight?",
+      "options": [
+        {
+          "key": "A",
+          "text": "USAGE on the warehouse"
+        },
+        {
+          "key": "B",
+          "text": "OPERATE on the warehouse"
+        },
+        {
+          "key": "C",
+          "text": "OWNERSHIP of the warehouse"
+        },
+        {
+          "key": "D",
+          "text": "MONITOR on the warehouse"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "To view the load monitoring chart, you must use a role that has the MONITOR privilege on the warehouse.",
+        "distractors": {
+          "A": "USAGE allows running queries on the warehouse but does not grant access to the monitoring chart.",
+          "B": "OPERATE allows starting/stopping the warehouse but is not the required privilege for viewing load charts.",
+          "C": "OWNERSHIP provides full control but is not the minimum required privilege."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What is the maximum time range that the warehouse load monitoring chart can display in Snowsight?",
+      "options": [
+        {
+          "key": "A",
+          "text": "7 days"
+        },
+        {
+          "key": "B",
+          "text": "30 days"
+        },
+        {
+          "key": "C",
+          "text": "2 weeks"
+        },
+        {
+          "key": "D",
+          "text": "1 month"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The warehouse load monitoring chart displays data over a two-week (2 weeks) period maximum.",
+        "distractors": {
+          "A": "7 days is less than the maximum range of 2 weeks.",
+          "B": "30 days exceeds the 2-week maximum range.",
+          "D": "1 month exceeds the 2-week maximum range."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which SQL command changes the current warehouse for an active session?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SET WAREHOUSE = my_wh"
+        },
+        {
+          "key": "B",
+          "text": "ALTER SESSION SET DEFAULT_WAREHOUSE = my_wh"
+        },
+        {
+          "key": "C",
+          "text": "USE WAREHOUSE my_wh"
+        },
+        {
+          "key": "D",
+          "text": "SELECT CURRENT_WAREHOUSE(my_wh)"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "USE WAREHOUSE changes the current warehouse for the session at any time.",
+        "distractors": {
+          "A": "SET WAREHOUSE is not a valid SQL command.",
+          "B": "ALTER SESSION does not support a DEFAULT_WAREHOUSE parameter.",
+          "D": "CURRENT_WAREHOUSE() returns the name; it cannot set it."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which THREE privileges are equivalent to the MANAGE WAREHOUSES account-level privilege? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "USAGE on all warehouses"
+        },
+        {
+          "key": "B",
+          "text": "MODIFY on all warehouses"
+        },
+        {
+          "key": "C",
+          "text": "MONITOR on all warehouses"
+        },
+        {
+          "key": "D",
+          "text": "OPERATE on all warehouses"
+        },
+        {
+          "key": "E",
+          "text": "OWNERSHIP on all warehouses"
+        },
+        {
+          "key": "F",
+          "text": "CREATE WAREHOUSE on account"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "MANAGE WAREHOUSES is equivalent to granting MODIFY, MONITOR, and OPERATE privileges on all warehouses in the account.",
+        "distractors": {
+          "A": "USAGE allows running queries on a warehouse but is not part of MANAGE WAREHOUSES.",
+          "E": "OWNERSHIP grants full control including the ability to drop; it is not included in MANAGE WAREHOUSES.",
+          "F": "CREATE WAREHOUSE is a separate account-level privilege for creating new warehouses."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO operations does a virtual warehouse provide compute resources for? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Executing DDL commands like CREATE TABLE and ALTER TABLE"
+        },
+        {
+          "key": "B",
+          "text": "Loading data into tables using COPY INTO <table>"
+        },
+        {
+          "key": "C",
+          "text": "Executing SELECT statements that require compute resources"
+        },
+        {
+          "key": "D",
+          "text": "Managing user authentication and session tokens"
+        },
+        {
+          "key": "E",
+          "text": "Storing table data in micro-partitions"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Virtual warehouses provide compute resources for executing SQL SELECT statements and DML operations including loading data with COPY INTO <table>.",
+        "distractors": {
+          "A": "Most DDL commands are handled by the cloud services layer and do not require a running warehouse.",
+          "D": "Authentication and session management are handled by the cloud services layer, not warehouses.",
+          "E": "Data storage is handled by the storage layer, not the compute warehouse."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator notices that warehouse load has been consistently high with queuing during business hours, but nearly zero overnight.",
+      "stem": "Which TWO actions could address this pattern? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Create a separate warehouse and redirect some peak workload to it"
+        },
+        {
+          "key": "B",
+          "text": "Increase the auto-suspend timeout to keep the warehouse warm"
+        },
+        {
+          "key": "C",
+          "text": "Configure multi-cluster settings to add clusters during peak concurrency"
+        },
+        {
+          "key": "D",
+          "text": "Decrease the warehouse size to reduce credit usage"
+        },
+        {
+          "key": "E",
+          "text": "Disable auto-resume to prevent overnight startups"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Moving peak workload to a separate warehouse or configuring multi-cluster to add clusters during high concurrency are both recommended approaches for handling recurring peak loads.",
+        "distractors": {
+          "B": "Increasing auto-suspend does not help with peak concurrency; it only affects idle periods.",
+          "D": "Decreasing size would worsen the queuing problem during peak hours.",
+          "E": "Disabling auto-resume is unrelated to managing peak-hour concurrency."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A warehouse is currently running queries. An administrator executes ALTER WAREHOUSE my_wh SUSPEND.",
+      "stem": "What happens to the currently executing queries?",
+      "options": [
+        {
+          "key": "A",
+          "text": "All queries are immediately terminated and the warehouse shuts down"
+        },
+        {
+          "key": "B",
+          "text": "Idle resources shut down immediately; resources executing statements continue until statements complete, then shut down"
+        },
+        {
+          "key": "C",
+          "text": "The suspend command fails because queries are running"
+        },
+        {
+          "key": "D",
+          "text": "All queries are moved to a system queue and resumed when the warehouse restarts"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "When you suspend a warehouse, Snowflake immediately shuts down idle compute resources but allows resources executing statements to continue until completion, then shuts them down (quiesce mode).",
+        "distractors": {
+          "A": "Running queries are not immediately terminated; they complete before resources shut down.",
+          "C": "The suspend command does not fail; it initiates graceful shutdown.",
+          "D": "Queries are not moved to a queue; they complete on their current resources."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A data engineer wants to verify that new compute resources are fully provisioned after resizing their warehouse from Small to Large.",
+      "stem": "Which parameter should they add to the ALTER WAREHOUSE command?",
+      "options": [
+        {
+          "key": "A",
+          "text": "VALIDATE_RESOURCES = TRUE"
+        },
+        {
+          "key": "B",
+          "text": "WAIT_FOR_COMPLETION = TRUE"
+        },
+        {
+          "key": "C",
+          "text": "CONFIRM_PROVISIONING = TRUE"
+        },
+        {
+          "key": "D",
+          "text": "SYNCHRONOUS = TRUE"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The WAIT_FOR_COMPLETION parameter on ALTER WAREHOUSE ensures the command waits until all new compute resources are fully provisioned before returning.",
+        "distractors": {
+          "A": "VALIDATE_RESOURCES is not a valid ALTER WAREHOUSE parameter.",
+          "C": "CONFIRM_PROVISIONING is not a valid parameter.",
+          "D": "SYNCHRONOUS is not a valid ALTER WAREHOUSE parameter."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An Adaptive Warehouse has QUERY_THROUGHPUT_MULTIPLIER = 2. The administrator notices significant queuing during peak hours.",
+      "stem": "What should they do to reduce queuing?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Decrease MAX_QUERY_PERFORMANCE_LEVEL to free up resources"
+        },
+        {
+          "key": "B",
+          "text": "Increase QUERY_THROUGHPUT_MULTIPLIER to allow more concurrent work"
+        },
+        {
+          "key": "C",
+          "text": "Convert the warehouse back to standard and resize to X-Large"
+        },
+        {
+          "key": "D",
+          "text": "Set QUERY_THROUGHPUT_MULTIPLIER to -1"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Increasing QUERY_THROUGHPUT_MULTIPLIER raises the throughput budget, allowing more queries to run concurrently and reducing queuing.",
+        "distractors": {
+          "A": "Decreasing MAX_QUERY_PERFORMANCE_LEVEL limits per-query resources but doesn't directly address throughput/queuing.",
+          "C": "Converting back to standard requires manual sizing and loses the adaptive benefits.",
+          "D": "-1 is not a valid value; the multiplier is a non-negative integer (0 = unlimited)."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A company creates their first warehouse in a new Snowflake account and wants to understand when credits start being consumed.",
+      "stem": "Which TWO statements about credit consumption timing are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "C",
+          "text": "If some resources fail to provision, credits are only consumed for the successfully provisioned resources"
+        },
+        {
+          "key": "A",
+          "text": "Credits are consumed from the moment the CREATE WAREHOUSE command executes"
+        },
+        {
+          "key": "B",
+          "text": "Credits begin once all compute resources are provisioned for the warehouse"
+        },
+        {
+          "key": "D",
+          "text": "Credits are consumed only when the first query is submitted to the warehouse"
+        },
+        {
+          "key": "E",
+          "text": "Credits begin when the warehouse transitions from RESUMING to STARTED state"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "A warehouse begins consuming credits once all compute resources are provisioned. In the rare case when some resources fail to provision, the warehouse only consumes credits for the provisioned resources.",
+        "distractors": {
+          "B": "Credits do not start at command execution; they start after resources are provisioned.",
+          "D": "Credits are consumed as soon as resources are provisioned, regardless of whether queries have been submitted.",
+          "E": "The state transition is not the exact billing trigger; it is the provisioning of resources."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A Snowflake user initiates a session but no default warehouse is configured at the user level, client configuration file, or connection parameters.",
+      "stem": "What happens when the user tries to execute a SELECT query?",
+      "options": [
+        {
+          "key": "B",
+          "text": "The query fails because no warehouse is associated with the session"
+        },
+        {
+          "key": "A",
+          "text": "Snowflake assigns the account's smallest available warehouse automatically"
+        },
+        {
+          "key": "C",
+          "text": "The query runs on the cloud services layer without a warehouse"
+        },
+        {
+          "key": "D",
+          "text": "Snowflake prompts the user to select a warehouse before executing"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Until a session has a warehouse associated with it, queries cannot be submitted. Without any default configured, the query will fail.",
+        "distractors": {
+          "B": "Snowflake does not auto-assign a warehouse; the user must specify one.",
+          "C": "SELECT queries requiring compute resources cannot run on the cloud services layer alone.",
+          "D": "SQL sessions do not have interactive prompts; the query simply fails."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "An interactive warehouse has 10 interactive tables added to it via ALTER WAREHOUSE ADD TABLES. The team wants to add an 11th table.",
+      "stem": "Which TWO statements about the proactive warming limit for interactive warehouses are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Tables beyond the limit cannot be queried at all"
+        },
+        {
+          "key": "B",
+          "text": "The limit applies per cluster, not per warehouse"
+        },
+        {
+          "key": "C",
+          "text": "Tables beyond the limit can still be queried but without proactive cache warming"
+        },
+        {
+          "key": "D",
+          "text": "Proactive warming is limited to 10 interactive tables per warehouse"
+        },
+        {
+          "key": "E",
+          "text": "The limit is permanent and will never be increased"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Tables beyond the 10-table proactive warming limit can still be queried without proactive cache warming, and the limit is 10 interactive tables per warehouse. This is a temporary limitation.",
+        "distractors": {
+          "A": "Tables beyond the limit can still be queried; they just don't receive proactive cache warming.",
+          "B": "The limit is per warehouse, not per cluster.",
+          "E": "This is documented as a temporary limitation that will be increased in the future."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A team wants to understand the conversion limitations for Adaptive Warehouses.",
+      "stem": "Which TWO conversions are NOT supported for Adaptive Warehouses? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Converting from a standard Medium warehouse to Adaptive"
+        },
+        {
+          "key": "B",
+          "text": "Converting from an X5Large or X6Large warehouse to Adaptive"
+        },
+        {
+          "key": "C",
+          "text": "Converting from a Snowpark-optimized warehouse to Adaptive"
+        },
+        {
+          "key": "D",
+          "text": "Converting from a Gen2 standard Large warehouse to Adaptive"
+        },
+        {
+          "key": "E",
+          "text": "Converting from an X-Large multi-cluster warehouse to Adaptive"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Converting to or from X5Large/X6Large warehouses and converting to or from Snowpark-optimized or interactive warehouses are not supported for Adaptive Warehouses.",
+        "distractors": {
+          "A": "Converting a standard Medium warehouse to Adaptive is supported.",
+          "D": "Converting a Gen2 standard Large warehouse to Adaptive is supported.",
+          "E": "Converting an X-Large multi-cluster warehouse to Adaptive is supported."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A BI team uses an interactive warehouse with a fallback warehouse configured. A complex query takes 7 seconds on the interactive warehouse.",
+      "stem": "What happens to this query?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The query completes on the interactive warehouse after 7 seconds"
+        },
+        {
+          "key": "B",
+          "text": "The query is cancelled after 5 seconds and automatically retried on the fallback warehouse"
+        },
+        {
+          "key": "C",
+          "text": "The query fails with a timeout error returned to the client"
+        },
+        {
+          "key": "D",
+          "text": "The query is split between the interactive and fallback warehouses"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Interactive warehouses have a fixed 5-second statement timeout. With a fallback warehouse configured, queries exceeding this limit are automatically cancelled and retried on the fallback warehouse transparently.",
+        "distractors": {
+          "A": "The query cannot run for 7 seconds on an interactive warehouse; the timeout is 5 seconds.",
+          "C": "With a fallback warehouse configured, the query is retried rather than returning an error to the client.",
+          "D": "Queries are not split; they are retried entirely on the fallback warehouse."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A company has Adaptive Warehouses for different teams but wants to track per-query costs for their finance Adaptive Warehouse.",
+      "stem": "Which view provides per-query credit usage for Adaptive Warehouse workloads?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY"
+        },
+        {
+          "key": "B",
+          "text": "SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY"
+        },
+        {
+          "key": "D",
+          "text": "SNOWFLAKE.ACCOUNT_USAGE.QUERY_ACCELERATION_HISTORY"
+        },
+        {
+          "key": "C",
+          "text": "SNOWFLAKE.ACCOUNT_USAGE.QUERY_METERING_HISTORY"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "QUERY_METERING_HISTORY provides per-query credit usage for Adaptive Warehouse workloads, with latency of up to 1 hour.",
+        "distractors": {
+          "A": "WAREHOUSE_METERING_HISTORY provides aggregated warehouse-level credit usage, not per-query detail.",
+          "B": "QUERY_HISTORY shows query execution details but not credit costs per query.",
+          "C": "QUERY_ACCELERATION_HISTORY shows QAS billing data specifically, not general Adaptive Warehouse per-query costs."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator is comparing warehouse types to decide which fits their dashboard serving workload requiring sub-second response times at high concurrency.",
+      "stem": "Which TWO characteristics of interactive warehouses make them suitable for this workload? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "They use a local storage cache to serve queries with minimal remote reads"
+        },
+        {
+          "key": "B",
+          "text": "They automatically increase warehouse size based on query complexity"
+        },
+        {
+          "key": "C",
+          "text": "They support multi-cluster scaling for high-concurrency workloads"
+        },
+        {
+          "key": "D",
+          "text": "They eliminate the need for table clustering"
+        },
+        {
+          "key": "E",
+          "text": "They can run both standard tables and interactive tables simultaneously"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Interactive warehouses use local storage caching for low-latency reads and support multi-cluster scaling to handle high query concurrency.",
+        "distractors": {
+          "B": "Interactive warehouses do not automatically resize; you choose the size based on working set.",
+          "D": "Clustering is essential for interactive tables \u2014 the CLUSTER BY clause is required at creation.",
+          "E": "Interactive warehouses can only query interactive tables; standard tables require a standard warehouse."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A team creates a warehouse that starts in 'Suspended' state. They then execute ALTER WAREHOUSE my_wh RESUME.",
+      "stem": "What is the minimum period the warehouse will be billed for once it resumes?",
+      "options": [
+        {
+          "key": "C",
+          "text": "60 seconds"
+        },
+        {
+          "key": "B",
+          "text": "1 second"
+        },
+        {
+          "key": "A",
+          "text": "30 seconds"
+        },
+        {
+          "key": "D",
+          "text": "300 seconds"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Credits are billed per-second with a 60-second (1-minute) minimum each time the warehouse is resumed.",
+        "distractors": {
+          "B": "Per-second billing applies after the first 60 seconds; 1 second is below the minimum.",
+          "C": "30 seconds is below the minimum billing period of 60 seconds.",
+          "D": "300 seconds (5 minutes) is not the minimum billing period."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A newly created Adaptive Warehouse has not yet run any queries.",
+      "stem": "How much has the account been charged for this warehouse so far?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A minimum 1-hour charge for creating the warehouse"
+        },
+        {
+          "key": "B",
+          "text": "Nothing; charges start when the first query runs"
+        },
+        {
+          "key": "C",
+          "text": "A one-time creation fee based on MAX_QUERY_PERFORMANCE_LEVEL"
+        },
+        {
+          "key": "D",
+          "text": "Per-second charges from the moment of creation"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "You are not charged for creating an Adaptive Warehouse; charges start when the first query runs.",
+        "distractors": {
+          "A": "There is no minimum 1-hour charge for creation; billing is query-based.",
+          "C": "There is no one-time creation fee for Adaptive Warehouses.",
+          "D": "Per-second charges do not start until queries are executed."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which THREE query statuses are shown in the warehouse load monitoring bar chart? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Running"
+        },
+        {
+          "key": "B",
+          "text": "Compiling"
+        },
+        {
+          "key": "C",
+          "text": "Blocked"
+        },
+        {
+          "key": "D",
+          "text": "Queued (Provisioning)"
+        },
+        {
+          "key": "E",
+          "text": "Cancelled"
+        },
+        {
+          "key": "F",
+          "text": "Optimizing"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The warehouse load monitoring chart shows Running, Queued (Provisioning), Blocked, and Queued statuses. Three of these four are listed among the options.",
+        "distractors": {
+          "B": "Compiling is not a separate status shown in the load monitoring chart.",
+          "E": "Cancelled queries are not displayed as a status in the load chart.",
+          "F": "Optimizing is not a query status shown in the load monitoring chart."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An organization uses Adaptive Warehouses. For Adaptive Warehouses, QAS usage appears different in billing compared to standard warehouses.",
+      "stem": "How is QAS usage reported for Adaptive Warehouses?",
+      "options": [
+        {
+          "key": "A",
+          "text": "As a separate line item in the QUERY_ACCELERATION_HISTORY view"
+        },
+        {
+          "key": "B",
+          "text": "Included in compute credits and not shown as a separate credit column"
+        },
+        {
+          "key": "C",
+          "text": "Billed at double the rate of standard warehouse QAS"
+        },
+        {
+          "key": "D",
+          "text": "QAS is not available for Adaptive Warehouses"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "For Adaptive Warehouses, QAS usage is included in compute credits and does not appear as a separate credit column.",
+        "distractors": {
+          "A": "QUERY_ACCELERATION_HISTORY applies to standard warehouses where QAS is billed separately.",
+          "C": "There is no documented double-rate billing for Adaptive Warehouse QAS.",
+          "D": "QAS functionality is included in Adaptive Warehouses; it is managed automatically."
+        }
+      }
+    }
+  ]
+}

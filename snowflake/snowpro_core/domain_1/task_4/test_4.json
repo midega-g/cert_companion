@@ -1,0 +1,772 @@
+{
+  "label": "Multi-cluster Warehouses & Query Acceleration",
+  "order": 4,
+  "topic": "Virtual Warehouse Configuration",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What Snowflake edition is required to use multi-cluster warehouses?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Standard Edition"
+        },
+        {
+          "key": "B",
+          "text": "Business Critical Edition"
+        },
+        {
+          "key": "C",
+          "text": "Enterprise Edition"
+        },
+        {
+          "key": "D",
+          "text": "Virtual Private Snowflake"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Multi-cluster warehouses are an Enterprise Edition feature (or higher).",
+        "distractors": {
+          "A": "Standard Edition does not support multi-cluster warehouses.",
+          "B": "Business Critical Edition does support multi-cluster warehouses but the minimum required edition is Enterprise.",
+          "D": "VPS supports this feature but is not the minimum required edition."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What is the default scaling policy for a multi-cluster warehouse in Auto-scale mode?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Economy"
+        },
+        {
+          "key": "B",
+          "text": "Legacy"
+        },
+        {
+          "key": "C",
+          "text": "Aggressive"
+        },
+        {
+          "key": "D",
+          "text": "Standard"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The default scaling policy for multi-cluster warehouses is Standard, which favors starting additional clusters to prevent queuing.",
+        "distractors": {
+          "A": "Economy is an available policy but not the default; it conserves credits by tolerating some queuing.",
+          "B": "Legacy was a former policy that has been removed; warehouses using it now default to Standard.",
+          "C": "Aggressive is not a valid scaling policy name in Snowflake."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What is the default QUERY_ACCELERATION_MAX_SCALE_FACTOR when QAS is explicitly enabled using CREATE WAREHOUSE with ENABLE_QUERY_ACCELERATION = TRUE?",
+      "options": [
+        {
+          "key": "A",
+          "text": "2"
+        },
+        {
+          "key": "B",
+          "text": "4"
+        },
+        {
+          "key": "C",
+          "text": "8"
+        },
+        {
+          "key": "D",
+          "text": "Unlimited (0)"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "When you explicitly set ENABLE_QUERY_ACCELERATION = TRUE in CREATE WAREHOUSE, the default scale factor is 8.",
+        "distractors": {
+          "A": "A scale factor of 2 is the default when QAS is implicitly enabled for Gen2 or multi-cluster warehouses at creation time, not when explicitly enabled.",
+          "B": "4 is not the default scale factor in any scenario.",
+          "D": "A scale factor of 0 means unlimited but must be set explicitly; it is not the default."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO statements about multi-cluster warehouse modes are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Maximized mode requires MAX_CLUSTER_COUNT and MIN_CLUSTER_COUNT to be set to the same value greater than 1"
+        },
+        {
+          "key": "B",
+          "text": "Auto-scale mode requires MAX_CLUSTER_COUNT to be greater than MIN_CLUSTER_COUNT"
+        },
+        {
+          "key": "C",
+          "text": "In Maximized mode, clusters start and stop dynamically based on load"
+        },
+        {
+          "key": "D",
+          "text": "Auto-scale mode starts all clusters immediately when the warehouse resumes"
+        },
+        {
+          "key": "E",
+          "text": "Both modes require the Enterprise Edition or higher"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Maximized mode is enabled by setting the same value for both max and min clusters (greater than 1). Auto-scale mode requires the max to be greater than the min.",
+        "distractors": {
+          "C": "In Maximized mode, all clusters start when the warehouse starts and run continuously; they do not dynamically scale.",
+          "D": "Auto-scale mode starts clusters dynamically as load increases, not all at once on resume.",
+          "E": "While true, both modes are part of the multi-cluster feature which requires Enterprise Edition, but this describes a prerequisite not a mode behavior."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which THREE query patterns are eligible for acceleration by the Query Acceleration Service? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Queries with large scans and selective filters"
+        },
+        {
+          "key": "B",
+          "text": "Queries that use nondeterministic functions like RANDOM()"
+        },
+        {
+          "key": "C",
+          "text": "Queries that insert or copy large amounts of data"
+        },
+        {
+          "key": "D",
+          "text": "Queries with large scans and an aggregation"
+        },
+        {
+          "key": "E",
+          "text": "Queries with very small scans on few partitions"
+        },
+        {
+          "key": "F",
+          "text": "Queries with high-cardinality GROUP BY expressions"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "QAS accelerates queries with large scans and selective filters, queries with large scans and aggregations, and queries that insert/copy/update/delete large amounts of data.",
+        "distractors": {
+          "B": "Queries using nondeterministic functions like RANDOM() or SEQ are ineligible for query acceleration.",
+          "E": "If there aren't enough partitions to scan, the benefits of QAS are offset by resource acquisition latency, making queries ineligible.",
+          "F": "If the GROUP BY expression has too high cardinality, the query becomes ineligible for acceleration."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A company runs a Medium-size multi-cluster warehouse with a maximum of 3 clusters in Auto-scale mode. During peak hours, all 3 clusters run for a full hour.",
+      "stem": "Which TWO statements about credit consumption for this warehouse are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Each cluster consumes 4 credits per full hour"
+        },
+        {
+          "key": "B",
+          "text": "The total consumption for one full hour at peak is 12 credits"
+        },
+        {
+          "key": "C",
+          "text": "Only the first cluster consumes credits; additional clusters are free"
+        },
+        {
+          "key": "D",
+          "text": "Credits are calculated by multiplying warehouse size credits by the number of running clusters"
+        },
+        {
+          "key": "E",
+          "text": "The total consumption for one full hour at peak is 8 credits"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A Medium warehouse uses 4 credits per hour per cluster. With 3 clusters running, total is 12 credits (4 x 3). Credits are calculated by multiplying the warehouse size credits by the number of running clusters.",
+        "distractors": {
+          "A": "While 4 credits per hour per cluster is correct for Medium, this option is not one of the required answers because the question asks about the overall billing model.",
+          "C": "All running clusters consume credits; additional clusters are not free.",
+          "E": "8 credits would be 2 clusters of a Medium warehouse; with 3 clusters the total is 12."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator sets the Economy scaling policy on a multi-cluster warehouse running in Auto-scale mode.",
+      "stem": "Under what condition does the Economy policy start a new cluster?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Immediately when any query enters the queue"
+        },
+        {
+          "key": "B",
+          "text": "When the system estimates there is enough query load to keep the cluster busy for at least 10 minutes"
+        },
+        {
+          "key": "C",
+          "text": "When the system estimates there is enough query load to keep the cluster busy for at least 6 minutes"
+        },
+        {
+          "key": "D",
+          "text": "Only when all existing clusters reach 100% utilization"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The Economy policy starts a new cluster only if the system estimates there is enough query load to keep the cluster busy for at least 6 minutes.",
+        "distractors": {
+          "A": "Starting immediately when a query queues describes the Standard policy behavior, not Economy.",
+          "B": "The threshold is 6 minutes, not 10 minutes.",
+          "D": "The Economy policy does not require 100% utilization; it uses the 6-minute load estimate."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A data engineer sets the QAS scale factor to 5 on a Medium warehouse that costs 4 credits per hour.",
+      "stem": "What is the maximum additional cost per hour that the Query Acceleration Service can consume for this warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "5 credits per hour"
+        },
+        {
+          "key": "B",
+          "text": "20 credits per hour"
+        },
+        {
+          "key": "C",
+          "text": "10 credits per hour"
+        },
+        {
+          "key": "D",
+          "text": "4 credits per hour"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The scale factor is a multiplier based on warehouse size. A Medium warehouse costs 4 credits/hour, so a scale factor of 5 means up to 20 additional credits per hour (4 x 5).",
+        "distractors": {
+          "A": "5 credits would imply a scale factor times 1 credit, but Medium warehouses cost 4 credits per hour.",
+          "C": "10 credits would imply a scale factor of 2.5, not 5.",
+          "D": "4 credits is the base warehouse cost, not the additional QAS cost."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator wants to identify which warehouse in their account would benefit most from enabling Query Acceleration Service.",
+      "stem": "Which view should they query to find warehouses with the most eligible queries?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY"
+        },
+        {
+          "key": "B",
+          "text": "SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY"
+        },
+        {
+          "key": "C",
+          "text": "SNOWFLAKE.ACCOUNT_USAGE.QUERY_ACCELERATION_ELIGIBLE"
+        },
+        {
+          "key": "D",
+          "text": "SNOWFLAKE.ACCOUNT_USAGE.QUERY_ACCELERATION_HISTORY"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The QUERY_ACCELERATION_ELIGIBLE view identifies queries and warehouses that might benefit most from the query acceleration service, including the eligible execution time.",
+        "distractors": {
+          "A": "QUERY_HISTORY shows query execution details but does not specifically identify QAS eligibility.",
+          "B": "WAREHOUSE_METERING_HISTORY shows credit consumption, not QAS eligibility.",
+          "D": "QUERY_ACCELERATION_HISTORY shows billing data for queries that already used QAS, not those that could benefit from enabling it."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A warehouse has QAS enabled with a scale factor of 8. A query runs and the QUERY_HISTORY view shows QUERY_ACCELERATION_BYTES_SCANNED is greater than 0.",
+      "stem": "What does this indicate?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The query was entirely offloaded to the QAS service"
+        },
+        {
+          "key": "B",
+          "text": "The query failed and was retried by QAS"
+        },
+        {
+          "key": "C",
+          "text": "The query was accelerated and QAS scanned data on behalf of the query"
+        },
+        {
+          "key": "D",
+          "text": "The query exceeded the scale factor limit and was throttled"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A non-zero value in QUERY_ACCELERATION_BYTES_SCANNED indicates that the query acceleration service scanned data on behalf of the query, meaning portions of the query were offloaded to QAS compute resources.",
+        "distractors": {
+          "A": "QAS offloads portions of eligible query work, not the entire query.",
+          "B": "QAS does not retry failed queries; it accelerates portions of eligible ones.",
+          "D": "Exceeding the scale factor would prevent QAS from being used, not produce scanned bytes."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An X-Large multi-cluster warehouse needs to handle extreme concurrency spikes during end-of-quarter reporting.",
+      "stem": "What is the maximum number of clusters allowed for an X-Large multi-cluster warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "10"
+        },
+        {
+          "key": "B",
+          "text": "40"
+        },
+        {
+          "key": "C",
+          "text": "80"
+        },
+        {
+          "key": "D",
+          "text": "300"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The maximum number of clusters for an X-Large warehouse is 80.",
+        "distractors": {
+          "A": "10 is the default limit, but X-Large warehouses can go up to 80 clusters.",
+          "B": "40 is the maximum cluster count for a 2X-Large warehouse, not X-Large.",
+          "D": "300 is the maximum for X-Small, Small, and Medium warehouses."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A team is reviewing their warehouse load monitoring chart and sees a total query load of less than 1 for extended periods while the warehouse remains running.",
+      "stem": "Which TWO actions should they consider to reduce unnecessary credit consumption? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Increase the warehouse size to process queries faster"
+        },
+        {
+          "key": "B",
+          "text": "Decrease the warehouse size"
+        },
+        {
+          "key": "C",
+          "text": "Enable the Query Acceleration Service"
+        },
+        {
+          "key": "D",
+          "text": "For a multi-cluster warehouse, decrease the MIN_CLUSTER_COUNT"
+        },
+        {
+          "key": "E",
+          "text": "Increase the auto-suspend timeout to keep the warehouse warm longer"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "When query load is consistently below 1, the warehouse is overprovisioned. Decreasing the warehouse size or reducing MIN_CLUSTER_COUNT for multi-cluster warehouses helps reduce unnecessary credit usage.",
+        "distractors": {
+          "A": "Increasing size would consume more credits without benefit since load is already low.",
+          "C": "QAS helps with outlier queries, not with overall underutilization.",
+          "E": "Increasing auto-suspend timeout would keep the warehouse running longer, increasing costs rather than reducing them."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A warehouse's load monitoring chart shows queries in the 'Queued (Provisioning)' status.",
+      "stem": "What does this status indicate?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Queries are waiting because the warehouse is overloaded with too many concurrent queries"
+        },
+        {
+          "key": "B",
+          "text": "Queries are blocked by a transaction lock held by another query"
+        },
+        {
+          "key": "C",
+          "text": "Queries are waiting while the warehouse provisions compute resources, typically in the first minutes after resume"
+        },
+        {
+          "key": "D",
+          "text": "Queries are waiting for the Query Acceleration Service to allocate shared resources"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Queued (Provisioning) means queries are waiting while the warehouse provisions compute resources. This typically occurs only in the first few minutes after a warehouse resumes.",
+        "distractors": {
+          "A": "Waiting due to warehouse overload is shown as 'Queued' status, not 'Queued (Provisioning)'.",
+          "B": "Queries blocked by transaction locks are shown as 'Blocked' status.",
+          "D": "QAS resource allocation is not shown as a separate status in the load chart."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator uses the SYSTEM$ESTIMATE_QUERY_ACCELERATION function on a query and receives the status 'ineligible' with ineligibleReason 'NO_LARGE_ENOUGH_SCAN'.",
+      "stem": "What does this ineligibility reason indicate?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The query's filters are too selective, leaving no data to scan"
+        },
+        {
+          "key": "B",
+          "text": "The query does not scan enough partitions to benefit from QAS because the overhead would offset any acceleration"
+        },
+        {
+          "key": "C",
+          "text": "The query uses an unsupported SQL function"
+        },
+        {
+          "key": "D",
+          "text": "The warehouse size is too small to support QAS"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "NO_LARGE_ENOUGH_SCAN means there aren't enough partitions in the scan for QAS to provide a benefit, since the latency in acquiring QAS resources would offset any acceleration gained.",
+        "distractors": {
+          "A": "Overly selective filters would simply return fewer results quickly; the reason is about partition count, not selectivity.",
+          "C": "Unsupported functions would produce a different ineligibility reason related to nondeterminism.",
+          "D": "Warehouse size does not determine QAS eligibility; the query workload characteristics do."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A company has a Standard scaling policy on their multi-cluster warehouse with MAX_CLUSTER_COUNT set to 15.",
+      "stem": "Which TWO behaviors describe how the Standard scaling policy manages clusters when MAX_CLUSTER_COUNT exceeds 10? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Snowflake starts multiple clusters at once to accommodate rapid workload increases"
+        },
+        {
+          "key": "B",
+          "text": "Snowflake starts one cluster at a time regardless of workload increase speed"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake may shut down multiple clusters at a time when load decreases"
+        },
+        {
+          "key": "D",
+          "text": "Snowflake always shuts down clusters one at a time"
+        },
+        {
+          "key": "E",
+          "text": "Snowflake requires manual intervention to scale beyond 10 clusters"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "When MAX_CLUSTER_COUNT exceeds 10, the Standard policy starts multiple clusters at once to handle rapid workload increases, and may shut down multiple clusters at a time when load decreases.",
+        "distractors": {
+          "B": "One cluster at a time applies when MAX_CLUSTER_COUNT is 10 or less; above 10, multiple clusters start together.",
+          "D": "One at a time shutdown applies when cluster count is 10 or less; above 10, multiple clusters may shut down together.",
+          "E": "Scaling is fully automatic with the Standard policy; no manual intervention is required."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO statements about how warehouse query load is calculated are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Load equals the number of concurrent users divided by warehouse cluster count"
+        },
+        {
+          "key": "B",
+          "text": "Load is calculated by dividing total execution time of queries by the interval duration"
+        },
+        {
+          "key": "C",
+          "text": "A total warehouse load of 1.0 indicates the warehouse is operating at full capacity for the interval"
+        },
+        {
+          "key": "D",
+          "text": "Load is measured as a percentage of CPU utilization across compute nodes"
+        },
+        {
+          "key": "E",
+          "text": "Query load can exceed 1.0 when the warehouse has queued queries"
+        }
+      ],
+      "correct": [
+        "B",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Query load is calculated by dividing execution time (in seconds) of all queries by the total interval time (in seconds). Load can exceed 1.0 because queued queries add to the total load beyond what running queries contribute.",
+        "distractors": {
+          "A": "Load is time-based, not based on user counts divided by cluster count.",
+          "C": "A load of 1.0 does not specifically mean 'full capacity'; it means the average equivalent of one query was always running or queued during the interval.",
+          "D": "Query load is not a CPU utilization metric; it measures time-based query processing density."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator alters an existing single-cluster Gen1 warehouse to become a multi-cluster warehouse by increasing MAX_CLUSTER_COUNT to 5.",
+      "stem": "What happens to the Query Acceleration Service setting on this warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "QAS is automatically enabled with a scale factor of 2"
+        },
+        {
+          "key": "B",
+          "text": "QAS is automatically enabled with a scale factor of 8"
+        },
+        {
+          "key": "C",
+          "text": "QAS remains in its previous state; it is not automatically enabled"
+        },
+        {
+          "key": "D",
+          "text": "QAS is disabled because it is incompatible with multi-cluster mode"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Altering an existing single-cluster warehouse to multi-cluster does NOT enable QAS. QAS remains in its previous state.",
+        "distractors": {
+          "A": "QAS with scale factor 2 is only automatically enabled when creating a new multi-cluster warehouse, not when altering an existing one.",
+          "B": "Scale factor 8 is the default when explicitly setting ENABLE_QUERY_ACCELERATION = TRUE, not from altering cluster count.",
+          "D": "QAS is compatible with multi-cluster warehouses; it simply isn't automatically enabled during the conversion."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A data platform team wants to evaluate whether QAS is actually helping their warehouse workloads after enabling it last month.",
+      "stem": "Which TWO columns in the QUERY_HISTORY view indicate that a query was accelerated by QAS? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "QUERY_ACCELERATION_BYTES_SCANNED"
+        },
+        {
+          "key": "B",
+          "text": "QUERY_ACCELERATION_ELIGIBLE_TIME"
+        },
+        {
+          "key": "C",
+          "text": "QUERY_ACCELERATION_PARTITIONS_SCANNED"
+        },
+        {
+          "key": "D",
+          "text": "QUERY_ACCELERATION_CREDITS_USED"
+        },
+        {
+          "key": "E",
+          "text": "QUERY_ACCELERATION_SCALE_FACTOR_USED"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "QUERY_ACCELERATION_BYTES_SCANNED and QUERY_ACCELERATION_PARTITIONS_SCANNED in the QUERY_HISTORY view show data scanned by QAS, indicating the query was accelerated.",
+        "distractors": {
+          "B": "QUERY_ACCELERATION_ELIGIBLE_TIME is not a column in QUERY_HISTORY; eligible time is in the QUERY_ACCELERATION_ELIGIBLE view.",
+          "D": "QUERY_ACCELERATION_CREDITS_USED is not a column in QUERY_HISTORY; credit data is in QUERY_ACCELERATION_HISTORY.",
+          "E": "QUERY_ACCELERATION_UPPER_LIMIT_SCALE_FACTOR exists in QUERY_HISTORY but indicates the upper limit, not whether acceleration occurred."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A multi-cluster warehouse with MAX_CLUSTER_COUNT = 5 and MIN_CLUSTER_COUNT = 2 is running in Auto-scale mode. The administrator reduces MIN_CLUSTER_COUNT to 1 while 3 clusters are currently running.",
+      "stem": "Which TWO statements correctly describe what happens when MIN_CLUSTER_COUNT is reduced below the current number of running clusters? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Excess clusters immediately shut down regardless of running queries"
+        },
+        {
+          "key": "B",
+          "text": "Excess clusters shut down only after finishing executing statements and meeting scaling policy conditions"
+        },
+        {
+          "key": "C",
+          "text": "The warehouse is suspended and restarted with the new minimum"
+        },
+        {
+          "key": "D",
+          "text": "The change takes effect dynamically without suspending the warehouse"
+        },
+        {
+          "key": "E",
+          "text": "All queries are redistributed across fewer clusters immediately"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Excess clusters shut down when they finish executing current statements and the scaling policy conditions are met. The change is applied dynamically without suspending the warehouse.",
+        "distractors": {
+          "A": "Clusters are not immediately shut down; they finish current work first.",
+          "C": "The warehouse continues running; it is not suspended for this change.",
+          "E": "Queries are not redistributed; existing queries complete on their current clusters."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A company enabled QAS and also has search optimization on the same table. An analyst queries this table with a selective filter on a large dataset.",
+      "stem": "How do these two features interact when processing this query?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Only one feature can be active at a time; QAS takes priority over search optimization"
+        },
+        {
+          "key": "B",
+          "text": "Search optimization prunes micro-partitions first, then QAS can offload remaining eligible work to shared compute"
+        },
+        {
+          "key": "C",
+          "text": "QAS replaces search optimization entirely when both are enabled"
+        },
+        {
+          "key": "D",
+          "text": "The features conflict and may cause the query to fail with an error"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Query acceleration and search optimization work together: search optimization first prunes micro-partitions not needed for the query, then QAS can offload portions of the remaining work to shared compute resources for eligible queries.",
+        "distractors": {
+          "A": "Both features can be active simultaneously; one does not take priority over the other.",
+          "C": "QAS does not replace search optimization; they complement each other.",
+          "D": "The features are compatible and designed to work together without conflicts."
+        }
+      }
+    }
+  ]
+}
