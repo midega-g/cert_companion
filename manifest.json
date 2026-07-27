@@ -358,7 +358,7 @@
                     },
                     {
                       "id": "test_2",
-                      "label": "Organization Account Management \u2014 Part A",
+                      "label": "Organizations & Org Accounts \u2014 Part B",
                       "path": "snowflake/snowpro_core/domain_1/task_3/test_2.json"
                     },
                     {
@@ -368,7 +368,7 @@
                     },
                     {
                       "id": "test_4",
-                      "label": "User Management & Domain Verification \u2014 Part A",
+                      "label": "Accounts, Identifiers & Connectivity \u2014 Part B",
                       "path": "snowflake/snowpro_core/domain_1/task_3/test_4.json"
                     }
                   ]
