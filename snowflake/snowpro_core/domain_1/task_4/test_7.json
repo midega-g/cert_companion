@@ -1,0 +1,772 @@
+{
+  "label": "Virtual Warehouse Configuration \u2014 Supplemental",
+  "order": 7,
+  "topic": "Virtual Warehouse Configuration",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "How is the Query Acceleration Service billed for standard warehouses?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Included in the warehouse's per-hour credit consumption"
+        },
+        {
+          "key": "B",
+          "text": "Billed separately as a serverless feature by the second, only when the service is in use"
+        },
+        {
+          "key": "C",
+          "text": "Charged at a flat monthly rate per warehouse with QAS enabled"
+        },
+        {
+          "key": "D",
+          "text": "Billed per query that is eligible for acceleration, regardless of whether QAS is used"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "QAS consumes credits as a serverless feature, billed by the second only when the service is actively in use. These credits are billed separately from warehouse usage.",
+        "distractors": {
+          "A": "QAS credits are billed separately from the warehouse's own compute credits for standard warehouses.",
+          "C": "There is no flat monthly rate; billing is per-second when the service is active.",
+          "D": "Billing only occurs when QAS resources are actually used, not merely when a query is eligible."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "What Snowflake edition is required to use Adaptive Warehouses?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Standard Edition"
+        },
+        {
+          "key": "B",
+          "text": "Business Critical Edition"
+        },
+        {
+          "key": "C",
+          "text": "Enterprise Edition (or higher)"
+        },
+        {
+          "key": "D",
+          "text": "Any edition with the Adaptive Compute add-on"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Adaptive Warehouses require Enterprise Edition or higher.",
+        "distractors": {
+          "A": "Standard Edition does not support Adaptive Warehouses.",
+          "B": "Business Critical supports them but the minimum required is Enterprise.",
+          "D": "There is no separate add-on; it is an edition-level feature."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "When creating a warehouse using CREATE WAREHOUSE, what states can it be created in initially?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Only in Started state"
+        },
+        {
+          "key": "B",
+          "text": "Only in Suspended state"
+        },
+        {
+          "key": "C",
+          "text": "Either Started or Suspended state"
+        },
+        {
+          "key": "D",
+          "text": "In a Provisioning state that transitions to Started automatically"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "When creating a warehouse, you can specify whether it is created initially in the Started (running) or Suspended state.",
+        "distractors": {
+          "A": "Warehouses can also be created in the Suspended state to avoid immediate credit consumption.",
+          "B": "Warehouses can be created in Started state to be immediately available.",
+          "D": "There is no separate Provisioning initial state; you choose Started or Suspended."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO operations are NOT supported in interactive warehouses? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Running SELECT queries on interactive tables"
+        },
+        {
+          "key": "B",
+          "text": "Using the pipe operator (->>)"
+        },
+        {
+          "key": "C",
+          "text": "Executing CALL commands to invoke stored procedures"
+        },
+        {
+          "key": "D",
+          "text": "Running queries with WHERE clause filters"
+        },
+        {
+          "key": "E",
+          "text": "Using multi-cluster scaling for concurrency"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Interactive warehouses do not support CALL commands for stored procedures or the pipe operator (->>) since it uses stored procedures behind the scenes.",
+        "distractors": {
+          "A": "SELECT queries on interactive tables are the primary use case for interactive warehouses.",
+          "D": "WHERE clause filters are fully supported and encouraged for selective queries.",
+          "E": "Interactive warehouses support multi-cluster scaling for high-concurrency workloads."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which TWO cost management recommendations apply to the SYSTEM$STREAMLIT_NOTEBOOK_WH warehouse? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Direct SQL queries from notebooks to a separate customer-managed warehouse"
+        },
+        {
+          "key": "B",
+          "text": "Use SYSTEM$STREAMLIT_NOTEBOOK_WH exclusively for all SQL analytics"
+        },
+        {
+          "key": "C",
+          "text": "Use a single shared warehouse for all Notebook apps to enhance bin-packing efficiency"
+        },
+        {
+          "key": "D",
+          "text": "Increase the warehouse size to X-Large for better notebook performance"
+        },
+        {
+          "key": "E",
+          "text": "Disable the warehouse to save costs when notebooks are not in use"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "SQL queries from notebooks should be directed to a separate customer-managed warehouse, and using a single shared warehouse for all Notebook apps enhances bin-packing efficiency and reduces cluster fragmentation.",
+        "distractors": {
+          "B": "SYSTEM$STREAMLIT_NOTEBOOK_WH should be used for notebook workloads, not all SQL analytics.",
+          "D": "The system warehouse is X-Small by design; sizing is managed by Snowflake.",
+          "E": "The warehouse is system-managed; disabling it is not a recommended approach."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": null,
+      "stem": "Which THREE statements about interactive warehouse billing are correct? (Select THREE)",
+      "options": [
+        {
+          "key": "D",
+          "text": "Auto-scaled clusters also have a 1-hour minimum billing period each"
+        },
+        {
+          "key": "B",
+          "text": "After the first hour, billing is per-second"
+        },
+        {
+          "key": "C",
+          "text": "Suspending and resuming multiple times within a short period results in multiple minimum-hour charges"
+        },
+        {
+          "key": "A",
+          "text": "The minimum billable period on resume is one hour"
+        },
+        {
+          "key": "E",
+          "text": "The billing model is identical to standard warehouses with a 60-second minimum"
+        },
+        {
+          "key": "F",
+          "text": "Interactive warehouses are billed per query like Adaptive Warehouses"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Interactive warehouses have a 1-hour minimum on resume with per-second billing thereafter. Suspending and resuming repeatedly results in multiple 1-hour minimum charges, which is why the 24-hour minimum auto-suspend exists.",
+        "distractors": {
+          "A": "Auto-scaled clusters have a 1-hour minimum billing per cluster, but they remain until spun down \u2014 this describes scaling, not the resume billing model.",
+          "E": "Standard warehouses have a 60-second minimum; interactive warehouses have a 1-hour minimum.",
+          "F": "Interactive warehouses are not billed per query; they use time-based compute billing."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A team is running many short, simple queries on their interactive warehouse and wants to achieve higher concurrency.",
+      "stem": "Which parameter should they increase to improve concurrent query throughput?",
+      "options": [
+        {
+          "key": "A",
+          "text": "STATEMENT_TIMEOUT_IN_SECONDS"
+        },
+        {
+          "key": "B",
+          "text": "MAX_CONCURRENCY_LEVEL"
+        },
+        {
+          "key": "C",
+          "text": "QUERY_THROUGHPUT_MULTIPLIER"
+        },
+        {
+          "key": "D",
+          "text": "MAX_CLUSTER_COUNT"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Setting MAX_CONCURRENCY_LEVEL to a higher value allows more short, simple queries to run concurrently on an interactive warehouse.",
+        "distractors": {
+          "A": "STATEMENT_TIMEOUT_IN_SECONDS controls how long a query can run, not concurrency levels.",
+          "C": "QUERY_THROUGHPUT_MULTIPLIER is an Adaptive Warehouse property, not an interactive warehouse parameter.",
+          "D": "MAX_CLUSTER_COUNT helps with scaling but MAX_CONCURRENCY_LEVEL directly controls per-cluster concurrency for short queries."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A developer notices that the first execution of a new query shape on their interactive warehouse takes significantly longer than subsequent executions of similar queries.",
+      "stem": "What technique should they use to ensure similar queries share a warm compilation cache?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Use bind variables instead of embedding literal values in SQL text"
+        },
+        {
+          "key": "B",
+          "text": "Pre-execute all expected query shapes during warehouse warm-up"
+        },
+        {
+          "key": "C",
+          "text": "Increase the warehouse size to allocate more compilation resources"
+        },
+        {
+          "key": "D",
+          "text": "Enable the Query Acceleration Service for faster compilation"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Using bind variables ensures that queries differing only in literal values share the same query shape, allowing them to benefit from a single warm compilation cache entry.",
+        "distractors": {
+          "B": "There is no formal pre-execution mechanism for warming query metadata caches.",
+          "C": "Warehouse size does not directly improve compilation cache behavior.",
+          "D": "QAS accelerates data scanning, not query compilation."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator wants to add search optimization to their interactive table to improve point lookup queries that filter on a UUID column.",
+      "stem": "Why is search optimization recommended for this use case?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Search optimization replaces the CLUSTER BY requirement for interactive tables"
+        },
+        {
+          "key": "B",
+          "text": "It enables point lookups that filter on a single column to retrieve one or few rows efficiently"
+        },
+        {
+          "key": "C",
+          "text": "It converts the interactive table to a hybrid table for faster lookups"
+        },
+        {
+          "key": "D",
+          "text": "It pre-computes aggregations on the UUID column"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Search optimization is recommended for point lookup queries on interactive tables \u2014 queries that filter on a single column to retrieve one or a few rows of data, like WHERE some_id = some_UUID.",
+        "distractors": {
+          "A": "Search optimization does not replace CLUSTER BY; both can be used together for different query patterns.",
+          "C": "Search optimization does not convert table types.",
+          "D": "Search optimization optimizes lookups, not aggregations."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A company resizes their multi-cluster warehouse from Medium to Large while it is running with 3 clusters active.",
+      "stem": "Which TWO statements about resizing a multi-cluster warehouse are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The new size applies only to clusters started after the resize"
+        },
+        {
+          "key": "B",
+          "text": "The new size applies to all clusters, including those currently running"
+        },
+        {
+          "key": "C",
+          "text": "The warehouse must be suspended before resizing with multiple clusters active"
+        },
+        {
+          "key": "D",
+          "text": "Resizing can be performed while the warehouse is running and executing statements"
+        },
+        {
+          "key": "E",
+          "text": "Each cluster can be independently sized after the resize"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The new size applies to all clusters including currently running ones, and a warehouse can be resized at any time even while running and processing statements.",
+        "distractors": {
+          "A": "All clusters receive the new size, not just newly started ones.",
+          "C": "Suspension is not required; resizing is allowed while running.",
+          "E": "All clusters in a multi-cluster warehouse share the same size; they cannot be independently sized."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A team uses an interactive table with TARGET_LAG set to auto-refresh from a source table. They also want to apply a storage lifecycle policy to expire old rows.",
+      "stem": "Which TWO statements about this configuration are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "TARGET_LAG and storage lifecycle policies cannot be used together on the same interactive table"
+        },
+        {
+          "key": "B",
+          "text": "Both features work together seamlessly with no restrictions"
+        },
+        {
+          "key": "C",
+          "text": "The recommended approach is to apply DML to the source table and let auto-refresh handle changes"
+        },
+        {
+          "key": "D",
+          "text": "Storage lifecycle policies require disabling TARGET_LAG first"
+        },
+        {
+          "key": "E",
+          "text": "You can use either TARGET_LAG or a storage lifecycle policy, but not both"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Storage lifecycle policies cannot be used on interactive tables that use auto-refresh (TARGET_LAG). The recommended workflow is to apply changes to the source table and let the auto-refresh mechanism propagate them.",
+        "distractors": {
+          "B": "They cannot work together; using both is not supported.",
+          "D": "You don't need to disable TARGET_LAG first \u2014 the constraint is that you simply cannot have both.",
+          "E": "This is essentially correct but A states it more precisely that they 'cannot be used together' rather than implying a choice."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An organization uses interactive warehouses with account replication for disaster recovery. They fail over to the secondary region.",
+      "stem": "What must they ensure in the target region for consistent interactive warehouse performance?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The interactive warehouse automatically resumes with full performance on failover"
+        },
+        {
+          "key": "B",
+          "text": "They must keep the interactive warehouse running in the target region to maintain cache"
+        },
+        {
+          "key": "C",
+          "text": "They must manually re-create the interactive tables in the target region"
+        },
+        {
+          "key": "D",
+          "text": "Performance is guaranteed identical after failover with no action required"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Due to cache warming requirements, the interactive warehouse performance in the target region is not guaranteed unless you keep the warehouse running. You must keep it running in the target region for consistent performance.",
+        "distractors": {
+          "A": "Auto-resume works but cache warming means performance is degraded until warm.",
+          "C": "Interactive tables are replicated with the replication group; manual re-creation is not needed.",
+          "D": "Performance is NOT guaranteed to be identical because the data cache needs warming."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A Snowflake administrator wants to understand the relationship between QAS scale factor defaults for different warehouse creation methods.",
+      "stem": "Which TWO statements about QAS scale factor defaults are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Explicitly setting ENABLE_QUERY_ACCELERATION = TRUE results in a default scale factor of 8"
+        },
+        {
+          "key": "B",
+          "text": "Gen2 warehouses created with implicit QAS enablement get a default scale factor of 8"
+        },
+        {
+          "key": "C",
+          "text": "Multi-cluster warehouses created with implicit QAS enablement get a default scale factor of 2"
+        },
+        {
+          "key": "D",
+          "text": "Setting the scale factor to 0 disables QAS entirely"
+        },
+        {
+          "key": "E",
+          "text": "The scale factor cannot be changed after warehouse creation"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "When you explicitly enable QAS, the default scale factor is 8. When QAS is implicitly enabled at creation time for Gen2 or multi-cluster warehouses, the default is 2.",
+        "distractors": {
+          "B": "Gen2 warehouses with implicit QAS enablement get a scale factor of 2, not 8.",
+          "D": "Setting scale factor to 0 removes the upper bound limit (unlimited), it does not disable QAS.",
+          "E": "The scale factor can be changed at any time using ALTER WAREHOUSE."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A QAS-enabled warehouse shows a nonzero value for bytes_spilled_to_remote_storage in the QUERY_HISTORY view, even for queries that weren't accelerated.",
+      "stem": "What explains this behavior?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The warehouse is undersized and needs to be scaled up"
+        },
+        {
+          "key": "B",
+          "text": "QAS writes a small amount of data to remote storage for each eligible query, even if QAS isn't used for that query"
+        },
+        {
+          "key": "C",
+          "text": "This indicates a QAS malfunction that should be reported to Snowflake Support"
+        },
+        {
+          "key": "D",
+          "text": "The query results exceed local cache capacity"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "When QAS is enabled, Snowflake writes a small amount of data to remote storage for each eligible query, even if QAS isn't used for that query. A nonzero bytes_spilled_to_remote_storage is expected and not a concern.",
+        "distractors": {
+          "A": "This is expected QAS behavior, not a sign of undersizing.",
+          "C": "This is documented normal behavior, not a malfunction.",
+          "D": "The spill is due to QAS intermediary operations, not cache overflow."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A team wants to use INSERT OVERWRITE on their interactive table to replace all data.",
+      "stem": "Is this operation supported on interactive tables?",
+      "options": [
+        {
+          "key": "A",
+          "text": "No, all DML operations including INSERT OVERWRITE are blocked"
+        },
+        {
+          "key": "B",
+          "text": "Yes, INSERT OVERWRITE is the only DML operation supported on interactive tables"
+        },
+        {
+          "key": "C",
+          "text": "Yes, all INSERT variants are supported but UPDATE and DELETE are not"
+        },
+        {
+          "key": "D",
+          "text": "Only if the interactive table does not have TARGET_LAG configured"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "INSERT OVERWRITE is the only DML operation that can be performed on interactive tables. Other DML commands like UPDATE, DELETE, and standard INSERT are not supported.",
+        "distractors": {
+          "A": "INSERT OVERWRITE is specifically allowed as an exception to the general DML restriction.",
+          "C": "Only INSERT OVERWRITE is supported, not all INSERT variants.",
+          "D": "The support for INSERT OVERWRITE is not conditional on TARGET_LAG configuration."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator is configuring an Adaptive Warehouse for a cost-sensitive, high-throughput batch workload.",
+      "stem": "Which TWO configuration choices align with this workload profile? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set MAX_QUERY_PERFORMANCE_LEVEL to XLARGE or above"
+        },
+        {
+          "key": "B",
+          "text": "Set MAX_QUERY_PERFORMANCE_LEVEL to MEDIUM or LARGE"
+        },
+        {
+          "key": "C",
+          "text": "Set QUERY_THROUGHPUT_MULTIPLIER to 0 for unlimited burst"
+        },
+        {
+          "key": "D",
+          "text": "Use a medium QUERY_THROUGHPUT_MULTIPLIER to balance throughput against spend spikes"
+        },
+        {
+          "key": "E",
+          "text": "Disable budgets and resource monitors for maximum performance"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "For cost-sensitive, high-throughput workloads, use a moderate MAX_QUERY_PERFORMANCE_LEVEL (MEDIUM or LARGE) and a medium QUERY_THROUGHPUT_MULTIPLIER to balance throughput against spend spikes.",
+        "distractors": {
+          "A": "Higher performance levels are for latency-sensitive critical workloads, not cost-sensitive batch.",
+          "C": "Unlimited burst (0) removes spend caps, which conflicts with cost sensitivity.",
+          "E": "Disabling cost governance tools is contrary to cost-sensitive workload management."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "A data engineer uses the QUERY_ACCELERATION_HISTORY table function from INFORMATION_SCHEMA to check QAS activity.",
+      "stem": "What information does this function provide that differs from the Account Usage view of the same name?",
+      "options": [
+        {
+          "key": "A",
+          "text": "It returns per-query detail rather than aggregated warehouse data"
+        },
+        {
+          "key": "B",
+          "text": "It provides real-time data with no latency, while the Account Usage view has up to 45-minute latency"
+        },
+        {
+          "key": "C",
+          "text": "It includes num_files_scanned and num_bytes_scanned for accelerated queries within a specified time range"
+        },
+        {
+          "key": "D",
+          "text": "It only returns data for the current session's queries"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The Information Schema QUERY_ACCELERATION_HISTORY function returns details including num_files_scanned, num_bytes_scanned, credits_used, and warehouse_name for queries accelerated within a specified date range.",
+        "distractors": {
+          "A": "Both the function and the Account Usage view provide query-level details about QAS usage.",
+          "B": "While Information Schema functions generally have lower latency, the key differentiator is the specific columns returned.",
+          "D": "The function returns data across all sessions for the specified time range, not just the current session."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "virtual-warehouses",
+      "scenario": "A team is benchmarking their interactive warehouse setup and wants accurate performance numbers.",
+      "stem": "Which TWO best practices should they follow during benchmarking? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Turn off the query result cache by setting USE_CACHED_RESULT to FALSE"
+        },
+        {
+          "key": "B",
+          "text": "Run benchmarks immediately after resuming the warehouse for cold-start measurements"
+        },
+        {
+          "key": "C",
+          "text": "Wait for cache warming to complete before measuring query latency"
+        },
+        {
+          "key": "D",
+          "text": "Interleave queries between standard tables and interactive tables for fair comparison"
+        },
+        {
+          "key": "E",
+          "text": "Use the smallest possible warehouse size to minimize benchmark costs"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Turn off query result cache (USE_CACHED_RESULT = FALSE) for consistent results, and wait for cache warming to complete before measuring latency since this simulates production where the warehouse stays active.",
+        "distractors": {
+          "B": "Benchmarking immediately after resume measures cold-cache performance, which does not reflect production behavior.",
+          "D": "Do not interleave queries between table types; run the full benchmark on each type separately.",
+          "E": "Size should match the working set, not be minimized for cost during benchmarks."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An interactive table has a CLUSTER BY (sale_date) definition. A query filters on WHERE sale_date > '2025-10-24'.",
+      "stem": "Why does this query perform well on the interactive warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The interactive warehouse automatically indexes all columns"
+        },
+        {
+          "key": "B",
+          "text": "The clustering key matches the filter column, allowing effective micro-partition pruning"
+        },
+        {
+          "key": "C",
+          "text": "Interactive tables automatically create materialized views for common predicates"
+        },
+        {
+          "key": "D",
+          "text": "The CLUSTER BY clause creates a B-tree index on the column"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "When the CLUSTER BY columns match the WHERE clause filter columns, Snowflake can quickly skip irrelevant data through effective micro-partition pruning, resulting in fast query performance.",
+        "distractors": {
+          "A": "Interactive warehouses do not automatically index all columns.",
+          "C": "Materialized views are not automatically created for predicates.",
+          "D": "CLUSTER BY does not create a B-tree index; it physically organizes data for pruning efficiency."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "virtual-warehouses",
+      "scenario": "An administrator creates an interactive table but does not specify TARGET_LAG. They want to manually trigger a data refresh.",
+      "stem": "Can they use ALTER INTERACTIVE TABLE ... REFRESH to manually refresh the table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Yes, but only if the table was originally created with TARGET_LAG"
+        },
+        {
+          "key": "B",
+          "text": "No, manual refresh is not supported for any interactive table"
+        },
+        {
+          "key": "C",
+          "text": "Yes, manual refresh works regardless of whether TARGET_LAG is set"
+        },
+        {
+          "key": "D",
+          "text": "Only if a WAREHOUSE clause was specified at creation time"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "ALTER INTERACTIVE TABLE ... REFRESH manually triggers a refresh for a dynamic interactive table (one created with TARGET_LAG). Without TARGET_LAG, the table is not auto-refreshing and manual refresh does not apply.",
+        "distractors": {
+          "B": "Manual refresh is supported for interactive tables that have TARGET_LAG configured.",
+          "C": "Manual refresh only applies to dynamic interactive tables (those with TARGET_LAG).",
+          "D": "The WAREHOUSE clause is needed for auto-refresh scheduling, but the determining factor for manual refresh is TARGET_LAG."
+        }
+      }
+    }
+  ]
+}
