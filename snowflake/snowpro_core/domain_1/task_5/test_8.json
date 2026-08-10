@@ -1,0 +1,777 @@
+{
+  "label": "Data Storage Monitoring & Costs",
+  "order": 8,
+  "topic": "Snowflake Storage Concepts",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": null,
+      "stem": "What are the three components that make up total storage cost in Snowflake?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Compute credits, staged file storage, and database table storage"
+        },
+        {
+          "key": "B",
+          "text": "Staged file storage, database table storage, and Fail-safe/Time Travel storage"
+        },
+        {
+          "key": "C",
+          "text": "Active storage, query cache storage, and metadata storage"
+        },
+        {
+          "key": "D",
+          "text": "Internal stage storage, external stage storage, and table storage"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Total storage cost is the sum of staged file storage, database table storage, and Fail-safe and Time Travel storage.",
+        "distractors": {
+          "A": "Compute credits are a separate cost category from storage.",
+          "C": "Query cache and metadata are not billed as storage components.",
+          "D": "External stages are not Snowflake-managed storage; storage cost refers to staged files, tables, and CDP data."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": null,
+      "stem": "Which view provides the most detailed breakdown of physical storage for table data across Active, Time Travel, and Fail-safe states?",
+      "options": [
+        {
+          "key": "A",
+          "text": "DATABASE_STORAGE_USAGE_HISTORY"
+        },
+        {
+          "key": "B",
+          "text": "STAGE_STORAGE_USAGE_HISTORY"
+        },
+        {
+          "key": "C",
+          "text": "TABLE_STORAGE_METRICS"
+        },
+        {
+          "key": "D",
+          "text": "STORAGE_DAILY_HISTORY"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "TABLE_STORAGE_METRICS provides the most detailed information with columns for ACTIVE_BYTES, TIME_TRAVEL_BYTES, and FAILSAFE_BYTES, plus clone-related storage columns.",
+        "distractors": {
+          "A": "DATABASE_STORAGE_USAGE_HISTORY shows daily storage at the database level, not per-table breakdown by CDP state.",
+          "B": "STAGE_STORAGE_USAGE_HISTORY covers stage storage, not table CDP lifecycle storage.",
+          "D": "STORAGE_DAILY_HISTORY combines database and stage storage at an aggregate level."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": null,
+      "stem": "What is the maximum Time Travel retention period for a transient table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "7 days"
+        },
+        {
+          "key": "B",
+          "text": "90 days"
+        },
+        {
+          "key": "C",
+          "text": "0 or 1 day"
+        },
+        {
+          "key": "D",
+          "text": "30 days"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Transient tables (and temporary tables) can have a Time Travel retention period of only 0 or 1 day, and they have no Fail-safe.",
+        "distractors": {
+          "A": "7 days is the Fail-safe period for permanent tables, not the Time Travel for transient tables.",
+          "B": "90 days is the maximum Time Travel for permanent tables on Enterprise Edition.",
+          "D": "30 days is not applicable to transient tables."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "data-storage",
+      "scenario": null,
+      "stem": "Which THREE columns in the TABLE_STORAGE_METRICS view represent the CDP lifecycle storage states? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "ACTIVE_BYTES"
+        },
+        {
+          "key": "B",
+          "text": "RETAINED_FOR_CLONE_BYTES"
+        },
+        {
+          "key": "C",
+          "text": "TIME_TRAVEL_BYTES"
+        },
+        {
+          "key": "D",
+          "text": "FAILSAFE_BYTES"
+        },
+        {
+          "key": "E",
+          "text": "STAGED_BYTES"
+        },
+        {
+          "key": "F",
+          "text": "COMPRESSED_BYTES"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "ACTIVE_BYTES, TIME_TRAVEL_BYTES, and FAILSAFE_BYTES represent the three sequential CDP lifecycle states in the TABLE_STORAGE_METRICS view.",
+        "distractors": {
+          "B": "RETAINED_FOR_CLONE_BYTES tracks storage retained for cloned tables, not a CDP lifecycle state.",
+          "E": "STAGED_BYTES is not a column in TABLE_STORAGE_METRICS.",
+          "F": "COMPRESSED_BYTES is not a column in TABLE_STORAGE_METRICS."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "data-storage",
+      "scenario": null,
+      "stem": "Which TWO statements about staged file storage in Snowflake are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Staged files are subject to Time Travel and Fail-safe storage costs"
+        },
+        {
+          "key": "B",
+          "text": "Staged files incur standard data storage costs only"
+        },
+        {
+          "key": "C",
+          "text": "Files should be removed from stages after loading to manage costs"
+        },
+        {
+          "key": "D",
+          "text": "External stage files are charged as Snowflake storage"
+        },
+        {
+          "key": "E",
+          "text": "Staged files are automatically purged after 30 days"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Data files in internal stages incur standard storage costs but are NOT subject to Time Travel or Fail-safe. Snowflake recommends removing files after loading to manage costs.",
+        "distractors": {
+          "A": "Staged files are NOT subject to Time Travel or Fail-safe costs.",
+          "D": "External stage files are stored outside Snowflake and charged by the cloud provider, not Snowflake.",
+          "E": "Staged files are not automatically purged; they must be manually removed or removed during loading."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": "A company has a permanent table on Enterprise Edition with DATA_RETENTION_TIME_IN_DAYS set to 30.",
+      "stem": "What is the maximum number of days that historical data is maintained for this table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "30 days"
+        },
+        {
+          "key": "B",
+          "text": "37 days"
+        },
+        {
+          "key": "C",
+          "text": "38 days"
+        },
+        {
+          "key": "D",
+          "text": "7 days"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "On Enterprise Edition, a permanent table with 30 days Time Travel plus 7 days Fail-safe = 37 days maximum historical data maintained.",
+        "distractors": {
+          "A": "30 days is only the Time Travel period; Fail-safe adds 7 more days.",
+          "C": "38 would imply 31 days of Time Travel or 8 days of Fail-safe, neither of which is correct.",
+          "D": "7 days is the Fail-safe period alone, not the total."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": "A data engineer clones a 500 GB table. Immediately after cloning, no modifications have been made to either table.",
+      "stem": "How much additional storage does the cloned table consume?",
+      "options": [
+        {
+          "key": "A",
+          "text": "500 GB (a full copy)"
+        },
+        {
+          "key": "B",
+          "text": "250 GB (half the original)"
+        },
+        {
+          "key": "C",
+          "text": "No additional storage until changes are made to the clone"
+        },
+        {
+          "key": "D",
+          "text": "A small metadata overhead of approximately 1 MB"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Zero-copy cloning means the clone initially shares all existing micro-partitions with the original table. No additional storage is consumed until rows are added, updated, or deleted in the clone.",
+        "distractors": {
+          "A": "A clone does not create a full copy of the data; it shares micro-partitions.",
+          "B": "There is no partial copy; storage is shared entirely until changes are made.",
+          "D": "While there is minimal metadata, the key point is no data storage cost, not a specific 1 MB overhead."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": "An administrator notices that TIME_TRAVEL_BYTES and FAILSAFE_BYTES increase immediately after loading data via COPY INTO, even though no rows were updated or deleted.",
+      "stem": "What causes this behavior?",
+      "options": [
+        {
+          "key": "A",
+          "text": "COPY INTO always creates a full backup of the table before loading"
+        },
+        {
+          "key": "B",
+          "text": "Small micro-partition defragmentation during loading deletes small micro-partitions and creates new ones"
+        },
+        {
+          "key": "C",
+          "text": "Time Travel is triggered by any new transaction, including inserts"
+        },
+        {
+          "key": "D",
+          "text": "The staging area files are counted toward TIME_TRAVEL_BYTES"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "During data loading (INSERT, COPY, SNOWPIPE), small micro-partition defragmentation deletes small micro-partitions and creates new consolidated ones. The deleted micro-partitions contribute to TIME_TRAVEL_BYTES and FAILSAFE_BYTES.",
+        "distractors": {
+          "A": "COPY INTO does not create a full backup; it adds data which may trigger defragmentation.",
+          "C": "Pure inserts into new micro-partitions do not inherently generate Time Travel bytes; it's the defragmentation of small partitions that causes it.",
+          "D": "Staging area files are not counted in TIME_TRAVEL_BYTES."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "data-storage",
+      "scenario": null,
+      "stem": "Which TWO approaches help identify high-churn tables? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Calculate the ratio of FAILSAFE_BYTES to ACTIVE_BYTES in TABLE_STORAGE_METRICS"
+        },
+        {
+          "key": "B",
+          "text": "Check the QUERY_HISTORY view for tables with the most UPDATE statements"
+        },
+        {
+          "key": "C",
+          "text": "Look for tables where FAILSAFE_BYTES is significantly larger than ACTIVE_BYTES"
+        },
+        {
+          "key": "D",
+          "text": "Monitor the AUTO_CLUSTERING_HISTORY for excessive reclustering"
+        },
+        {
+          "key": "E",
+          "text": "Check the TIME_TRAVEL_BYTES column for tables with zero bytes"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "High-churn tables are identified by calculating the ratio of FAILSAFE_BYTES divided by ACTIVE_BYTES. A large ratio indicates high churn where historical data far exceeds active data.",
+        "distractors": {
+          "B": "QUERY_HISTORY shows query activity but doesn't directly reveal CDP storage impact ratios.",
+          "D": "AUTO_CLUSTERING_HISTORY relates to clustering maintenance, not CDP churn identification.",
+          "E": "Zero TIME_TRAVEL_BYTES would indicate no recent changes, the opposite of high churn."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": "A company wants to view storage costs in their local currency rather than in bytes.",
+      "stem": "Which view converts storage size into cost in currency?",
+      "options": [
+        {
+          "key": "A",
+          "text": "DATABASE_STORAGE_USAGE_HISTORY"
+        },
+        {
+          "key": "B",
+          "text": "TABLE_STORAGE_METRICS"
+        },
+        {
+          "key": "D",
+          "text": "STORAGE_DAILY_HISTORY"
+        },
+        {
+          "key": "C",
+          "text": "USAGE_IN_CURRENCY_DAILY"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The USAGE_IN_CURRENCY_DAILY view in ORGANIZATION_USAGE converts the size of storage into cost in currency using the daily price of a TB.",
+        "distractors": {
+          "A": "DATABASE_STORAGE_USAGE_HISTORY reports storage in bytes, not currency.",
+          "B": "TABLE_STORAGE_METRICS reports bytes per table, not currency values.",
+          "C": "STORAGE_DAILY_HISTORY reports average daily bytes, not currency."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": "A clone group consists of tables T1 (original), T2 (clone of T1), and T3 (clone of T2). T2 shares micro-partitions with T3. An administrator drops T2.",
+      "stem": "When does ownership of the shared micro-partitions transfer from T2 to T3?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Immediately when T2 is dropped"
+        },
+        {
+          "key": "B",
+          "text": "When the micro-partitions exit Time Travel and would otherwise enter Fail-safe"
+        },
+        {
+          "key": "C",
+          "text": "After the Fail-safe period for T2 expires"
+        },
+        {
+          "key": "D",
+          "text": "Only when T3 is explicitly altered to claim ownership"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "When a table in a clone group is dropped, ownership of shared micro-partitions is transferred to the next table in the clone group when the micro-partitions exit Time Travel and would otherwise enter Fail-safe.",
+        "distractors": {
+          "A": "Transfer does not happen immediately at drop; the Time Travel period must expire first.",
+          "C": "Transfer happens before Fail-safe, not after it expires.",
+          "D": "Transfer is automatic; no explicit ALTER TABLE is needed."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "data-storage",
+      "scenario": "An organization wants to manage costs for a large 200 GB high-churn dimension table that gets updated 20 times daily.",
+      "stem": "Which TWO strategies reduce CDP storage costs for this table? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Create the table as transient with DATA_RETENTION_TIME_IN_DAYS=0"
+        },
+        {
+          "key": "B",
+          "text": "Increase the warehouse size used to query the table"
+        },
+        {
+          "key": "C",
+          "text": "Periodically copy the transient table into a permanent table as a backup"
+        },
+        {
+          "key": "D",
+          "text": "Enable automatic clustering on the table"
+        },
+        {
+          "key": "E",
+          "text": "Set FAIL_SAFE_DAYS=0 on the permanent table"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "For large high-churn tables, the recommended strategy is to create them as transient with zero Time Travel and periodically copy them into a permanent table for backup protection.",
+        "distractors": {
+          "B": "Warehouse size affects query performance, not storage costs.",
+          "D": "Automatic clustering affects query performance through data organization, not CDP storage costs.",
+          "E": "FAIL_SAFE_DAYS is not a configurable parameter; Fail-safe is always 7 days for permanent tables."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": "An administrator views a cloned table's size in Snowsight and sees it reports 100 GB.",
+      "stem": "Why might this displayed size NOT reflect the actual physical storage the table contributes to the account?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Snowsight always underreports storage by approximately 10%"
+        },
+        {
+          "key": "B",
+          "text": "The displayed size shows active bytes, but a cloned table shares micro-partitions and may contribute less actual physical storage"
+        },
+        {
+          "key": "C",
+          "text": "Compression ratios are not factored into the displayed size"
+        },
+        {
+          "key": "D",
+          "text": "The display excludes data in external stages referenced by the table"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The size displayed represents active bytes. For cloned tables, the actual physical storage contribution is less because the clone shares micro-partitions with the original table until modifications are made.",
+        "distractors": {
+          "A": "Snowsight does not systematically underreport by a percentage.",
+          "C": "The displayed size already accounts for compressed storage.",
+          "D": "External stage data is not part of table size reporting."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "data-storage",
+      "scenario": "A team deletes 50% of the rows in a permanent table. They check the table size in Snowsight immediately after.",
+      "stem": "Which TWO statements about storage for tables with deleted data are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "B",
+          "text": "The displayed table size in Snowsight includes Time Travel and Fail-safe bytes"
+        },
+        {
+          "key": "A",
+          "text": "Deleted data is maintained through Time Travel and Fail-safe, incurring storage costs beyond the displayed table size"
+        },
+        {
+          "key": "C",
+          "text": "Storage is charged for data in Active, Time Travel, and Fail-safe states sequentially"
+        },
+        {
+          "key": "D",
+          "text": "Deleted data is immediately removed from all storage once the DELETE statement commits"
+        },
+        {
+          "key": "E",
+          "text": "Only the most recent deletion is retained in Time Travel"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Deleted data incurs storage through Time Travel and Fail-safe beyond what the displayed size shows, and storage is charged for data regardless of whether it is in Active, Time Travel, or Fail-safe state \u2014 these states are sequential.",
+        "distractors": {
+          "A": "The displayed size shows only active bytes; Time Travel and Fail-safe bytes are NOT included.",
+          "D": "Deleted data is NOT immediately removed; it transitions through TT and Fail-safe.",
+          "E": "All deletions within the retention period are maintained, not just the most recent."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "data-storage",
+      "scenario": "A Snowflake administrator wants to monitor storage across their entire account using Snowsight.",
+      "stem": "Which TWO categories can they filter storage by in the Consumption page? (Select TWO)",
+      "options": [
+        {
+          "key": "B",
+          "text": "By Region (US, EU, APAC)"
+        },
+        {
+          "key": "A",
+          "text": "By Type (Database, Fail Safe, Stage)"
+        },
+        {
+          "key": "C",
+          "text": "By Object (specific database or stage)"
+        },
+        {
+          "key": "D",
+          "text": "By User (who created the data)"
+        },
+        {
+          "key": "E",
+          "text": "By Compression Ratio"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The storage history bar graph in Snowsight can be filtered By Type (Database, Fail Safe, Stage) or By Object (specific databases or stages).",
+        "distractors": {
+          "A": "Region-based filtering is not available on the storage consumption page.",
+          "D": "User-based filtering is not available for storage views.",
+          "E": "Compression ratio is not a filter option."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": "A team migrates data from permanent tables to transient tables to reduce storage costs.",
+      "stem": "What is the correct sequence of steps for this migration?",
+      "options": [
+        {
+          "key": "A",
+          "text": "DROP the permanent table, then CREATE TRANSIENT TABLE with the same name"
+        },
+        {
+          "key": "B",
+          "text": "ALTER TABLE to change the table type from permanent to transient"
+        },
+        {
+          "key": "D",
+          "text": "CLONE the permanent table as transient, then DROP the original"
+        },
+        {
+          "key": "C",
+          "text": "CREATE TRANSIENT TABLE ... AS SELECT from the permanent table, apply privileges, DROP the original, then optionally rename"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The migration process is: CREATE TABLE AS SELECT to populate the transient table, apply access control privileges, DROP the original permanent table, then optionally rename the new table.",
+        "distractors": {
+          "A": "Dropping first would lose the data before creating the replacement.",
+          "B": "ALTER TABLE cannot change a table from permanent to transient.",
+          "C": "Cloning preserves the table type; you cannot clone a permanent table into a transient one directly."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": "A Snowflake account on Standard Edition has a permanent table with Time Travel enabled.",
+      "stem": "What is the maximum Time Travel retention period available for this table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "0 or 1 day"
+        },
+        {
+          "key": "B",
+          "text": "Up to 7 days"
+        },
+        {
+          "key": "C",
+          "text": "Up to 30 days"
+        },
+        {
+          "key": "D",
+          "text": "Up to 90 days"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "On Standard Edition, permanent tables can have a Time Travel retention period of 0 or 1 day only. Extended Time Travel (up to 90 days) requires Enterprise Edition.",
+        "distractors": {
+          "B": "7 days is the Fail-safe period, not the maximum Time Travel retention on Standard Edition.",
+          "C": "30 days is available only on Enterprise Edition or higher.",
+          "D": "90 days is the maximum on Enterprise Edition, not Standard."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "data-storage",
+      "scenario": "A team wants to understand the cost components associated with Snowflake backups.",
+      "stem": "Which THREE cost components are associated with backups? (Select THREE)",
+      "options": [
+        {
+          "key": "D",
+          "text": "Network transfer fees for backup replication"
+        },
+        {
+          "key": "B",
+          "text": "Restore compute using Snowflake-managed warehouses"
+        },
+        {
+          "key": "C",
+          "text": "Backup storage for retained backup data"
+        },
+        {
+          "key": "A",
+          "text": "Backup compute for scheduled backup creation and expiration"
+        },
+        {
+          "key": "E",
+          "text": "Backup licensing fees per table"
+        },
+        {
+          "key": "F",
+          "text": "Backup verification compute for integrity checks"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Backup costs include: backup compute (scheduled creation/expiration), restore compute (Snowflake-managed warehouses for restoring), and backup storage (cloud object storage for backup data).",
+        "distractors": {
+          "A": "Network transfer fees for backups are not listed as a separate backup cost component.",
+          "E": "There are no per-table licensing fees for backups.",
+          "F": "Backup verification compute is not a documented cost component."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "data-storage",
+      "scenario": "An administrator creates a temporary table for an ETL process. The session remains active for 6 hours before terminating.",
+      "stem": "What is the maximum CDP storage charge incurred for data in this temporary table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "8 days (1 day Time Travel + 7 days Fail-safe)"
+        },
+        {
+          "key": "B",
+          "text": "7 days (Fail-safe only)"
+        },
+        {
+          "key": "C",
+          "text": "1 day (Time Travel only, no Fail-safe)"
+        },
+        {
+          "key": "D",
+          "text": "0 days (temporary tables incur no CDP charges)"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Temporary tables have a maximum of 1 day Time Travel and 0 days Fail-safe. The Time Travel period ends when the table is dropped or the session ends, so the maximum CDP charge is 1 day.",
+        "distractors": {
+          "A": "8 days applies to permanent tables (1 day TT + 7 days Fail-safe on Standard Edition), not temporary tables.",
+          "B": "Temporary tables have no Fail-safe period.",
+          "D": "Temporary tables can incur up to 1 day of Time Travel storage charges."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "data-storage",
+      "scenario": "A dropped column still appears to consume storage when an administrator checks the physical bytes for a table.",
+      "stem": "Which TWO statements about storage after dropping a column are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The physical bytes for the dropped column data remain in storage"
+        },
+        {
+          "key": "B",
+          "text": "The dropped column data is immediately deleted from all micro-partitions"
+        },
+        {
+          "key": "C",
+          "text": "The displayed table size may be larger than what a full table scan would read"
+        },
+        {
+          "key": "D",
+          "text": "Dropped columns are moved to a separate archive table"
+        },
+        {
+          "key": "E",
+          "text": "Dropping a column triggers an automatic table rebuild"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Dropping a column does not immediately delete the physical bytes. The data remains in storage, and the displayed table size may be larger than the bytes actually scanned in a query since the dropped column's data still exists physically.",
+        "distractors": {
+          "B": "The data is NOT immediately deleted; physical bytes persist in existing micro-partitions.",
+          "D": "There is no separate archive table for dropped column data.",
+          "E": "Dropping a column does not trigger an automatic rebuild of the table."
+        }
+      }
+    }
+  ]
+}

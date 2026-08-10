@@ -504,6 +504,11 @@
                       "id": "test_7",
                       "label": "Snowflake Cloning Considerations \u2014 Part A",
                       "path": "snowflake/snowpro_core/domain_1/task_5/test_7.json"
+                    },
+                    {
+                      "id": "test_8",
+                      "label": "Data Storage Monitoring & Costs",
+                      "path": "snowflake/snowpro_core/domain_1/task_5/test_8.json"
                     }
                   ]
                 }
