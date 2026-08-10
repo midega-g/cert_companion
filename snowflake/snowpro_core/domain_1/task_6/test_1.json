@@ -1,0 +1,782 @@
+{
+  "label": "Snowflake Cortex AI Functions & Overview",
+  "order": 1,
+  "topic": "AI/ML and Application Development Features",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "What are the two broad categories of AI and ML features that Snowflake offers?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Snowflake Cortex (LLM-based) and Snowflake ML (build your own models)"
+        },
+        {
+          "key": "B",
+          "text": "Snowflake AI Studio and Snowflake Data Science Workbench"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake AutoML and Snowflake Deep Learning"
+        },
+        {
+          "key": "D",
+          "text": "Snowflake NLP and Snowflake Computer Vision"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Snowflake offers Snowflake Cortex (a suite of LLM-based AI features for unstructured data and intelligent assistance) and Snowflake ML (for building your own custom models).",
+        "distractors": {
+          "B": "AI Studio and Data Science Workbench are not the named categories of Snowflake AI/ML features.",
+          "C": "AutoML and Deep Learning are not the official category names used by Snowflake.",
+          "D": "NLP and Computer Vision are use cases, not the two broad Snowflake AI/ML categories."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "Which privilege is required at the account level to call Cortex AI Functions?",
+      "options": [
+        {
+          "key": "A",
+          "text": "EXECUTE AI FUNCTIONS"
+        },
+        {
+          "key": "B",
+          "text": "CREATE AI FUNCTION"
+        },
+        {
+          "key": "C",
+          "text": "USE AI FUNCTIONS"
+        },
+        {
+          "key": "D",
+          "text": "MANAGE AI FEATURES"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "To call Cortex AI Functions, your role needs the USE AI FUNCTIONS account-level privilege and one of the CORTEX_USER or AI_FUNCTIONS_USER database roles.",
+        "distractors": {
+          "A": "EXECUTE AI FUNCTIONS is not a valid Snowflake privilege name.",
+          "B": "CREATE AI FUNCTION is not the required privilege; you don't create AI functions, you call them.",
+          "D": "MANAGE AI FEATURES is not a valid Snowflake privilege."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "What is the minimum advance notice Snowflake provides before deprecating a General Availability (GA) model used by Cortex AI features?",
+      "options": [
+        {
+          "key": "A",
+          "text": "30 days"
+        },
+        {
+          "key": "B",
+          "text": "90 days"
+        },
+        {
+          "key": "C",
+          "text": "60 days"
+        },
+        {
+          "key": "D",
+          "text": "14 days"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "For GA models, Snowflake makes reasonable efforts to provide at least 60 days advance notice prior to deprecation.",
+        "distractors": {
+          "A": "30 days is below the minimum notice period for GA models.",
+          "B": "90 days exceeds the stated minimum of 60 days.",
+          "D": "14 days is far below the GA model deprecation notice period; shorter notice may apply to preview models only."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "Which TWO Cortex AI Functions aggregate data across multiple rows and are NOT subject to context window limitations? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "AI_COMPLETE"
+        },
+        {
+          "key": "B",
+          "text": "AI_AGG"
+        },
+        {
+          "key": "C",
+          "text": "AI_SUMMARIZE_AGG"
+        },
+        {
+          "key": "D",
+          "text": "AI_SENTIMENT"
+        },
+        {
+          "key": "E",
+          "text": "AI_EMBED"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "AI_AGG aggregates a text column and returns insights across multiple rows, and AI_SUMMARIZE_AGG aggregates and returns a summary across multiple rows. Both are not subject to context window limitations.",
+        "distractors": {
+          "A": "AI_COMPLETE generates completions for individual prompts and IS subject to context window limits.",
+          "D": "AI_SENTIMENT extracts sentiment from individual text inputs, not across rows.",
+          "E": "AI_EMBED generates embeddings for individual inputs, not multi-row aggregations."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "Which THREE security principles apply to Snowflake AI Features? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "All AI models run inside Snowflake's security and governance perimeter"
+        },
+        {
+          "key": "B",
+          "text": "Snowflake uses Customer Data to improve models for the broader customer base"
+        },
+        {
+          "key": "C",
+          "text": "Your data is not available to other customers or model developers"
+        },
+        {
+          "key": "D",
+          "text": "You control your team's use of AI features through role-based access control"
+        },
+        {
+          "key": "E",
+          "text": "All AI features require Enterprise Edition or higher"
+        },
+        {
+          "key": "F",
+          "text": "AI model outputs are automatically encrypted with customer-managed keys"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Snowflake AI Features run inside the security perimeter, data is not shared with other customers/model developers, and access is controlled through familiar RBAC.",
+        "distractors": {
+          "B": "Snowflake explicitly states it never uses Customer Data to train models available to the customer base.",
+          "E": "Not all AI features require Enterprise Edition; many are available in Standard Edition.",
+          "F": "There is no requirement for customer-managed key encryption specifically for AI outputs."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A data analyst wants to classify customer support tickets into categories like 'billing', 'technical', and 'general' using natural language.",
+      "stem": "Which Cortex AI Function should they use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "AI_SENTIMENT"
+        },
+        {
+          "key": "B",
+          "text": "AI_FILTER"
+        },
+        {
+          "key": "D",
+          "text": "AI_EXTRACT"
+        },
+        {
+          "key": "C",
+          "text": "AI_CLASSIFY"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "AI_CLASSIFY classifies text or images into user-defined categories, making it ideal for categorizing support tickets.",
+        "distractors": {
+          "A": "AI_SENTIMENT extracts sentiment (positive/negative/neutral), not custom categories.",
+          "B": "AI_FILTER returns True/False for a given input, not category labels.",
+          "C": "AI_EXTRACT extracts specific information from input, not classify into categories."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A developer wants to count the number of tokens in a prompt before sending it to AI_COMPLETE to ensure it doesn't exceed the model's context window.",
+      "stem": "Which function should they use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "LEN()"
+        },
+        {
+          "key": "B",
+          "text": "AI_COUNT_TOKENS"
+        },
+        {
+          "key": "C",
+          "text": "TOKEN_LENGTH()"
+        },
+        {
+          "key": "D",
+          "text": "CHAR_LENGTH()"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "AI_COUNT_TOKENS is a helper function that returns the token count for an input text based on the specified model or Cortex function.",
+        "distractors": {
+          "A": "LEN() returns the character length of a string, not the token count for a model.",
+          "C": "TOKEN_LENGTH() is not a valid Snowflake function.",
+          "D": "CHAR_LENGTH() returns character count, which is different from token count used by LLMs."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A company needs to extract text from scanned PDF documents stored in a Snowflake stage for downstream analytics.",
+      "stem": "Which Cortex AI Function supports this use case?",
+      "options": [
+        {
+          "key": "A",
+          "text": "AI_EXTRACT"
+        },
+        {
+          "key": "B",
+          "text": "AI_PARSE_DOCUMENT"
+        },
+        {
+          "key": "C",
+          "text": "AI_SUMMARIZE_AGG"
+        },
+        {
+          "key": "D",
+          "text": "AI_COMPLETE"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "AI_PARSE_DOCUMENT extracts text (using OCR mode) or text with layout information (using LAYOUT mode) from documents stored in internal or external stages.",
+        "distractors": {
+          "A": "AI_EXTRACT extracts structured information from text/images but is not specifically for parsing document files from stages with OCR.",
+          "C": "AI_SUMMARIZE_AGG summarizes across rows; it doesn't extract text from documents.",
+          "D": "AI_COMPLETE generates completions; it doesn't perform document parsing or OCR."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "Which TWO statements about Cortex AI Function deployment are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "All LLMs are deployed within the Snowflake Service perimeter"
+        },
+        {
+          "key": "B",
+          "text": "LLMs are hosted by third-party providers outside of Snowflake's infrastructure"
+        },
+        {
+          "key": "C",
+          "text": "Cortex AI Functions are optimized for throughput and best suited for batch processing"
+        },
+        {
+          "key": "D",
+          "text": "For interactive low-latency use cases, Cortex AI Functions are preferred over the REST API"
+        },
+        {
+          "key": "E",
+          "text": "Customer data is sent to model developers for inference"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "All LLMs that Snowflake provides access to via AI Features are deployed within the Snowflake Service perimeter. Cortex AI Functions are optimized for throughput and batch processing of large tables.",
+        "distractors": {
+          "B": "LLMs run inside Snowflake's perimeter, not at third-party infrastructure.",
+          "D": "For interactive/low-latency use cases, the REST API is recommended over AI Functions.",
+          "E": "Data is not shared with model developers; it stays within Snowflake's governance boundary."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A data engineer wants to use AI_FILTER in a WHERE clause to filter rows based on whether the text content matches a natural language condition.",
+      "stem": "What does AI_FILTER return for each row?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A relevance score between 0 and 1"
+        },
+        {
+          "key": "B",
+          "text": "True or False"
+        },
+        {
+          "key": "C",
+          "text": "A category label string"
+        },
+        {
+          "key": "D",
+          "text": "An embedding vector"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "AI_FILTER returns True or False for a given text or image input, allowing you to filter results in SELECT, WHERE, or JOIN ON clauses.",
+        "distractors": {
+          "A": "AI_SIMILARITY returns a similarity score, not AI_FILTER.",
+          "C": "Category labels are returned by AI_CLASSIFY, not AI_FILTER.",
+          "D": "Embedding vectors are returned by AI_EMBED, not AI_FILTER."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "An administrator wants to remove PII from text data before storing it in a reporting table.",
+      "stem": "Which Cortex AI Function should they use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "AI_EXTRACT"
+        },
+        {
+          "key": "B",
+          "text": "AI_FILTER"
+        },
+        {
+          "key": "C",
+          "text": "AI_REDACT"
+        },
+        {
+          "key": "D",
+          "text": "AI_CLASSIFY"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "AI_REDACT redacts personally identifiable information (PII) from text.",
+        "distractors": {
+          "A": "AI_EXTRACT extracts information from input, not redact PII.",
+          "B": "AI_FILTER returns True/False for filtering, not for redaction.",
+          "D": "AI_CLASSIFY categorizes text, not redact sensitive information."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "A team is reviewing the Cortex AI Function categories to understand which functions are helper functions versus task-specific AI functions.",
+      "stem": "Which TWO functions are classified as helper functions? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "AI_COMPLETE"
+        },
+        {
+          "key": "B",
+          "text": "TO_FILE"
+        },
+        {
+          "key": "C",
+          "text": "AI_COUNT_TOKENS"
+        },
+        {
+          "key": "D",
+          "text": "AI_TRANSLATE"
+        },
+        {
+          "key": "E",
+          "text": "AI_SENTIMENT"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "TO_FILE (creates references to files in stages) and AI_COUNT_TOKENS (counts tokens in input) are helper functions designed to support other Cortex AI Functions.",
+        "distractors": {
+          "A": "AI_COMPLETE is a core Cortex AI function for generating completions, not a helper.",
+          "D": "AI_TRANSLATE is a task-specific AI function for translation.",
+          "E": "AI_SENTIMENT is a task-specific AI function for sentiment extraction."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A media company needs to transcribe audio files from customer calls stored in a Snowflake stage.",
+      "stem": "Which Cortex AI Function extracts text, timestamps, and speaker information from audio and video files?",
+      "options": [
+        {
+          "key": "A",
+          "text": "AI_PARSE_DOCUMENT"
+        },
+        {
+          "key": "B",
+          "text": "AI_EXTRACT"
+        },
+        {
+          "key": "C",
+          "text": "AI_COMPLETE"
+        },
+        {
+          "key": "D",
+          "text": "AI_TRANSCRIBE"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "AI_TRANSCRIBE transcribes audio and video files stored in a stage, extracting text, timestamps, and speaker information.",
+        "distractors": {
+          "A": "AI_PARSE_DOCUMENT processes documents (PDFs, images), not audio/video files.",
+          "B": "AI_EXTRACT extracts structured data from text/images, not audio transcription.",
+          "C": "AI_COMPLETE generates text completions but does not transcribe audio."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A developer wants to calculate how similar two pieces of text are for a recommendation engine.",
+      "stem": "Which Cortex AI Function calculates embedding similarity between two inputs?",
+      "options": [
+        {
+          "key": "A",
+          "text": "AI_EMBED"
+        },
+        {
+          "key": "B",
+          "text": "AI_CLASSIFY"
+        },
+        {
+          "key": "C",
+          "text": "AI_SIMILARITY"
+        },
+        {
+          "key": "D",
+          "text": "AI_FILTER"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "AI_SIMILARITY calculates the embedding similarity between two inputs, useful for recommendation engines and content matching.",
+        "distractors": {
+          "A": "AI_EMBED generates an embedding vector for a single input; it does not compute similarity between two inputs.",
+          "B": "AI_CLASSIFY categorizes inputs into predefined classes, not measure similarity.",
+          "D": "AI_FILTER returns True/False based on a condition, not a similarity score."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "An organization is evaluating the model lifecycle stages for Cortex AI features to understand when models are production-ready.",
+      "stem": "Which THREE stages are part of the model lifecycle for models in Cortex? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Private Preview"
+        },
+        {
+          "key": "B",
+          "text": "General Availability (GA)"
+        },
+        {
+          "key": "C",
+          "text": "Beta Testing"
+        },
+        {
+          "key": "D",
+          "text": "Legacy"
+        },
+        {
+          "key": "E",
+          "text": "Experimental"
+        },
+        {
+          "key": "F",
+          "text": "Candidate Release"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Models follow a lifecycle of Private Preview \u2192 Public Preview \u2192 General Availability (GA) \u2192 Legacy \u2192 End of Life (EOL). Private Preview, GA, and Legacy are three of these stages.",
+        "distractors": {
+          "C": "Beta Testing is not a named stage in Snowflake's model lifecycle.",
+          "E": "Experimental is not a named stage; the earliest stage is Private Preview.",
+          "F": "Candidate Release is not part of Snowflake's model lifecycle terminology."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A team wants to use AI_COMPLETE to generate summaries of individual customer feedback entries.",
+      "stem": "Which database role must their role have to call this function?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SNOWFLAKE.AI_ADMIN"
+        },
+        {
+          "key": "B",
+          "text": "SNOWFLAKE.CORTEX_USER or SNOWFLAKE.AI_FUNCTIONS_USER"
+        },
+        {
+          "key": "C",
+          "text": "SNOWFLAKE.ML_ENGINEER"
+        },
+        {
+          "key": "D",
+          "text": "SNOWFLAKE.DATA_SCIENTIST"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "To call Cortex AI Functions, your role needs the USE AI FUNCTIONS privilege and one of the CORTEX_USER or AI_FUNCTIONS_USER database roles.",
+        "distractors": {
+          "A": "AI_ADMIN is not a valid Snowflake database role.",
+          "C": "ML_ENGINEER is not a valid Snowflake database role for this purpose.",
+          "D": "DATA_SCIENTIST is not a valid Snowflake database role."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "A product manager wants to understand which Snowflake Cortex features are available beyond just LLM functions.",
+      "stem": "Which THREE features are part of the Snowflake Cortex suite? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Cortex Fine-tuning"
+        },
+        {
+          "key": "B",
+          "text": "Snowflake Feature Store"
+        },
+        {
+          "key": "C",
+          "text": "Cortex Analyst"
+        },
+        {
+          "key": "D",
+          "text": "ML Functions (Forecasting, Anomaly Detection)"
+        },
+        {
+          "key": "E",
+          "text": "Cortex Search"
+        },
+        {
+          "key": "F",
+          "text": "Snowflake Model Registry"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Cortex Fine-tuning, Cortex Analyst, and Cortex Search are all part of the Snowflake Cortex suite of AI features.",
+        "distractors": {
+          "B": "Feature Store is part of Snowflake ML, not Snowflake Cortex.",
+          "D": "ML Functions are part of Snowflake ML, not the Cortex suite.",
+          "F": "Model Registry is part of Snowflake ML, not Snowflake Cortex."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "A model update changes the structure of the output returned by a Cortex AI function.",
+      "stem": "Which TWO statements about how model behavior changes are communicated to customers are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "D",
+          "text": "All model updates require customer action"
+        },
+        {
+          "key": "B",
+          "text": "Model deprecations are bundled into regular release cycles"
+        },
+        {
+          "key": "C",
+          "text": "Changes to required syntax are considered behavior changes"
+        },
+        {
+          "key": "A",
+          "text": "Output structure changes are communicated through Behavior Change Releases (BCRs)"
+        },
+        {
+          "key": "E",
+          "text": "Improvements that don't change interaction are communicated via What's New only"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Changes to output structure and changes to required syntax are both considered behavior changes communicated through BCRs.",
+        "distractors": {
+          "A": "Not all updates require action; only behavior changes that impact existing workflows do.",
+          "B": "Model deprecations are communicated separately from bundled releases.",
+          "E": "While improvements go to What's New, this alone doesn't describe behavior change communication."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A data engineer needs to generate embedding vectors for text data to use in a similarity search application.",
+      "stem": "Which Cortex AI Function generates embedding vectors for text or image inputs?",
+      "options": [
+        {
+          "key": "A",
+          "text": "AI_SIMILARITY"
+        },
+        {
+          "key": "B",
+          "text": "AI_COMPLETE"
+        },
+        {
+          "key": "C",
+          "text": "AI_EMBED"
+        },
+        {
+          "key": "D",
+          "text": "AI_CLASSIFY"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "AI_EMBED generates an embedding vector for a text or image input, which can be used for similarity search, clustering, and classification tasks.",
+        "distractors": {
+          "A": "AI_SIMILARITY compares two inputs for similarity but doesn't generate the embeddings themselves.",
+          "B": "AI_COMPLETE generates text completions, not embedding vectors.",
+          "D": "AI_CLASSIFY categorizes inputs into classes, not generate embedding vectors."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "A compliance officer wants to understand how preview Cortex AI Functions differ from GA functions regarding data classification.",
+      "stem": "Which TWO statements about Cortex AI Function data classification designations are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "B",
+          "text": "Preview functions are designated as Covered AI Features"
+        },
+        {
+          "key": "A",
+          "text": "GA functions are designated as Covered AI Features"
+        },
+        {
+          "key": "C",
+          "text": "Input data is classified as Usage Data"
+        },
+        {
+          "key": "D",
+          "text": "Output data is classified as Usage Data"
+        },
+        {
+          "key": "E",
+          "text": "All Cortex functions are designated as Experimental AI Features"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "GA functions are Covered AI Features, and the input data classification is Usage Data while output is Customer Data.",
+        "distractors": {
+          "A": "Preview functions are designated as Preview AI Features, not Covered.",
+          "D": "Output data is classified as Customer Data, not Usage Data.",
+          "E": "Experimental AI Features is not a valid designation in Snowflake."
+        }
+      }
+    }
+  ]
+}

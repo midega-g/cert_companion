@@ -511,6 +511,18 @@
                       "path": "snowflake/snowpro_core/domain_1/task_5/test_8.json"
                     }
                   ]
+                },
+                {
+                  "id": "task_6",
+                  "label": "Task 1.6",
+                  "description": "Explain AI/ML and Application Development Features",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Snowflake Cortex AI Functions & Overview",
+                      "path": "snowflake/snowpro_core/domain_1/task_6/test_1.json"
+                    }
+                  ]
                 }
               ]
             }
