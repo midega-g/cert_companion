@@ -567,6 +567,18 @@
                       "path": "snowflake/snowpro_core/domain_5/task_1/test_4.json"
                     }
                   ]
+                },
+                {
+                  "id": "task_2",
+                  "label": "Task 5.2",
+                  "description": "Explain Snowflake's Data Sharing Capabilities",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Secure Data Sharing Fundamentals",
+                      "path": "snowflake/snowpro_core/domain_5/task_2/test_1.json"
+                    }
+                  ]
                 }
               ]
             }

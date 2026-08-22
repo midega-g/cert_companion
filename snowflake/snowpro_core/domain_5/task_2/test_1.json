@@ -1,0 +1,777 @@
+{
+  "label": "Secure Data Sharing Fundamentals",
+  "order": 1,
+  "topic": "Data Sharing Capabilities",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "With Snowflake Secure Data Sharing, how is data moved from a provider to a consumer?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Data is physically copied into the consumer's storage"
+        },
+        {
+          "key": "B",
+          "text": "No actual data is copied or transferred; sharing uses the services layer and metadata store"
+        },
+        {
+          "key": "C",
+          "text": "Data is exported to a cloud stage and imported by the consumer"
+        },
+        {
+          "key": "D",
+          "text": "Data is replicated nightly to the consumer account"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "With Secure Data Sharing, no actual data is copied or transferred between accounts. All sharing uses Snowflake's services layer and metadata store, so access is near-instantaneous.",
+        "distractors": {
+          "A": "No data is physically copied into consumer storage; shared data uses no consumer storage.",
+          "C": "Sharing does not use export/import via a stage; it uses the metadata layer.",
+          "D": "Sharing is real-time via metadata, not a nightly replication."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "What charges does a data consumer incur when querying shared data?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Storage charges for the shared data"
+        },
+        {
+          "key": "B",
+          "text": "Only the compute (virtual warehouse) resources used to query the data"
+        },
+        {
+          "key": "C",
+          "text": "A per-row licensing fee"
+        },
+        {
+          "key": "D",
+          "text": "Both storage and data transfer charges"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Shared data takes up no storage in a consumer account, so it does not contribute to storage charges. The only charges to consumers are for the compute resources (virtual warehouses) used to query the imported data.",
+        "distractors": {
+          "A": "Shared data does not consume consumer storage, so there are no storage charges for it.",
+          "C": "There is no per-row licensing fee for Secure Data Sharing.",
+          "D": "No storage charges apply for shared data, and no transfer charge is incurred by the consumer for querying."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "What is the access mode of database objects shared between accounts via Secure Data Sharing?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Read-write for consumers"
+        },
+        {
+          "key": "B",
+          "text": "Read-only (objects cannot be modified or deleted by consumers)"
+        },
+        {
+          "key": "C",
+          "text": "Write-only during an import window"
+        },
+        {
+          "key": "D",
+          "text": "Full control including schema changes"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "All database objects shared between accounts are read-only; the objects cannot be modified or deleted, including adding or modifying table data.",
+        "distractors": {
+          "A": "Consumers cannot write to shared objects; they are read-only.",
+          "C": "There is no write window; shared objects are always read-only to consumers.",
+          "D": "Consumers cannot change the schema of shared objects."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which THREE object types can be shared via Snowflake Secure Data Sharing? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Standard (non-secure) views"
+        },
+        {
+          "key": "B",
+          "text": "Stored procedures"
+        },
+        {
+          "key": "C",
+          "text": "Secure views"
+        },
+        {
+          "key": "D",
+          "text": "Dynamic tables"
+        },
+        {
+          "key": "E",
+          "text": "Cortex Search services"
+        },
+        {
+          "key": "F",
+          "text": "Streams"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Shareable objects include databases, tables, dynamic tables, external tables, Iceberg/Delta tables, views (regular/secure/secure materialized/semantic), Cortex Search services, UDFs, and certain models. Secure views, dynamic tables, and Cortex Search services are all shareable.",
+        "distractors": {
+          "A": "Only secure views are supported in shares; adding a standard view returns an error.",
+          "B": "Stored procedures are not in the list of shareable objects (UDFs are).",
+          "F": "Streams cannot be shared directly; consumers create their own streams on shared tables/secure views."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which TWO statements correctly describe a Snowflake share? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A share can only ever contain objects from a single database, and databases cannot span accounts"
+        },
+        {
+          "key": "B",
+          "text": "A share physically copies the database into each consumer account"
+        },
+        {
+          "key": "C",
+          "text": "A share is a named object that encapsulates the information required to share a database"
+        },
+        {
+          "key": "D",
+          "text": "New objects added to a share become immediately available to all consumers"
+        },
+        {
+          "key": "E",
+          "text": "Access to a share can never be revoked once granted"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A share is a named Snowflake object encapsulating all information required to share a database, and updates such as new objects added to a share become immediately available to all consumers.",
+        "distractors": {
+          "A": "A share can include data from multiple databases, as long as they belong to the same account.",
+          "B": "Shares do not copy data; sharing uses the metadata layer.",
+          "E": "Access to a share (or its objects) can be revoked at any time."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider drops and recreates a table with the same name in a database that is granted to a share.",
+      "stem": "What must the provider do for consumers to access the recreated table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Nothing; recreated objects with the same name are automatically available"
+        },
+        {
+          "key": "B",
+          "text": "Explicitly add the object to the share again using GRANT <privilege> ... TO SHARE"
+        },
+        {
+          "key": "C",
+          "text": "Ask each consumer to recreate their database from the share"
+        },
+        {
+          "key": "D",
+          "text": "Drop and recreate the entire share"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A new object created or recreated in a shared database is not automatically available. Even with the same name, it is a new object, so you must use GRANT <privilege> ... TO SHARE to explicitly add it.",
+        "distractors": {
+          "A": "Recreated objects are treated as new and are not automatically shared.",
+          "C": "Consumers do not need to recreate their database; the provider re-grants the object.",
+          "D": "Dropping/recreating the share is unnecessary and disruptive; re-granting the object suffices."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A consumer account has been added to a provider's share.",
+      "stem": "How many databases can the consumer create from that single share?",
+      "options": [
+        {
+          "key": "A",
+          "text": "One database per share"
+        },
+        {
+          "key": "B",
+          "text": "Unlimited databases per share"
+        },
+        {
+          "key": "C",
+          "text": "One database per shared object"
+        },
+        {
+          "key": "D",
+          "text": "Up to 20 databases per share"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "A consumer can consume as many shares as they want, but can only create one database per share.",
+        "distractors": {
+          "B": "A consumer is limited to one database per share.",
+          "C": "The limit is one database per share, not per object.",
+          "D": "There is no 20-database-per-share allowance; it is one per share."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "An organization wants a single Snowflake account to both share its own data and consume data shared by others.",
+      "stem": "Is this possible?",
+      "options": [
+        {
+          "key": "A",
+          "text": "No; an account is either a provider or a consumer, never both"
+        },
+        {
+          "key": "B",
+          "text": "Yes; any full Snowflake account can both provide and consume shared data"
+        },
+        {
+          "key": "C",
+          "text": "Only reader accounts can do both"
+        },
+        {
+          "key": "D",
+          "text": "Only with a separate Data Exchange license"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Any full Snowflake account can both provide and consume shared data. Snowflake enables a network of providers and consumers, including within one's own organization.",
+        "distractors": {
+          "A": "Accounts are not restricted to a single role; a full account can do both.",
+          "C": "Reader accounts are restricted consumers; full accounts are what can do both.",
+          "D": "No separate Data Exchange license is required to both provide and consume."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A provider updates existing rows and adds new rows to a table already included in a share consumed by several accounts.",
+      "stem": "Which TWO statements about availability of these changes are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Consumers must re-import the share to see updated rows"
+        },
+        {
+          "key": "B",
+          "text": "Row-level changes are only visible after the next scheduled refresh"
+        },
+        {
+          "key": "C",
+          "text": "New and modified rows are available immediately to consumers who already created a database from the share"
+        },
+        {
+          "key": "D",
+          "text": "Updates to existing shared objects become immediately available to all consumers"
+        },
+        {
+          "key": "E",
+          "text": "Changes are visible only to consumers added after the change"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "New and modified rows are immediately available to consumers who already have access (created a database from the share), and updates to existing shared objects become immediately available to all consumers.",
+        "distractors": {
+          "A": "Consumers do not need to re-import; changes are real-time via the metadata layer.",
+          "B": "There is no scheduled refresh; changes are immediate.",
+          "E": "Changes are visible to all consumers with access, not only newly added ones."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "On the consumer side, an object is created from a provider's share so users can query the shared data.",
+      "stem": "What kind of object is created in the consumer account, and how is access controlled?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A writable database controlled by the provider's roles"
+        },
+        {
+          "key": "B",
+          "text": "A read-only database, with access configured using the consumer's standard role-based access control"
+        },
+        {
+          "key": "C",
+          "text": "A local copy of the provider's schema stored in consumer storage"
+        },
+        {
+          "key": "D",
+          "text": "A temporary table that expires after the session"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "On the consumer side, a read-only database is created from the share, and access to this database is configurable using the same standard role-based access control Snowflake provides for all objects.",
+        "distractors": {
+          "A": "The consumer database is read-only, and access is governed by the consumer's own RBAC, not provider roles.",
+          "C": "No local copy is stored; shared data uses no consumer storage.",
+          "D": "The database created from a share is persistent, not a session-scoped temporary table."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which TWO statements about views in shares are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Any standard view can be shared without restriction"
+        },
+        {
+          "key": "B",
+          "text": "Only secure views are supported in shares"
+        },
+        {
+          "key": "C",
+          "text": "Temporary views are a supported share object type"
+        },
+        {
+          "key": "D",
+          "text": "Adding a standard (non-secure) view to a share returns an error"
+        },
+        {
+          "key": "E",
+          "text": "Views cannot be shared at all"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Only secure views are supported in shares (for security/privacy), and adding a standard non-secure view to a share returns an error.",
+        "distractors": {
+          "A": "Standard views cannot be shared; only secure views are supported.",
+          "C": "Temporary views are not a supported share object type.",
+          "E": "Views can be shared, but they must be secure views."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A provider wants to share data from three databases that all belong to the same account within one share.",
+      "stem": "Which TWO statements are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A share can span databases from different accounts"
+        },
+        {
+          "key": "B",
+          "text": "Multiple databases can only be shared using reader accounts"
+        },
+        {
+          "key": "C",
+          "text": "A share can include data from multiple databases as long as they belong to the same account"
+        },
+        {
+          "key": "D",
+          "text": "Sharing from multiple databases requires granting privileges directly to the share (REFERENCE_USAGE cannot be granted to a database role)"
+        },
+        {
+          "key": "E",
+          "text": "Each database requires its own separate share, always"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A share can include multiple databases from the same account. To share from multiple databases you grant privileges directly to the share, because the REFERENCE_USAGE privilege cannot be granted to a database role.",
+        "distractors": {
+          "A": "A share cannot span databases from different accounts; they must be in the same account.",
+          "B": "Multiple databases can be shared via direct grants; reader accounts are not required.",
+          "E": "Multiple databases can be combined in one share via direct grants, not always separate shares."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider revokes access to a specific object in a share while consumers are actively querying it.",
+      "stem": "When does the change take effect for consumers?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Immediately; the object becomes instantly unavailable to consumers"
+        },
+        {
+          "key": "B",
+          "text": "After a 24-hour propagation window"
+        },
+        {
+          "key": "C",
+          "text": "Only after consumers recreate their database"
+        },
+        {
+          "key": "D",
+          "text": "At the next billing cycle"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Objects removed from a share are instantly unavailable to consumer accounts; for example, removing a table means consumers can no longer query it as soon as it is removed.",
+        "distractors": {
+          "B": "There is no 24-hour window; revocation is immediate.",
+          "C": "Consumers do not need to recreate their database for revocation to take effect.",
+          "D": "Revocation is immediate, not tied to billing cycles."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A consumer wants to enrich shared data by joining it with their own tables and minimize data transformation work.",
+      "stem": "What advantage does Secure Data Sharing provide here?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The consumer must first export and re-ingest the shared data"
+        },
+        {
+          "key": "B",
+          "text": "Joins require the provider to run the query"
+        },
+        {
+          "key": "C",
+          "text": "The data stays in Snowflake, making it easy to join shared datasets with the consumer's own data"
+        },
+        {
+          "key": "D",
+          "text": "The shared data must be copied to the consumer's storage before joining"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "As a consumer, you reduce data transformations because the data stays in Snowflake, making it easy to join datasets shared with you with your own data.",
+        "distractors": {
+          "A": "No export/re-ingest is needed; the data is directly queryable.",
+          "B": "The consumer runs their own queries using their own warehouse.",
+          "D": "Shared data is not copied to consumer storage before joining."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A data governance lead lists the benefits a provider gains by managing access centrally through Secure Data Sharing.",
+      "stem": "Which THREE are benefits for a provider sharing data in Snowflake? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Automatically gain write access to consumer databases"
+        },
+        {
+          "key": "B",
+          "text": "Manage who has access to the data centrally"
+        },
+        {
+          "key": "C",
+          "text": "Force consumers to store a full copy of the data"
+        },
+        {
+          "key": "D",
+          "text": "Avoid challenges keeping data synchronized across people and groups"
+        },
+        {
+          "key": "E",
+          "text": "Bypass all access control on shared objects"
+        },
+        {
+          "key": "F",
+          "text": "With listings, access consumer usage data and auto-replicate to other regions"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Providers can centrally manage access, avoid data synchronization challenges (single source of truth), and, when using listings, access consumer usage data and automatically replicate data to other regions.",
+        "distractors": {
+          "A": "Providers do not gain write access to consumer databases through sharing.",
+          "C": "Consumers do not store a copy; shared data uses no consumer storage.",
+          "E": "Access control still applies; sharing does not bypass it."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider account holds a Business Critical account using Tri-Secret Secure and shares data with a consumer account.",
+      "stem": "How does Snowflake treat the consumer's access to the shared data with respect to key management?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The consumer's own keys are always used"
+        },
+        {
+          "key": "B",
+          "text": "Tri-Secret Secure is disabled automatically when sharing"
+        },
+        {
+          "key": "C",
+          "text": "The data is decrypted and copied to the consumer unencrypted"
+        },
+        {
+          "key": "D",
+          "text": "Snowflake treats the data access from the consumer as if it occurred within the provider's own account (may require accessing the provider's key management service)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "When using Tri-Secret Secure with a Business Critical account and sharing data, Snowflake treats access from consumer accounts as if it occurred within your own account, which may require accessing the key management service in the provider's cloud platform.",
+        "distractors": {
+          "A": "The provider's key management governs access, not the consumer's keys.",
+          "B": "Tri-Secret Secure is not automatically disabled when sharing.",
+          "C": "Data is not copied to the consumer, encrypted or otherwise."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider defines a secure view for sharing and includes CURRENT_ROLE() in its definition.",
+      "stem": "Why is this problematic for a shared secure view?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CURRENT_ROLE improves performance and is recommended"
+        },
+        {
+          "key": "B",
+          "text": "CURRENT_ROLE automatically maps to the provider's ACCOUNTADMIN"
+        },
+        {
+          "key": "C",
+          "text": "CURRENT_ROLE values have no relevance in a consumer's account and will cause the object to fail when queried"
+        },
+        {
+          "key": "D",
+          "text": "It is required for all shared secure views"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Do not include secure objects that use CURRENT_USER or CURRENT_ROLE in their definition; the contextual values have no relevance in a consumer's account and cause the object to fail when queried/used.",
+        "distractors": {
+          "A": "It does not improve performance and is explicitly discouraged for shared secure views.",
+          "B": "It does not map to the provider's ACCOUNTADMIN; the value is meaningless in the consumer context.",
+          "D": "It is not required; it is specifically to be avoided."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A provider wants to filter the rows different consumer accounts can see from the same base table using a single share.",
+      "stem": "Which TWO mechanisms support this granular, secure filtering? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add the raw base table directly and rely on the consumer to filter"
+        },
+        {
+          "key": "B",
+          "text": "Create secure views on the base tables to filter data by condition or consumer account"
+        },
+        {
+          "key": "C",
+          "text": "Use the SIMULATED_DATA_SHARING_CONSUMER session parameter to validate what each consumer sees"
+        },
+        {
+          "key": "D",
+          "text": "Grant the consumer OWNERSHIP on the base table"
+        },
+        {
+          "key": "E",
+          "text": "Disable role-based access control on the share"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Secure views let you filter data by condition or by consumer account, and the SIMULATED_DATA_SHARING_CONSUMER session parameter lets you validate a secure view as if querying from a specific consumer account.",
+        "distractors": {
+          "A": "Sharing the raw base table exposes all rows; secure views enforce the filtering.",
+          "D": "Consumers never get OWNERSHIP of provider objects; shared objects are read-only.",
+          "E": "RBAC is not disabled; secure objects and RBAC are what enforce controlled access."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A consumer wants to track DML changes on data shared to them by a provider.",
+      "stem": "Which TWO statements about streams on shared objects are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Consumers can create their own streams on shared tables or secure views"
+        },
+        {
+          "key": "B",
+          "text": "Providers should create secure views on streams and share those views"
+        },
+        {
+          "key": "C",
+          "text": "The provider must enable CHANGE_TRACKING on the shared tables (or underlying tables) for consumer streams to work"
+        },
+        {
+          "key": "D",
+          "text": "Consumers can modify a stream in the provider's account"
+        },
+        {
+          "key": "E",
+          "text": "Streams can be shared directly like tables"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Consumers can create their own streams on shared tables/secure views, and the provider must enable CHANGE_TRACKING (ALTER TABLE ... CHANGE_TRACKING = TRUE) on shared tables or underlying tables so consumer streams function.",
+        "distractors": {
+          "B": "Creating secure views on streams and sharing them is an anti-pattern and not recommended.",
+          "D": "Modifying a stream in another account is not supported.",
+          "E": "Streams cannot be shared directly; consumers create their own."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider account issues SHOW SHARES and sees a share with kind = OUTBOUND.",
+      "stem": "What does an OUTBOUND share indicate?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The account is consuming a share from a provider"
+        },
+        {
+          "key": "B",
+          "text": "The account is sharing (providing) a database to other Snowflake accounts"
+        },
+        {
+          "key": "C",
+          "text": "The share has been dropped"
+        },
+        {
+          "key": "D",
+          "text": "The share is pending approval"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "In SHOW SHARES output, kind = OUTBOUND means the share is sharing (providing) a database with other Snowflake accounts. INBOUND indicates a share the account is consuming.",
+        "distractors": {
+          "A": "Consuming a share appears as INBOUND, not OUTBOUND.",
+          "C": "OUTBOUND does not mean dropped; it indicates an active outbound share.",
+          "D": "There is no 'pending approval' status implied by OUTBOUND."
+        }
+      }
+    }
+  ]
+}
