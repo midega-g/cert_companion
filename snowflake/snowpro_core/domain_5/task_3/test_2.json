@@ -1,0 +1,777 @@
+{
+  "label": "Snowflake Marketplace, Organizational Listings & Auto-Fulfillment",
+  "order": 2,
+  "topic": "Marketplace and Listings",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "marketplace",
+      "scenario": null,
+      "stem": "On which cloud platforms is the Snowflake Marketplace available?",
+      "options": [
+        {
+          "key": "A",
+          "text": "AWS only"
+        },
+        {
+          "key": "B",
+          "text": "AWS, Google Cloud, and Microsoft Azure (except Azure Government, which is planned)"
+        },
+        {
+          "key": "C",
+          "text": "Only on-premises Snowflake deployments"
+        },
+        {
+          "key": "D",
+          "text": "Google Cloud and Azure only"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The Snowflake Marketplace is available globally to all accounts on AWS, Google Cloud, and Microsoft Azure, with the exception of Microsoft Azure Government (support planned).",
+        "distractors": {
+          "A": "It is not AWS-only; it spans AWS, GCP, and Azure.",
+          "C": "Snowflake is a cloud service; there are no on-premises deployments.",
+          "D": "AWS is included; the exclusion is only Azure Government."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "marketplace",
+      "scenario": null,
+      "stem": "What is the primary benefit for a provider using Marketplace listings versus maintaining individual sharing relationships?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Gain write access to all consumer accounts"
+        },
+        {
+          "key": "B",
+          "text": "Automatically copy data into every consumer's storage"
+        },
+        {
+          "key": "C",
+          "text": "Share curated data offerings with many consumers simultaneously"
+        },
+        {
+          "key": "D",
+          "text": "Eliminate the need for consumers to have Snowflake accounts"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Marketplace listings let a provider share curated data offerings with many consumers simultaneously, rather than maintaining sharing relationships with each individual consumer.",
+        "distractors": {
+          "A": "Providers do not gain write access to consumer accounts.",
+          "B": "Marketplace sharing does not copy data into consumer storage.",
+          "D": "Consumers still need Snowflake accounts to access Marketplace listings."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "org-listings",
+      "scenario": null,
+      "stem": "What is the Internal Marketplace in Snowflake?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A public marketplace for any Snowflake account"
+        },
+        {
+          "key": "B",
+          "text": "A billing dashboard for Marketplace purchases"
+        },
+        {
+          "key": "C",
+          "text": "A replication target for disaster recovery"
+        },
+        {
+          "key": "D",
+          "text": "A curated, secure space for data sharing exclusively within your organization"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The Internal Marketplace is a curated, secure space for collaborative data sharing within your organization; it is similar to the public Marketplace but exclusive to your organization.",
+        "distractors": {
+          "A": "The Internal Marketplace is organization-only, not public.",
+          "B": "It is a discovery space for internal data products, not a billing dashboard.",
+          "C": "It is not a replication target."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "org-listings",
+      "scenario": null,
+      "stem": "Which THREE statements about organizational listings and the Internal Marketplace are correct? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "They are visible to any account on the public Snowflake Marketplace"
+        },
+        {
+          "key": "B",
+          "text": "They require a reader account to consume"
+        },
+        {
+          "key": "C",
+          "text": "They let you share data products securely within your organization"
+        },
+        {
+          "key": "D",
+          "text": "Providers create and manage them using Provider Studio or the API"
+        },
+        {
+          "key": "E",
+          "text": "Access can be managed by account targeting and RBAC"
+        },
+        {
+          "key": "F",
+          "text": "They can only be created with SnowSQL"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Organizational listings share data products securely within your organization, are created/managed via Provider Studio or the API, and access is managed by account targeting and RBAC.",
+        "distractors": {
+          "A": "They are internal-only, not visible on the public Marketplace.",
+          "B": "They do not require a reader account.",
+          "F": "They are created via Provider Studio or the API, not only SnowSQL."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "auto-fulfillment",
+      "scenario": null,
+      "stem": "Which TWO statements about Cross-Cloud Auto-Fulfillment are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "It is available on trial accounts"
+        },
+        {
+          "key": "B",
+          "text": "It requires the consumer to manually copy the data"
+        },
+        {
+          "key": "C",
+          "text": "It automatically replicates your data product to other Snowflake regions without manual replication"
+        },
+        {
+          "key": "D",
+          "text": "A data product is any share or application package attached to your listing"
+        },
+        {
+          "key": "E",
+          "text": "It only works within a single region"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Auto-fulfillment automatically replicates your data product (any share or application package attached to your listing) to other Snowflake regions without manual replication.",
+        "distractors": {
+          "A": "Auto-fulfillment is not available on trial accounts; you must use a full account to offer listings.",
+          "B": "It removes the need for manual copying, not requires it.",
+          "E": "Its purpose is cross-region/cross-cloud fulfillment, not single-region only."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "auto-fulfillment",
+      "scenario": "A provider enables Cross-Cloud Auto-Fulfillment and wonders where the data product lands in a remote region.",
+      "stem": "What managed construct does Snowflake provision in the remote region?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A reader account owned by the consumer"
+        },
+        {
+          "key": "B",
+          "text": "A failover group"
+        },
+        {
+          "key": "C",
+          "text": "A secure share area (SSA) managed by Snowflake"
+        },
+        {
+          "key": "D",
+          "text": "A resource monitor"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "When you set up Cross-Cloud Auto-Fulfillment, Snowflake manages provisioning for a secure share area (SSA) and the auto-fulfillment of your data product to remote regions.",
+        "distractors": {
+          "A": "A reader account is unrelated to auto-fulfillment provisioning and is provider-owned when used.",
+          "B": "A failover group is a replication/DR construct, not the auto-fulfillment target.",
+          "D": "A resource monitor governs credits, not data-product fulfillment."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "auto-fulfillment",
+      "scenario": "A provider shares a listing privately with a specific consumer account located in a different region than the provider.",
+      "stem": "A provider shares a listing privately with a consumer in a different region. Which TWO statements about private-listing auto-fulfillment are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Private listings cannot be shared across regions"
+        },
+        {
+          "key": "B",
+          "text": "The consumer must configure replication themselves"
+        },
+        {
+          "key": "C",
+          "text": "Snowsight automatically detects the different region and enables auto-fulfillment"
+        },
+        {
+          "key": "D",
+          "text": "You cannot manually replicate private listings to other regions"
+        },
+        {
+          "key": "E",
+          "text": "Private cross-region listings require a reader account"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "For listings shared with specific consumer accounts, Snowsight automatically detects a different region and enables auto-fulfillment, and you cannot manually replicate private listings to other regions.",
+        "distractors": {
+          "A": "Private listings can be shared across regions via auto-fulfillment.",
+          "B": "The consumer does not configure replication; auto-fulfillment handles it.",
+          "E": "A reader account is not required for private cross-region listings."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "auto-fulfillment",
+      "scenario": "A provider configures the auto-fulfillment refresh type for a share so selected objects are available on-demand.",
+      "stem": "Which setting provides on-demand availability of selected objects?",
+      "options": [
+        {
+          "key": "A",
+          "text": "FULL_DATABASE"
+        },
+        {
+          "key": "B",
+          "text": "SUB_DATABASE"
+        },
+        {
+          "key": "C",
+          "text": "SUB_DATABASE_WITH_REFERENCE_USAGE"
+        },
+        {
+          "key": "D",
+          "text": "REFERENCE_ONLY"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "SUB_DATABASE allows selected objects to be available on-demand. SUB_DATABASE_WITH_REFERENCE_USAGE provides account-level scheduling for application packages.",
+        "distractors": {
+          "A": "Specifying FULL_DATABASE for the auto-fulfillment refresh type is deprecated.",
+          "C": "SUB_DATABASE_WITH_REFERENCE_USAGE is for account-level scheduling of application packages, not on-demand selected objects.",
+          "D": "REFERENCE_ONLY is not a valid auto-fulfillment refresh type."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "marketplace",
+      "scenario": null,
+      "stem": "Which THREE are things a consumer can do on the Snowflake Marketplace? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Modify the provider's source data directly"
+        },
+        {
+          "key": "B",
+          "text": "Force the provider to lower their price"
+        },
+        {
+          "key": "C",
+          "text": "Discover and test third-party data sources"
+        },
+        {
+          "key": "D",
+          "text": "Combine new datasets with their existing Snowflake data for new insights"
+        },
+        {
+          "key": "E",
+          "text": "Have datasets available instantly and updated continually"
+        },
+        {
+          "key": "F",
+          "text": "Access the provider's account credentials"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Consumers can discover and test third-party data sources, combine new datasets with their existing Snowflake data for insights, and have datasets available instantly and continually updated.",
+        "distractors": {
+          "A": "Consumers cannot modify a provider's source data; shared data is read-only.",
+          "B": "Consumers cannot force pricing changes.",
+          "F": "Consumers never access provider credentials."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "auto-fulfillment",
+      "scenario": "A provider uses the same database across multiple listings and auto-fulfills to a new region.",
+      "stem": "How many times is that database auto-fulfilled to the new region?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Once (multiple listings can use the same database, auto-fulfilled once per new region)"
+        },
+        {
+          "key": "B",
+          "text": "Once per listing that uses it"
+        },
+        {
+          "key": "C",
+          "text": "Once per consumer account"
+        },
+        {
+          "key": "D",
+          "text": "It cannot be shared across multiple listings"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Multiple listings can use the same database, but the database is only auto-fulfilled once to a new region.",
+        "distractors": {
+          "B": "It is fulfilled once to the region regardless of how many listings use it.",
+          "C": "It is not fulfilled per consumer account.",
+          "D": "A database can back multiple listings."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "marketplace",
+      "scenario": "A provider on a trial account tries to publish a listing on the Snowflake Marketplace.",
+      "stem": "Can they offer the listing?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Yes; trial accounts can offer any listing"
+        },
+        {
+          "key": "B",
+          "text": "Yes, but only free listings"
+        },
+        {
+          "key": "C",
+          "text": "No; to offer listings you must use a full account (trial accounts cannot)"
+        },
+        {
+          "key": "D",
+          "text": "Yes, but only organizational listings"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Auto-fulfillment is configured on listings, and to offer listings you must use a full account; auto-fulfillment isn't available on trial accounts.",
+        "distractors": {
+          "A": "Trial accounts cannot offer listings.",
+          "B": "Trial accounts cannot offer listings, free or otherwise.",
+          "D": "Trial accounts cannot offer listings, including organizational ones for external fulfillment."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "auto-fulfillment",
+      "scenario": "A provider must become approved to publish public listings and reviews the profile approval timeline.",
+      "stem": "Approximately how long does Snowflake take to review a provider profile submission?",
+      "options": [
+        {
+          "key": "A",
+          "text": "About 14 business days"
+        },
+        {
+          "key": "B",
+          "text": "About 1 business day"
+        },
+        {
+          "key": "C",
+          "text": "About 30 business days"
+        },
+        {
+          "key": "D",
+          "text": "Instantly, with no review"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Snowflake reviews your provider profile and responds within approximately 1 business day. If rejected for a policy violation, you receive instructions to correct and resubmit.",
+        "distractors": {
+          "A": "14 days is closer to the maximum for a rejected Native App listing review, not profile approval.",
+          "C": "30 days is not the documented profile review time.",
+          "D": "Provider profiles are reviewed, not approved instantly."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "marketplace",
+      "scenario": "A provider follows the data/share listing approval flow on the Snowflake Marketplace.",
+      "stem": "Which TWO statements about the data/share listing approval flow are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Approved listings are automatically deleted after 24 hours"
+        },
+        {
+          "key": "B",
+          "text": "Snowflake reviews the listing metadata and responds within about 1 business day"
+        },
+        {
+          "key": "C",
+          "text": "If manual publishing was selected, the listing stays approved until you manually publish it"
+        },
+        {
+          "key": "D",
+          "text": "Listings never require Snowflake review"
+        },
+        {
+          "key": "E",
+          "text": "A rejected listing cannot be revised or resubmitted"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Snowflake reviews data/share listing metadata within about 1 business day. If you used manual publishing, the listing remains approved until you manually publish it.",
+        "distractors": {
+          "A": "Approved listings are not auto-deleted after 24 hours.",
+          "D": "Public listings require Snowflake review.",
+          "E": "A rejected listing can be revised based on feedback and resubmitted."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "marketplace",
+      "scenario": "A provider profile has been created but no public listing has been published yet.",
+      "stem": "What is true about the provider profile's visibility?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The provider profile is always public immediately after creation"
+        },
+        {
+          "key": "B",
+          "text": "Provider profiles are never visible to consumers"
+        },
+        {
+          "key": "C",
+          "text": "Provider profiles are only visible in the Internal Marketplace"
+        },
+        {
+          "key": "D",
+          "text": "The provider profile won't be visible on the Snowflake Marketplace until a public listing is published"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Provider profiles won't be visible on the Snowflake Marketplace until a public listing is published.",
+        "distractors": {
+          "A": "The profile is not public until a public listing is published.",
+          "B": "Provider profiles do become visible once a public listing is published.",
+          "C": "This visibility rule concerns the public Marketplace, not the Internal Marketplace."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "org-listings",
+      "scenario": "A provider in a government region configures organizational listings for consumers in commercial or VPS accounts.",
+      "stem": "Which TWO statements about Internal Marketplace listings in government regions are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Consumers can search the Internal Marketplace in Snowsight for government-region listings"
+        },
+        {
+          "key": "B",
+          "text": "Consumers in government regions can access listings programmatically using the Uniform Listing Locator (ULL) or by mounting the shared database"
+        },
+        {
+          "key": "C",
+          "text": "Custom organization profiles are fully supported"
+        },
+        {
+          "key": "D",
+          "text": "Cross-Cloud Auto-Fulfillment can be configured, triggering after the consumer accesses the listing"
+        },
+        {
+          "key": "E",
+          "text": "The ACCESS_HISTORY view for these listings is visible to consumers"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Consumers in government regions can access listings programmatically via the ULL or by mounting the shared database, and Cross-Cloud Auto-Fulfillment can be configured (triggered after the consumer accesses the listing).",
+        "distractors": {
+          "A": "Consumers can't search the Internal Marketplace in Snowsight for government-region listings; they use the listing URL.",
+          "C": "Custom organization profiles aren't supported in this scenario.",
+          "E": "The ACCESS_HISTORY view for these listings isn't visible to consumers."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "single",
+      "domain": "auto-fulfillment",
+      "scenario": "A provider offers a paid listing that must reach consumers in a different region.",
+      "stem": "How must the data product be made available in the other region for a paid listing?",
+      "options": [
+        {
+          "key": "A",
+          "text": "By manually replicating the data only"
+        },
+        {
+          "key": "B",
+          "text": "By emailing the data to the consumer"
+        },
+        {
+          "key": "C",
+          "text": "Using auto-fulfillment"
+        },
+        {
+          "key": "D",
+          "text": "Paid listings cannot cross regions"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "For paid listings, you use auto-fulfillment to make the data product available in other regions. (Free or limited-trial Marketplace listings can use auto-fulfillment or manual replication.)",
+        "distractors": {
+          "A": "Manual replication is an option for free/limited-trial listings, but paid listings use auto-fulfillment.",
+          "B": "Data is not emailed; sharing uses Snowflake's mechanisms.",
+          "D": "Paid listings can cross regions via auto-fulfillment."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "auto-fulfillment",
+      "scenario": "A provider on Business Critical Edition (BCE) uses auto-fulfillment and compares it to VPS deployments.",
+      "stem": "Which statement correctly describes SSA handling for BCE versus VPS?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Both BCE and VPS never use an SSA"
+        },
+        {
+          "key": "B",
+          "text": "BCE does not require a separate SSA per region but enforces strict security (e.g., Tri-Secret Secure); VPS and government deployments have a separate SSA per deployment"
+        },
+        {
+          "key": "C",
+          "text": "BCE requires a separate SSA per consumer while VPS shares one SSA globally"
+        },
+        {
+          "key": "D",
+          "text": "VPS does not support auto-fulfillment at all"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "For BCE, auto-fulfillment does not require creating a separate SSA for the region but enforces strict security/compliance (e.g., Tri-Secret Secure). VPS and government deployments have a separate SSA for each deployment.",
+        "distractors": {
+          "A": "SSAs are used; the difference is in how they are handled per deployment.",
+          "C": "BCE does not require a separate SSA per consumer.",
+          "D": "VPS supports auto-fulfillment with a separate SSA per deployment."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "auto-fulfillment",
+      "scenario": "A provider plans exactly when auto-fulfillment transfers a data product to a remote region for different listing visibilities.",
+      "stem": "Which TWO statements about auto-fulfillment timing are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Private listings are auto-fulfilled after the specified consumers get the listing"
+        },
+        {
+          "key": "B",
+          "text": "Public Marketplace listings are auto-fulfilled after a consumer in that region gets the listing"
+        },
+        {
+          "key": "C",
+          "text": "All listings are fully replicated to every region in advance"
+        },
+        {
+          "key": "D",
+          "text": "Auto-fulfillment happens only during a monthly maintenance window"
+        },
+        {
+          "key": "E",
+          "text": "Auto-fulfillment never incurs additional cost"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Private listings are auto-fulfilled after the specified consumers get the listing; public Marketplace listings are auto-fulfilled after a consumer in the specific region gets the listing.",
+        "distractors": {
+          "C": "Data products are fulfilled to a region as needed, not pre-replicated to every region.",
+          "D": "There is no monthly-window restriction on auto-fulfillment timing.",
+          "E": "Making a data product available in other regions incurs additional costs."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "org-listings",
+      "scenario": "A data platform team wants internal teams to discover trusted, vetted datasets without browsing externally-shared Marketplace listings.",
+      "stem": "Which capability meets this need?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Public paid listings on the Snowflake Marketplace"
+        },
+        {
+          "key": "B",
+          "text": "Reader accounts"
+        },
+        {
+          "key": "C",
+          "text": "Cross-region failover groups"
+        },
+        {
+          "key": "D",
+          "text": "Organizational listings in the Internal Marketplace"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Organizational listings in the Internal Marketplace let internal teams discover and access vetted, internal-only data products without browsing externally-shared listings.",
+        "distractors": {
+          "A": "Public paid listings are external, not internal-only discovery.",
+          "B": "Reader accounts are for non-Snowflake consumers, not internal discovery.",
+          "C": "Failover groups are for disaster recovery, not internal data discovery."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "marketplace",
+      "scenario": "A provider reviews limitations of Snowflake Marketplace V2 listings in VPS deployments (preview).",
+      "stem": "Which TWO limitations apply to VPS Marketplace customers? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "VPS providers can create unlimited monetized listings"
+        },
+        {
+          "key": "B",
+          "text": "VPS providers can't create monetized listings"
+        },
+        {
+          "key": "C",
+          "text": "VPS customers can only consume app listings for allowlisted connector listings"
+        },
+        {
+          "key": "D",
+          "text": "VPS customers can consume any app listing without restriction"
+        },
+        {
+          "key": "E",
+          "text": "VPS deployments cannot use auto-fulfillment at all"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "For V2 listings in VPS deployments (preview): VPS providers can't create monetized listings, and VPS customers can only consume app listings for allowlisted connector listings.",
+        "distractors": {
+          "A": "VPS providers cannot create monetized listings.",
+          "D": "VPS customers are restricted to allowlisted connector app listings.",
+          "E": "VPS deployments do use auto-fulfillment, with a separate SSA per deployment."
+        }
+      }
+    }
+  ]
+}
