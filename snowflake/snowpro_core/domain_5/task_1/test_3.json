@@ -1,0 +1,777 @@
+{
+  "label": "Time Travel & Fail-safe",
+  "order": 3,
+  "topic": "Data Collaboration and Protection",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "time-travel",
+      "scenario": null,
+      "stem": "What does Snowflake Time Travel enable?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Accessing historical data that has been changed or deleted within a defined period"
+        },
+        {
+          "key": "B",
+          "text": "Replicating data to another region automatically"
+        },
+        {
+          "key": "C",
+          "text": "Encrypting data at rest with customer-managed keys"
+        },
+        {
+          "key": "D",
+          "text": "Compressing micro-partitions to reduce storage"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Time Travel enables accessing historical data (data changed or deleted) at any point within a defined retention period, supporting querying, cloning, and restoring past data.",
+        "distractors": {
+          "B": "Cross-region replication is a separate feature, not Time Travel.",
+          "C": "Encryption with customer-managed keys is Tri-Secret Secure, not Time Travel.",
+          "D": "Micro-partition compression is unrelated to Time Travel."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "time-travel",
+      "scenario": null,
+      "stem": "What is the standard (default) Time Travel data retention period for all Snowflake accounts?",
+      "options": [
+        {
+          "key": "A",
+          "text": "0 days"
+        },
+        {
+          "key": "B",
+          "text": "1 day (24 hours)"
+        },
+        {
+          "key": "C",
+          "text": "7 days"
+        },
+        {
+          "key": "D",
+          "text": "90 days"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The standard retention period is 1 day (24 hours) and is automatically enabled for all Snowflake accounts.",
+        "distractors": {
+          "A": "0 days effectively deactivates Time Travel; it is not the default.",
+          "C": "7 days is the Fail-safe period, not the default Time Travel retention.",
+          "D": "90 days is the maximum for permanent objects on Enterprise Edition, not the default."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "time-travel",
+      "scenario": null,
+      "stem": "On Snowflake Enterprise Edition (or higher), what is the maximum data retention period for PERMANENT databases, schemas, and tables?",
+      "options": [
+        {
+          "key": "A",
+          "text": "1 day"
+        },
+        {
+          "key": "B",
+          "text": "7 days"
+        },
+        {
+          "key": "C",
+          "text": "45 days"
+        },
+        {
+          "key": "D",
+          "text": "90 days"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "For Enterprise Edition and higher, permanent databases, schemas, and tables can have a retention period from 0 up to 90 days.",
+        "distractors": {
+          "A": "1 day is the default, not the maximum on Enterprise.",
+          "B": "7 days is the Fail-safe period.",
+          "C": "45 days is not a documented Time Travel maximum."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "time-travel",
+      "scenario": null,
+      "stem": "Which THREE actions can be performed on data within the Time Travel retention period? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Query data in the past that has since been updated or deleted"
+        },
+        {
+          "key": "B",
+          "text": "Create clones of tables, schemas, and databases at a past point"
+        },
+        {
+          "key": "C",
+          "text": "Recover data through Snowflake Support after the period ends"
+        },
+        {
+          "key": "D",
+          "text": "Restore (UNDROP) tables, schemas, and databases that were dropped"
+        },
+        {
+          "key": "E",
+          "text": "Automatically replicate data to a secondary account"
+        },
+        {
+          "key": "F",
+          "text": "Permanently encrypt historical partitions"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Within the retention period you can query past data, create clones at/before a past point, and UNDROP (restore) dropped tables, schemas, and databases.",
+        "distractors": {
+          "C": "Recovery via Snowflake Support after the period ends is Fail-safe, not Time Travel.",
+          "E": "Replication is a separate feature, not a Time Travel action.",
+          "F": "Time Travel does not perform encryption of historical partitions."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "time-travel",
+      "scenario": null,
+      "stem": "Which TWO SQL extensions were implemented to support Time Travel? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The RESTORE POINT command"
+        },
+        {
+          "key": "B",
+          "text": "The ROLLBACK TO SAVEPOINT command"
+        },
+        {
+          "key": "C",
+          "text": "The AT | BEFORE clause in SELECT and CREATE ... CLONE"
+        },
+        {
+          "key": "D",
+          "text": "The UNDROP command for tables, schemas, and databases"
+        },
+        {
+          "key": "E",
+          "text": "The FLASHBACK QUERY clause"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Time Travel is supported by the AT | BEFORE clause (in SELECT and CREATE ... CLONE) and the UNDROP command for tables, schemas, databases, accounts, external volumes, and tags.",
+        "distractors": {
+          "A": "RESTORE POINT is not a Snowflake Time Travel SQL extension.",
+          "B": "ROLLBACK TO SAVEPOINT is transaction control, not a Time Travel extension.",
+          "E": "FLASHBACK QUERY is Oracle syntax, not Snowflake."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "fail-safe",
+      "scenario": "A data protection lead documents the recovery window that begins after Time Travel retention ends.",
+      "stem": "What is the duration of the Snowflake Fail-safe period, and is it configurable?",
+      "options": [
+        {
+          "key": "A",
+          "text": "1 day, configurable up to 90 days"
+        },
+        {
+          "key": "B",
+          "text": "7 days, non-configurable"
+        },
+        {
+          "key": "C",
+          "text": "14 days, configurable"
+        },
+        {
+          "key": "D",
+          "text": "0 days by default, configurable per object"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Fail-safe provides a non-configurable 7-day period during which historical data may be recoverable by Snowflake, starting immediately after the Time Travel retention period ends.",
+        "distractors": {
+          "A": "1 day up to 90 days describes Time Travel retention, not Fail-safe.",
+          "C": "Fail-safe is 7 days and is not configurable.",
+          "D": "Fail-safe is fixed at 7 days and cannot be configured per object."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "fail-safe",
+      "scenario": "A user accidentally deleted critical data 10 days ago; Time Travel retention was 1 day and has long since elapsed.",
+      "stem": "A user deleted critical data 10 days ago; Time Travel retention was 1 day and has elapsed. Which TWO statements are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "UNDROP TABLE can still restore it instantly"
+        },
+        {
+          "key": "B",
+          "text": "The data is no longer queryable via AT | BEFORE"
+        },
+        {
+          "key": "C",
+          "text": "Only Snowflake can recover it through Fail-safe on a best-effort basis"
+        },
+        {
+          "key": "D",
+          "text": "Cloning the table at a past timestamp will succeed"
+        },
+        {
+          "key": "E",
+          "text": "The data was permanently and irrecoverably erased at deletion time"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "After the Time Travel period ends the data is no longer queryable via AT | BEFORE, and only Snowflake can recover it through Fail-safe on a best-effort basis (last resort).",
+        "distractors": {
+          "A": "UNDROP works only within the Time Travel retention period, which has elapsed.",
+          "D": "Cloning at a past timestamp is unavailable once retention has ended.",
+          "E": "The data is not necessarily permanently erased; Fail-safe may recover it."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "time-travel",
+      "scenario": "An ACCOUNTADMIN wants to configure the default Time Travel retention period for the entire account.",
+      "stem": "Which parameter is used?",
+      "options": [
+        {
+          "key": "A",
+          "text": "MIN_DATA_RETENTION_TIME_IN_DAYS"
+        },
+        {
+          "key": "B",
+          "text": "MAX_DATA_EXTENSION_TIME_IN_DAYS"
+        },
+        {
+          "key": "C",
+          "text": "DATA_RETENTION_TIME_IN_DAYS"
+        },
+        {
+          "key": "D",
+          "text": "FAILSAFE_RETENTION_DAYS"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "DATA_RETENTION_TIME_IN_DAYS is the object parameter (settable by ACCOUNTADMIN) that sets the default retention period for the account and can be overridden per database, schema, or table.",
+        "distractors": {
+          "A": "MIN_DATA_RETENTION_TIME_IN_DAYS sets a minimum floor; it does not set the default retention itself.",
+          "B": "MAX_DATA_EXTENSION_TIME_IN_DAYS relates to extending retention for streams/tasks dependencies, not the default Time Travel period.",
+          "D": "FAILSAFE_RETENTION_DAYS is not a real parameter; Fail-safe is fixed at 7 days."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "time-travel",
+      "scenario": "An ACCOUNTADMIN sets MIN_DATA_RETENTION_TIME_IN_DAYS at the account level while DATA_RETENTION_TIME_IN_DAYS is also set on objects.",
+      "stem": "Which TWO statements correctly describe the effect? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The effective retention for an object is MAX(DATA_RETENTION_TIME_IN_DAYS, MIN_DATA_RETENTION_TIME_IN_DAYS)"
+        },
+        {
+          "key": "B",
+          "text": "MIN_DATA_RETENTION_TIME_IN_DAYS replaces the DATA_RETENTION_TIME_IN_DAYS value"
+        },
+        {
+          "key": "C",
+          "text": "MIN_DATA_RETENTION_TIME_IN_DAYS enforces a minimum retention period for objects"
+        },
+        {
+          "key": "D",
+          "text": "The effective retention is the MIN of the two parameters"
+        },
+        {
+          "key": "E",
+          "text": "MIN_DATA_RETENTION_TIME_IN_DAYS disables Time Travel entirely"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "MIN_DATA_RETENTION_TIME_IN_DAYS enforces a minimum retention floor. The effective minimum retention for an object is MAX(DATA_RETENTION_TIME_IN_DAYS, MIN_DATA_RETENTION_TIME_IN_DAYS).",
+        "distractors": {
+          "B": "It does NOT alter or replace the DATA_RETENTION_TIME_IN_DAYS value.",
+          "D": "The effective period uses MAX, not MIN, of the two values.",
+          "E": "It sets a minimum retention; it does not disable Time Travel."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "time-travel",
+      "scenario": "A developer sets DATA_RETENTION_TIME_IN_DAYS = 0 on a specific table.",
+      "stem": "What is the effect on that table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "It extends Time Travel to the maximum 90 days"
+        },
+        {
+          "key": "B",
+          "text": "It moves the table immediately into Fail-safe"
+        },
+        {
+          "key": "C",
+          "text": "It effectively deactivates Time Travel for the object"
+        },
+        {
+          "key": "D",
+          "text": "It has no effect because 0 is not allowed"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A retention period of 0 days for an object effectively deactivates Time Travel for that object.",
+        "distractors": {
+          "A": "Setting 0 does not extend retention; it removes it.",
+          "B": "Setting 0 does not immediately move current data to Fail-safe as a configuration action.",
+          "D": "0 is allowed and effectively turns off Time Travel for the object."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "time-travel",
+      "scenario": "A developer needs to pinpoint a historical point a fixed number of seconds in the past.",
+      "stem": "Which AT | BEFORE parameter specifies the difference in seconds from the current time?",
+      "options": [
+        {
+          "key": "A",
+          "text": "TIMESTAMP"
+        },
+        {
+          "key": "B",
+          "text": "OFFSET"
+        },
+        {
+          "key": "C",
+          "text": "STATEMENT"
+        },
+        {
+          "key": "D",
+          "text": "INTERVAL"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "OFFSET specifies the difference in seconds from the current time, in the form -N (e.g., -120 for 120 seconds ago).",
+        "distractors": {
+          "A": "TIMESTAMP specifies an exact date and time, not a seconds offset.",
+          "C": "STATEMENT references a query ID as the reference point.",
+          "D": "INTERVAL is not a valid AT | BEFORE parameter."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "time-travel",
+      "scenario": "A developer uses AT(STATEMENT => '<query_id>') where the referenced query ran 20 days ago.",
+      "stem": "A developer uses AT(STATEMENT => '<query_id>'). Which TWO statements about the STATEMENT parameter are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Query IDs never expire for Time Travel purposes"
+        },
+        {
+          "key": "B",
+          "text": "It silently falls back to the current time when expired"
+        },
+        {
+          "key": "C",
+          "text": "The query ID must reference a query executed within the last 14 days"
+        },
+        {
+          "key": "D",
+          "text": "If the query is older than 14 days, an error is returned"
+        },
+        {
+          "key": "E",
+          "text": "It automatically converts to an OFFSET when expired"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The STATEMENT query ID must reference a query executed within the last 14 days; if it is older, an error ('statement <query_id> not found') is returned.",
+        "distractors": {
+          "A": "Query IDs are limited to the last 14 days for STATEMENT-based Time Travel.",
+          "B": "It does not silently fall back to current time; it errors.",
+          "E": "It does not auto-convert to an OFFSET."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "time-travel",
+      "scenario": "A developer queries historical data via Time Travel after the table's columns changed.",
+      "stem": "Which schema is used to interpret the historical data?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The schema as it existed at the historical point"
+        },
+        {
+          "key": "B",
+          "text": "A merged schema of past and present"
+        },
+        {
+          "key": "C",
+          "text": "The current table schema"
+        },
+        {
+          "key": "D",
+          "text": "No schema; raw bytes are returned"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "When querying historical data in a table or non-materialized view, the current table or view schema is used.",
+        "distractors": {
+          "A": "Snowflake uses the current schema, not the historical schema.",
+          "B": "There is no merged schema; the current schema applies.",
+          "D": "Data is returned per the current schema, not as raw bytes."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "time-travel",
+      "scenario": null,
+      "stem": "Once an object's retention period ends and its historical data moves to Fail-safe, which THREE actions are NO LONGER possible? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Ingesting new data into the current table"
+        },
+        {
+          "key": "B",
+          "text": "Creating a new table in the schema"
+        },
+        {
+          "key": "C",
+          "text": "Querying the historical data"
+        },
+        {
+          "key": "D",
+          "text": "Cloning past objects"
+        },
+        {
+          "key": "E",
+          "text": "Restoring past objects that were dropped"
+        },
+        {
+          "key": "F",
+          "text": "Granting privileges on the current table"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "After the retention period ends, historical data is no longer available for querying, past objects can no longer be cloned, and dropped past objects can no longer be restored.",
+        "distractors": {
+          "A": "Ingesting new data into the current table is unaffected by the historical data moving to Fail-safe.",
+          "B": "Creating new tables is a normal operation, unaffected.",
+          "F": "Granting privileges on the current object is unaffected."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "time-travel",
+      "scenario": "A DBA reviews the retention rules for different table types on Standard vs Enterprise Edition.",
+      "stem": "Which TWO statements about retention limits are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Transient and temporary tables can have retention up to 90 days on Enterprise"
+        },
+        {
+          "key": "B",
+          "text": "On Standard Edition, retention can be set to 0 or the default of 1 day"
+        },
+        {
+          "key": "C",
+          "text": "Permanent tables on Standard can be set up to 90 days"
+        },
+        {
+          "key": "D",
+          "text": "On Enterprise, transient and temporary tables can have retention of 0 or 1 day"
+        },
+        {
+          "key": "E",
+          "text": "Temporary tables always retain data for 7 days"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "On Standard Edition, retention can be 0 or the 1-day default. On Enterprise, transient and temporary tables can be set to 0 or 1 day (only permanent objects support up to 90 days).",
+        "distractors": {
+          "A": "Transient and temporary tables cannot use 90-day retention; that applies to permanent objects.",
+          "C": "Standard Edition does not support up to 90 days; that requires Enterprise or higher.",
+          "E": "Temporary tables do not have a fixed 7-day retention; 7 days is the Fail-safe period."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "single",
+      "domain": "fail-safe",
+      "scenario": "A team estimates how long recovering data through Fail-safe might take during an emergency.",
+      "stem": "What is the expected recovery time and nature of Fail-safe?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Instant, self-service recovery by the user"
+        },
+        {
+          "key": "B",
+          "text": "Guaranteed within 1 hour by Snowflake Support"
+        },
+        {
+          "key": "C",
+          "text": "Not possible; Fail-safe is only for billing metrics"
+        },
+        {
+          "key": "D",
+          "text": "Several hours to several days, performed by Snowflake on a best-effort basis"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Data recovery through Fail-safe may take from several hours to several days and is provided by Snowflake on a best-effort basis, intended only when all other recovery options have been attempted.",
+        "distractors": {
+          "A": "Fail-safe is not self-service or instant; only Snowflake can recover the data.",
+          "B": "There is no 1-hour guarantee; recovery can take hours to days.",
+          "C": "Fail-safe is a real data recovery service, not just a billing metric."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "fail-safe",
+      "scenario": "An ACCOUNTADMIN wants to view how much data is stored in Fail-safe for the account.",
+      "stem": "Where in Snowsight can this be viewed?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Admin \u00bb Cost management \u00bb Consumption, filtered by Storage usage type"
+        },
+        {
+          "key": "B",
+          "text": "Data \u00bb Databases \u00bb Fail-safe tab"
+        },
+        {
+          "key": "C",
+          "text": "Worksheets \u00bb Query history"
+        },
+        {
+          "key": "D",
+          "text": "Admin \u00bb Users & Roles"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Using the ACCOUNTADMIN role in Snowsight, go to Admin \u00bb Cost management \u00bb Consumption, filter by the Storage usage type, and review the Storage Breakdown for Fail-safe storage.",
+        "distractors": {
+          "B": "There is no Fail-safe tab under Data \u00bb Databases for this metric.",
+          "C": "Query history does not show Fail-safe storage totals.",
+          "D": "Users & Roles manages access, not storage consumption."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "fail-safe",
+      "scenario": "A team runs a long-running Time Travel query on a large table near the end of its retention period.",
+      "stem": "What effect does this have on data moving into Fail-safe?",
+      "options": [
+        {
+          "key": "A",
+          "text": "It immediately forces the data into Fail-safe"
+        },
+        {
+          "key": "B",
+          "text": "It permanently extends the Time Travel period"
+        },
+        {
+          "key": "C",
+          "text": "It has no effect on Fail-safe timing"
+        },
+        {
+          "key": "D",
+          "text": "It delays moving data and objects into Fail-safe until the query completes"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "A long-running Time Travel query delays moving any data and objects (tables, schemas, and databases) in the account into Fail-safe until the query completes.",
+        "distractors": {
+          "A": "It delays, rather than forces, the move into Fail-safe.",
+          "B": "It does not permanently extend the retention period.",
+          "C": "It does affect timing by delaying the move until the query finishes."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "fail-safe",
+      "scenario": "A cost analyst reviews how Fail-safe is billed and its limitations.",
+      "stem": "Which TWO statements about Fail-safe billing and limitations are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Fail-safe recovery is free of any compute charges"
+        },
+        {
+          "key": "B",
+          "text": "Fail-safe storage is never billed"
+        },
+        {
+          "key": "C",
+          "text": "Fail-safe can be used for routine access to historical data"
+        },
+        {
+          "key": "D",
+          "text": "Fail-safe data recovery uses Snowflake-managed serverless compute with standard serverless billing"
+        },
+        {
+          "key": "E",
+          "text": "Fail-safe does not support tables containing data ingested by Snowpipe Streaming Classic"
+        }
+      ],
+      "correct": [
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Fail-safe recovery uses Snowflake-managed serverless compute (standard serverless billing, FAILSAFE_RECOVERY service type), and it does not support tables containing data ingested by Snowpipe Streaming Classic.",
+        "distractors": {
+          "A": "Recovery incurs standard serverless compute charges; it is not free.",
+          "B": "Fail-safe storage is billed as part of account storage usage.",
+          "C": "Fail-safe is not for routine access to historical data; it is a last-resort recovery service used only by Snowflake."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "time-travel",
+      "scenario": "An ACCOUNTADMIN sets DATA_RETENTION_TIME_IN_DAYS = 0 at the account level.",
+      "stem": "What is the effect, and can it be overridden?",
+      "options": [
+        {
+          "key": "A",
+          "text": "All new databases/schemas/tables default to no retention, but this can be overridden per object at any time"
+        },
+        {
+          "key": "B",
+          "text": "Time Travel is permanently disabled for the entire account and cannot be overridden"
+        },
+        {
+          "key": "C",
+          "text": "It forces a 90-day retention on all objects"
+        },
+        {
+          "key": "D",
+          "text": "It deletes all existing objects in the account"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Setting DATA_RETENTION_TIME_IN_DAYS = 0 at the account level means all databases (and their schemas/tables) default to no retention, but this default can be overridden at any time for any database, schema, or table. Time Travel cannot be deactivated for an account.",
+        "distractors": {
+          "B": "Time Travel cannot be fully deactivated for an account, and object-level overrides are allowed.",
+          "C": "Setting 0 removes default retention; it does not force 90 days.",
+          "D": "It does not delete existing objects."
+        }
+      }
+    }
+  ]
+}

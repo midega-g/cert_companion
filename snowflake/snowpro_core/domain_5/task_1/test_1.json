@@ -1,0 +1,782 @@
+{
+  "label": "Replication, Failover & Business Continuity",
+  "order": 1,
+  "topic": "Data Collaboration and Protection",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "replication",
+      "scenario": null,
+      "stem": "In Snowflake account replication, what is a replicated object in a target account called?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A secondary object"
+        },
+        {
+          "key": "B",
+          "text": "A primary object"
+        },
+        {
+          "key": "C",
+          "text": "A source object"
+        },
+        {
+          "key": "D",
+          "text": "A shadow object"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Replicated objects in a target account are called secondary objects; they are replicas of the primary objects in the source account.",
+        "distractors": {
+          "B": "Primary objects live in the source account, not the target account.",
+          "C": "The source is the account being replicated from, not the replicated object.",
+          "D": "Snowflake does not use the term 'shadow object' for replicas."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "multi",
+      "domain": "replication",
+      "scenario": null,
+      "stem": "Which TWO replication capabilities are available on ALL Snowflake editions (including Standard)? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Database replication"
+        },
+        {
+          "key": "B",
+          "text": "Share replication"
+        },
+        {
+          "key": "C",
+          "text": "Failover groups"
+        },
+        {
+          "key": "D",
+          "text": "Tri-Secret Secure data protection"
+        },
+        {
+          "key": "E",
+          "text": "Dataset replication"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Database replication and share replication are available on all editions including Standard. Replication Group is also available on all editions.",
+        "distractors": {
+          "C": "Failover groups require Business Critical Edition or higher.",
+          "D": "Tri-Secret Secure data protection requires Business Critical Edition or higher.",
+          "E": "Dataset replication requires Business Critical Edition or higher."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "replication",
+      "scenario": null,
+      "stem": "What is the difference between a replication group and a failover group?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A replication group can fail over; a failover group is read-only only"
+        },
+        {
+          "key": "B",
+          "text": "They are identical terms with no functional difference"
+        },
+        {
+          "key": "C",
+          "text": "A replication group works across regions; a failover group only works within a region"
+        },
+        {
+          "key": "D",
+          "text": "A failover group is a replication group that can also fail over (be promoted to primary for read-write access)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "A failover group is a replication group that can also fail over. Its secondary provides read-only access until promoted to primary, which enables read-write access.",
+        "distractors": {
+          "A": "This is reversed: the failover group is the one that can fail over.",
+          "B": "They differ: only a failover group supports promotion/failover.",
+          "C": "Both support cross-region replication; the distinction is failover capability, not region scope."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "replication",
+      "scenario": null,
+      "stem": "Which THREE features require Business Critical Edition (or higher) according to the replication feature/edition matrix? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Database replication"
+        },
+        {
+          "key": "B",
+          "text": "Failover Group"
+        },
+        {
+          "key": "C",
+          "text": "Share replication"
+        },
+        {
+          "key": "D",
+          "text": "Account object (other than database and share) replication"
+        },
+        {
+          "key": "E",
+          "text": "Replication Group"
+        },
+        {
+          "key": "F",
+          "text": "Data protected with Tri-Secret Secure"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Failover Group, account object (non-database/share) replication, and Tri-Secret Secure data protection all require Business Critical Edition or higher.",
+        "distractors": {
+          "A": "Database replication is available on all editions including Standard.",
+          "C": "Share replication is available on all editions including Standard.",
+          "E": "Replication Group is available on all editions including Standard."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "client-redirect",
+      "scenario": null,
+      "stem": "Which TWO statements about Snowflake Client Redirect are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The primary and secondary connections can be in the same region"
+        },
+        {
+          "key": "B",
+          "text": "It is implemented through a Snowflake connection object storing a connection URL"
+        },
+        {
+          "key": "C",
+          "text": "The connection URL specifies the exact account you connect to"
+        },
+        {
+          "key": "D",
+          "text": "It requires Business Critical Edition (or higher)"
+        },
+        {
+          "key": "E",
+          "text": "It is available on all Snowflake editions"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Client Redirect is implemented via a connection object that stores a secure connection URL, and it requires Business Critical Edition or higher.",
+        "distractors": {
+          "A": "The accounts storing primary and secondary connections must be in different regions.",
+          "C": "The connection URL does NOT specify the account; the primary connection determines the target account.",
+          "E": "It is not available on all editions; it needs Business Critical or higher."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "An administrator signs into a target account and wants to promote a secondary failover group to become the primary during a disaster.",
+      "stem": "Which SQL command performs this promotion?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ALTER FAILOVER GROUP myfg REFRESH"
+        },
+        {
+          "key": "B",
+          "text": "ALTER FAILOVER GROUP myfg PRIMARY"
+        },
+        {
+          "key": "C",
+          "text": "ALTER FAILOVER GROUP myfg SET PRIMARY = TRUE"
+        },
+        {
+          "key": "D",
+          "text": "PROMOTE FAILOVER GROUP myfg"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "ALTER FAILOVER GROUP <name> PRIMARY promotes a secondary failover group to serve as the primary, executed on the target account by a role with the FAILOVER privilege.",
+        "distractors": {
+          "A": "REFRESH synchronizes the secondary with the primary; it does not promote it.",
+          "C": "This is not valid syntax for promoting a failover group.",
+          "D": "PROMOTE FAILOVER GROUP is not a valid Snowflake command."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "During a partial outage in the source region, an administrator tries to promote a secondary failover group but it is currently being refreshed by a replication operation.",
+      "stem": "What does Snowflake do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "It prevents failover to ensure data integrity while a refresh is in progress"
+        },
+        {
+          "key": "B",
+          "text": "It immediately cancels the refresh and promotes the group"
+        },
+        {
+          "key": "C",
+          "text": "It silently promotes the group and discards the refresh"
+        },
+        {
+          "key": "D",
+          "text": "It duplicates the group into two primaries"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "To ensure data integrity, Snowflake prevents failover if a refresh operation is in progress; you cannot promote a secondary while it is being refreshed.",
+        "distractors": {
+          "B": "Snowflake does not automatically cancel the refresh to force promotion in this SQL path.",
+          "C": "It does not silently promote and discard; it blocks the failover.",
+          "D": "There is never more than one primary; two primaries would break consistency."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "data-transfer-cost",
+      "scenario": "A company replicates a database from a Snowflake account in one region to a secondary account in a different region on the same cloud platform.",
+      "stem": "How are data transfer costs applied?",
+      "options": [
+        {
+          "key": "A",
+          "text": "No data transfer costs apply because it is the same cloud platform"
+        },
+        {
+          "key": "B",
+          "text": "Data egress costs apply for transferring data out of the source region"
+        },
+        {
+          "key": "C",
+          "text": "Data ingress costs apply at the target account"
+        },
+        {
+          "key": "D",
+          "text": "Costs apply only if the accounts are in different organizations"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Snowflake charges a per-byte egress fee when data moves to a different region on the same cloud platform (or to a different cloud). Replication across regions incurs data transfer costs.",
+        "distractors": {
+          "A": "Same cloud platform but different region still incurs egress charges; only same-region transfers are free.",
+          "C": "Snowflake does not charge data ingress fees.",
+          "D": "Cost depends on region/cloud boundaries, not organization membership."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "data-transfer-cost",
+      "scenario": "A team is auditing which activities could incur Snowflake data transfer (egress) costs.",
+      "stem": "Which THREE actions can incur data transfer costs when crossing a region or cloud boundary? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Querying data within the same region"
+        },
+        {
+          "key": "B",
+          "text": "Retrieving query results across regions via a client driver"
+        },
+        {
+          "key": "C",
+          "text": "Replicating databases to a secondary account in another region"
+        },
+        {
+          "key": "D",
+          "text": "Unloading data with COPY INTO <location> to storage in a different region"
+        },
+        {
+          "key": "E",
+          "text": "Cross-Cloud Auto-Fulfillment of listings to consumers in other cloud regions"
+        },
+        {
+          "key": "F",
+          "text": "Loading data into a table within the same region"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Replication across regions, unloading data to a different region, and Cross-Cloud Auto-Fulfillment all incur data transfer costs when crossing region/cloud boundaries.",
+        "distractors": {
+          "A": "Data transfers within the same region are free.",
+          "B": "Snowflake does not apply egress charges when a client/driver retrieves query results across regions or clouds.",
+          "F": "Snowflake does not charge data ingress fees for loading data."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "client-redirect",
+      "scenario": "An application connects to Snowflake using a connection URL. An outage hits the region hosting the primary connection.",
+      "stem": "How does an administrator restore connectivity WITHOUT changing the application's connection settings?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Edit the application's config to point at the secondary account's URL"
+        },
+        {
+          "key": "B",
+          "text": "Promote a secondary connection in another region to primary using ALTER CONNECTION myconnection PRIMARY"
+        },
+        {
+          "key": "C",
+          "text": "Drop the primary connection and recreate it in the new region"
+        },
+        {
+          "key": "D",
+          "text": "Switch the application to a direct account locator URL"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The administrator promotes a secondary connection in a different region to primary with ALTER CONNECTION <name> PRIMARY; clients keep using the same connection URL, which now resolves to the promoted account.",
+        "distractors": {
+          "A": "The whole point of Client Redirect is that you do NOT change the application's connection settings.",
+          "C": "Dropping and recreating the connection is unnecessary and would change the URL.",
+          "D": "Switching to a direct account locator changes the application's connection settings, defeating Client Redirect."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "An organization wants to replicate objects between a Snowflake commercial region and a Snowflake government region (different region groups).",
+      "stem": "What is required to enable this cross-region-group replication?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Nothing; all regions replicate freely by default"
+        },
+        {
+          "key": "B",
+          "text": "They must contact Snowflake Support to enable it"
+        },
+        {
+          "key": "C",
+          "text": "They must downgrade both accounts to Standard Edition"
+        },
+        {
+          "key": "D",
+          "text": "Cross-region-group replication is impossible under any circumstances"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Customers can replicate across regions within a region group by default; to replicate between different region groups (e.g., commercial to government or VPS), they must contact Snowflake Support.",
+        "distractors": {
+          "A": "Free replication applies within a region group, not across different region groups.",
+          "C": "Edition downgrade is unrelated and would remove needed features.",
+          "D": "It is possible but requires contacting Snowflake Support."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "client-redirect",
+      "scenario": "An engineer sets up Client Redirect for two accounts (myaccount1 as source, myaccount2 as target) in the same organization but different regions.",
+      "stem": "Which TWO statements about creating the connections are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The primary connection is created on the target account"
+        },
+        {
+          "key": "B",
+          "text": "Failover is enabled with GRANT FAILOVER ON CONNECTION"
+        },
+        {
+          "key": "C",
+          "text": "The secondary connection must have the same name as the primary connection"
+        },
+        {
+          "key": "D",
+          "text": "The secondary is created with CREATE CONNECTION myconnection AS REPLICA OF myorg.myaccount1.myconnection"
+        },
+        {
+          "key": "E",
+          "text": "The connection name must differ between primary and secondary"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The secondary connection must share the same name as the primary, and it is created with CREATE CONNECTION <name> AS REPLICA OF <org.account.connection>.",
+        "distractors": {
+          "A": "The primary connection is created on the source account, not the target.",
+          "B": "Failover is enabled with ALTER CONNECTION ... ENABLE FAILOVER TO ACCOUNTS, not a GRANT statement.",
+          "E": "The names must match, not differ."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "client-redirect",
+      "scenario": null,
+      "stem": "What is the format of a Client Redirect connection URL hostname?",
+      "options": [
+        {
+          "key": "A",
+          "text": "account_locator.region.snowflakecomputing.com"
+        },
+        {
+          "key": "B",
+          "text": "organization_name-connection_name.snowflakecomputing.com"
+        },
+        {
+          "key": "C",
+          "text": "connection_name.organization_name.snowflake.net"
+        },
+        {
+          "key": "D",
+          "text": "account_name-region.snowflakecomputing.com"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The connection URL hostname is composed of the organization name and connection object name: organization_name-connection_name.snowflakecomputing.com.",
+        "distractors": {
+          "A": "This resembles a standard account locator URL, not a Client Redirect connection URL.",
+          "C": "The domain and ordering are incorrect for a connection URL.",
+          "D": "The connection URL uses the connection name, not the account name and region."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "A team wants to replicate some databases more frequently than others within the same disaster-recovery setup.",
+      "stem": "How can they achieve differing refresh frequencies?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Divide the replicated objects across multiple failover groups"
+        },
+        {
+          "key": "B",
+          "text": "Use a single failover group with per-object schedules"
+        },
+        {
+          "key": "C",
+          "text": "Replication frequency cannot be customized per object"
+        },
+        {
+          "key": "D",
+          "text": "Create one failover group per region only"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "You can optionally divide replicated objects across multiple failover groups, for example if some databases should be replicated more frequently than others.",
+        "distractors": {
+          "B": "Refresh schedules are set per failover group, not per object within a single group.",
+          "C": "It can be customized by splitting objects into multiple groups with different schedules.",
+          "D": "Grouping by region alone does not control refresh frequency per database."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "replication",
+      "scenario": "An administrator is performing a bulk failover in Snowsight and some refresh operations for the selected failover groups are still in progress.",
+      "stem": "Which TWO options does Snowsight offer to handle the in-progress refreshes? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Automatically roll back all failover groups"
+        },
+        {
+          "key": "B",
+          "text": "Wait for the refreshes to complete (the default action)"
+        },
+        {
+          "key": "C",
+          "text": "Merge the primary and secondary into a single account"
+        },
+        {
+          "key": "D",
+          "text": "Permanently disable replication for the account"
+        },
+        {
+          "key": "E",
+          "text": "Cancel refreshes and force failover"
+        }
+      ],
+      "correct": [
+        "B",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Snowsight defaults to waiting for refreshes to complete, or you can select 'Cancel refreshes and force failover' (advanced option) to proceed immediately, cleaning up any inconsistencies afterward.",
+        "distractors": {
+          "A": "Snowsight does not offer an automatic rollback of all groups as a refresh-handling option.",
+          "C": "Merging accounts is not a failover option.",
+          "D": "Disabling replication is not offered as a way to handle in-progress refreshes."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "After failover, the objects in a promoted failover group become writable on the newly promoted account.",
+      "stem": "What happens to those same objects on the account that was formerly the primary?",
+      "options": [
+        {
+          "key": "A",
+          "text": "They remain writable on both accounts simultaneously"
+        },
+        {
+          "key": "B",
+          "text": "They are automatically dropped from the former primary"
+        },
+        {
+          "key": "C",
+          "text": "They are converted to transient objects"
+        },
+        {
+          "key": "D",
+          "text": "They become read-only on the former primary (now a secondary account)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "After failover, objects become writable on the newly promoted primary and become read-only on the account that formerly was the primary and is now a secondary account.",
+        "distractors": {
+          "A": "Only one account can hold the writable primary; the former primary becomes read-only.",
+          "B": "Objects are not dropped from the former primary; they become read-only replicas.",
+          "C": "Failover does not convert objects to transient objects."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "data-transfer-cost",
+      "scenario": "A finance team reviews whether Snowflake or the cloud provider charges for data movement into their Snowflake account.",
+      "stem": "Which TWO statements about ingress and egress are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Snowflake charges ingress fees for all loaded data"
+        },
+        {
+          "key": "B",
+          "text": "Data transfers within the same region are charged per byte by Snowflake"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake charges egress on query results retrieved across regions by a driver"
+        },
+        {
+          "key": "D",
+          "text": "Snowflake does not charge data ingress fees"
+        },
+        {
+          "key": "E",
+          "text": "A cloud storage provider might charge its own egress fee to move data to your Snowflake account"
+        }
+      ],
+      "correct": [
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Snowflake does not charge data ingress fees, but a cloud storage provider might charge its own egress fee to transfer data from its network to where your Snowflake account is hosted.",
+        "distractors": {
+          "A": "Snowflake does not charge ingress fees.",
+          "B": "Data transfers within the same region are free.",
+          "C": "Snowflake does not apply egress charges when a client/driver retrieves query results across regions or clouds."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "A prerequisite step in setting up disaster recovery is bringing the latest updates from the primary objects to each secondary account.",
+      "stem": "What is this synchronization operation called?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Failover"
+        },
+        {
+          "key": "B",
+          "text": "Failback"
+        },
+        {
+          "key": "C",
+          "text": "Promotion"
+        },
+        {
+          "key": "D",
+          "text": "Refresh"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Refresh synchronizes each replica (secondary failover group) with the latest updates to the objects in the primary failover group. An initial refresh plus a regular schedule keeps secondaries current.",
+        "distractors": {
+          "A": "Failover promotes a secondary to primary; it is not the sync operation.",
+          "B": "Failback returns the primary role to the original source after an outage.",
+          "C": "Promotion is the failover act, not the periodic synchronization."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "replication",
+      "scenario": "A data platform lead is planning a business-continuity architecture and listing the prerequisites for account failover.",
+      "stem": "Which THREE are prerequisites for failing over replicated account objects? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Convert all databases to transient databases"
+        },
+        {
+          "key": "B",
+          "text": "Disable Time Travel on the source account"
+        },
+        {
+          "key": "C",
+          "text": "Enable replication in a set of accounts within the same organization across multiple regions"
+        },
+        {
+          "key": "D",
+          "text": "Create a primary failover group defining which objects to replicate and the target accounts"
+        },
+        {
+          "key": "E",
+          "text": "Create at least one secondary failover group in one or more secondary accounts"
+        },
+        {
+          "key": "F",
+          "text": "Move all accounts into a single region"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Prerequisites include enabling replication across accounts in the same organization/multiple regions, creating a primary failover group, and creating at least one secondary failover group (then refreshing it).",
+        "distractors": {
+          "A": "Converting databases to transient is not a failover prerequisite and would remove Fail-safe protection.",
+          "B": "Disabling Time Travel is not required for failover.",
+          "F": "Failover requires accounts in DIFFERENT regions, not a single region."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "An administrator promotes a target account to serve as the source account using Snowsight and wants the most consistent, reliable failover experience.",
+      "stem": "What does Snowflake recommend for this operation?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Fail over each group individually, one at a time, always"
+        },
+        {
+          "key": "B",
+          "text": "Select all applicable failover groups and connections and promote them together (a bulk failover)"
+        },
+        {
+          "key": "C",
+          "text": "Promote only connections and leave failover groups untouched"
+        },
+        {
+          "key": "D",
+          "text": "Delete the primary account before promoting the target"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "For the most consistent and reliable failover, Snowflake recommends selecting all applicable failover groups and connections and promoting them all at the same time \u2014 a bulk failover.",
+        "distractors": {
+          "A": "One-at-a-time promotion is a fallback (e.g., to retry a failed group), not the recommended default for a full account failover.",
+          "C": "Promoting only connections without failover groups would leave objects on the old primary.",
+          "D": "Deleting the primary account is never part of the failover procedure."
+        }
+      }
+    }
+  ]
+}

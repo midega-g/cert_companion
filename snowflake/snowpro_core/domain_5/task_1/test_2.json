@@ -1,0 +1,782 @@
+{
+  "label": "Zero-Copy Cloning",
+  "order": 2,
+  "topic": "Data Collaboration and Protection",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": null,
+      "stem": "What is the primary purpose of the CREATE ... CLONE command in Snowflake?",
+      "options": [
+        {
+          "key": "A",
+          "text": "To create zero-copy clones of databases, schemas, and tables"
+        },
+        {
+          "key": "B",
+          "text": "To physically duplicate all micro-partitions immediately"
+        },
+        {
+          "key": "C",
+          "text": "To create a read-only replica in another region"
+        },
+        {
+          "key": "D",
+          "text": "To export data to external cloud storage"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "CREATE ... CLONE is primarily used to create zero-copy clones of databases, schemas, and tables (and other schema objects), sharing the same underlying storage as the source until data diverges.",
+        "distractors": {
+          "B": "Cloning does not immediately duplicate storage; clones share the source's micro-partitions until changes occur.",
+          "C": "Cross-region read-only replicas are created by replication, not cloning.",
+          "D": "Exporting to external storage is done with COPY INTO <location>, not cloning."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": null,
+      "stem": "What is true about the relationship between a clone and its source after cloning?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Changes to the source automatically propagate to the clone"
+        },
+        {
+          "key": "B",
+          "text": "The clone is read-only and cannot be modified"
+        },
+        {
+          "key": "C",
+          "text": "The clone is writable and independent; changes are not reflected in the other object"
+        },
+        {
+          "key": "D",
+          "text": "The clone and source must always share the same schema forever"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A clone is writable and independent of its source. Changes made to the source or the clone are not reflected in the other object.",
+        "distractors": {
+          "A": "Source changes do not propagate to the clone; they are independent.",
+          "B": "Clones are writable, not read-only.",
+          "D": "The clone is independent and its schema can diverge from the source."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": null,
+      "stem": "By default, do CREATE <object> ... CLONE statements copy privilege grants from the source object to the clone?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Yes, all grants including OWNERSHIP are always copied"
+        },
+        {
+          "key": "B",
+          "text": "Grants are copied only for databases, never for tables"
+        },
+        {
+          "key": "C",
+          "text": "Grants are never copyable under any circumstances"
+        },
+        {
+          "key": "D",
+          "text": "No; most objects do not copy grants unless COPY GRANTS is specified (where supported)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "For most objects, CREATE ... CLONE does not copy grants. Commands that support COPY GRANTS (e.g., CREATE TABLE, CREATE VIEW) can optionally copy all privileges except OWNERSHIP.",
+        "distractors": {
+          "A": "OWNERSHIP is never copied via COPY GRANTS, and grants aren't copied by default.",
+          "B": "Tables can copy grants via COPY GRANTS; the statement is incorrect.",
+          "C": "Grants can be copied using the COPY GRANTS clause where supported."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": null,
+      "stem": "When you clone a database or schema, which THREE statements about the child objects are correct? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The clone inherits all granted privileges on the clones of child objects"
+        },
+        {
+          "key": "B",
+          "text": "Cloning a database recursively clones all its schemas and objects"
+        },
+        {
+          "key": "C",
+          "text": "The clone of the container itself inherits privileges granted on the source container"
+        },
+        {
+          "key": "D",
+          "text": "Cloning a schema recursively clones all contained objects"
+        },
+        {
+          "key": "E",
+          "text": "External tables are cloned with full data copied"
+        },
+        {
+          "key": "F",
+          "text": "Only the top-level container is cloned, not its contents"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The clone inherits privileges on child object clones, and cloning is recursive: cloning a database clones its schemas/objects, and cloning a schema clones its contained objects.",
+        "distractors": {
+          "C": "The clone of the container itself does NOT inherit privileges granted on the source container.",
+          "E": "External tables are not cloned when using Time Travel; and cloning shares storage rather than copying data.",
+          "F": "Cloning includes contents recursively, not just the top-level container."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": null,
+      "stem": "Which TWO access-control privileges are required on the SOURCE object to clone it? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "MODIFY on a source table"
+        },
+        {
+          "key": "B",
+          "text": "OWNERSHIP on a source database"
+        },
+        {
+          "key": "C",
+          "text": "SELECT on a source table"
+        },
+        {
+          "key": "D",
+          "text": "USAGE on a source database"
+        },
+        {
+          "key": "E",
+          "text": "CREATE TABLE on the source table"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "To clone a table you need SELECT on the source table; to clone a database you need USAGE on the source database.",
+        "distractors": {
+          "A": "MODIFY is not the privilege required to clone a table; SELECT is.",
+          "B": "OWNERSHIP on a database is not required to clone it; USAGE is.",
+          "E": "CREATE TABLE is needed on the target container, not as a source-table privilege for cloning."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A developer clones a single table that references a sequence defined in a different schema.",
+      "stem": "A developer clones objects that reference a sequence. Which TWO statements about which sequence the cloned table references are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "If you clone just the table, the cloned table references the source sequence"
+        },
+        {
+          "key": "B",
+          "text": "If the sequence is in a different database/schema, the cloned table references the source sequence"
+        },
+        {
+          "key": "C",
+          "text": "Cloning just the table always creates a new copy of the sequence"
+        },
+        {
+          "key": "D",
+          "text": "The column's default sequence is dropped during cloning"
+        },
+        {
+          "key": "E",
+          "text": "A random system-generated sequence replaces the original"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "If you clone just the table, or the sequence is in a different database/schema, the cloned table references the SOURCE sequence. It references a cloned sequence only when the shared container is cloned.",
+        "distractors": {
+          "C": "Cloning just the table does not create a new sequence copy; it references the source sequence.",
+          "D": "The default sequence is retained, not dropped.",
+          "E": "No random system sequence replaces the original."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A team clones a table that has a clustering key and relies on Automatic Clustering.",
+      "stem": "What is the default state of automatic clustering on the newly cloned table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Automatic Clustering is suspended by default on the new table"
+        },
+        {
+          "key": "B",
+          "text": "Automatic Clustering runs immediately at full cost"
+        },
+        {
+          "key": "C",
+          "text": "The clustering key is dropped from the clone"
+        },
+        {
+          "key": "D",
+          "text": "The clone cannot have a clustering key"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "A cloned table is created with a clustering key, but by default Automatic Clustering is suspended. You resume it with ALTER TABLE <name> RESUME RECLUSTER.",
+        "distractors": {
+          "B": "Automatic Clustering does not run immediately; it is suspended by default.",
+          "C": "The clustering key is retained on the clone.",
+          "D": "The clone can and does have a clustering key."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "An engineer clones a database that contains internal named stages and wants those internal stages included in the clone.",
+      "stem": "Which clause must be specified?",
+      "options": [
+        {
+          "key": "A",
+          "text": "COPY GRANTS"
+        },
+        {
+          "key": "B",
+          "text": "WITH MANAGED ACCESS"
+        },
+        {
+          "key": "C",
+          "text": "INCLUDE INTERNAL STAGES"
+        },
+        {
+          "key": "D",
+          "text": "IGNORE HYBRID TABLES"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Internal named stages are cloned only if you use the INCLUDE INTERNAL STAGES clause when cloning a database or schema.",
+        "distractors": {
+          "A": "COPY GRANTS copies privileges, not internal stages.",
+          "B": "WITH MANAGED ACCESS controls managed access schemas, not internal stage cloning.",
+          "D": "IGNORE HYBRID TABLES skips hybrid tables; it does not include internal stages."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A data engineer clones a database and reviews how stages are handled in the clone.",
+      "stem": "Which TWO statements about cloning stages are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Data files in table stages are copied to the clone"
+        },
+        {
+          "key": "B",
+          "text": "Cloning an external stage copies the referenced cloud storage bucket contents"
+        },
+        {
+          "key": "C",
+          "text": "External named stages present at the start of the operation are cloned"
+        },
+        {
+          "key": "D",
+          "text": "Cloned table stages are empty (data files in the source are not copied)"
+        },
+        {
+          "key": "E",
+          "text": "Internal named stages are always cloned by default"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "When cloning a database/schema, external named stages present at the start are cloned, and cloned table stages are empty because data files in source table stages are not copied.",
+        "distractors": {
+          "A": "Data files in table stages are NOT copied to the clone.",
+          "B": "Cloning an external stage has no impact on the referenced cloud storage contents.",
+          "E": "Internal named stages are cloned only when INCLUDE INTERNAL STAGES is specified, not by default."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A DBA clones a schema and wants the cloned tables to copy privileges from the source tables (excluding ownership).",
+      "stem": "Which clause enables copying these grants?",
+      "options": [
+        {
+          "key": "A",
+          "text": "INCLUDE INTERNAL STAGES"
+        },
+        {
+          "key": "B",
+          "text": "COPY GRANTS"
+        },
+        {
+          "key": "C",
+          "text": "WITH MANAGED ACCESS"
+        },
+        {
+          "key": "D",
+          "text": "IGNORE TABLES WITH INSUFFICIENT DATA RETENTION"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "COPY GRANTS (supported by commands like CREATE TABLE ... CLONE) copies all privileges except OWNERSHIP from the source to the new object.",
+        "distractors": {
+          "A": "INCLUDE INTERNAL STAGES clones internal stages, not privileges.",
+          "C": "WITH MANAGED ACCESS relates to managed access schemas, not grant copying.",
+          "D": "IGNORE TABLES WITH INSUFFICIENT DATA RETENTION skips purged tables during Time Travel clones."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A developer needs to clone objects at a past point using the AT | BEFORE clause and is checking which object types support it.",
+      "stem": "For which object types does CREATE ... CLONE support the AT | BEFORE (Time Travel) clause?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Databases, schemas, and non-temporary tables"
+        },
+        {
+          "key": "B",
+          "text": "Only external tables"
+        },
+        {
+          "key": "C",
+          "text": "Only internal stages"
+        },
+        {
+          "key": "D",
+          "text": "Only users and roles"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "For databases, schemas, and non-temporary tables, CLONE supports the AT | BEFORE clause for cloning using Time Travel.",
+        "distractors": {
+          "B": "External tables are not cloned when using Time Travel.",
+          "C": "Internal stages are not cloned via the Time Travel clause.",
+          "D": "Users and roles are not schema objects cloned with AT | BEFORE."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A developer clones a database using AT(TIMESTAMP => ...) and wants to skip child tables whose historical data has already been purged from Time Travel.",
+      "stem": "Which TWO clauses are relevant to controlling this Time Travel clone behavior? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "COPY GRANTS"
+        },
+        {
+          "key": "B",
+          "text": "IGNORE TABLES WITH INSUFFICIENT DATA RETENTION"
+        },
+        {
+          "key": "C",
+          "text": "WITH MANAGED ACCESS"
+        },
+        {
+          "key": "D",
+          "text": "IGNORE HYBRID TABLES"
+        },
+        {
+          "key": "E",
+          "text": "ENABLE FAILOVER"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "For databases/schemas, CLONE supports IGNORE TABLES WITH INSUFFICIENT DATA RETENTION (skip tables purged from Time Travel) and IGNORE HYBRID TABLES (skip hybrid tables).",
+        "distractors": {
+          "A": "COPY GRANTS copies privileges; it does not control Time Travel skipping.",
+          "C": "WITH MANAGED ACCESS relates to managed access schemas.",
+          "E": "ENABLE FAILOVER is a replication/connection setting, unrelated to cloning."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": null,
+      "stem": "Which THREE parameters can the AT | BEFORE clause accept when cloning with Time Travel? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "VERSION"
+        },
+        {
+          "key": "B",
+          "text": "SNAPSHOT_ID"
+        },
+        {
+          "key": "C",
+          "text": "TIMESTAMP"
+        },
+        {
+          "key": "D",
+          "text": "OFFSET (time difference in seconds)"
+        },
+        {
+          "key": "E",
+          "text": "ALIAS"
+        },
+        {
+          "key": "F",
+          "text": "STATEMENT (query ID)"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "The AT | BEFORE clause accepts TIMESTAMP, OFFSET (seconds from present), or STATEMENT (a query ID).",
+        "distractors": {
+          "A": "VERSION is not an AT | BEFORE parameter.",
+          "B": "SNAPSHOT_ID is not a Snowflake Time Travel parameter.",
+          "E": "ALIAS applies to model versions, not Time Travel cloning."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A table has a foreign key constraint referencing a primary-key table in the SAME schema, and the whole schema is cloned.",
+      "stem": "What does the cloned table with the foreign key reference?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The primary key in the other cloned table (within the clone)"
+        },
+        {
+          "key": "B",
+          "text": "The primary key in the source table"
+        },
+        {
+          "key": "C",
+          "text": "Nothing; the foreign key is dropped"
+        },
+        {
+          "key": "D",
+          "text": "A newly generated surrogate key"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "When the database or schema containing both tables is cloned, the cloned table with the foreign key references the primary key in the other cloned table.",
+        "distractors": {
+          "B": "It references the source primary key only when the tables are in separate databases/schemas that aren't cloned together.",
+          "C": "The foreign key is retained, not dropped.",
+          "D": "No surrogate key is generated."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A developer runs CREATE TABLE ... CLONE and later modifies the source table's data.",
+      "stem": "How does this affect the clone's storage and data?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The clone's data changes to match the source"
+        },
+        {
+          "key": "B",
+          "text": "The clone is invalidated and must be recreated"
+        },
+        {
+          "key": "C",
+          "text": "Both source and clone are locked until a refresh"
+        },
+        {
+          "key": "D",
+          "text": "The clone remains unchanged; new micro-partitions are created only for changed data"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Clones share underlying storage with the source at creation. When either side changes, Snowflake creates new micro-partitions only for the changed data; the clone remains independent and unchanged by source edits.",
+        "distractors": {
+          "A": "The clone is independent; source data changes do not alter the clone.",
+          "B": "The clone is not invalidated by source changes.",
+          "C": "Cloning does not lock the source and clone; they operate independently."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A DBA is reviewing which schema objects can be cloned with CREATE ... CLONE beyond databases, schemas, and tables.",
+      "stem": "Which THREE additional objects can be cloned with CREATE ... CLONE? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Users"
+        },
+        {
+          "key": "B",
+          "text": "Network policies"
+        },
+        {
+          "key": "C",
+          "text": "External stages"
+        },
+        {
+          "key": "D",
+          "text": "File formats"
+        },
+        {
+          "key": "E",
+          "text": "Resource monitors"
+        },
+        {
+          "key": "F",
+          "text": "Sequences"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Beyond databases/schemas/tables, CREATE ... CLONE can clone other schema objects including external stages, file formats, sequences, streams, tasks, alerts, and database roles.",
+        "distractors": {
+          "A": "Users are account-level objects, not cloned via CREATE ... CLONE.",
+          "B": "Network policies are not schema objects cloned by CREATE ... CLONE.",
+          "E": "Resource monitors are account-level objects, not cloned via CREATE ... CLONE."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "An engineer clones a database that contains a pipe object.",
+      "stem": "Which role has the OWNERSHIP privilege on the cloned pipes?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The role that owned the source pipes"
+        },
+        {
+          "key": "B",
+          "text": "The role that creates the clone"
+        },
+        {
+          "key": "C",
+          "text": "The ACCOUNTADMIN role only"
+        },
+        {
+          "key": "D",
+          "text": "No role; pipes cannot be cloned"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "For pipes, the role that creates the clone has the OWNERSHIP privilege on the pipes.",
+        "distractors": {
+          "A": "Ownership is assigned to the cloning role, not the source pipe's owner.",
+          "C": "It is the cloning role, not necessarily ACCOUNTADMIN.",
+          "D": "Pipes are cloned when their containing database/schema is cloned."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A team clones an Apache Iceberg table and inspects the metadata of the clone versus the source.",
+      "stem": "What is true about the cloned Iceberg table's metadata?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The clone shares the exact same metadata.json and table-uuid as the source"
+        },
+        {
+          "key": "B",
+          "text": "The clone has no metadata until first queried"
+        },
+        {
+          "key": "C",
+          "text": "The clone has its own metadata.json with a unique table-uuid"
+        },
+        {
+          "key": "D",
+          "text": "Metadata is stored only in the source's cloud bucket"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "For cloned Iceberg tables, Snowflake generates distinct metadata files: the clone has its own metadata.json with a unique table-uuid, last-sequence-number, and other properties.",
+        "distractors": {
+          "A": "The clone does NOT share the same metadata.json or table-uuid.",
+          "B": "The clone has its own metadata generated at clone time, not on first query.",
+          "D": "The clone's metadata is distinct and not merely in the source bucket."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "cloning",
+      "scenario": "A developer uses CREATE SCHEMA ... CLONE with a Time Travel timestamp and notices some objects were not cloned into the timestamped schema.",
+      "stem": "Which TWO object types are NOT cloned in the described Time Travel scenarios? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Regular (non-temporary) tables"
+        },
+        {
+          "key": "B",
+          "text": "External tables"
+        },
+        {
+          "key": "C",
+          "text": "Views"
+        },
+        {
+          "key": "D",
+          "text": "User tasks when using CREATE SCHEMA ... TIMESTAMP"
+        },
+        {
+          "key": "E",
+          "text": "Sequences"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "External tables are not cloned when using Time Travel, and user tasks in a schema are not cloned when using CREATE SCHEMA ... at a TIMESTAMP (they are cloned when no timestamp is used).",
+        "distractors": {
+          "A": "Non-temporary tables are cloned.",
+          "C": "Views are cloned as part of the schema.",
+          "E": "Sequences are cloned; the cloned table references the cloned sequence when the container is cloned."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "For an Iceberg table using Snowflake-managed storage, a developer tries CREATE ICEBERG TABLE ... CLONE where the source is transient and the new table is permanent.",
+      "stem": "What is the result?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The clone succeeds and converts the type automatically"
+        },
+        {
+          "key": "B",
+          "text": "The statement fails; the source and new table must both be transient or both permanent"
+        },
+        {
+          "key": "C",
+          "text": "The clone succeeds but becomes read-only"
+        },
+        {
+          "key": "D",
+          "text": "The clone succeeds only with COPY GRANTS"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "For Iceberg tables using Snowflake-managed storage, CREATE ICEBERG TABLE ... CLONE succeeds only when the source and new table are both transient or both permanent; a transient/permanent mismatch fails.",
+        "distractors": {
+          "A": "There is no automatic type conversion; the mismatch causes failure.",
+          "C": "The clone does not succeed as read-only; it fails.",
+          "D": "COPY GRANTS does not resolve the transient/permanent mismatch."
+        }
+      }
+    }
+  ]
+}

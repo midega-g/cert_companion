@@ -535,6 +535,35 @@
                   ]
                 }
               ]
+            },
+            {
+              "id": "domain_5",
+              "label": "Domain 5",
+              "description": "Data Collaboration",
+              "children": [
+                {
+                  "id": "task_1",
+                  "label": "Task 5.1",
+                  "description": "Explain Data Collaboration and Protection",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Replication, Failover & Business Continuity",
+                      "path": "snowflake/snowpro_core/domain_5/task_1/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Zero-Copy Cloning",
+                      "path": "snowflake/snowpro_core/domain_5/task_1/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Time Travel & Fail-safe",
+                      "path": "snowflake/snowpro_core/domain_5/task_1/test_3.json"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
