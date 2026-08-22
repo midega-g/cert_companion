@@ -1,0 +1,777 @@
+{
+  "label": "Listings & Access Options",
+  "order": 1,
+  "topic": "Marketplace and Listings",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "listings",
+      "scenario": null,
+      "stem": "What is a listing in Snowflake?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A physical copy of a database sent to a consumer"
+        },
+        {
+          "key": "B",
+          "text": "An enhanced method of Secure Data Sharing that uses the same provider and consumer model"
+        },
+        {
+          "key": "C",
+          "text": "A replication group for disaster recovery"
+        },
+        {
+          "key": "D",
+          "text": "A type of virtual warehouse for sharing compute"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A listing is an enhanced method of Secure Data Sharing that uses the same provider and consumer model, adding capabilities like Marketplace publishing, monetization, usage metrics, and metadata.",
+        "distractors": {
+          "A": "Listings do not copy data; they build on Secure Data Sharing (no data copied).",
+          "C": "A listing is not a replication group; replication is a business-continuity feature.",
+          "D": "A listing is not a warehouse; it is a data-sharing construct."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "listings",
+      "scenario": null,
+      "stem": "In listing terminology, what is a 'data product'?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The consumer's virtual warehouse"
+        },
+        {
+          "key": "B",
+          "text": "A Marketplace invoice"
+        },
+        {
+          "key": "C",
+          "text": "The share or the app attached to your listing"
+        },
+        {
+          "key": "D",
+          "text": "A reader account"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A data product is the share or the Snowflake Native App attached to your listing.",
+        "distractors": {
+          "A": "The consumer's warehouse is compute, not the data product.",
+          "B": "An invoice is a billing artifact, not the data product.",
+          "D": "A reader account is a sharing mechanism, not the data product attached to a listing."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "listings",
+      "scenario": null,
+      "stem": "What are the two availability options when offering a listing?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Inbound or outbound"
+        },
+        {
+          "key": "B",
+          "text": "Free or paid only"
+        },
+        {
+          "key": "C",
+          "text": "Regional or global only"
+        },
+        {
+          "key": "D",
+          "text": "Privately (to specific consumers) or publicly (on the Snowflake Marketplace)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "When offering a listing you choose to make the data product available privately (only to specific consumers) or publicly (visible on the Snowflake Marketplace).",
+        "distractors": {
+          "A": "Inbound/outbound describes share direction, not listing availability options.",
+          "B": "Free/paid are access options, not the availability (private vs public) choice.",
+          "C": "Regional/global is not how listing availability is categorized."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "listings",
+      "scenario": null,
+      "stem": "Which THREE access options can a provider choose for how consumers access a listing's data product? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Anonymous access with no account required"
+        },
+        {
+          "key": "B",
+          "text": "Read-write access to the provider's base tables"
+        },
+        {
+          "key": "C",
+          "text": "Free access to the full data product"
+        },
+        {
+          "key": "D",
+          "text": "Limited trial access, with full access on request"
+        },
+        {
+          "key": "E",
+          "text": "Paid access using Snowflake pricing models"
+        },
+        {
+          "key": "F",
+          "text": "Time-limited write access"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "The access options are free access to the full data product, limited trial access (with full access available on request), and paid access using Snowflake's pricing models.",
+        "distractors": {
+          "A": "Consumers access listings through Snowflake accounts; there is no anonymous no-account access.",
+          "B": "Listings never grant read-write access to a provider's base tables.",
+          "F": "There is no time-limited write-access option for listings."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "listings",
+      "scenario": null,
+      "stem": "Which TWO capabilities do listings add on top of basic Secure Data Sharing? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Copy data physically into the consumer account"
+        },
+        {
+          "key": "B",
+          "text": "Grant consumers OWNERSHIP of shared objects"
+        },
+        {
+          "key": "C",
+          "text": "Offer a share publicly on the Snowflake Marketplace"
+        },
+        {
+          "key": "D",
+          "text": "Charge consumers for access to the data"
+        },
+        {
+          "key": "E",
+          "text": "Eliminate all compute costs for consumers"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Listings add capabilities such as offering a share publicly on the Snowflake Marketplace and charging consumers for access (plus usage monitoring and metadata).",
+        "distractors": {
+          "A": "Listings build on Secure Data Sharing, which does not copy data.",
+          "B": "Consumers never receive OWNERSHIP of shared objects.",
+          "E": "Consumers still pay for compute; listings don't eliminate compute costs."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "listings",
+      "scenario": "A provider wants to publish a generic, aggregated dataset that any Marketplace consumer can access instantly at no cost.",
+      "stem": "A provider wants a generic aggregated dataset available instantly at no cost on the Marketplace. Which TWO statements about free listings are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A free listing requires the consumer to pay before access"
+        },
+        {
+          "key": "B",
+          "text": "A free listing provides instant access to the full published dataset"
+        },
+        {
+          "key": "C",
+          "text": "A free listing can be offered publicly on the Marketplace or privately to specific consumers"
+        },
+        {
+          "key": "D",
+          "text": "A free listing only provides a limited subset of data"
+        },
+        {
+          "key": "E",
+          "text": "A free listing grants consumers write access"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "A free listing provides instant access to the full published dataset and can be offered publicly on the Marketplace or privately to specific consumers.",
+        "distractors": {
+          "A": "Free listings require no payment.",
+          "D": "Free listings provide the full dataset, not a limited subset (that is a trial).",
+          "E": "Listings never grant write access."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "listings",
+      "scenario": "A provider wants to make a data product visible and free-to-try to anyone on the Marketplace, but grant full access only to consumers they choose.",
+      "stem": "A provider wants a data product free-to-try by anyone on the Marketplace but full access only for chosen consumers. Which TWO statements about limited trial listings are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "It grants full unlimited access to everyone immediately"
+        },
+        {
+          "key": "B",
+          "text": "It is only ever offered privately to a single consumer"
+        },
+        {
+          "key": "C",
+          "text": "It makes a product visible and free to try by anyone on the Marketplace"
+        },
+        {
+          "key": "D",
+          "text": "Full access is available only to consumers the provider chooses to do business with"
+        },
+        {
+          "key": "E",
+          "text": "It cannot be used for customer-specific data"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A limited trial listing makes a product visible and free to try by anyone on the Marketplace, but full access is available only to consumers the provider chooses to do business with.",
+        "distractors": {
+          "A": "It grants limited access, not full unlimited access to everyone.",
+          "B": "It is available on the Marketplace to anyone to try, not private to one consumer.",
+          "E": "It is well-suited to customer-specific data and licensing-restricted cases."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "listings",
+      "scenario": "A provider is configuring a limited trial listing and must set how long the trial data product is available.",
+      "stem": "What is the allowed availability period range for a limited trial listing?",
+      "options": [
+        {
+          "key": "A",
+          "text": "1 to 30 days"
+        },
+        {
+          "key": "B",
+          "text": "1 to 90 days"
+        },
+        {
+          "key": "C",
+          "text": "7 to 60 days"
+        },
+        {
+          "key": "D",
+          "text": "Unlimited"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Providers can set the availability period for limited trial listings from 1 to 90 days.",
+        "distractors": {
+          "A": "The maximum is 90 days, not 30.",
+          "C": "The range is 1 to 90 days, not 7 to 60.",
+          "D": "The trial period is bounded (1 to 90 days), not unlimited."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "listings",
+      "scenario": "A provider responds to a consumer's request for full access after a limited trial.",
+      "stem": "Which TWO options can the provider offer in response? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A free private listing (e.g., for an existing business relationship or negotiated terms)"
+        },
+        {
+          "key": "B",
+          "text": "A paid private listing using a Snowflake pricing model"
+        },
+        {
+          "key": "C",
+          "text": "Direct write access to the provider's production tables"
+        },
+        {
+          "key": "D",
+          "text": "A reader account with unlimited free compute for the consumer"
+        },
+        {
+          "key": "E",
+          "text": "Automatic ownership transfer of the dataset"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "In response to a full-access request, a provider might offer a free private listing (e.g., existing relationship/negotiated terms) or a paid private listing using one of Snowflake's pricing models.",
+        "distractors": {
+          "C": "Listings never grant write access to provider tables.",
+          "D": "A reader account is unrelated to fulfilling a trial-to-full request and would bill the provider for compute.",
+          "E": "There is no automatic ownership transfer of the dataset."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "listings",
+      "scenario": "A provider wants to offer several SKUs for one paid listing without creating a separate listing for each SKU.",
+      "stem": "Which feature enables this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Pricing plans (with offers extended to consumers)"
+        },
+        {
+          "key": "B",
+          "text": "Auto-fulfillment"
+        },
+        {
+          "key": "C",
+          "text": "Reader accounts"
+        },
+        {
+          "key": "D",
+          "text": "Data Exchange"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Pricing plans allow providers to offer multiple SKUs for a single paid listing. After creating a pricing plan, providers create offers extended to consumers (with individualized billing, terms, and dates).",
+        "distractors": {
+          "B": "Auto-fulfillment replicates data products across regions; it does not manage SKUs.",
+          "C": "Reader accounts are for non-Snowflake consumers, not SKU management.",
+          "D": "A Data Exchange manages a group of accounts, not multiple SKUs on one listing."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "listings",
+      "scenario": "A provider evaluates regional availability constraints before creating a paid listing.",
+      "stem": "Which statement about paid listings is correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "They are available in all regions without restriction"
+        },
+        {
+          "key": "B",
+          "text": "They can only be offered privately, never on the Marketplace"
+        },
+        {
+          "key": "C",
+          "text": "They are available to consumers and from providers only in specific regions"
+        },
+        {
+          "key": "D",
+          "text": "They require the consumer to own the provider account"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Paid listings are only available to consumers in specific regions, and from providers in specific regions.",
+        "distractors": {
+          "A": "Paid listings are region-restricted, not universally available.",
+          "B": "Paid listings can be offered privately or on the Marketplace.",
+          "D": "Consumers do not need to own the provider account."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "listings",
+      "scenario": null,
+      "stem": "Which THREE types of metadata can a provider include with a listing to help consumers? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The consumer's account password"
+        },
+        {
+          "key": "B",
+          "text": "The provider's cloud billing credentials"
+        },
+        {
+          "key": "C",
+          "text": "A title"
+        },
+        {
+          "key": "D",
+          "text": "A description"
+        },
+        {
+          "key": "E",
+          "text": "Sample SQL queries"
+        },
+        {
+          "key": "F",
+          "text": "The consumer's private encryption keys"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Listings let providers include metadata such as a title, description, sample SQL queries, and information about the data provider.",
+        "distractors": {
+          "A": "A consumer's password is never part of listing metadata.",
+          "B": "Cloud billing credentials are not listing metadata.",
+          "F": "Encryption keys are never included as listing metadata."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "listings",
+      "scenario": "A provider wants to understand how consumers engage with a published listing.",
+      "stem": "Which listing capability supports this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Directly reading the consumer's query history tables"
+        },
+        {
+          "key": "B",
+          "text": "Monitoring interest in the listing and usage of the data in the share"
+        },
+        {
+          "key": "C",
+          "text": "Logging into the consumer account"
+        },
+        {
+          "key": "D",
+          "text": "Modifying the consumer's warehouse settings"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Listings let providers monitor interest in their listing and usage of the data in the share (consumer usage metrics).",
+        "distractors": {
+          "A": "Providers cannot directly read consumer query history tables.",
+          "C": "Providers cannot log into consumer accounts.",
+          "D": "Providers cannot modify consumer warehouse settings."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "listings",
+      "scenario": "A team wants to use listings and the Snowflake Marketplace for the first time.",
+      "stem": "What is required before doing so?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Agree to additional terms (legal requirements for providers and consumers of listings)"
+        },
+        {
+          "key": "B",
+          "text": "Upgrade to Business Critical Edition"
+        },
+        {
+          "key": "C",
+          "text": "Create a reader account first"
+        },
+        {
+          "key": "D",
+          "text": "Disable role-based access control"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "To use listings and the Snowflake Marketplace, you need to agree to additional terms (the legal requirements for providers and consumers of listings).",
+        "distractors": {
+          "B": "Business Critical is not required to use listings/Marketplace.",
+          "C": "A reader account is not a prerequisite for using listings.",
+          "D": "RBAC is not disabled to use listings."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "listings",
+      "scenario": "A provider evaluates why using a Marketplace listing might be better than maintaining individual direct shares with many consumers.",
+      "stem": "Which TWO advantages does a Marketplace listing provide? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Guarantee zero compute cost for the provider"
+        },
+        {
+          "key": "B",
+          "text": "Share curated data offerings with many consumers simultaneously"
+        },
+        {
+          "key": "C",
+          "text": "Optionally charge for data products with paid listings"
+        },
+        {
+          "key": "D",
+          "text": "Automatically grant write access to consumers"
+        },
+        {
+          "key": "E",
+          "text": "Bypass the need for consumer Snowflake accounts"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "A Marketplace listing lets a provider share curated offerings with many consumers at once (instead of per-consumer relationships) and, with paid listings, charge for data products.",
+        "distractors": {
+          "A": "Listings do not guarantee zero provider compute cost.",
+          "D": "Listings never grant write access to consumers.",
+          "E": "Consumers still need Snowflake accounts to access Marketplace listings."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "single",
+      "domain": "listings",
+      "scenario": "A provider offers a listing containing a Snowflake Native App rather than a plain dataset.",
+      "stem": "Is this supported, and what can the app include?",
+      "options": [
+        {
+          "key": "A",
+          "text": "No; listings can only contain raw tables"
+        },
+        {
+          "key": "B",
+          "text": "Yes, but only non-secure views"
+        },
+        {
+          "key": "C",
+          "text": "No; apps must be shared as direct shares"
+        },
+        {
+          "key": "D",
+          "text": "Yes; a listing can share a Snowflake Native App (business logic like Streamlit apps, procedures, and functions), free or paid"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "A provider can share a Snowflake Native App via a listing (free or paid). The app's business logic can include a Streamlit app, stored procedures, and functions.",
+        "distractors": {
+          "A": "Listings can contain a Native App as the data product, not just raw tables.",
+          "B": "Apps include business logic, not merely views.",
+          "C": "Apps are distributed via listings, not direct shares."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "listings",
+      "scenario": "A consumer accesses a listing on the Snowflake Marketplace to explore providers and data products.",
+      "stem": "Through which Snowflake interface do consumers explore listings and providers on the Marketplace?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SnowSQL only"
+        },
+        {
+          "key": "B",
+          "text": "Snowsight"
+        },
+        {
+          "key": "C",
+          "text": "The classic reader-account console"
+        },
+        {
+          "key": "D",
+          "text": "A resource monitor dashboard"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Consumers explore listings and providers on the Snowflake Marketplace through Snowsight.",
+        "distractors": {
+          "A": "The Marketplace exploration experience is in Snowsight, not exclusively SnowSQL.",
+          "C": "There is no classic reader-account console for Marketplace exploration.",
+          "D": "A resource monitor dashboard governs credits, not Marketplace exploration."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "listings",
+      "scenario": "A provider compares free listings versus limited trial listings for different data types.",
+      "stem": "Which TWO statements correctly contrast these listing types? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A free listing provides instant access to the full published dataset"
+        },
+        {
+          "key": "B",
+          "text": "A limited trial listing provides instant limited access, with full access available on request"
+        },
+        {
+          "key": "C",
+          "text": "A free listing requires payment before any access"
+        },
+        {
+          "key": "D",
+          "text": "A limited trial listing grants full unlimited access immediately"
+        },
+        {
+          "key": "E",
+          "text": "Both types can only be offered privately, never publicly"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "A free listing gives instant access to the full dataset, while a limited trial listing gives instant limited access with full access available on request.",
+        "distractors": {
+          "C": "A free listing requires no payment.",
+          "D": "A limited trial grants limited access, not full unlimited access immediately.",
+          "E": "Free listings can be private or public; limited trial listings are available on the Marketplace."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "listings",
+      "scenario": "A provider wants unified procurement so consumers can try and then buy a proprietary data product through Snowflake.",
+      "stem": "Which listing type best supports this try-and-buy, proprietary-data use case?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Free listing"
+        },
+        {
+          "key": "B",
+          "text": "Organizational listing"
+        },
+        {
+          "key": "C",
+          "text": "Paid listing"
+        },
+        {
+          "key": "D",
+          "text": "Non-secure direct share"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Paid listings are best for proprietary or industry-specific data and offer consumers the ability to try and buy a data product with unified procurement through Snowflake.",
+        "distractors": {
+          "A": "A free listing does not involve buying or unified procurement.",
+          "B": "Organizational listings are for internal sharing, not commercial try-and-buy.",
+          "D": "A non-secure direct share is not a listing and offers no procurement."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "listings",
+      "scenario": "A provider extends a specific paid offer to a consumer with individualized billing, payment terms, and contract start/end dates.",
+      "stem": "What is this construct called?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A secure share area"
+        },
+        {
+          "key": "B",
+          "text": "A release directive"
+        },
+        {
+          "key": "C",
+          "text": "A data exchange"
+        },
+        {
+          "key": "D",
+          "text": "An offer (created from a pricing plan)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "An offer (created from a pricing plan) provides consumers with individualized billing, payment terms, payment schedules, and contract start and end dates, which the consumer can review, accept, or reject.",
+        "distractors": {
+          "A": "A secure share area (SSA) is an auto-fulfillment construct, not a billing offer.",
+          "B": "A release directive points to an app version/patch, unrelated to billing.",
+          "C": "A data exchange manages a group of accounts, not an individualized paid offer."
+        }
+      }
+    }
+  ]
+}

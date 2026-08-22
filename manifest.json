@@ -589,6 +589,18 @@
                       "path": "snowflake/snowpro_core/domain_5/task_2/test_3.json"
                     }
                   ]
+                },
+                {
+                  "id": "task_3",
+                  "label": "Task 5.3",
+                  "description": "Share Data Using the Snowflake Marketplace and Listings",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Listings & Access Options",
+                      "path": "snowflake/snowpro_core/domain_5/task_3/test_1.json"
+                    }
+                  ]
                 }
               ]
             }
