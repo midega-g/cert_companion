@@ -77,13 +77,14 @@ Before generating:
 2. List key testable concepts
 3. Determine test count (thin=1, medium=2, dense=3)
 4. Define what each test covers
-5. After all tests: gap analysis — create supplementary test only if gaps yield 20+ questions
+5. After all tests: gap analysis — create supplementary test only if gaps yield 15 to 20 questions
 
 ### Test naming
 
 - Part A / Part B pairs for topics spanning multiple tests
 - Supplementary tests: `"<Parent Topic> — Supplemental"`
-- Supplementary tests only when uncovered content fills a full 20 questions
+- Supplementary tests only when uncovered content yields 15 to 20 questions
+- Supplementary tests use a relaxed format: 15 to 20 total, scenario questions ≥ max(12, 70% of total), direct questions are the remainder (mix of single/multi). All answer-integrity rules still apply (multi = 2–3 correct with 5/6 options, every distractor explained, first-choice letter ≤4, correct-key max 40%).
 
 ### Generation rules
 

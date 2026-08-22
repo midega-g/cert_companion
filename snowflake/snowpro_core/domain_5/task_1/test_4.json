@@ -1,0 +1,674 @@
+{
+  "label": "Data Collaboration & Protection \u2014 Supplemental",
+  "order": 4,
+  "topic": "Data Collaboration and Protection",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "replication",
+      "scenario": null,
+      "stem": "Regarding failover group membership, which statement is correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "An object can belong to multiple failover groups simultaneously"
+        },
+        {
+          "key": "B",
+          "text": "An object can only be in one failover group"
+        },
+        {
+          "key": "C",
+          "text": "An object must be in at least two failover groups for redundancy"
+        },
+        {
+          "key": "D",
+          "text": "Failover groups cannot contain database objects"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "An object can only be in one failover group.",
+        "distractors": {
+          "A": "An object cannot belong to multiple failover groups; it is limited to one.",
+          "C": "There is no requirement to place an object in two failover groups.",
+          "D": "Failover groups can contain database objects among others."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "multi",
+      "domain": "replication",
+      "scenario": null,
+      "stem": "Which TWO statements about object membership in replication and failover groups are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "An object can be in both a failover group and a replication group at the same time"
+        },
+        {
+          "key": "B",
+          "text": "An object can be in multiple replication groups all targeting the same account"
+        },
+        {
+          "key": "C",
+          "text": "An object can be in multiple replication groups if each group replicates to a different target account"
+        },
+        {
+          "key": "D",
+          "text": "An object cannot be in both a failover group and a replication group"
+        },
+        {
+          "key": "E",
+          "text": "Replication groups cannot target more than one account in total"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "An object can be in multiple replication groups as long as each group replicates to a different target account, and an object cannot be in both a failover group and a replication group.",
+        "distractors": {
+          "A": "An object cannot be in both a failover group and a replication group.",
+          "B": "Multiple replication groups for the same object must each target a different account, not the same one.",
+          "E": "Replication groups can replicate to one or more target accounts; this statement is incorrect."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "A provider account has an inbound share (from another provider) and an outbound share it created. The team wants to replicate shares.",
+      "stem": "Which shares can be replicated?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Only outbound shares; inbound shares (from providers) cannot be replicated"
+        },
+        {
+          "key": "B",
+          "text": "Only inbound shares"
+        },
+        {
+          "key": "C",
+          "text": "Both inbound and outbound shares equally"
+        },
+        {
+          "key": "D",
+          "text": "Neither; shares are never replicable"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "You can only replicate outbound shares. Replication of inbound shares (shares from providers) is not supported.",
+        "distractors": {
+          "B": "Inbound shares cannot be replicated.",
+          "C": "Only outbound shares replicate, not both.",
+          "D": "Outbound shares are replicable; share replication is available on all editions."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "replication",
+      "scenario": "An administrator is planning how many replication or failover groups can contain account objects other than databases and shares.",
+      "stem": "Which TWO statements are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "An account can have unlimited groups containing account-level objects"
+        },
+        {
+          "key": "B",
+          "text": "Account object replication is available on Standard Edition"
+        },
+        {
+          "key": "C",
+          "text": "An account can have only one replication or failover group that contains objects other than databases or shares"
+        },
+        {
+          "key": "D",
+          "text": "Account objects cannot be replicated at all"
+        },
+        {
+          "key": "E",
+          "text": "Account object (other than database and share) replication requires Business Critical Edition or higher"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "An account can have only one replication/failover group containing non-database/share objects, and replicating such account objects requires Business Critical Edition or higher.",
+        "distractors": {
+          "A": "Only one such group is allowed per account, not unlimited.",
+          "B": "Account object replication is not available on Standard Edition.",
+          "D": "Account objects can be replicated (with Business Critical Edition or higher)."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "replication",
+      "scenario": "A security admin is granting replication-related privileges to roles.",
+      "stem": "Which THREE are valid replication privileges/grants in Snowflake? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "REPLICATE ACROSS REGIONS"
+        },
+        {
+          "key": "B",
+          "text": "CREATE REPLICATION GROUP (on the account)"
+        },
+        {
+          "key": "C",
+          "text": "PROMOTE PRIMARY"
+        },
+        {
+          "key": "D",
+          "text": "CREATE FAILOVER GROUP (on the account)"
+        },
+        {
+          "key": "E",
+          "text": "ENABLE DISASTER RECOVERY"
+        },
+        {
+          "key": "F",
+          "text": "FAILOVER (on a failover group)"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Valid replication privileges include CREATE REPLICATION GROUP and CREATE FAILOVER GROUP (on the account, granted by ACCOUNTADMIN) and FAILOVER (on a failover group, to promote a secondary to primary).",
+        "distractors": {
+          "A": "REPLICATE ACROSS REGIONS is not a defined Snowflake privilege.",
+          "C": "PROMOTE PRIMARY is not a privilege name; promotion uses the FAILOVER privilege.",
+          "E": "ENABLE DISASTER RECOVERY is not a Snowflake privilege."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "A team uses the legacy ALTER DATABASE ... ENABLE REPLICATION TO ACCOUNTS method to manage database replication and failover.",
+      "stem": "Which role is required to enable and manage this database replication?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SYSADMIN"
+        },
+        {
+          "key": "B",
+          "text": "SECURITYADMIN"
+        },
+        {
+          "key": "C",
+          "text": "ACCOUNTADMIN"
+        },
+        {
+          "key": "D",
+          "text": "USERADMIN"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "For database replication, only a user with the ACCOUNTADMIN role can enable and manage database replication and failover.",
+        "distractors": {
+          "A": "SYSADMIN manages warehouses and objects but is not required for database replication management.",
+          "B": "SECURITYADMIN manages grants and security, not database replication enablement.",
+          "D": "USERADMIN manages users and roles, not database replication."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "An administrator holds the OWNERSHIP privilege on a failover group and needs to allow another role to promote a secondary to primary.",
+      "stem": "What can the owner do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Grant or revoke the FAILOVER privilege on the group to that role"
+        },
+        {
+          "key": "B",
+          "text": "Only ACCOUNTADMIN can ever grant FAILOVER, regardless of ownership"
+        },
+        {
+          "key": "C",
+          "text": "Transfer the primary role automatically without any grant"
+        },
+        {
+          "key": "D",
+          "text": "Nothing; FAILOVER cannot be delegated"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "The FAILOVER privilege can be granted or revoked by a role with the OWNERSHIP privilege on the group, allowing delegation of the promote-to-primary capability.",
+        "distractors": {
+          "B": "A role with OWNERSHIP on the group (not only ACCOUNTADMIN) can grant FAILOVER.",
+          "C": "Promotion requires the FAILOVER privilege and an explicit ALTER command, not automatic transfer.",
+          "D": "FAILOVER can be delegated by the group owner."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "replication",
+      "scenario": "A platform engineer lists the high-level workflow steps to configure account replication and failover for disaster recovery.",
+      "stem": "Which THREE steps are part of the replication configuration workflow? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Convert the source account to Standard Edition"
+        },
+        {
+          "key": "B",
+          "text": "Disable Time Travel across all accounts"
+        },
+        {
+          "key": "C",
+          "text": "Enable replication across a set of accounts in the same organization"
+        },
+        {
+          "key": "D",
+          "text": "Create a primary failover group specifying objects and target accounts"
+        },
+        {
+          "key": "E",
+          "text": "Create at least one secondary failover group and refresh it"
+        },
+        {
+          "key": "F",
+          "text": "Delete the primary account after the first refresh"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "The workflow enables replication across accounts in the organization, creates a primary failover group (defining objects and target accounts), and creates at least one secondary failover group that is then refreshed on a schedule.",
+        "distractors": {
+          "A": "Converting to Standard Edition would remove failover capabilities (which need Business Critical).",
+          "B": "Disabling Time Travel is not part of the replication workflow.",
+          "F": "The primary account is not deleted; it remains as the source."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "After creating a secondary failover group, an administrator wants to keep it current with the latest changes from the primary.",
+      "stem": "What should they set up?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A one-time manual failover"
+        },
+        {
+          "key": "B",
+          "text": "An initial refresh plus a regular refresh schedule"
+        },
+        {
+          "key": "C",
+          "text": "A permanent read-write lock on the secondary"
+        },
+        {
+          "key": "D",
+          "text": "Automatic promotion of the secondary each day"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "You perform an initial refresh and set up a schedule to regularly bring the latest changes to each secondary account, keeping replicas synchronized.",
+        "distractors": {
+          "A": "Failover promotes a secondary to primary; it is not how you keep a replica current.",
+          "C": "Secondaries are read-only replicas; a read-write lock is not the sync mechanism.",
+          "D": "Daily automatic promotion would repeatedly fail over, which is not the goal of keeping a replica current."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A DBA clones a database that contains a database role, then tries to clone the same database role again into the target database.",
+      "stem": "What happens on the second clone attempt?",
+      "options": [
+        {
+          "key": "A",
+          "text": "It succeeds and overwrites the existing role"
+        },
+        {
+          "key": "B",
+          "text": "The command fails because the database role is already cloned in the target"
+        },
+        {
+          "key": "C",
+          "text": "It creates a duplicate role with a suffix"
+        },
+        {
+          "key": "D",
+          "text": "It silently skips the role"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "If the database role is already cloned to the target database, the command fails; you must drop the database role from the target and retry the CLONE command.",
+        "distractors": {
+          "A": "It does not overwrite; the command fails.",
+          "C": "No suffixed duplicate is created.",
+          "D": "It does not silently skip; it returns a failure."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A developer clones a database and inspects whether object parameters explicitly set on the source were retained.",
+      "stem": "What is true about parameter inheritance in the clone?",
+      "options": [
+        {
+          "key": "A",
+          "text": "All parameters reset to account defaults in the clone"
+        },
+        {
+          "key": "B",
+          "text": "Parameters are never carried to clones"
+        },
+        {
+          "key": "C",
+          "text": "Only security parameters are retained"
+        },
+        {
+          "key": "D",
+          "text": "Parameters explicitly set on the source are retained in the clones"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Parameters that are explicitly set on a source database, schema, or table are retained in any clones created from the source container or its child objects.",
+        "distractors": {
+          "A": "Explicitly set source parameters are retained, not reset to account defaults.",
+          "B": "Parameters are carried to clones when explicitly set on the source.",
+          "C": "The behavior applies to object parameters generally, not only security parameters."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A team clones a database that contains hybrid tables and wants the clone to include everything except hybrid tables.",
+      "stem": "Which clause accomplishes this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "IGNORE TABLES WITH INSUFFICIENT DATA RETENTION"
+        },
+        {
+          "key": "B",
+          "text": "IGNORE HYBRID TABLES"
+        },
+        {
+          "key": "C",
+          "text": "INCLUDE INTERNAL STAGES"
+        },
+        {
+          "key": "D",
+          "text": "COPY GRANTS"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "IGNORE HYBRID TABLES skips hybrid tables when cloning a database or schema; the cloned object includes other objects but omits hybrid tables.",
+        "distractors": {
+          "A": "IGNORE TABLES WITH INSUFFICIENT DATA RETENTION skips tables purged from Time Travel, not hybrid tables.",
+          "C": "INCLUDE INTERNAL STAGES adds internal stages; it does not skip hybrid tables.",
+          "D": "COPY GRANTS copies privileges, unrelated to hybrid tables."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A developer clones a schema (not the whole database) that contains a table which references a sequence located in a DIFFERENT schema.",
+      "stem": "Which sequence does the cloned table reference?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A cloned copy of the sequence in the new schema"
+        },
+        {
+          "key": "B",
+          "text": "The source sequence in the other schema"
+        },
+        {
+          "key": "C",
+          "text": "No sequence; the default is removed"
+        },
+        {
+          "key": "D",
+          "text": "A newly generated sequence with a random name"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Because the sequence is defined in a different schema that is not cloned together with the table, the cloned table references the source sequence.",
+        "distractors": {
+          "A": "A cloned sequence is referenced only when the container holding both is cloned together.",
+          "C": "The default is retained, referencing the source sequence.",
+          "D": "No random sequence is generated."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "replication",
+      "scenario": "A compliance team reviews which advanced replication features their Business Critical account can use that Enterprise cannot.",
+      "stem": "Which THREE replication-related features require Business Critical Edition (or higher)? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Share replication"
+        },
+        {
+          "key": "B",
+          "text": "Dataset replication"
+        },
+        {
+          "key": "C",
+          "text": "Database replication"
+        },
+        {
+          "key": "D",
+          "text": "Cortex Search Service replication"
+        },
+        {
+          "key": "E",
+          "text": "Replication Group"
+        },
+        {
+          "key": "F",
+          "text": "Data protected with Tri-Secret Secure"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Dataset replication, Cortex Search Service replication, and Tri-Secret Secure data protection all require Business Critical Edition or higher.",
+        "distractors": {
+          "A": "Share replication is available on all editions including Standard.",
+          "C": "Database replication is available on all editions including Standard.",
+          "E": "Replication Group is available on all editions including Standard."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "client-redirect",
+      "scenario": "An architect combines Client Redirect with account replication for disaster recovery and reviews the constraints.",
+      "stem": "Which TWO constraints apply to Client Redirect connections? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The primary and secondary connections may share the same region"
+        },
+        {
+          "key": "B",
+          "text": "The connection URL must be changed by clients during failover"
+        },
+        {
+          "key": "C",
+          "text": "The accounts storing the primary and secondary connections must be in different regions"
+        },
+        {
+          "key": "D",
+          "text": "The secondary connection is created as a replica of the primary"
+        },
+        {
+          "key": "E",
+          "text": "Client Redirect works only within a single account"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The accounts storing primary and secondary connections must be in different regions, and the secondary connection is created as a replica of the primary (CREATE CONNECTION ... AS REPLICA OF ...).",
+        "distractors": {
+          "A": "Primary and secondary connection accounts must be in different regions.",
+          "B": "Clients keep using the same connection URL during failover; they do not change it.",
+          "E": "Client Redirect spans multiple accounts across regions, not a single account."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "data-transfer-cost",
+      "scenario": "A FinOps analyst maps out which cross-region/cross-cloud operations incur Snowflake data transfer charges.",
+      "stem": "Which THREE operations can incur data transfer (egress) costs when they cross a region or cloud boundary? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Using external functions to transfer data to AWS/Azure/Google"
+        },
+        {
+          "key": "B",
+          "text": "External network access from UDF/procedure handler code"
+        },
+        {
+          "key": "C",
+          "text": "Querying data entirely within the same region"
+        },
+        {
+          "key": "D",
+          "text": "PUT calls (FileOperation.put) to external stages from stored procedures"
+        },
+        {
+          "key": "E",
+          "text": "Retrieving query results across regions via a client driver"
+        },
+        {
+          "key": "F",
+          "text": "Loading data into Snowflake (ingress)"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "External functions, external network access from handler code, and PUT calls (FileOperation.put) to external stages can incur data transfer costs when crossing region/cloud boundaries.",
+        "distractors": {
+          "C": "Data transfers within the same region are free.",
+          "E": "Snowflake does not charge egress when a client/driver retrieves query results across regions or clouds.",
+          "F": "Snowflake does not charge data ingress fees for loading data."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "replication",
+      "scenario": "A database and share replication setup must span from a Snowflake commercial region to a Virtual Private Snowflake (VPS) region, which are in different region groups.",
+      "stem": "What is required to enable this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Nothing; all region groups replicate freely"
+        },
+        {
+          "key": "B",
+          "text": "Downgrade both accounts to Standard Edition"
+        },
+        {
+          "key": "C",
+          "text": "Contact Snowflake Support to enable cross-region-group replication"
+        },
+        {
+          "key": "D",
+          "text": "Use Client Redirect instead of replication"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "To replicate between regions in different region groups (e.g., commercial to government or VPS), you must contact Snowflake Support; replication within a region group works by default.",
+        "distractors": {
+          "A": "Cross-region-group replication is not automatic; it requires contacting Snowflake Support.",
+          "B": "Edition downgrade does not enable cross-region-group replication and removes features.",
+          "D": "Client Redirect handles client connections, not object replication across region groups."
+        }
+      }
+    }
+  ]
+}

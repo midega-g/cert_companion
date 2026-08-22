@@ -217,7 +217,7 @@ Before generating questions, assess the fetched content to determine:
    * Medium content (3-6 pages with moderate depth) → 2 tests
    * Dense content (6+ pages with high depth, many testable concepts) → 3 tests
 4. **Test breakdown:** Define what each test will cover before generating anything.
-5. **Gap analysis:** After all planned tests for a task are generated, review the source material for concepts that were not covered or only lightly touched. If significant gaps exist (enough to generate a full 20-question test), create a supplementary test to achieve full or near-full coverage. If the gaps only yield fewer than 20 questions, a supplementary test is not needed. Check for:
+5. **Gap analysis:** After all planned tests for a task are generated, review the source material for concepts that were not covered or only lightly touched. If significant gaps exist (enough to generate 15 to 20 questions), create a supplementary test to achieve full or near-full coverage. If the gaps yield fewer than 15 questions, a supplementary test is not needed. Check for:
    * SQL commands or functions mentioned in the docs but not tested
    * Edge cases, limitations, or "gotchas" that weren't addressed
    * Configuration options or parameters not covered
@@ -237,7 +237,27 @@ Tests are organized as Part A / Part B pairs when a topic spans multiple tests:
 
 * `"Organizations & Accounts — Supplemental"` (covers gaps across both Part A and Part B)
 
-Supplementary tests are only created when the uncovered content can fill a full 20-question test.
+Supplementary tests are only created when the uncovered content can yield 15 to 20 questions.
+
+### Supplementary test formatting (relaxed)
+
+Regular tests use the strict 20-question format (3/3/7/7). Supplementary tests are more flexible because gap material may only yield 15 to 20 questions:
+
+* **Total:** 15 to 20 questions (whatever the uncovered content genuinely supports — do not pad with low-value filler).
+* **Scenario questions:** at least 70% of the total, with a hard floor of 12. That is, `scenario_count >= max(12, ceil(0.70 * total))`. Split scenario questions between single and multi.
+* **Direct questions:** the remainder. Include a mix of single and multi when 2 or more direct questions exist (at least 1 of each).
+* **All other integrity rules still apply:** multi-select has exactly 2 or 3 correct answers (5 options for 2 correct, 6 for 3 correct); every distractor has its own explanation; no single letter as the first correct choice in multi-selects more than 4 times; no single correct-answer letter accounts for more than 40% of total correct keys.
+
+Scenario minimums by total size (70% rule, floor 12):
+
+| Total | Min scenario | Max direct |
+|-------|--------------|-----------|
+| 15    | 12           | 3         |
+| 16    | 12           | 4         |
+| 17    | 12           | 5         |
+| 18    | 13           | 5         |
+| 19    | 14           | 5         |
+| 20    | 14           | 6         |
 
 ## Validation after generation
 

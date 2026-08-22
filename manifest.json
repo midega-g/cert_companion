@@ -560,6 +560,11 @@
                       "id": "test_3",
                       "label": "Time Travel & Fail-safe",
                       "path": "snowflake/snowpro_core/domain_5/task_1/test_3.json"
+                    },
+                    {
+                      "id": "test_4",
+                      "label": "Data Collaboration & Protection \u2014 Supplemental",
+                      "path": "snowflake/snowpro_core/domain_5/task_1/test_4.json"
                     }
                   ]
                 }
