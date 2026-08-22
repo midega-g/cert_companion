@@ -1,0 +1,787 @@
+{
+  "label": "Snowflake ML & Model Registry",
+  "order": 3,
+  "topic": "AI/ML and Application Development Features",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": null,
+      "stem": "What is the primary purpose of Snowflake ML Functions such as Forecasting and Anomaly Detection?",
+      "options": [
+        {
+          "key": "A",
+          "text": "To provide out-of-the-box machine learning analysis on structured data without requiring programming"
+        },
+        {
+          "key": "B",
+          "text": "To fine-tune large language models on unstructured text"
+        },
+        {
+          "key": "C",
+          "text": "To perform fuzzy search over documents"
+        },
+        {
+          "key": "D",
+          "text": "To manage the deployment of custom Python models"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "ML Functions are out-of-the-box analysis tools that simplify creating and using traditional ML models on structured data, letting analysts predict and classify without programming.",
+        "distractors": {
+          "B": "Fine-tuning LLMs is done by Cortex Fine-tuning, not ML Functions.",
+          "C": "Fuzzy search is provided by Cortex Search, not ML Functions.",
+          "D": "Deploying custom Python models is the role of the Model Registry, not ML Functions."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": null,
+      "stem": "Which ML Function flags metric values that differ from typical expectations in time-series data?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Forecasting"
+        },
+        {
+          "key": "B",
+          "text": "Classification"
+        },
+        {
+          "key": "C",
+          "text": "Anomaly Detection"
+        },
+        {
+          "key": "D",
+          "text": "Top Insights"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Anomaly Detection flags metric values that differ from typical expectations, operating on time-series data.",
+        "distractors": {
+          "A": "Forecasting predicts future metric values from past trends, not flag anomalies.",
+          "B": "Classification sorts rows into classes and does not require time-series data.",
+          "D": "Top Insights finds dimensions and values that affect a metric in surprising ways, not flag anomalies over time."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": null,
+      "stem": "How are models stored in the Snowflake Model Registry?",
+      "options": [
+        {
+          "key": "A",
+          "text": "As files in an external cloud storage bucket"
+        },
+        {
+          "key": "B",
+          "text": "As first-class schema-level objects in Snowflake"
+        },
+        {
+          "key": "C",
+          "text": "As rows in a system metadata table"
+        },
+        {
+          "key": "D",
+          "text": "As account-level objects shared across all databases"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The Model Registry stores machine learning models as first-class schema-level objects in Snowflake, alongside other database objects.",
+        "distractors": {
+          "A": "Models are stored within Snowflake, not in external cloud storage buckets.",
+          "C": "Models are first-class objects, not merely rows in a metadata table.",
+          "D": "Models are schema-level objects, not account-level objects."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "snowflake-ml",
+      "scenario": null,
+      "stem": "Which THREE capabilities are provided by Snowflake ML for the machine learning lifecycle? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Feature Store for defining, managing, and serving ML features"
+        },
+        {
+          "key": "B",
+          "text": "Automatic SQL generation from natural language"
+        },
+        {
+          "key": "C",
+          "text": "Model Registry for logging and managing models"
+        },
+        {
+          "key": "D",
+          "text": "Hybrid keyword and vector search"
+        },
+        {
+          "key": "E",
+          "text": "ML Observability for monitoring model performance and drift"
+        },
+        {
+          "key": "F",
+          "text": "PII redaction from text"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Snowflake ML provides the Feature Store, Model Registry, and ML Observability (plus ML Jobs, experiment tracking, and ML Lineage) as part of the end-to-end ML lifecycle.",
+        "distractors": {
+          "B": "Natural-language-to-SQL is Cortex Analyst, part of Cortex, not Snowflake ML.",
+          "D": "Hybrid search is Cortex Search, part of Cortex, not Snowflake ML.",
+          "F": "PII redaction is the AI_REDACT Cortex function, not a Snowflake ML capability."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "snowflake-ml",
+      "scenario": null,
+      "stem": "Which TWO privileges allow a role to USE a model in the Model Registry (as opposed to creating one)? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE MODEL privilege"
+        },
+        {
+          "key": "B",
+          "text": "USAGE privilege (warehouse inference without seeing internals)"
+        },
+        {
+          "key": "C",
+          "text": "MODIFY privilege"
+        },
+        {
+          "key": "D",
+          "text": "READ privilege (SPCS inference and viewing metadata)"
+        },
+        {
+          "key": "E",
+          "text": "OPERATE privilege"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "To use a model, you need USAGE (allows warehouse inference without seeing internals) or READ (allows SPCS inference and viewing metadata like comments, tags, metrics).",
+        "distractors": {
+          "A": "CREATE MODEL is required to create a model, not to use an existing one.",
+          "C": "MODIFY is not one of the model usage privileges described for the registry.",
+          "E": "OPERATE is not a model registry usage privilege."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": "A data scientist calls the registry's log_model method with the same model_name but a new version_name.",
+      "stem": "What is the result?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The existing model is overwritten"
+        },
+        {
+          "key": "B",
+          "text": "An error occurs because the model name already exists"
+        },
+        {
+          "key": "C",
+          "text": "A new version of the existing model is logged"
+        },
+        {
+          "key": "D",
+          "text": "A separate model with an auto-generated name is created"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Calling log_model again with the same model_name but a different version_name logs an additional version of the existing model. Each model can have unlimited versions.",
+        "distractors": {
+          "A": "The existing model is not overwritten; a new version is added.",
+          "B": "No error occurs; the combination of name and version must be unique, and a new version name is unique.",
+          "D": "The model name is reused, not auto-generated, and the model is not separate."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": "A team wants to run traditional ML training with distributed model training and hyperparameter tuning using PyTorch and XGBoost inside Snowflake.",
+      "stem": "Which Snowflake ML environment provides this pre-built, optimized capability?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Container Runtime (accessed via Snowflake Notebooks)"
+        },
+        {
+          "key": "B",
+          "text": "Cortex Analyst"
+        },
+        {
+          "key": "C",
+          "text": "The Model Registry"
+        },
+        {
+          "key": "D",
+          "text": "Cortex Search Service"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "ML training runs in Container Runtime, a pre-built ML environment optimized for data loading, distributed training, and hyperparameter tuning, with preinstalled packages like PyTorch and XGBoost, accessible from Snowflake Notebooks.",
+        "distractors": {
+          "B": "Cortex Analyst is for text-to-SQL, not model training.",
+          "C": "The Model Registry manages/serves models but is not the training environment.",
+          "D": "Cortex Search Service is for search, not ML training."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": "A model registered in the Snowflake Model Registry needs a maximum number of versions constraint verified.",
+      "stem": "What is the maximum number of versions a single model can have?",
+      "options": [
+        {
+          "key": "A",
+          "text": "100 versions"
+        },
+        {
+          "key": "B",
+          "text": "500 versions"
+        },
+        {
+          "key": "C",
+          "text": "1000 versions"
+        },
+        {
+          "key": "D",
+          "text": "Unlimited versions"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A model in the Model Registry can have a maximum of 1000 versions.",
+        "distractors": {
+          "A": "100 is not the version limit; it relates to metadata size constraints in KB.",
+          "B": "500 is the maximum number of arguments per method, not versions.",
+          "D": "Versions are not unlimited; the documented limit is 1000."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "snowflake-ml",
+      "scenario": "A data scientist is reviewing which model types are natively supported by the Model Registry's built-in types.",
+      "stem": "Which THREE model frameworks have built-in type support in the Model Registry? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Apache Spark MLlib"
+        },
+        {
+          "key": "B",
+          "text": "scikit-learn"
+        },
+        {
+          "key": "C",
+          "text": "Weka"
+        },
+        {
+          "key": "D",
+          "text": "xgboost"
+        },
+        {
+          "key": "E",
+          "text": "RapidMiner"
+        },
+        {
+          "key": "F",
+          "text": "PyTorch"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "The Model Registry has built-in support for common types including scikit-learn, xgboost, LightGBM, Prophet, CatBoost, PyTorch, TensorFlow, Keras, Hugging Face pipelines, Sentence Transformer, and MLFlow pyfunc models.",
+        "distractors": {
+          "A": "Apache Spark MLlib is not listed among the built-in supported model types.",
+          "C": "Weka is not a built-in supported model type in the registry.",
+          "E": "RapidMiner is not a built-in supported model type in the registry."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": "An analyst gets an error running an ML Function and suspects a session setting is the cause.",
+      "stem": "Which session setting must be enabled before using ML Functions?",
+      "options": [
+        {
+          "key": "A",
+          "text": "QUERY_TAG"
+        },
+        {
+          "key": "B",
+          "text": "AUTOCOMMIT"
+        },
+        {
+          "key": "C",
+          "text": "USE_CACHED_RESULT"
+        },
+        {
+          "key": "D",
+          "text": "ABORT_DETACHED_QUERY"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Before using ML Functions, AUTOCOMMIT must be enabled in the session. It is enabled by default when starting a new Snowflake session.",
+        "distractors": {
+          "A": "QUERY_TAG is a label for queries and is unrelated to ML Function requirements.",
+          "C": "USE_CACHED_RESULT controls result caching, not ML Function execution.",
+          "D": "ABORT_DETACHED_QUERY is unrelated to the AUTOCOMMIT requirement for ML Functions."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": "A data scientist logs a scikit-learn model but does not specify a version_name.",
+      "stem": "What happens to the version name?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The log_model call fails because version_name is required"
+        },
+        {
+          "key": "B",
+          "text": "The version defaults to 'v1'"
+        },
+        {
+          "key": "C",
+          "text": "A human-readable version name is generated automatically"
+        },
+        {
+          "key": "D",
+          "text": "The model is logged without any version"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "If version_name is missing in log_model, a human-readable version name is generated automatically.",
+        "distractors": {
+          "A": "version_name is optional; log_model does not fail when it is omitted.",
+          "B": "The version does not default to a fixed 'v1'; a readable name is auto-generated.",
+          "D": "Logging a model always creates a version; models cannot exist without at least one version."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "snowflake-ml",
+      "scenario": null,
+      "stem": "Which THREE system aliases are available in all models? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "DEFAULT (the default version)"
+        },
+        {
+          "key": "B",
+          "text": "LATEST_STABLE"
+        },
+        {
+          "key": "C",
+          "text": "FIRST (oldest version by creation time)"
+        },
+        {
+          "key": "D",
+          "text": "PRODUCTION"
+        },
+        {
+          "key": "E",
+          "text": "LAST (newest version by creation time)"
+        },
+        {
+          "key": "F",
+          "text": "CURRENT"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Every model has three system aliases: DEFAULT (default version), FIRST (oldest by creation time), and LAST (newest by creation time).",
+        "distractors": {
+          "B": "LATEST_STABLE is not a built-in system alias.",
+          "D": "PRODUCTION is not a built-in system alias (you could create it as a custom alias).",
+          "F": "CURRENT is not a built-in system alias for model versions."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": "A data scientist wants to run inference by calling a logged model's predict method on a DataFrame in Python.",
+      "stem": "Which ModelVersion method is used to execute the model's method in a warehouse?",
+      "options": [
+        {
+          "key": "A",
+          "text": "mv.load()"
+        },
+        {
+          "key": "B",
+          "text": "mv.run()"
+        },
+        {
+          "key": "C",
+          "text": "mv.export()"
+        },
+        {
+          "key": "D",
+          "text": "mv.deploy()"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "mv.run() executes a model version's method (e.g., predict) in a Snowflake warehouse, passing a Snowpark or pandas DataFrame with inference data.",
+        "distractors": {
+          "A": "mv.load() loads the original Python model object into local memory, not runs inference in the warehouse.",
+          "C": "mv.export() exports the model's files to a local directory.",
+          "D": "mv.deploy() is not the method used; inference is invoked via run()."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "snowflake-ml",
+      "scenario": "A team is reviewing which SQL DDL commands are available for managing machine learning models.",
+      "stem": "Which THREE are valid ML model DDL commands? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE MODEL"
+        },
+        {
+          "key": "B",
+          "text": "TRAIN MODEL"
+        },
+        {
+          "key": "C",
+          "text": "ALTER MODEL"
+        },
+        {
+          "key": "D",
+          "text": "DEPLOY MODEL"
+        },
+        {
+          "key": "E",
+          "text": "DROP MODEL"
+        },
+        {
+          "key": "F",
+          "text": "PUBLISH MODEL"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Valid ML model DDL commands include CREATE MODEL, ALTER MODEL, SHOW MODELS, and DROP MODEL.",
+        "distractors": {
+          "B": "TRAIN MODEL is not a Snowflake ML model DDL command.",
+          "D": "DEPLOY MODEL is not a valid DDL command; deployment/inference is handled differently.",
+          "F": "PUBLISH MODEL is not a valid Snowflake DDL command."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": "A data scientist wants to compute Shapley values to understand which input features contribute most to a model's predictions.",
+      "stem": "Which Snowflake ML capability provides this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ML Lineage"
+        },
+        {
+          "key": "B",
+          "text": "Feature Store"
+        },
+        {
+          "key": "C",
+          "text": "ML Explainability"
+        },
+        {
+          "key": "D",
+          "text": "Experiment Tracking"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "ML Explainability computes Shapley values for models in the Model Registry, telling you which input features contribute most to predictions, regardless of where the model was trained.",
+        "distractors": {
+          "A": "ML Lineage traces artifacts from source data to features, datasets, and models, not feature contribution.",
+          "B": "Feature Store manages ML features, not model explanations.",
+          "D": "Experiment Tracking records training results and metrics, not Shapley-based explanations."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "snowflake-ml",
+      "scenario": "A model was trained using a Snowflake ML Function (for example, FORECAST).",
+      "stem": "Which TWO statements about models trained with Snowflake ML Functions (for example, FORECAST) are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "They appear in the Model Registry and are managed by the registry API"
+        },
+        {
+          "key": "B",
+          "text": "They are automatically shared to all accounts in the organization"
+        },
+        {
+          "key": "C",
+          "text": "They do NOT appear in the Model Registry"
+        },
+        {
+          "key": "D",
+          "text": "They can be deleted individually from the Feature Store"
+        },
+        {
+          "key": "E",
+          "text": "Their backing objects have a populated instance_id in ACCOUNT_USAGE views"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Models trained with ML Functions do NOT appear in the Model Registry (which manages Python models). Their backing objects appear in ACCOUNT_USAGE.TABLES/STAGES with a populated instance_id and null database/schema.",
+        "distractors": {
+          "A": "ML Function models are not managed by the Model Registry API.",
+          "B": "They are not automatically shared across the organization.",
+          "D": "The backing objects are fully managed by the model instance and cannot be accessed or deleted separately, and they are not in the Feature Store."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "snowflake-ml",
+      "scenario": "A data engineer needs to access the raw artifacts (files) backing a logged model in the registry.",
+      "stem": "Which TWO statements about accessing model artifacts are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "USAGE privilege on a model is sufficient to access its artifacts"
+        },
+        {
+          "key": "B",
+          "text": "Ownership of the model is required to access its artifacts"
+        },
+        {
+          "key": "C",
+          "text": "Artifacts are addressed using a snow:// URL rather than standard stage path syntax"
+        },
+        {
+          "key": "D",
+          "text": "Artifacts can be modified in place after the model is logged"
+        },
+        {
+          "key": "E",
+          "text": "Artifacts are stored in an external S3 bucket owned by the user"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Accessing model artifacts requires ownership (USAGE is not sufficient), and artifacts are addressed using a snow:// URL (e.g., snow://model/<name>/versions/<version>/) rather than usual stage path syntax.",
+        "distractors": {
+          "A": "USAGE does not grant artifact access; ownership is required.",
+          "D": "Artifacts cannot be modified after logging; they are immutable (though you can view or download them).",
+          "E": "Artifacts are stored on an internal Snowflake stage, not an external user-owned bucket."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": "A data scientist wants to track prediction accuracy on a model version by attaching a key-value pair like test_accuracy=0.96.",
+      "stem": "What is this key-value pair called in the Model Registry?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A tag"
+        },
+        {
+          "key": "B",
+          "text": "A metric"
+        },
+        {
+          "key": "C",
+          "text": "A comment"
+        },
+        {
+          "key": "D",
+          "text": "A signature"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Metrics are key-value pairs used to track prediction accuracy and other model version characteristics. Unlike tags, metric names and values do not need to be predefined.",
+        "distractors": {
+          "A": "Tags must be predefined with CREATE TAG and record purpose/lifecycle info, not accuracy values freely.",
+          "C": "A comment is descriptive text, not a structured key-value metric.",
+          "D": "A signature defines the model method's input/output structure, not accuracy tracking."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "snowflake-ml",
+      "scenario": "An ML team wants to deploy a logged model for inference and is choosing target platforms.",
+      "stem": "Which TWO are valid target platforms for a model in the registry? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "EXTERNAL_LAMBDA"
+        },
+        {
+          "key": "B",
+          "text": "WAREHOUSE"
+        },
+        {
+          "key": "C",
+          "text": "SNOWPARK_CONTAINER_SERVICES"
+        },
+        {
+          "key": "D",
+          "text": "EDGE_DEVICE"
+        },
+        {
+          "key": "E",
+          "text": "SERVERLESS_TASK"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The acceptable target platforms are combinations of WAREHOUSE and SNOWPARK_CONTAINER_SERVICES. Models can run in a warehouse for inference or be served in Snowpark Container Services for GPU-based inference.",
+        "distractors": {
+          "A": "EXTERNAL_LAMBDA is not a valid target platform for registry models.",
+          "D": "EDGE_DEVICE is not a supported target platform.",
+          "E": "SERVERLESS_TASK is not a valid model target platform."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "snowflake-ml",
+      "scenario": "A team wants to monitor a deployed model's performance and detect drift over time using SQL DDL.",
+      "stem": "Which command creates the object used for this monitoring?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE MODEL VERSION"
+        },
+        {
+          "key": "B",
+          "text": "CREATE MODEL MONITOR"
+        },
+        {
+          "key": "C",
+          "text": "CREATE DRIFT DETECTOR"
+        },
+        {
+          "key": "D",
+          "text": "CREATE MODEL ALERT"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "CREATE MODEL MONITOR creates a model monitor, which allows monitoring the performance of ML models deployed in Snowflake (part of the ML model DDL).",
+        "distractors": {
+          "A": "CREATE MODEL VERSION is not the monitoring command; versions are added via ALTER MODEL ... ADD VERSION.",
+          "C": "CREATE DRIFT DETECTOR is not a valid Snowflake command.",
+          "D": "CREATE MODEL ALERT is not a valid Snowflake DDL command."
+        }
+      }
+    }
+  ]
+}

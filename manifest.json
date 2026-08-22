@@ -526,6 +526,11 @@
                       "id": "test_2",
                       "label": "Cortex Analyst & Cortex Search",
                       "path": "snowflake/snowpro_core/domain_1/task_6/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Snowflake ML & Model Registry",
+                      "path": "snowflake/snowpro_core/domain_1/task_6/test_3.json"
                     }
                   ]
                 }

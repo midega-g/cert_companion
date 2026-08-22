@@ -1,0 +1,14 @@
+{
+  "name": "agent",
+  "description": "Cert Companion agent for generating and validating exam question test files",
+  "toolsSettings": {
+    "shell": {
+      "allowedCommands": [
+        "cd *",
+        "python *",
+        "python3 *",
+        "cd * && python *"
+      ]
+    }
+  }
+}
