@@ -1,0 +1,777 @@
+{
+  "label": "Data Clean Rooms & Advanced Sharing",
+  "order": 3,
+  "topic": "Data Sharing Capabilities",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "What is the primary purpose of a Snowflake Data Clean Room?",
+      "options": [
+        {
+          "key": "A",
+          "text": "To physically copy data between two accounts for backup"
+        },
+        {
+          "key": "B",
+          "text": "To share data while controlling exactly which queries can be run against it, without giving unrestricted access"
+        },
+        {
+          "key": "C",
+          "text": "To replicate an account to another region"
+        },
+        {
+          "key": "D",
+          "text": "To monetize data on the public Marketplace"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A clean room lets a provider share data while defining what analyses/queries can be run against it, so consumers gain insights without unrestricted access to the underlying data.",
+        "distractors": {
+          "A": "Clean rooms do not copy data for backup; data is accessed only through approved templates.",
+          "C": "Cross-region replication is a separate feature, not a clean room.",
+          "D": "Clean rooms do not support monetization features."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "In a Data Clean Room, how is a collaborator classified as a provider or a consumer?",
+      "options": [
+        {
+          "key": "A",
+          "text": "By the Snowflake role they hold"
+        },
+        {
+          "key": "B",
+          "text": "By whether their account created the clean room (provider) or was invited to it (consumer)"
+        },
+        {
+          "key": "C",
+          "text": "By the size of their warehouse"
+        },
+        {
+          "key": "D",
+          "text": "By their Snowflake edition"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A provider is the account that created a clean room; a consumer is the account that was invited to (shared) the clean room. The role applies at the account level, not per user.",
+        "distractors": {
+          "A": "Provider/consumer status is not determined by Snowflake roles.",
+          "C": "Warehouse size is irrelevant to clean room role.",
+          "D": "Edition does not determine provider/consumer classification."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "How is access to a Snowflake Data Clean Room obtained?",
+      "options": [
+        {
+          "key": "A",
+          "text": "By searching and self-joining on the Marketplace"
+        },
+        {
+          "key": "B",
+          "text": "Automatically for all accounts in the region"
+        },
+        {
+          "key": "C",
+          "text": "By purchasing a listing"
+        },
+        {
+          "key": "D",
+          "text": "By invitation only from the clean room provider"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Access to a clean room is by invitation only; you must be invited by a clean room provider to access it.",
+        "distractors": {
+          "A": "Clean rooms are not self-joined via Marketplace search.",
+          "B": "Access is not automatic; it requires an invitation.",
+          "C": "Clean room access is by invitation, not by purchasing a listing."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which THREE statements about clean room templates are correct? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Consumers can run arbitrary ad-hoc SQL against provider data by default"
+        },
+        {
+          "key": "B",
+          "text": "Templates require no approval from the other party"
+        },
+        {
+          "key": "C",
+          "text": "A template is a JinjaSQL query installed in the clean room"
+        },
+        {
+          "key": "D",
+          "text": "By default, only consumers can run a template in a clean room"
+        },
+        {
+          "key": "E",
+          "text": "A template usually includes run-time parameters (e.g., columns or WHERE filters)"
+        },
+        {
+          "key": "F",
+          "text": "Templates cannot include any parameters"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "A template is a JinjaSQL query installed in the clean room; by default only consumers can run templates; and templates typically include run-time parameters like column names or WHERE-clause filters.",
+        "distractors": {
+          "A": "You cannot run arbitrary SQL by default; usage is limited to approved templates unless the provider grants that ability.",
+          "B": "A template must be approved by the other party to be used.",
+          "F": "Templates commonly include run-time parameters."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which TWO data-protection controls can be configured in a Snowflake Data Clean Room? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Automatic monetization of query results"
+        },
+        {
+          "key": "B",
+          "text": "Differential privacy"
+        },
+        {
+          "key": "C",
+          "text": "Specifying which columns are joinable or projectable"
+        },
+        {
+          "key": "D",
+          "text": "Granting consumers OWNERSHIP of provider tables"
+        },
+        {
+          "key": "E",
+          "text": "Disabling all access controls for faster queries"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Clean rooms let collaborators configure data-protection settings such as differential privacy and specifying joinable and projectable columns.",
+        "distractors": {
+          "A": "Clean rooms don't support monetization features.",
+          "D": "Consumers never receive OWNERSHIP of provider tables in a clean room.",
+          "E": "Clean rooms enforce access controls; they are not disabled."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A company wants to install the Snowflake Data Clean Rooms environment for use across their whole account.",
+      "stem": "Who installs it and at what scope?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Each user installs it individually"
+        },
+        {
+          "key": "B",
+          "text": "It is installed once per clean room"
+        },
+        {
+          "key": "C",
+          "text": "An ACCOUNTADMIN installs it once for the entire Snowflake account"
+        },
+        {
+          "key": "D",
+          "text": "Snowflake Support installs it per warehouse"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The clean room environment is installed once for an entire Snowflake account (not per user or per clean room) by someone with ACCOUNTADMIN privileges.",
+        "distractors": {
+          "A": "It is not installed per user.",
+          "B": "It is not installed per clean room; it is per account.",
+          "D": "It is installed by an account administrator, not per warehouse by Support."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "In a standard clean room, a consumer runs an approved template against combined provider and consumer data.",
+      "stem": "Can either party directly view or query the other party's imported raw data?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Yes; the provider can view all consumer data"
+        },
+        {
+          "key": "B",
+          "text": "Yes; the consumer can browse provider tables freely"
+        },
+        {
+          "key": "C",
+          "text": "Only the provider can view both parties' data"
+        },
+        {
+          "key": "D",
+          "text": "No; imported data cannot be queried or viewed directly and is only accessed through templates"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Data imported into a clean room cannot be queried or viewed directly by either party; it can only be accessed through a template in the clean room.",
+        "distractors": {
+          "A": "The provider cannot directly view consumer data.",
+          "B": "The consumer cannot browse provider tables directly.",
+          "C": "Neither party can directly view the other's raw data."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider wants to run one of their own queries against the consumer's data in a clean room.",
+      "stem": "What is required?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Nothing; providers can always query consumer data"
+        },
+        {
+          "key": "B",
+          "text": "The provider must request permission, and the consumer must consent to that specific query"
+        },
+        {
+          "key": "C",
+          "text": "The provider must recreate the clean room"
+        },
+        {
+          "key": "D",
+          "text": "The consumer must transfer ownership of the data"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "By default only the consumer can run queries. If enabled, a provider can request permission from the consumer to run a specific query in the clean room, and the consumer must consent.",
+        "distractors": {
+          "A": "Providers cannot always query consumer data; it requires consumer consent.",
+          "C": "Recreating the clean room is unnecessary and not the mechanism.",
+          "D": "No ownership transfer occurs; consent to a specific query is what's needed."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A team plans to convert an existing sharing arrangement or offer data more broadly, comparing sharing mechanisms.",
+      "stem": "Which TWO statements about sharing mechanisms are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A direct share can auto-fulfill across clouds automatically"
+        },
+        {
+          "key": "B",
+          "text": "Listings cannot include any additional metadata"
+        },
+        {
+          "key": "C",
+          "text": "You can convert a direct share with active consumers to a listing"
+        },
+        {
+          "key": "D",
+          "text": "A Data Exchange lets you manage a group of accounts you invite to provide and/or consume"
+        },
+        {
+          "key": "E",
+          "text": "Direct shares can be offered publicly on the Marketplace"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "You can convert a direct share with active consumers to a listing, and a Data Exchange lets you set up and manage a group of invited accounts that can provide and/or consume data.",
+        "distractors": {
+          "A": "Direct shares do not auto-fulfill across clouds; that is a listing capability.",
+          "B": "Listings can include metadata such as title, description, and usage examples.",
+          "E": "Public Marketplace offering is a listing capability, not a direct share."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider shares live, read-only data with a partner who does NOT use Snowflake and wants to avoid ETL pipelines, data duplication, and manual exports.",
+      "stem": "Which Snowflake capability is designed for this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Time Travel"
+        },
+        {
+          "key": "B",
+          "text": "Zero-copy cloning"
+        },
+        {
+          "key": "C",
+          "text": "Open Data Sharing"
+        },
+        {
+          "key": "D",
+          "text": "Fail-safe"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Open Data Sharing expands sharing beyond the Snowflake ecosystem, letting you securely share live, read-only data with consumers who don't use Snowflake, without ETL pipelines, duplication, or manual file exports.",
+        "distractors": {
+          "A": "Time Travel accesses historical data within a retention period; it is not for external sharing.",
+          "B": "Zero-copy cloning duplicates objects within an account, not external sharing.",
+          "D": "Fail-safe is a data recovery service, unrelated to external sharing."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "Two teams use the same Snowflake account to access clean room cleanroom1, which was created in that account and shared with account XYZ.",
+      "stem": "What clean room role do users in the creating account have?",
+      "options": [
+        {
+          "key": "A",
+          "text": "They are all consumers for cleanroom1"
+        },
+        {
+          "key": "B",
+          "text": "Some are providers and some are consumers"
+        },
+        {
+          "key": "C",
+          "text": "They have no role until individually assigned"
+        },
+        {
+          "key": "D",
+          "text": "They are all providers for cleanroom1"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The provider/consumer role applies at the account level. All users in the account that created a clean room are providers for it; all users in an account it was shared with are consumers.",
+        "distractors": {
+          "A": "The creating account's users are providers, not consumers.",
+          "B": "Roles are account-level and uniform, not mixed within an account for the same clean room.",
+          "C": "Roles are determined by whether the account created or was shared the clean room, not per-user assignment."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A clean room provider wants to invite users in the same account where the clean room was created to act as consumers.",
+      "stem": "A clean room provider considers who can be a consumer. Which TWO statements are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Any user in the creating account can be a consumer if they use a different warehouse"
+        },
+        {
+          "key": "B",
+          "text": "You cannot invite someone in the same account where you created the clean room to be a consumer"
+        },
+        {
+          "key": "C",
+          "text": "Provider/consumer roles apply at the Snowflake account level, not per user"
+        },
+        {
+          "key": "D",
+          "text": "Holding SAMOOHA_APP_ROLE lets a same-account user act as a consumer"
+        },
+        {
+          "key": "E",
+          "text": "Consumers are determined by their Snowflake role, not their account"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "You cannot invite someone in the same account where you created the clean room to act as a consumer, and provider/consumer roles apply at the account level (not per user).",
+        "distractors": {
+          "A": "Warehouse choice does not change the account-level role restriction.",
+          "D": "SAMOOHA_APP_ROLE grants API access, not same-account consumer status.",
+          "E": "Roles are determined by whether the account created or was shared the clean room, not by Snowflake role."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which TWO statements about clean room access are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The API can perform clean room account administration tasks"
+        },
+        {
+          "key": "B",
+          "text": "The clean rooms UI is accessed at the same URL as Snowsight"
+        },
+        {
+          "key": "C",
+          "text": "To use the API, a user must be granted the SAMOOHA_APP_ROLE by a clean rooms administrator"
+        },
+        {
+          "key": "D",
+          "text": "The clean rooms UI uses the user's Snowflake credentials"
+        },
+        {
+          "key": "E",
+          "text": "Anyone can use the clean rooms UI without being granted access"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "API access requires being granted SAMOOHA_APP_ROLE by a clean rooms administrator, and the clean rooms UI uses your Snowflake credentials.",
+        "distractors": {
+          "A": "The API doesn't enable clean room account administration; that must be done in the UI.",
+          "B": "The clean rooms UI is accessed at a separate URL from Snowsight.",
+          "E": "You must be granted access to use the clean rooms UI by an administrator."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider allows query results in a clean room to be exported to their own Snowflake account or a Snowflake-approved third party like an ads platform.",
+      "stem": "What is this exporting of results outside the clean room called?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Replication"
+        },
+        {
+          "key": "B",
+          "text": "Activation"
+        },
+        {
+          "key": "C",
+          "text": "Fulfillment"
+        },
+        {
+          "key": "D",
+          "text": "Provisioning"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "When query results are exported outside the clean room, this is called activation. Results can be activated to a Snowflake account or a Snowflake-approved third party, always subject to approval by all parties who shared the data.",
+        "distractors": {
+          "A": "Replication is a business-continuity feature, not clean room result export.",
+          "C": "Cross-cloud auto-fulfillment applies to listings, not clean room result export.",
+          "D": "Provisioning is not the term for exporting clean room results."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A provider wants to share a tag along with a tagged object so a consumer can see the tag assignments on shared objects.",
+      "stem": "A provider shares a tag with a tagged object. Which TWO statements about sharing tags are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The provider grants OWNERSHIP on the tag to the share"
+        },
+        {
+          "key": "B",
+          "text": "The provider grants READ on the tag to make it available to the consumer"
+        },
+        {
+          "key": "C",
+          "text": "Sharing a tag requires MODIFY on the tag"
+        },
+        {
+          "key": "D",
+          "text": "The provider must create the tag in the same database as the tagged objects and share that database"
+        },
+        {
+          "key": "E",
+          "text": "Tags cannot be shared with consumers at all"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "To share a tag, the provider grants READ on the tag (plus USAGE on the database/schema) and must create the tag in the same database as the tagged objects and share that database.",
+        "distractors": {
+          "A": "OWNERSHIP is not granted to the share to expose a tag; READ is.",
+          "C": "MODIFY is not required to share a tag.",
+          "E": "Tags can be shared with consumers via READ on the tag."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A consumer wants to view shared tag references on objects the provider shared.",
+      "stem": "Which TWO statements about shared tags on the consumer side are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The consumer can view shared tags in Snowsight"
+        },
+        {
+          "key": "B",
+          "text": "The consumer can use the Account Usage TAG_REFERENCES view to see shared tags"
+        },
+        {
+          "key": "C",
+          "text": "Shared tags are read-only; the consumer cannot set a shared tag on their own objects"
+        },
+        {
+          "key": "D",
+          "text": "A role with IMPORTED PRIVILEGES on the shared database can view the shared tags"
+        },
+        {
+          "key": "E",
+          "text": "The consumer can modify the provider's shared tag values"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Shared tags are read-only (the consumer cannot set them on their own objects), and a role with IMPORTED PRIVILEGES on the database created from the share can view the shared tags.",
+        "distractors": {
+          "A": "Currently, the consumer cannot use Snowsight to view shared tags.",
+          "B": "The Account Usage TAG_REFERENCES view cannot be used in the consumer account for shared tags.",
+          "E": "Shared tags are read-only; the consumer cannot modify them."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider sets a tag on a shared schema in a shared database and relies on tag inheritance.",
+      "stem": "What can the consumer see regarding where the tag was initially set?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The consumer can determine the exact level where the provider set the tag"
+        },
+        {
+          "key": "B",
+          "text": "Snowflake hides the LEVEL column values to protect the provider, so the consumer cannot see where the tag was initially set"
+        },
+        {
+          "key": "C",
+          "text": "The consumer sees the full tag lineage including the provider's account"
+        },
+        {
+          "key": "D",
+          "text": "Tag inheritance does not apply to shared databases"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Tag inheritance applies to shared objects, but the consumer cannot use TAG_REFERENCES to see where the provider initially set the tag; Snowflake hides the LEVEL column values to protect the provider.",
+        "distractors": {
+          "A": "The consumer cannot determine the exact level where the tag was set.",
+          "C": "Snowflake does not reveal the provider's initial tag location/lineage to the consumer.",
+          "D": "Tag inheritance does apply to tagged objects in the shared database."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A consumer receives a share built with database roles (Option 1) and needs to give their analysts access to a shared database role.",
+      "stem": "What does the consumer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Grant OWNERSHIP of the shared objects to the analysts"
+        },
+        {
+          "key": "B",
+          "text": "Ask the provider to add each analyst to the share"
+        },
+        {
+          "key": "C",
+          "text": "Grant each shared database role to one or more of their own account roles"
+        },
+        {
+          "key": "D",
+          "text": "Nothing; database roles auto-grant to all users"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "After creating a database from a share that includes database roles, consumers grant each shared database role to one or more account roles in their own account to give users access.",
+        "distractors": {
+          "A": "Consumers never get OWNERSHIP of shared objects.",
+          "B": "The provider adds accounts, not individual analysts; access within the consumer account is managed by the consumer.",
+          "D": "Database roles do not auto-grant to all users; they must be granted to account roles."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A clean room provider configures optional variations beyond the standard clean room flow.",
+      "stem": "Which THREE variations can a provider permit in a clean room? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Allow the provider to run their own queries against consumer data (with consent)"
+        },
+        {
+          "key": "B",
+          "text": "Allow query results to be activated (exported) to an approved destination"
+        },
+        {
+          "key": "C",
+          "text": "Grant the consumer OWNERSHIP of the provider's raw data"
+        },
+        {
+          "key": "D",
+          "text": "Allow either party to include custom Python code callable by the query"
+        },
+        {
+          "key": "E",
+          "text": "Automatically publish the clean room on the public Marketplace"
+        },
+        {
+          "key": "F",
+          "text": "Disable all approval requirements for data export"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Providers can permit variations such as running their own queries against consumer data (with consent), activating/exporting results to approved destinations, and including custom Python code callable by the query.",
+        "distractors": {
+          "C": "Consumers never receive OWNERSHIP of provider raw data in a clean room.",
+          "E": "Clean rooms are invitation-only and don't support Marketplace publishing/monetization.",
+          "F": "Exporting data outside the clean room is always subject to approval by all parties who shared the data."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "An administrator runs SHOW ROLES LIKE 'SAMOOHA_APP_ROLE'; and the role appears in the results.",
+      "stem": "What does this most likely indicate?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The account has exceeded its reader account limit"
+        },
+        {
+          "key": "B",
+          "text": "Replication is enabled for the account"
+        },
+        {
+          "key": "C",
+          "text": "A direct share is active"
+        },
+        {
+          "key": "D",
+          "text": "The clean rooms environment (API) is probably installed in the account"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "If SHOW ROLES LIKE 'SAMOOHA_APP_ROLE' returns the role, the clean rooms environment (API) is probably installed in the account. SAMOOHA_APP_ROLE is required to use the clean rooms API.",
+        "distractors": {
+          "A": "The role's presence has nothing to do with reader account limits.",
+          "B": "It does not indicate replication status.",
+          "C": "It does not indicate an active direct share."
+        }
+      }
+    }
+  ]
+}

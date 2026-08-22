@@ -582,6 +582,11 @@
                       "id": "test_2",
                       "label": "Sharing Options, Reader Accounts & Access Control",
                       "path": "snowflake/snowpro_core/domain_5/task_2/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Data Clean Rooms & Advanced Sharing",
+                      "path": "snowflake/snowpro_core/domain_5/task_2/test_3.json"
                     }
                   ]
                 }
