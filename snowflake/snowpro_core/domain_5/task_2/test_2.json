@@ -1,0 +1,782 @@
+{
+  "label": "Sharing Options, Reader Accounts & Access Control",
+  "order": 2,
+  "topic": "Data Sharing Capabilities",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which data sharing mechanism lets you share with accounts in ANY region across clouds without manual replication, and can optionally charge for data?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Direct share"
+        },
+        {
+          "key": "B",
+          "text": "Listing"
+        },
+        {
+          "key": "C",
+          "text": "Reader account"
+        },
+        {
+          "key": "D",
+          "text": "Local view"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Listings let you share data with accounts in any region, across clouds, without manual replication, and can optionally charge for data, offer data publicly, and provide consumer usage metrics.",
+        "distractors": {
+          "A": "A direct share is limited to accounts in your region and cannot charge for data or auto-fulfill across clouds.",
+          "C": "A reader account is a mechanism for non-Snowflake consumers, not a cross-region auto-fulfilling listing.",
+          "D": "A local view is not a data sharing mechanism."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "A direct share can share data with which accounts?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Any account in any region across clouds"
+        },
+        {
+          "key": "B",
+          "text": "Only reader accounts"
+        },
+        {
+          "key": "C",
+          "text": "Only accounts in a different region"
+        },
+        {
+          "key": "D",
+          "text": "One or more accounts in the same Snowflake region"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Use a direct share to share data with one or more accounts in the same Snowflake region, with no need to copy or move data.",
+        "distractors": {
+          "A": "Cross-region/cross-cloud sharing without replication is a listing capability, not a direct share.",
+          "B": "Direct shares are not limited to reader accounts.",
+          "C": "Direct shares target accounts in the same region, not specifically different regions."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "By default, which role has the CREATE SHARE privilege required to create and manage shares?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SYSADMIN"
+        },
+        {
+          "key": "B",
+          "text": "SECURITYADMIN"
+        },
+        {
+          "key": "C",
+          "text": "ACCOUNTADMIN"
+        },
+        {
+          "key": "D",
+          "text": "PUBLIC"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "By default, only the ACCOUNTADMIN role has the CREATE SHARE privilege. It can be granted to additional roles to delegate sharing tasks.",
+        "distractors": {
+          "A": "SYSADMIN does not have CREATE SHARE by default.",
+          "B": "SECURITYADMIN does not have CREATE SHARE by default.",
+          "D": "PUBLIC does not have CREATE SHARE."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which THREE capabilities are available with Listings but NOT with a Direct Share? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Share with accounts in your region only"
+        },
+        {
+          "key": "B",
+          "text": "Share without copying data"
+        },
+        {
+          "key": "C",
+          "text": "Auto-fulfill across clouds"
+        },
+        {
+          "key": "D",
+          "text": "Optionally charge for data"
+        },
+        {
+          "key": "E",
+          "text": "Optionally offer data publicly on the Marketplace"
+        },
+        {
+          "key": "F",
+          "text": "Read-only access for consumers"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Listings can auto-fulfill across clouds, optionally charge for data, offer data publicly on the Marketplace, and provide consumer usage metrics \u2014 none of which direct shares support.",
+        "distractors": {
+          "A": "Sharing within your region only is a direct-share limitation, not a listing-exclusive capability.",
+          "B": "Sharing without copying data is common to both listings and direct shares.",
+          "F": "Read-only consumer access applies to both mechanisms."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which TWO options can a provider use to add objects to a share? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Copy the objects into the consumer account"
+        },
+        {
+          "key": "B",
+          "text": "Grant privileges on objects to a database role, then grant the database role to the share"
+        },
+        {
+          "key": "C",
+          "text": "Grant privileges on objects directly to the share"
+        },
+        {
+          "key": "D",
+          "text": "Grant OWNERSHIP of the objects to the consumer"
+        },
+        {
+          "key": "E",
+          "text": "Attach the objects to a resource monitor"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "A provider adds objects to a share either via a database role (grant privileges to a database role, then grant the role to the share) or by granting privileges on objects directly to the share.",
+        "distractors": {
+          "A": "Sharing never copies objects into the consumer account.",
+          "D": "Providers do not grant OWNERSHIP of shared objects to consumers.",
+          "E": "Resource monitors govern warehouse credit usage, not share membership."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider wants to share data with a business partner who is NOT a Snowflake customer and does not want to sign a Snowflake licensing agreement.",
+      "stem": "What should the provider create?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A data exchange"
+        },
+        {
+          "key": "B",
+          "text": "A second Business Critical account"
+        },
+        {
+          "key": "C",
+          "text": "A reader account"
+        },
+        {
+          "key": "D",
+          "text": "A public Marketplace listing"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Reader accounts let providers share data with consumers who are not Snowflake customers, with no setup/usage cost to the consumer and no licensing agreement required from them.",
+        "distractors": {
+          "A": "A data exchange shares among Snowflake accounts you invite, not with non-Snowflake consumers.",
+          "B": "Creating another Business Critical account does not give a non-Snowflake partner access.",
+          "D": "A public listing targets Snowflake accounts, not non-Snowflake consumers."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "An administrator is documenting who bears the credit charges for compute used in a reader account.",
+      "stem": "Who is responsible for those charges?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The reader account's users pay Snowflake directly"
+        },
+        {
+          "key": "B",
+          "text": "The provider account that created and owns the reader account"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake absorbs all reader account costs"
+        },
+        {
+          "key": "D",
+          "text": "The charges are split evenly between provider and consumer"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A reader account is created, owned, and managed by the provider account, which assumes all responsibility for credit charges incurred by users in the reader account.",
+        "distractors": {
+          "A": "Reader account users do not pay Snowflake directly; the provider is billed.",
+          "C": "Snowflake does not absorb the costs; the provider pays.",
+          "D": "Costs are not split; the provider bears them."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A provider wants to cap the monthly credit consumption of warehouses in a reader account they created.",
+      "stem": "A provider wants to control reader account warehouse spend. Which TWO statements are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Reader account warehouses have a built-in fixed monthly cap"
+        },
+        {
+          "key": "B",
+          "text": "Warehouses in a reader account can consume unlimited credits, charged to the provider"
+        },
+        {
+          "key": "C",
+          "text": "Reader account usage cannot be limited by any means"
+        },
+        {
+          "key": "D",
+          "text": "A resource monitor can be set up to limit reader account warehouse usage"
+        },
+        {
+          "key": "E",
+          "text": "Reader account users are billed by Snowflake directly"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Reader account warehouses can consume unlimited credits (charged to the provider), so a resource monitor should be set up to limit usage.",
+        "distractors": {
+          "A": "There is no built-in fixed cap; usage is unlimited unless a resource monitor is configured.",
+          "C": "Usage can be limited via a resource monitor.",
+          "E": "Reader account users are not billed directly; the provider bears the credit charges."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A team documents which SQL commands cannot be executed inside a reader account.",
+      "stem": "Which THREE commands are NOT allowed in a reader account? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "SELECT"
+        },
+        {
+          "key": "B",
+          "text": "SHOW WAREHOUSES"
+        },
+        {
+          "key": "C",
+          "text": "INSERT"
+        },
+        {
+          "key": "D",
+          "text": "CREATE SHARE"
+        },
+        {
+          "key": "E",
+          "text": "CREATE PIPE"
+        },
+        {
+          "key": "F",
+          "text": "USE WAREHOUSE"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "A reader account cannot execute commands like INSERT, UPDATE, DELETE, MERGE, COPY INTO <table>, CREATE SHARE, CREATE PIPE, CREATE STAGE, and others; it is primarily for querying shared data.",
+        "distractors": {
+          "A": "SELECT (querying) is the primary allowed operation in a reader account.",
+          "B": "SHOW WAREHOUSES is a read/metadata command that is allowed.",
+          "F": "USE WAREHOUSE is allowed; querying requires a warehouse."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "An administrator creates a reader account using SQL.",
+      "stem": "Which command and object type are used?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE READER ACCOUNT ... TYPE = SHARE"
+        },
+        {
+          "key": "B",
+          "text": "CREATE MANAGED ACCOUNT ... TYPE = READER"
+        },
+        {
+          "key": "C",
+          "text": "CREATE ACCOUNT ... TYPE = CONSUMER"
+        },
+        {
+          "key": "D",
+          "text": "CREATE SHARE ACCOUNT ... TYPE = READER"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Reader accounts use the first-class MANAGED ACCOUNT object. You create one with CREATE MANAGED ACCOUNT <name> ADMIN_NAME=... ADMIN_PASSWORD=... TYPE = READER.",
+        "distractors": {
+          "A": "There is no CREATE READER ACCOUNT command; the object is MANAGED ACCOUNT.",
+          "C": "CREATE ACCOUNT with TYPE=CONSUMER is not how reader accounts are created.",
+          "D": "CREATE SHARE ACCOUNT is not a valid command."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider exceeded some limit and cannot create another reader account.",
+      "stem": "What is the default maximum number of reader accounts a provider can create?",
+      "options": [
+        {
+          "key": "A",
+          "text": "5"
+        },
+        {
+          "key": "B",
+          "text": "10"
+        },
+        {
+          "key": "C",
+          "text": "20"
+        },
+        {
+          "key": "D",
+          "text": "Unlimited"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "By default, the total number of reader accounts a provider can create is 20. To create more, you must contact Snowflake Support.",
+        "distractors": {
+          "A": "The default limit is 20, not 5.",
+          "B": "The default limit is 20, not 10.",
+          "D": "Reader accounts are not unlimited by default; the cap is 20."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A provider drops a reader account to stay under the limit, then immediately tries to create a new one.",
+      "stem": "A provider drops a reader account to stay under the limit. Which TWO statements about deleted reader accounts are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The dropped account is purged instantly with no waiting period"
+        },
+        {
+          "key": "B",
+          "text": "There is a 7-day retention period for deleted reader accounts"
+        },
+        {
+          "key": "C",
+          "text": "A new reader account cannot be created for 7 days after the drop (to replace it within the limit)"
+        },
+        {
+          "key": "D",
+          "text": "A replacement can be created immediately"
+        },
+        {
+          "key": "E",
+          "text": "The waiting period is 24 hours"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Deleted reader accounts have a 7-day retention period, and if you dropped one to avoid exceeding the limit, you cannot create the replacement reader account for 7 days.",
+        "distractors": {
+          "A": "There is a 7-day retention period, not instant purge.",
+          "D": "A replacement cannot be created immediately due to the 7-day retention.",
+          "E": "The period is 7 days, not 24 hours."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": null,
+      "stem": "Which THREE DDL commands are supported for the MANAGED ACCOUNT object? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "ALTER MANAGED ACCOUNT SET TYPE"
+        },
+        {
+          "key": "B",
+          "text": "RENAME MANAGED ACCOUNT"
+        },
+        {
+          "key": "C",
+          "text": "CREATE MANAGED ACCOUNT"
+        },
+        {
+          "key": "D",
+          "text": "DROP MANAGED ACCOUNT"
+        },
+        {
+          "key": "E",
+          "text": "SHOW MANAGED ACCOUNTS"
+        },
+        {
+          "key": "F",
+          "text": "GRANT MANAGED ACCOUNT"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "The MANAGED ACCOUNT object supports CREATE MANAGED ACCOUNT, DROP MANAGED ACCOUNT, and SHOW MANAGED ACCOUNTS.",
+        "distractors": {
+          "A": "ALTER MANAGED ACCOUNT SET TYPE is not among the supported DDL commands.",
+          "B": "RENAME MANAGED ACCOUNT is not a supported command.",
+          "F": "GRANT MANAGED ACCOUNT is not a valid command."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "An account administrator wants to let the SYSADMIN role create and manage reader accounts.",
+      "stem": "Which global privilege must be granted to SYSADMIN?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE SHARE"
+        },
+        {
+          "key": "B",
+          "text": "CREATE ACCOUNT"
+        },
+        {
+          "key": "C",
+          "text": "IMPORTED PRIVILEGES"
+        },
+        {
+          "key": "D",
+          "text": "MANAGE GRANTS"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "To delegate reader account creation/management, grant the CREATE ACCOUNT global privilege (GRANT CREATE ACCOUNT ON ACCOUNT TO ROLE SYSADMIN). Tasks require ACCOUNTADMIN or a role with CREATE ACCOUNT.",
+        "distractors": {
+          "A": "CREATE SHARE governs shares, not reader (managed) account creation.",
+          "C": "IMPORTED PRIVILEGES is used by consumers to access shared databases, not to create reader accounts.",
+          "D": "MANAGE GRANTS relates to granting privileges, not creating reader accounts."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "A consumer account administrator received a share that was built by granting privileges directly to the share (Option 2).",
+      "stem": "Which TWO statements about consumer-side access control are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "This option supports segmenting shared objects by role for different user groups"
+        },
+        {
+          "key": "B",
+          "text": "Consumers must be granted OWNERSHIP of the shared objects"
+        },
+        {
+          "key": "C",
+          "text": "The admin grants IMPORTED PRIVILEGES on the shared database to local roles"
+        },
+        {
+          "key": "D",
+          "text": "IMPORTED PRIVILEGES gives an all-or-nothing access to all objects in the share"
+        },
+        {
+          "key": "E",
+          "text": "Each consumer user must be added to the provider's share individually"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "With direct grants (Option 2), consumer account admins grant IMPORTED PRIVILEGES on the shared database to local roles; this is an all-or-nothing approach granting access to all objects in the share.",
+        "distractors": {
+          "A": "Segmenting shared objects by role for different user groups requires database roles (Option 1), not direct grants.",
+          "B": "Consumers are never granted OWNERSHIP of shared objects.",
+          "E": "Provider adds consumer accounts (not individual users) to a share; user access is managed within the consumer account."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider wants different groups of users in a consumer account to access only a subset of the shared objects, using a single share.",
+      "stem": "Which sharing option supports this segmentation?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Grant privileges directly to the share (Option 2)"
+        },
+        {
+          "key": "B",
+          "text": "Use a reader account"
+        },
+        {
+          "key": "C",
+          "text": "Grant privileges on objects to database roles, then grant each database role to the share (Option 1)"
+        },
+        {
+          "key": "D",
+          "text": "Segmentation is impossible with a single share"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Using database roles (Option 1), you segment objects by creating multiple database roles, granting each a subset of objects, then granting each role to the share. Consumers grant each shared database role to their own account roles for granular access.",
+        "distractors": {
+          "A": "Direct grants (Option 2) are all-or-nothing via IMPORTED PRIVILEGES and cannot segment by role within one share.",
+          "B": "Reader accounts do not provide intra-consumer role segmentation of shared objects.",
+          "D": "Segmentation is possible using database roles within a single share."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider needs to share data from multiple databases (same account) in one share and considers using a database role.",
+      "stem": "Why can't the database-role approach (Option 1) be used for multiple databases?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Database roles cannot be granted to shares at all"
+        },
+        {
+          "key": "B",
+          "text": "Multiple databases cannot be in one share under any method"
+        },
+        {
+          "key": "C",
+          "text": "Database roles only work across accounts"
+        },
+        {
+          "key": "D",
+          "text": "The REFERENCE_USAGE privilege cannot be granted to a database role"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The database-role option can't be used for multiple databases because REFERENCE_USAGE (needed to include objects from multiple databases) cannot be granted to a database role. Use direct grants instead.",
+        "distractors": {
+          "A": "Database roles can be granted to shares; the limitation is specifically REFERENCE_USAGE.",
+          "B": "Multiple databases can be in one share using direct grants (Option 2).",
+          "C": "Database roles are scoped to their database, not designed to work across accounts."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "An administrator inspects shares using SQL to audit configuration and consumers.",
+      "stem": "Which TWO commands correctly report share information? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "SHOW GRANTS TO SHARE <name> lists object privileges granted to the share"
+        },
+        {
+          "key": "B",
+          "text": "SHOW GRANTS OF SHARE <name> lists accounts that have created a database from the share"
+        },
+        {
+          "key": "C",
+          "text": "DESCRIBE ACCOUNT <name> lists the objects in a share"
+        },
+        {
+          "key": "D",
+          "text": "SHOW SHARE OBJECTS lists consumer users"
+        },
+        {
+          "key": "E",
+          "text": "LIST SHARE ACCOUNTS shows provider credits"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "SHOW GRANTS TO SHARE lists object privileges granted to a share; SHOW GRANTS OF SHARE lists all accounts for the share and indicates which have created a database from it.",
+        "distractors": {
+          "C": "DESCRIBE SHARE (not DESCRIBE ACCOUNT) describes the objects in a share.",
+          "D": "SHOW SHARE OBJECTS is not a valid command.",
+          "E": "LIST SHARE ACCOUNTS is not a valid command."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider account executes ALTER SHARE sales_s ADD ACCOUNTS = xy12345 where the account xy12345 does not actually exist.",
+      "stem": "What is the outcome?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The command fails with an error about the missing account"
+        },
+        {
+          "key": "B",
+          "text": "The command completes successfully but no updates are made to the share"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake creates the account automatically"
+        },
+        {
+          "key": "D",
+          "text": "The share is dropped"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "When adding accounts to a share, if the accounts do not exist, the command completes successfully but no updates are made to the share; verify the account exists and the name is correct.",
+        "distractors": {
+          "A": "It does not fail with an error; it succeeds silently without changes.",
+          "C": "Snowflake does not auto-create the account.",
+          "D": "The share is not dropped."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "data-sharing",
+      "scenario": "A provider removes a consumer account from a share.",
+      "stem": "What is the immediate effect on that consumer?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The consumer keeps read access for 30 days"
+        },
+        {
+          "key": "B",
+          "text": "The consumer's database is converted to a local copy"
+        },
+        {
+          "key": "C",
+          "text": "The database they created from the share is instantly invalidated and queries stop working"
+        },
+        {
+          "key": "D",
+          "text": "Nothing changes until the share is dropped"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Removing an account from a share instantly invalidates the database they created from the share; all queries and operations on it stop working. Re-adding the account does not restore the old database.",
+        "distractors": {
+          "A": "There is no 30-day grace period; invalidation is immediate.",
+          "B": "The database is not converted to a local copy; it is invalidated.",
+          "D": "The effect is immediate upon removal, not deferred to a share drop."
+        }
+      }
+    }
+  ]
+}
