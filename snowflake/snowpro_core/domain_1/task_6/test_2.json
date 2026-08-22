@@ -1,0 +1,777 @@
+{
+  "label": "Cortex Analyst & Cortex Search",
+  "order": 2,
+  "topic": "AI/ML and Application Development Features",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "What is the primary purpose of Cortex Analyst?",
+      "options": [
+        {
+          "key": "A",
+          "text": "To let business users ask questions in natural language and receive answers from structured data without writing SQL"
+        },
+        {
+          "key": "B",
+          "text": "To perform fuzzy search over unstructured text data"
+        },
+        {
+          "key": "C",
+          "text": "To generate embedding vectors for similarity search"
+        },
+        {
+          "key": "D",
+          "text": "To fine-tune large language models on custom datasets"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Cortex Analyst is an LLM-powered feature that enables business users to ask questions in natural language and receive direct answers from structured data without writing SQL (text-to-SQL).",
+        "distractors": {
+          "C": "Generating embedding vectors is done by AI_EMBED or embedding models, not Cortex Analyst.",
+          "D": "Fine-tuning models is the role of Cortex Fine-tuning, not Cortex Analyst.",
+          "B": "Fuzzy search over unstructured text is the purpose of Cortex Search, not Cortex Analyst."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "What does Cortex Search use to achieve high-quality search results?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Keyword search only"
+        },
+        {
+          "key": "B",
+          "text": "Vector search only"
+        },
+        {
+          "key": "C",
+          "text": "A hybrid approach combining vector search, keyword search, and semantic reranking"
+        },
+        {
+          "key": "D",
+          "text": "Regular expression pattern matching"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Cortex Search takes a hybrid approach: vector search for semantic similarity, keyword search for lexical similarity, and a semantic reranking step to reorder the most relevant results.",
+        "distractors": {
+          "A": "Keyword search alone is only one component; Cortex Search also uses vector search and reranking.",
+          "B": "Vector search alone is only one component of the hybrid approach.",
+          "D": "Regular expression matching is not the technique Cortex Search uses."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "Which database role provides access ONLY to Cortex Analyst rather than all Covered AI features?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SNOWFLAKE.CORTEX_USER"
+        },
+        {
+          "key": "B",
+          "text": "SNOWFLAKE.CORTEX_ANALYST_USER"
+        },
+        {
+          "key": "C",
+          "text": "SNOWFLAKE.ANALYST_ROLE"
+        },
+        {
+          "key": "D",
+          "text": "SNOWFLAKE.AI_FUNCTIONS_USER"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "SNOWFLAKE.CORTEX_ANALYST_USER provides access only to Cortex Analyst, while CORTEX_USER provides access to all Covered AI features.",
+        "distractors": {
+          "A": "CORTEX_USER provides access to all Covered AI features, not just Cortex Analyst.",
+          "C": "ANALYST_ROLE is not a valid Snowflake database role.",
+          "D": "AI_FUNCTIONS_USER provides access to Cortex AI Functions, not specifically Cortex Analyst."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "Which THREE components can be defined in a Semantic View used by Cortex Analyst? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Logical tables representing business entities"
+        },
+        {
+          "key": "B",
+          "text": "Embedding models for vector search"
+        },
+        {
+          "key": "C",
+          "text": "Dimensions that provide categorical context"
+        },
+        {
+          "key": "D",
+          "text": "Warehouse scaling policies"
+        },
+        {
+          "key": "E",
+          "text": "Metrics that aggregate data into business KPIs"
+        },
+        {
+          "key": "F",
+          "text": "Index refresh schedules"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Semantic Views define logical tables (business entities), dimensions (categorical context), facts, metrics (business KPIs), and relationships (join paths).",
+        "distractors": {
+          "B": "Embedding models are used by Cortex Search, not defined in a Cortex Analyst Semantic View.",
+          "D": "Warehouse scaling policies are a warehouse property, not part of a Semantic View.",
+          "F": "Index refresh schedules relate to Cortex Search services, not Semantic Views."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "Which TWO statements about the TARGET_LAG parameter in a Cortex Search Service are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "It sets the maximum number of rows the service can index"
+        },
+        {
+          "key": "B",
+          "text": "It defines how far the service content can lag behind the base data"
+        },
+        {
+          "key": "C",
+          "text": "It controls the embedding model dimension size"
+        },
+        {
+          "key": "D",
+          "text": "It specifies the query timeout in seconds"
+        },
+        {
+          "key": "E",
+          "text": "It dictates how often the service checks for updates to the base table"
+        }
+      ],
+      "correct": [
+        "B",
+        "E"
+      ],
+      "explanation": {
+        "correct": "TARGET_LAG dictates how often the Cortex Search Service checks for updates to the base table, defining how far the service content can lag behind updates to the base data.",
+        "distractors": {
+          "A": "The maximum row count is a separate limitation (400M rows), not controlled by TARGET_LAG.",
+          "C": "Embedding dimension is a property of the chosen embedding model, not TARGET_LAG.",
+          "D": "Query timeout is unrelated to TARGET_LAG, which governs refresh frequency."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A developer is creating a Cortex Search Service and wants to specify which column will be searched for text matches.",
+      "stem": "Which clause of CREATE CORTEX SEARCH SERVICE specifies the searchable text column?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ATTRIBUTES"
+        },
+        {
+          "key": "B",
+          "text": "WAREHOUSE"
+        },
+        {
+          "key": "C",
+          "text": "SEARCH COLUMN"
+        },
+        {
+          "key": "D",
+          "text": "ON"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The ON clause specifies the column that queries will search for matches (e.g., ON transcript_text).",
+        "distractors": {
+          "A": "ATTRIBUTES specifies columns available as filter columns, not the primary search column.",
+          "C": "SEARCH COLUMN is not a valid clause in CREATE CORTEX SEARCH SERVICE.",
+          "B": "WAREHOUSE specifies the warehouse used for materializing results, not the search column."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A business user asks Cortex Analyst 'What is the month-over-month revenue growth for 2021 in Asia?' and then follows up with 'What about North America?'",
+      "stem": "Which Cortex Analyst capability enables the follow-up question to be understood in context?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Semantic reranking"
+        },
+        {
+          "key": "B",
+          "text": "Cross-region inference"
+        },
+        {
+          "key": "C",
+          "text": "Multi-turn conversation"
+        },
+        {
+          "key": "D",
+          "text": "Vector embedding"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Multi-turn conversation enables Cortex Analyst to retrieve context from the initial query and rephrase the follow-up (e.g., interpreting 'What about North America?' as the full revenue growth question for North America).",
+        "distractors": {
+          "A": "Semantic reranking is a Cortex Search feature for reordering results, not conversation context.",
+          "D": "Vector embedding is used in search, not for maintaining conversation history in Cortex Analyst.",
+          "B": "Cross-region inference relates to model availability across regions, not conversational context."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "An administrator wants to disable Cortex Analyst functionality for their entire account.",
+      "stem": "Which parameter should they set to FALSE using the ACCOUNTADMIN role?",
+      "options": [
+        {
+          "key": "A",
+          "text": "DISABLE_CORTEX_ANALYST"
+        },
+        {
+          "key": "B",
+          "text": "ENABLE_CORTEX_ANALYST"
+        },
+        {
+          "key": "C",
+          "text": "CORTEX_ANALYST_ENABLED"
+        },
+        {
+          "key": "D",
+          "text": "ALLOW_CORTEX_ANALYST"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Setting ENABLE_CORTEX_ANALYST = FALSE using the ACCOUNTADMIN role disables Cortex Analyst functionality in the account. Its default value is TRUE.",
+        "distractors": {
+          "A": "DISABLE_CORTEX_ANALYST is not a valid parameter name.",
+          "C": "CORTEX_ANALYST_ENABLED is not the correct parameter name.",
+          "D": "ALLOW_CORTEX_ANALYST is not a valid Snowflake parameter."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": null,
+      "stem": "Which THREE privileges or requirements are needed to CREATE a Cortex Search Service? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The ACCOUNTADMIN role"
+        },
+        {
+          "key": "B",
+          "text": "The CORTEX_USER or CORTEX_EMBED_USER database role"
+        },
+        {
+          "key": "C",
+          "text": "The CREATE MODEL privilege on the schema"
+        },
+        {
+          "key": "D",
+          "text": "The SELECT privilege on the underlying table(s) or view(s)"
+        },
+        {
+          "key": "E",
+          "text": "Ownership of the entire database"
+        },
+        {
+          "key": "F",
+          "text": "The USAGE privilege on the warehouse that refreshes the service"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Creating a Cortex Search Service requires the CORTEX_USER/CORTEX_EMBED_USER role for embedding functions, SELECT on the source tables/views, USAGE on the refresh warehouse, plus CREATE CORTEX SEARCH SERVICE on the schema.",
+        "distractors": {
+          "A": "ACCOUNTADMIN is not required; the specific privileges suffice.",
+          "C": "CREATE MODEL is for the Model Registry, not Cortex Search Services.",
+          "E": "Database ownership is not required; schema-level CREATE privilege is sufficient."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A company's Cortex Search Service source query result grows to 450 million rows.",
+      "stem": "What happens when they attempt to create the service?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The service is created but serving performance degrades gracefully"
+        },
+        {
+          "key": "B",
+          "text": "Only the first 400M rows are indexed and the rest are ignored silently"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake automatically shards the service across multiple indexes"
+        },
+        {
+          "key": "D",
+          "text": "The creation query fails with an error because the result exceeds 400M rows"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The materialized query result must be less than 400M rows for optimal serving. If it exceeds 400M rows, the creation query fails with an error (unless the limit is raised by contacting Snowflake).",
+        "distractors": {
+          "A": "The service is not created; the creation fails with an error.",
+          "C": "Snowflake does not automatically shard; the create fails when the limit is exceeded.",
+          "B": "Rows are not silently ignored; the creation fails with an explicit error."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A developer wants to preview the results of a Cortex Search Service from a SQL environment to confirm it is populated correctly.",
+      "stem": "Which function should they use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SNOWFLAKE.CORTEX.SEARCH_PREVIEW"
+        },
+        {
+          "key": "B",
+          "text": "SNOWFLAKE.CORTEX.QUERY_SERVICE"
+        },
+        {
+          "key": "C",
+          "text": "SNOWFLAKE.CORTEX.SEARCH"
+        },
+        {
+          "key": "D",
+          "text": "SNOWFLAKE.CORTEX.COMPLETE"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "The SEARCH_PREVIEW function lets you preview a Cortex Search Service from a SQL environment to confirm it is populated and serving reasonable results.",
+        "distractors": {
+          "B": "QUERY_SERVICE is not a valid Cortex Search preview function.",
+          "C": "SEARCH is not the SQL preview function name; SEARCH_PREVIEW is used for previewing.",
+          "D": "COMPLETE is an LLM completion function, unrelated to previewing a search service."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "A team is designing a Cortex Search Service and wants to optimize refresh cost and latency.",
+      "stem": "Which TWO benefits does defining a PRIMARY KEY on a Cortex Search Service provide? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "It enables an optimized refresh path that avoids re-embedding all data"
+        },
+        {
+          "key": "B",
+          "text": "It automatically increases the embedding model dimensions"
+        },
+        {
+          "key": "C",
+          "text": "It removes the 400M row limit entirely"
+        },
+        {
+          "key": "D",
+          "text": "Each refresh cycle processes only rows that changed since the last refresh"
+        },
+        {
+          "key": "E",
+          "text": "It disables semantic reranking to reduce cost"
+        }
+      ],
+      "correct": [
+        "A",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A PRIMARY KEY enables an optimized refresh path where each cycle processes only changed rows rather than re-embedding all data, significantly reducing refresh cost and latency.",
+        "distractors": {
+          "B": "PRIMARY KEY does not change embedding dimensions.",
+          "C": "The 400M row limit is not removed by defining a primary key.",
+          "E": "PRIMARY KEY does not disable semantic reranking."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "A Cortex Search Service has encountered five consecutive refresh failures related to its source query.",
+      "stem": "Which TWO statements about Cortex Search Service indexing suspension are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The service is automatically dropped after refresh failures"
+        },
+        {
+          "key": "B",
+          "text": "Indexing and serving states cannot be suspended independently"
+        },
+        {
+          "key": "C",
+          "text": "Indexing suspends automatically after five consecutive refresh failures"
+        },
+        {
+          "key": "D",
+          "text": "Refresh failures switch the service to a backup warehouse"
+        },
+        {
+          "key": "E",
+          "text": "The INDEXING_ERROR column shows the specific SQL error"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Indexing automatically suspends after five consecutive refresh failures, and the INDEXING_ERROR column (via DESCRIBE or CORTEX_SEARCH_SERVICES view) shows the specific SQL error encountered.",
+        "distractors": {
+          "A": "The service is not dropped; only indexing is suspended.",
+          "B": "Indexing and serving states CAN be suspended independently.",
+          "D": "There is no automatic backup warehouse switch on refresh failure."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "For a RAG chatbot, a team needs to split large documents into chunks before indexing in Cortex Search for optimal retrieval quality.",
+      "stem": "What chunk size does Snowflake recommend for the search column?",
+      "options": [
+        {
+          "key": "A",
+          "text": "No more than 8192 tokens"
+        },
+        {
+          "key": "B",
+          "text": "No more than 512 tokens (about 385 English words)"
+        },
+        {
+          "key": "C",
+          "text": "Exactly 1024 tokens"
+        },
+        {
+          "key": "D",
+          "text": "As large as possible to preserve full context"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Snowflake recommends splitting the search column text into chunks of no more than 512 tokens (about 385 English words), as smaller chunks typically yield higher retrieval and downstream LLM response quality.",
+        "distractors": {
+          "A": "8192 tokens is the context window of a longer-context model, not the recommended chunk size.",
+          "C": "1024 is an embedding output dimension for some models, not the recommended chunk size.",
+          "D": "Larger chunks reduce retrieval precision; smaller chunks are recommended."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "A data team is choosing an embedding model for their multilingual Cortex Search Service.",
+      "stem": "Which TWO statements about Cortex Search embedding models are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "All embedding models support a context window of 8192 tokens"
+        },
+        {
+          "key": "B",
+          "text": "snowflake-arctic-embed-m-v1.5 is the default English-only model"
+        },
+        {
+          "key": "C",
+          "text": "The default model produces 1024-dimensional embeddings"
+        },
+        {
+          "key": "D",
+          "text": "snowflake-arctic-embed-l-v2.0 is a multilingual model"
+        },
+        {
+          "key": "E",
+          "text": "Only one embedding model is available in Cortex Search"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "snowflake-arctic-embed-m-v1.5 is the default English-only model (768 dimensions, 512-token window), and snowflake-arctic-embed-l-v2.0 is a multilingual model (1024 dimensions).",
+        "distractors": {
+          "A": "Context windows vary by model; the default supports 512 tokens, while the -8k variant supports 8192.",
+          "C": "The default model (arctic-embed-m-v1.5) produces 768-dimensional embeddings, not 1024.",
+          "E": "Multiple embedding models are available, including arctic-embed variants and voyage-multilingual-2."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "A team wants to reduce Cortex Search serving cost when their service is not being queried for long periods.",
+      "stem": "Which TWO statements about the serving AUTO_SUSPEND feature for Cortex Search are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "It reduces serving cost when the service is not in use"
+        },
+        {
+          "key": "B",
+          "text": "The minimum AUTO_SUSPEND value is 300 seconds"
+        },
+        {
+          "key": "C",
+          "text": "Auto-suspend permanently deletes the search index"
+        },
+        {
+          "key": "D",
+          "text": "Indexing and serving cannot both auto-suspend"
+        },
+        {
+          "key": "E",
+          "text": "The minimum AUTO_SUSPEND value is 1800 seconds (30 minutes)"
+        }
+      ],
+      "correct": [
+        "A",
+        "E"
+      ],
+      "explanation": {
+        "correct": "The serving AUTO_SUSPEND minimum is 1800 seconds (30 minutes) of query inactivity, and it reduces serving cost when the service isn't being queried.",
+        "distractors": {
+          "B": "The minimum is 1800 seconds, not 300 seconds.",
+          "C": "Auto-suspend pauses serving compute; it does not delete the index.",
+          "D": "Indexing and serving are independent states; this statement is incorrect."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A company's Snowflake account is in a region where Cortex Analyst is not natively available.",
+      "stem": "How can they still use Cortex Analyst?",
+      "options": [
+        {
+          "key": "A",
+          "text": "By enabling cross-region inference"
+        },
+        {
+          "key": "B",
+          "text": "By upgrading to Enterprise Edition"
+        },
+        {
+          "key": "C",
+          "text": "By creating a semantic view in a different account"
+        },
+        {
+          "key": "D",
+          "text": "Cortex Analyst cannot be used outside natively supported regions"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "If an account is in a region where Cortex Analyst is not natively available, cross-region inference can be enabled to process requests in other regions.",
+        "distractors": {
+          "C": "Creating a semantic view in another account is not the mechanism for regional access.",
+          "D": "Cortex Analyst can be used via cross-region inference even in non-native regions.",
+          "B": "Edition upgrade does not address regional model availability; cross-region inference does."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "snowflake-cortex",
+      "scenario": "A developer is reviewing known limitations of multi-turn conversations in Cortex Analyst.",
+      "stem": "Which TWO limitations apply to Cortex Analyst multi-turn conversations? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Multi-turn conversations are limited to exactly three turns"
+        },
+        {
+          "key": "B",
+          "text": "Conversation history is discarded after each individual query"
+        },
+        {
+          "key": "C",
+          "text": "Cortex Analyst cannot access the results of previous SQL queries"
+        },
+        {
+          "key": "D",
+          "text": "It can only answer questions resolvable with SQL, not general business insights"
+        },
+        {
+          "key": "E",
+          "text": "Follow-up questions must be phrased as complete standalone questions"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Cortex Analyst cannot access results from previous SQL queries, and it is limited to answering questions resolvable with SQL rather than broader business insights like trend observations.",
+        "distractors": {
+          "A": "There is no fixed three-turn limit, though very long conversations may cause interpretation issues.",
+          "B": "The full conversation history is processed for each new query, not discarded.",
+          "E": "Follow-ups can be partial (e.g., 'What about North America?'); the feature rephrases them using context."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A team is analyzing the credit consumption for Cortex Analyst.",
+      "stem": "How is the credit usage for Cortex Analyst primarily calculated?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Based on the number of tokens in each message"
+        },
+        {
+          "key": "B",
+          "text": "Based on the number of messages processed (only successful HTTP 200 responses counted)"
+        },
+        {
+          "key": "C",
+          "text": "Based on a flat monthly subscription fee"
+        },
+        {
+          "key": "D",
+          "text": "Based on the size of the semantic model YAML file"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Cortex Analyst credit usage is based on the number of messages processed, and only successful responses (HTTP 200) are counted. Token count only affects cost when invoked via Cortex Agents.",
+        "distractors": {
+          "A": "Token count does not affect Cortex Analyst cost unless invoked through Cortex Agents.",
+          "C": "There is no flat monthly subscription; billing is per message.",
+          "D": "The semantic model file size does not determine credit consumption."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "snowflake-cortex",
+      "scenario": "A team uses Cortex Search as the retrieval engine for an LLM chatbot that answers questions grounded in their proprietary Snowflake data.",
+      "stem": "Which architectural pattern does this describe?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Extract, Transform, Load (ETL)"
+        },
+        {
+          "key": "B",
+          "text": "Change Data Capture (CDC)"
+        },
+        {
+          "key": "C",
+          "text": "Online Transaction Processing (OLTP)"
+        },
+        {
+          "key": "D",
+          "text": "Retrieval Augmented Generation (RAG)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Using Cortex Search as the retrieval engine to provide an LLM with context grounded in proprietary data is Retrieval Augmented Generation (RAG), one of the two primary Cortex Search use cases.",
+        "distractors": {
+          "A": "ETL is a data integration pattern, not a retrieval-augmented LLM architecture.",
+          "C": "OLTP refers to transactional workloads, not LLM retrieval.",
+          "B": "CDC captures data changes; it is not the retrieval pattern for grounding LLM responses."
+        }
+      }
+    }
+  ]
+}
