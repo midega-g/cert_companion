@@ -1,0 +1,772 @@
+{
+  "label": "Snowflake Native App Framework",
+  "order": 3,
+  "topic": "Marketplace and Listings",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": null,
+      "stem": "What does the Snowflake Native App Framework allow providers to do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Only replicate data across regions"
+        },
+        {
+          "key": "B",
+          "text": "Create data applications that share data and related business logic with other Snowflake accounts"
+        },
+        {
+          "key": "C",
+          "text": "Provision reader accounts automatically"
+        },
+        {
+          "key": "D",
+          "text": "Manage virtual warehouse scaling policies"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The Native App Framework lets providers create data applications that share data and related business logic (Streamlit apps, stored procedures, functions) with other Snowflake accounts.",
+        "distractors": {
+          "A": "Cross-region replication is a separate feature, not the purpose of the Native App Framework.",
+          "C": "The framework is not about provisioning reader accounts.",
+          "D": "It is not a warehouse scaling tool."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": null,
+      "stem": "What is an application package in the Native App Framework?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A consumer's installed application object"
+        },
+        {
+          "key": "B",
+          "text": "A resource monitor for the app's compute"
+        },
+        {
+          "key": "C",
+          "text": "A container that encapsulates the data content, application logic, metadata, and setup script for an app"
+        },
+        {
+          "key": "D",
+          "text": "A listing profile"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "An application package encapsulates the data content, application logic, metadata, and setup script required by an application, plus version and patch information.",
+        "distractors": {
+          "A": "The consumer's installed object is the Snowflake Native App (application object), not the package.",
+          "B": "It is not a resource monitor.",
+          "D": "It is not a listing profile."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "multi",
+      "domain": "native-apps",
+      "scenario": null,
+      "stem": "Which TWO files/components does an application package require? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A resource monitor definition"
+        },
+        {
+          "key": "B",
+          "text": "A manifest file"
+        },
+        {
+          "key": "C",
+          "text": "A setup script"
+        },
+        {
+          "key": "D",
+          "text": "A reader account configuration"
+        },
+        {
+          "key": "E",
+          "text": "A replication group"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "An application package requires a manifest file (defines configuration/setup properties, including the setup script location and versions) and a setup script (SQL run on install/upgrade).",
+        "distractors": {
+          "A": "A resource monitor is not a required app package component.",
+          "D": "A reader account configuration is unrelated to app packages.",
+          "E": "A replication group is a DR construct, not part of an app package."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": null,
+      "stem": "What does the setup script in an application package contain?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The consumer's billing details"
+        },
+        {
+          "key": "B",
+          "text": "The provider's cloud credentials"
+        },
+        {
+          "key": "C",
+          "text": "SQL statements run when the consumer installs or upgrades the application (or the provider installs it for testing)"
+        },
+        {
+          "key": "D",
+          "text": "A list of allowed IP addresses"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The setup script contains SQL statements that run when a consumer installs or upgrades an application, or when a provider installs/upgrades it for testing. Its location is specified in the manifest file.",
+        "distractors": {
+          "A": "The setup script does not contain consumer billing details.",
+          "B": "It does not contain provider cloud credentials.",
+          "D": "It is not an IP allowlist."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": "A consumer inspects what object gets created in their account when they install a Native App.",
+      "stem": "What is a Snowflake Native App (the application object)?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The listing metadata shown on the Marketplace"
+        },
+        {
+          "key": "B",
+          "text": "The database object installed in the consumer account when they install the app"
+        },
+        {
+          "key": "C",
+          "text": "The provider's source-control repository"
+        },
+        {
+          "key": "D",
+          "text": "A secure view in the provider account"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A Snowflake Native App is the database object installed in the consumer account; when installed, Snowflake creates the application and runs the setup script to create the required objects within it.",
+        "distractors": {
+          "A": "Listing metadata is separate from the installed application object.",
+          "C": "The provider's source control holds code files, not the installed app object.",
+          "D": "It is a full application object, not merely a secure view."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "native-apps",
+      "scenario": null,
+      "stem": "Which TWO statements about publishing a Native App are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Native Apps can only be shared using direct shares"
+        },
+        {
+          "key": "B",
+          "text": "Publishing an app requires copying the app into each consumer account manually"
+        },
+        {
+          "key": "C",
+          "text": "The app is shared with consumers by publishing a listing with the application package as the data product"
+        },
+        {
+          "key": "D",
+          "text": "The listing can be a Snowflake Marketplace listing or a private listing"
+        },
+        {
+          "key": "E",
+          "text": "Native App listings cannot be monetized"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A provider shares an app by publishing a listing that has the application package as its data product; the listing can be a Marketplace listing or a private listing.",
+        "distractors": {
+          "A": "Apps are distributed via listings, not direct shares.",
+          "B": "No manual copying into consumer accounts is required.",
+          "E": "Native App listings can be free or paid (monetizable)."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": "A provider wants to change and evolve their application's logic and release updates incrementally to consumers.",
+      "stem": "Which Native App Framework capability supports this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Reader account cloning"
+        },
+        {
+          "key": "B",
+          "text": "Cross-region failover"
+        },
+        {
+          "key": "C",
+          "text": "Time Travel on the consumer database"
+        },
+        {
+          "key": "D",
+          "text": "The ability to release versions and patches for the application"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The framework lets providers release versions and patches, allowing them to change and evolve the app's logic and release incrementally to consumers.",
+        "distractors": {
+          "A": "Reader account cloning is not how app logic is evolved.",
+          "B": "Failover is a DR feature, unrelated to app version releases.",
+          "C": "Time Travel does not manage app versioning."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": "A provider prepares to publish an application package to accounts outside their organization.",
+      "stem": "What triggers the automated security scan required for external distribution?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Granting IMPORTED PRIVILEGES to the consumer"
+        },
+        {
+          "key": "B",
+          "text": "Setting the DISTRIBUTION property of the application package to EXTERNAL"
+        },
+        {
+          "key": "C",
+          "text": "Creating a reader account"
+        },
+        {
+          "key": "D",
+          "text": "Enabling Tri-Secret Secure"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The automated security scan is initiated when you set the DISTRIBUTION property of the application package to EXTERNAL (or add a new version/patch to a package already set to EXTERNAL).",
+        "distractors": {
+          "A": "IMPORTED PRIVILEGES concerns consumer access to shared databases, not the security scan.",
+          "C": "Creating a reader account does not trigger the scan.",
+          "D": "Tri-Secret Secure is an encryption feature, unrelated to triggering the scan."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "native-apps",
+      "scenario": null,
+      "stem": "Which TWO statements about the Native App listing approval flow are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Native App listings never undergo any review"
+        },
+        {
+          "key": "B",
+          "text": "If the automated security scan fails, Snowflake performs a manual security review (approximately 3 business days)"
+        },
+        {
+          "key": "C",
+          "text": "An app using Snowpark Container Services requires completing a security questionnaire before the scan"
+        },
+        {
+          "key": "D",
+          "text": "A failed review cannot be corrected or resubmitted"
+        },
+        {
+          "key": "E",
+          "text": "The security scan is skipped for external distribution"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "If the automated security scan fails, Snowflake performs a manual security review (~3 business days). If the app uses SPCS, you must complete a security questionnaire before the automated scan starts.",
+        "distractors": {
+          "A": "Native App listings undergo metadata review and a functional review.",
+          "D": "A rejected listing can be updated based on feedback and resubmitted.",
+          "E": "The security scan is required for external distribution, not skipped."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": "A provider's Native App listing on the Marketplace is rejected during review.",
+      "stem": "Approximately how long can Native App reviews take, and how is feedback delivered?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Reviews always complete in under 1 hour with in-app feedback"
+        },
+        {
+          "key": "B",
+          "text": "Reviews take exactly 90 days with no feedback"
+        },
+        {
+          "key": "C",
+          "text": "Reviews may take up to 14 days; feedback goes to the business and technical contact emails in the profile"
+        },
+        {
+          "key": "D",
+          "text": "Rejections are never communicated"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "For Native App listings, reviews may take up to 14 days; if rejected, Snowflake reaches out using the business and technical contact emails in the profile with feedback.",
+        "distractors": {
+          "A": "Reviews are not sub-hour; Native App reviews can take up to 14 days.",
+          "B": "Reviews are up to 14 days, not a fixed 90 days, and feedback is provided.",
+          "D": "Rejections are communicated via the profile contact emails."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": "A provider must set which version or patch of the app a published listing points to.",
+      "stem": "What must be specified before creating a listing for an application package?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A resource monitor threshold"
+        },
+        {
+          "key": "B",
+          "text": "A Tri-Secret Secure key"
+        },
+        {
+          "key": "C",
+          "text": "A failover group"
+        },
+        {
+          "key": "D",
+          "text": "The default release directive (pointing to the version/patch being published)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Before creating a listing for an application package, you must specify the default release directive that points to the version or patch of the app you are publishing.",
+        "distractors": {
+          "A": "A resource monitor is unrelated to publishing an app version.",
+          "B": "A Tri-Secret Secure key is not required to set the published version.",
+          "C": "A failover group is a DR construct, not a release directive."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "native-apps",
+      "scenario": "A provider sets up roles and privileges to create and manage a listing for an application package.",
+      "stem": "Which TWO statements about the required roles/privileges are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "You can transfer the OWNERSHIP privilege for a share"
+        },
+        {
+          "key": "B",
+          "text": "The listing owner needs only the SELECT privilege"
+        },
+        {
+          "key": "C",
+          "text": "The role that attaches a data product to a listing and publishes it must be the same role that owns the application package"
+        },
+        {
+          "key": "D",
+          "text": "If a different role manages the listing, grant it the MODIFY privilege on the listing"
+        },
+        {
+          "key": "E",
+          "text": "No privileges are required to publish a listing"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The role that attaches the data product and publishes the listing must be the role that owns the application package/share. If a different role manages the listing, grant it the MODIFY privilege on the listing (you cannot transfer OWNERSHIP for a share).",
+        "distractors": {
+          "A": "You cannot transfer the OWNERSHIP privilege for a share.",
+          "B": "The listing owner needs OWNERSHIP on the listing and the global CREATE LISTING privilege, not just SELECT.",
+          "E": "Publishing a listing requires specific privileges."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "native-apps",
+      "scenario": "A provider wants to test their application before publishing it broadly, to speed up the review process.",
+      "stem": "A provider wants to speed up the review process before publishing. Which TWO recommendations/statements are correct? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Skip testing to save time"
+        },
+        {
+          "key": "B",
+          "text": "Test the app by privately sharing it with another account before submitting for publishing"
+        },
+        {
+          "key": "C",
+          "text": "Publish publicly first, then test afterward"
+        },
+        {
+          "key": "D",
+          "text": "Private testing may expedite the review process"
+        },
+        {
+          "key": "E",
+          "text": "Test only in a consumer's production account"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Snowflake recommends testing the app by privately sharing it with another account before submitting for publishing, which may expedite the review process.",
+        "distractors": {
+          "A": "Skipping testing is not recommended.",
+          "C": "Testing should occur before public publishing.",
+          "E": "Testing does not require a consumer's production account; single-account testing is supported."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "native-apps",
+      "scenario": "A consumer works with a Snowflake Native App after installing it.",
+      "stem": "Which THREE actions can a consumer perform with an installed Native App? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Directly edit the provider's application source code"
+        },
+        {
+          "key": "B",
+          "text": "Transfer ownership of the app package to another provider"
+        },
+        {
+          "key": "C",
+          "text": "Use the app by accessing data via Snowflake worksheets"
+        },
+        {
+          "key": "D",
+          "text": "View Streamlit apps created by the provider"
+        },
+        {
+          "key": "E",
+          "text": "Share event and logging information with the provider"
+        },
+        {
+          "key": "F",
+          "text": "Bypass the app's declared privilege requirements"
+        }
+      ],
+      "correct": [
+        "C",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Consumers can use the app via Snowflake worksheets, view provider Streamlit apps, grant privileges/associate references, and share event and logging information with the provider.",
+        "distractors": {
+          "A": "Consumers cannot edit the provider's application source code.",
+          "B": "Consumers cannot transfer ownership of the provider's application package.",
+          "F": "Consumers grant the app's required privileges; they do not bypass them."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "native-apps",
+      "scenario": "A consumer follows the typical workflow for working with a Snowflake Native App.",
+      "stem": "Which TWO steps are part of the consumer workflow? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Install the app from a listing"
+        },
+        {
+          "key": "B",
+          "text": "Review the app's access requests (grant privileges and create references)"
+        },
+        {
+          "key": "C",
+          "text": "Publish the app to the Marketplace"
+        },
+        {
+          "key": "D",
+          "text": "Run the automated security scan"
+        },
+        {
+          "key": "E",
+          "text": "Set the app's default release directive"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "The consumer workflow includes becoming a consumer, installing the app from a listing, reviewing access requests (granting privileges and creating references), and optionally setting up an event table for logging.",
+        "distractors": {
+          "C": "Publishing to the Marketplace is a provider action, not a consumer step.",
+          "D": "Running the security scan is a provider action.",
+          "E": "Setting the release directive is a provider action."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": "A consumer wants to help the provider troubleshoot the installed app by sharing logs.",
+      "stem": "What optional step enables logging and event sharing for the app?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Create a resource monitor"
+        },
+        {
+          "key": "B",
+          "text": "Set up an event table"
+        },
+        {
+          "key": "C",
+          "text": "Grant OWNERSHIP of the app to the provider"
+        },
+        {
+          "key": "D",
+          "text": "Enable Tri-Secret Secure"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "As an optional step, the consumer sets up an event table to enable logging and event sharing for the app, helping the provider troubleshoot.",
+        "distractors": {
+          "A": "A resource monitor governs credit usage, not logging/event sharing.",
+          "C": "Consumers do not grant OWNERSHIP of the app to the provider.",
+          "D": "Tri-Secret Secure is encryption, not app logging."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": "A consumer installed an app from a limited trial listing and the trial period is ending.",
+      "stem": "What happens if the consumer does not convert the app to a full listing?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The app continues indefinitely for free"
+        },
+        {
+          "key": "B",
+          "text": "The app is immediately deleted with all its data"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake automatically suspends the app (after sending an expiry notification)"
+        },
+        {
+          "key": "D",
+          "text": "The provider is billed for continued access"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "When the trial period ends, Snowflake automatically suspends the app unless the consumer converts it to a full listing; a notification is sent before suspension. Snowflake recommends converting before expiry.",
+        "distractors": {
+          "A": "The app does not continue free indefinitely; it is suspended.",
+          "B": "Data written inside the app is retained as long as the consumer doesn't delete the app; it is not immediately deleted.",
+          "D": "The provider is not billed to continue the consumer's trial access."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": "A trial app that created objects in the consumer account (outside the application object) is about to be uninstalled, and the consumer wants to keep those objects.",
+      "stem": "What must the consumer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Nothing; all objects are always retained automatically"
+        },
+        {
+          "key": "B",
+          "text": "Re-run the security scan"
+        },
+        {
+          "key": "C",
+          "text": "Ask the provider to publish a new version"
+        },
+        {
+          "key": "D",
+          "text": "Transfer ownership of those objects before uninstalling the app"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "If a trial app created objects in the consumer account outside the application object, consumers can retain them after uninstalling only if they transfer ownership of those objects before uninstalling the app.",
+        "distractors": {
+          "A": "Objects outside the app object require ownership transfer to be retained through uninstall.",
+          "B": "Re-running the security scan is a provider action and does not retain objects.",
+          "C": "A new provider version does not retain the consumer's external objects on uninstall."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "native-apps",
+      "scenario": "A team evaluates the enhanced development experience of the Native App Framework.",
+      "stem": "Which TWO development experience benefits does the framework provide? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Automatic elimination of all compute costs"
+        },
+        {
+          "key": "B",
+          "text": "A streamlined testing environment where you can test applications from a single account"
+        },
+        {
+          "key": "C",
+          "text": "The ability to manage supporting code files and resources in source control"
+        },
+        {
+          "key": "D",
+          "text": "Direct write access to consumer production data"
+        },
+        {
+          "key": "E",
+          "text": "Guaranteed instant Marketplace approval"
+        }
+      ],
+      "correct": [
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The framework provides a streamlined single-account testing environment and a robust developer workflow where data/objects stay in Snowflake while supporting code files and resources are managed in source control.",
+        "distractors": {
+          "A": "The framework does not eliminate all compute costs.",
+          "D": "It does not grant direct write access to consumer production data.",
+          "E": "Approval is not instant or guaranteed; listings undergo review."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "native-apps",
+      "scenario": "A provider builds a Native App that runs containerized workloads in Snowflake.",
+      "stem": "What is this type of app called, and what does it leverage?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A reader account app with no framework features"
+        },
+        {
+          "key": "B",
+          "text": "A direct-share container with external hosting"
+        },
+        {
+          "key": "C",
+          "text": "A Snowflake Native App with Snowpark Container Services, leveraging the framework's features (IP protection, security, data sharing, monetization)"
+        },
+        {
+          "key": "D",
+          "text": "A replication container for failover"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A Snowflake Native App with Snowpark Container Services runs container workloads in Snowflake and leverages all the framework's features, including provider IP protection, security/governance, data sharing, monetization, and compute integration.",
+        "distractors": {
+          "A": "It is a full framework app, not a feature-less reader account app.",
+          "B": "It runs in Snowflake via SPCS, not external hosting through a direct share.",
+          "D": "It is not a replication/failover container."
+        }
+      }
+    }
+  ]
+}

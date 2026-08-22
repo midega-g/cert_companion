@@ -604,6 +604,11 @@
                       "id": "test_2",
                       "label": "Snowflake Marketplace, Organizational Listings & Auto-Fulfillment",
                       "path": "snowflake/snowpro_core/domain_5/task_3/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Snowflake Native App Framework",
+                      "path": "snowflake/snowpro_core/domain_5/task_3/test_3.json"
                     }
                   ]
                 }
