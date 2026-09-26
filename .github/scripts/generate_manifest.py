@@ -82,6 +82,7 @@ def read_dir_metadata(dir_path: str) -> dict:
     Supports:
       "label": override for the folder name (used in breadcrumb + tile)
       "description": longer text shown on the card tile below the label
+      "mode": "exam" | "drill" — explicit study-mode override (see router.md)
     """
     meta_path = os.path.join(dir_path, "_meta.json")
     if not os.path.isfile(meta_path):
@@ -93,8 +94,34 @@ def read_dir_metadata(dir_path: str) -> dict:
         return {}
 
 
+def resolve_mode(dir_path: str, rel_root: str, inherited_mode: str) -> str:
+    """Resolve the study mode for a directory.
+
+    Rules (see .kiro/steering/router.md):
+      1. If this folder is `topic_tests` or any ancestor is, mode = "drill".
+      2. Otherwise mode = "exam".
+      3. An explicit "mode" in the directory's _meta.json overrides the above.
+
+    `inherited_mode` is the mode resolved for the parent (so once a `topic_tests`
+    ancestor sets "drill", descendants keep it unless overridden).
+    """
+    mode = inherited_mode
+    # Folder-name rule: this directory (or an ancestor) named topic_tests -> drill
+    if os.path.basename(dir_path) == "topic_tests":
+        mode = "drill"
+    # Explicit override from _meta.json
+    meta = read_dir_metadata(dir_path)
+    if meta.get("mode") in ("exam", "drill"):
+        mode = meta["mode"]
+    return mode
+
+
 def build_node(
-    dir_path: str, node_id: str, node_label: str, rel_root: str
+    dir_path: str,
+    node_id: str,
+    node_label: str,
+    rel_root: str,
+    inherited_mode: str = "exam",
 ) -> dict | None:
     """Recursively build a tree node for a directory.
 
@@ -103,6 +130,9 @@ def build_node(
       - "tests" if it contains test_N.json files (leaf node)
       - "children" if it has subdirectories with test content (branch node)
       - both if it has tests AND subdirectories with tests
+
+    Every node is stamped with a resolved "mode" ("exam" | "drill") so the app
+    can route the user after they pick a certification.
     """
     try:
         entries = sorted(os.scandir(dir_path), key=lambda e: e.name)
@@ -113,6 +143,9 @@ def build_node(
     dir_meta = read_dir_metadata(dir_path)
     if dir_meta.get("label"):
         node_label = dir_meta["label"]
+
+    # Resolve the study mode for this node (inherited unless folder/meta changes it)
+    mode = resolve_mode(dir_path, rel_root, inherited_mode)
 
     # Check for test files in this directory
     test_files = sorted(
@@ -160,6 +193,7 @@ def build_node(
             child_entry.name,
             to_label(child_entry.name),
             rel_root,
+            inherited_mode=mode,
         )
         if child_node:
             children.append(child_node)
@@ -171,6 +205,7 @@ def build_node(
     node = {
         "id": node_id,
         "label": node_label,
+        "mode": mode,
     }
 
     # Add description if present in _meta.json

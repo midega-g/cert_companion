@@ -2,6 +2,9 @@
 
 Persistent instructions for working on this project. These apply in every session.
 
+**Read `.kiro/steering/router.md` first** — it explains the two study modes
+(Exam Prep and Topic Drill) and routes you to the correct spec.
+
 ---
 
 ## Project Overview
@@ -14,16 +17,26 @@ A static certification exam practice app (GitHub Pages) with Firebase backend fo
 - `index.html` — markup shell
 - `style.css` — all styling
 - `manifest.json` — auto-generated (never edit manually)
-- `.kiro/specs/generate_exam_questions.md` — instructions for question generation
+- `.kiro/steering/router.md` — central entry point; read first (two study modes)
+- `.kiro/specs/generate_exam_questions.md` — Exam Prep question generation
+- `.kiro/specs/generate_topic_drill.md` — Topic Drill question generation
 - `.kiro/specs/build_exam_interface.md` — instructions for interface generation
 - `.kiro/steering/skills.md` — tool index and project overview
 
-**Content pattern:**
+**Content pattern (per mode — see `.kiro/steering/router.md`):**
 ```
+# Exam Prep (mode: exam)
 <provider>/<certification>/<domain_N>/<task_N>/test_N.json
+
+# Topic Drill (mode: drill)
+<provider>/<certification>/topic_tests/<topic>/<content>/<content>_concept.md
+<provider>/<certification>/topic_tests/<topic>/<content>/test_N.json
 ```
 
-Each directory has `_meta.json` for display metadata (label, description, weight).
+Each directory has `_meta.json` for display metadata (label, description,
+optional weight, optional `mode` override). Every manifest node is stamped with
+a resolved `mode` (`exam` | `drill`); the `topic_tests` folder name signals
+`drill`.
 
 ---
 

@@ -1,6 +1,10 @@
 # Certification Practice — Tool Index
 
-Two tools are available. Pass the appropriate one to the agent depending on the task.
+**Read `.kiro/steering/router.md` first.** It is the central entry point and
+explains the two study modes (Exam Prep and Topic Drill) and which spec to use.
+
+Three generation/build tools are available. Pass the appropriate one to the
+agent depending on the task.
 
 ---
 
@@ -8,9 +12,28 @@ Two tools are available. Pass the appropriate one to the agent depending on the 
 
 **File:** `.kiro/specs/generate_exam_questions.md`
 
-**Purpose:** Generate a 20-question certification practice test as valid JSON from source material.
+**Mode:** Exam Prep (`exam`)
 
-**Invoke when:** The user provides documentation, notes, or articles and wants a practice test generated.
+**Purpose:** Generate a 20-question, blueprint-aligned certification practice
+test as valid JSON from source material (docs/links).
+
+**Invoke when:** The user provides documentation and wants a structured,
+exam-weighted practice test organized by domain/task.
+
+---
+
+## `generate_topic_drill`
+
+**File:** `.kiro/specs/generate_topic_drill.md`
+
+**Mode:** Topic Drill (`drill`)
+
+**Purpose:** From pasted content, first generate/append a `<content>_concept.md`,
+then generate a 15–20 question quick-fire drill (lean single/multi, max 3
+scenario) as valid JSON.
+
+**Invoke when:** The user pastes content they are actively reading and wants
+rapid-fire questions squeezing every fact out of it.
 
 ---
 
@@ -28,24 +51,34 @@ Two tools are available. Pass the appropriate one to the agent depending on the 
 
 **Root files:** `index.html`, `style.css`, `app.js`, `firebase-init.js`, `manifest.json` (auto-generated)
 
-**Kiro config:** `.kiro/specs/generate_exam_questions.md`, `.kiro/specs/build_exam_interface.md`, `.kiro/steering/skills.md`, `.kiro/steering/cert-companion.md`
+**Kiro config:** `.kiro/steering/router.md` (read first), `.kiro/specs/generate_exam_questions.md`, `.kiro/specs/generate_topic_drill.md`, `.kiro/specs/build_exam_interface.md`, `.kiro/steering/skills.md`, `.kiro/steering/cert-companion.md`
 
 **Docs:** `docs/` — implementation plans, setup guides, verification commands, deployment guide. See `docs/README.md` for index.
 
 **CI:** `.github/scripts/generate_manifest.py` + `.github/workflows/generate-manifest.yml`
 
-**Exam content** follows a consistent nesting pattern:
+**Content** follows a consistent nesting pattern, per mode:
 
 ```
+# Exam Prep (mode: exam)
 <provider>/<certification>/<domain_N>/<task_N>/test_N.json
+
+# Topic Drill (mode: drill)
+<provider>/<certification>/topic_tests/<topic>/<content>/<content>_concept.md
+<provider>/<certification>/topic_tests/<topic>/<content>/test_N.json
 ```
 
-Each directory level has a `_meta.json` for display metadata (label, description, weight). The manifest generator walks this tree automatically — you never edit `manifest.json` by hand.
+Each directory level has a `_meta.json` for display metadata (label,
+description, optional weight, optional `mode` override). The manifest generator
+walks this tree automatically and stamps every node with a resolved `mode`
+(`exam` | `drill`) — the `topic_tests` folder name signals `drill`. You never
+edit `manifest.json` by hand.
 
 To inspect the current structure, run:
 
 ```bash
 find snowflake aws -type f -name "_meta.json" | sort
+find snowflake aws -type f -name "test_*.json" | sort
 ```
 
 ## Firebase Integration
