@@ -1,27 +1,787 @@
 {
-  "label": "Evaluating Foundation Model Performance — Part A",
+  "label": "Evaluating Foundation Model Performance \u2014 Part A",
   "order": 1,
   "topic": "Domain 3: Applications of Foundation Models",
   "questions": [
-    { "id": 1, "type": "single", "domain": "evaluation-challenges", "scenario": null, "stem": "Why is evaluating generative AI models more difficult than traditional ML models?", "options": [{ "key": "A", "text": "The output is non-deterministic, making evaluation more difficult because the same input can produce different outputs" }, { "key": "B", "text": "Generative AI models cannot produce any measurable output" }, { "key": "C", "text": "Traditional ML models never need evaluation" }, { "key": "D", "text": "Generative AI always produces perfect output that needs no evaluation" }], "correct": ["A"], "explanation": { "correct": "The output of generative AI models is non-deterministic, which makes evaluation more difficult. Unlike traditional ML where predictions are deterministic and can be directly compared to labels, gen AI evaluation requires task-specific metrics.", "distractors": { "B": "Gen AI produces text, images, and other outputs. The challenge is measuring quality, not producing output.", "C": "All ML models need evaluation. Traditional models are simply easier to evaluate with deterministic metrics.", "D": "Gen AI can hallucinate and produce errors. Evaluation is essential, not unnecessary." } } },
-    { "id": 2, "type": "single", "domain": "rouge", "scenario": null, "stem": "What does the ROUGE metric evaluate?", "options": [{ "key": "A", "text": "Automatic summarization quality by evaluating how well generated summaries compare to reference summaries" }, { "key": "B", "text": "Machine translation quality against human translations" }, { "key": "C", "text": "Model inference speed in milliseconds" }, { "key": "D", "text": "The cost efficiency of model deployment" }], "correct": ["A"], "explanation": { "correct": "ROUGE (Recall-Oriented Understudy for Gisting Evaluation) evaluates automatic summarization and machine translation by comparing how well the generated output matches reference text.", "distractors": { "B": "Translation quality evaluation is BLEU's primary purpose. ROUGE focuses on summarization tasks.", "C": "Inference speed is a latency metric, not a text quality evaluation metric.", "D": "Cost is a business metric. ROUGE measures text generation quality." } } },
-    { "id": 3, "type": "single", "domain": "bleu", "scenario": null, "stem": "What does the BLEU metric evaluate?", "options": [{ "key": "A", "text": "The quality of machine-translated text by comparing it to human-generated translations" }, { "key": "B", "text": "The quality of text summaries against reference summaries" }, { "key": "C", "text": "Model training speed" }, { "key": "D", "text": "GPU memory utilization during inference" }], "correct": ["A"], "explanation": { "correct": "BLEU (Bilingual Evaluation Understudy) evaluates the quality of machine-translated text by comparing it against human-generated translations from one natural language to another.", "distractors": { "B": "Summarization evaluation is ROUGE's primary task. BLEU specifically handles translation quality.", "C": "Training speed is an operational metric, not a text quality measurement.", "D": "GPU memory is a hardware metric unrelated to translation quality evaluation." } } },
-    { "id": 4, "type": "single", "domain": "model-optimization", "scenario": null, "stem": "What is the tradeoff when reducing model size to improve inference latency?", "options": [{ "key": "A", "text": "Smaller models load more quickly and reduce latency, but may decrease model performance and accuracy" }, { "key": "B", "text": "Smaller models are always more accurate because they focus on essential features" }, { "key": "C", "text": "Reducing model size has no effect on latency or performance" }, { "key": "D", "text": "Smaller models require more compute resources to run" }], "correct": ["A"], "explanation": { "correct": "Reducing model size improves inference latency (smaller model loads more quickly) but may decrease performance. This is a key tradeoff — you may trade model accuracy for speed or lower storage requirements.", "distractors": { "B": "Smaller models generally have lower accuracy because they have fewer parameters to capture patterns.", "C": "Size directly affects both latency (faster loading) and performance (fewer parameters). There is always an effect.", "D": "Smaller models require less compute. That's the reason for optimization — to reduce resource requirements." } } },
-    { "id": 5, "type": "single", "domain": "bertscore", "scenario": null, "stem": "What does BERTScore evaluate in Amazon Bedrock?", "options": [{ "key": "A", "text": "Semantic similarity between generated responses and human references — suitable for evaluating faithfulness and hallucinations in text generation" }, { "key": "B", "text": "The number of parameters in the model" }, { "key": "C", "text": "The cost of each API call" }, { "key": "D", "text": "Network latency between the model and the user" }], "correct": ["A"], "explanation": { "correct": "Amazon Bedrock's evaluation module uses BERTScore to automatically compare generated responses against human references by calculating semantic similarity. It's suitable for evaluating faithfulness and detecting hallucinations.", "distractors": { "B": "Parameter count is a model characteristic. BERTScore measures output quality against references.", "C": "API cost is a billing metric. BERTScore evaluates text quality.", "D": "Latency is a performance metric. BERTScore measures semantic similarity of generated content." } } },
-    { "id": 6, "type": "multi", "domain": "benchmarks", "scenario": null, "stem": "Which are established benchmarks for evaluating LLM performance? (Select THREE)", "options": [{ "key": "A", "text": "GLUE — General Language Understanding Evaluation with tasks like sentiment analysis and question answering" }, { "key": "B", "text": "MMLU — Massive Multitask Language Understanding testing world knowledge across history, math, law, and more" }, { "key": "C", "text": "HELM — Holistic Evaluation of Language Models combining metrics for summarization, Q&A, sentiment, and bias" }, { "key": "D", "text": "GPU-BENCH — measuring graphics card performance" }, { "key": "E", "text": "COST-EVAL — measuring deployment expenses" }, { "key": "F", "text": "SPEED-TEST — measuring network bandwidth" }], "correct": ["A", "B", "C"], "explanation": { "correct": "GLUE (language understanding tasks), MMLU (world knowledge across domains), and HELM (holistic metrics for multiple tasks) are established LLM benchmarks. Others include SuperGLUE and BIG-bench.", "distractors": { "D": "GPU-BENCH is not a real LLM benchmark. Hardware benchmarks are separate from model quality evaluation.", "E": "COST-EVAL is not a recognized benchmark. Cost is a business metric, not a model quality benchmark.", "F": "SPEED-TEST is not an LLM benchmark. Network speed is infrastructure, not model quality." } } },
-    { "id": 7, "type": "multi", "domain": "optimization-techniques", "scenario": null, "stem": "Which techniques can optimize LLM performance for deployment? (Select THREE)", "options": [{ "key": "A", "text": "Reducing model size to decrease inference latency" }, { "key": "B", "text": "Making prompts more concise" }, { "key": "C", "text": "Reducing the size and number of retrieved snippets in RAG" }, { "key": "D", "text": "Always using the largest model available regardless of requirements" }, { "key": "E", "text": "Increasing model parameters until latency is eliminated" }, { "key": "F", "text": "Removing all inference parameters to simplify output" }], "correct": ["A", "B", "C"], "explanation": { "correct": "Optimization techniques include reducing model size (faster loading), making concise prompts (less processing), and reducing retrieved snippet size/number in RAG. All may trade some accuracy for performance.", "distractors": { "D": "The largest model has highest latency. Optimization means finding the right size for your requirements.", "E": "More parameters increase latency. You cannot eliminate latency by adding parameters.", "F": "Inference parameters control output quality. Removing them doesn't optimize — it removes control." } } },
-    { "id": 8, "type": "multi", "domain": "rag-benefits", "scenario": null, "stem": "How does RAG help improve foundation model performance in applications? (Select THREE)", "options": [{ "key": "A", "text": "Overcomes outdated knowledge by providing access to current external data at inference time" }, { "key": "B", "text": "Helps avoid hallucinations by grounding responses in retrieved factual context" }, { "key": "C", "text": "Improves relevance and accuracy of completions without retraining the model" }, { "key": "D", "text": "Eliminates the need for any evaluation of model outputs" }, { "key": "E", "text": "Automatically fixes complex math errors in all cases" }, { "key": "F", "text": "Replaces the need for any model at all" }], "correct": ["A", "B", "C"], "explanation": { "correct": "RAG overcomes outdated knowledge (accesses current data), avoids hallucinations (grounds responses in facts), and improves accuracy without retraining (adds context at inference). It avoids costly re-training.", "distractors": { "D": "RAG improves quality but evaluation is still needed to verify outputs meet objectives.", "E": "Models still struggle with complex math. RAG helps with factual grounding but doesn't solve all math errors.", "F": "RAG augments a model, not replaces it. The model still generates responses using retrieved context." } } },
-    { "id": 9, "type": "multi", "domain": "deployment-questions", "scenario": null, "stem": "What questions should be asked when considering how your LLM will function in deployment? (Select THREE)", "options": [{ "key": "A", "text": "How fast does the model need to generate completions?" }, { "key": "B", "text": "What compute budget is available?" }, { "key": "C", "text": "Are you willing to trade model performance for improved inference speed or lower storage?" }, { "key": "D", "text": "What color should the application interface be?" }, { "key": "E", "text": "How many office buildings does the company have?" }, { "key": "F", "text": "What programming language does the CEO prefer?" }], "correct": ["A", "B", "C"], "explanation": { "correct": "Key deployment questions: completion speed requirements, compute budget availability, and willingness to trade performance for speed/storage. These determine optimization strategies and infrastructure choices.", "distractors": { "D": "Interface design is UX work, not model deployment planning.", "E": "Physical office count is irrelevant to model deployment decisions.", "F": "CEO language preference doesn't affect model infrastructure choices." } } },
-    { "id": 10, "type": "multi", "domain": "application-stack", "scenario": null, "stem": "What are key components of the application stack for deploying generative AI? (Select THREE)", "options": [{ "key": "A", "text": "Infrastructure layer — compute, storage, and network to serve LLMs and host application components" }, { "key": "B", "text": "Model layer — choosing LLMs and appropriate infrastructure for inference needs" }, { "key": "C", "text": "User interface layer — website or REST API through which the application is consumed" }, { "key": "D", "text": "Marketing layer — promoting the application to users" }, { "key": "E", "text": "Legal layer — filing patents for each API endpoint" }, { "key": "F", "text": "Physical layer — building new data centers for each model" }], "correct": ["A", "B", "C"], "explanation": { "correct": "The application stack includes: infrastructure (compute/storage/network), model layer (LLM selection + inference infrastructure), and user interface (website/REST API). Security applies across all layers.", "distractors": { "D": "Marketing is a business function, not a component of the technical application stack.", "E": "Patent filing is legal, not a deployment stack component.", "F": "AWS provides data centers. You don't build new ones for each model deployment." } } },
-    { "id": 11, "type": "single", "domain": "benchmarks", "scenario": "A data science team needs to compare multiple LLMs on tasks that go beyond basic language understanding — including math, biology, physics, and software development.", "stem": "Which benchmark specifically focuses on tasks beyond the capabilities of current language models?", "options": [{ "key": "A", "text": "BIG-bench (Beyond the Imitation Game Benchmark) — contains tasks in math, biology, physics, linguistics, reasoning, and software development" }, { "key": "B", "text": "GLUE — tests basic sentiment analysis and question answering" }, { "key": "C", "text": "BLEU — evaluates translation quality" }, { "key": "D", "text": "ROUGE — evaluates summarization quality" }], "correct": ["A"], "explanation": { "correct": "BIG-bench (Beyond the Imitation Game Benchmark) focuses on tasks beyond current model capabilities including math, biology, physics, bias, linguistics, reasoning, childhood development, and software development.", "distractors": { "B": "GLUE covers standard language understanding tasks. BIG-bench goes beyond these to more challenging domains.", "C": "BLEU is a translation evaluation metric, not a multi-domain capability benchmark.", "D": "ROUGE evaluates summarization. BIG-bench tests across many advanced domains." } } },
-    { "id": 12, "type": "single", "domain": "benchmarks", "scenario": "A company wants to evaluate whether an LLM has extensive world knowledge and problem-solving ability across subjects like history, mathematics, law, and computer science.", "stem": "Which benchmark evaluates knowledge and problem-solving across these diverse academic domains?", "options": [{ "key": "A", "text": "MMLU (Massive Multitask Language Understanding) — tests models on world knowledge across history, math, law, computer science, and more" }, { "key": "B", "text": "HELM — focuses on model transparency" }, { "key": "C", "text": "GLUE — tests basic language understanding" }, { "key": "D", "text": "BERTScore — measures semantic similarity" }], "correct": ["A"], "explanation": { "correct": "MMLU evaluates knowledge and problem-solving capabilities across diverse academic domains. Models must demonstrate extensive world knowledge beyond basic language understanding to perform well.", "distractors": { "B": "HELM improves transparency and guides model selection for tasks. MMLU specifically tests world knowledge breadth.", "C": "GLUE tests standard NLP tasks. MMLU tests broader academic knowledge across many subjects.", "D": "BERTScore measures text similarity. MMLU evaluates factual knowledge across domains." } } },
-    { "id": 13, "type": "single", "domain": "model-optimization", "scenario": "A company deploys an LLM to edge devices with limited memory and strict latency requirements of under 100ms. The full model exceeds memory limits and takes 500ms per completion.", "stem": "What optimization approach addresses both memory and latency constraints?", "options": [{ "key": "A", "text": "Reduce model size — smaller models load more quickly (reducing latency) and consume less memory, though performance may decrease" }, { "key": "B", "text": "Increase model parameters to improve speed" }, { "key": "C", "text": "Add more edge devices to distribute the same large model" }, { "key": "D", "text": "Switch from an LLM to a rule-based system for all tasks" }], "correct": ["A"], "explanation": { "correct": "Reducing model size addresses both constraints: smaller model uses less memory (fits on device) and loads faster (meets latency requirement). The tradeoff is potential performance decrease.", "distractors": { "B": "More parameters means more memory and slower inference. This worsens both constraints.", "C": "The same large model still exceeds memory per device. Distribution doesn't solve per-device memory limits.", "D": "Rule-based systems can't handle LLM tasks. Optimization should maintain model capabilities while meeting constraints." } } },
-    { "id": 14, "type": "single", "domain": "evaluation-aws", "scenario": "A team wants to compare the quality of responses from multiple foundation models available in SageMaker JumpStart. They need automated metrics and also want human workers to assess response quality.", "stem": "Which AWS service can create model evaluation jobs that support both automated metrics and human evaluation?", "options": [{ "key": "A", "text": "Amazon SageMaker Clarify — creates model evaluation jobs to evaluate and compare LLMs from JumpStart, supporting both automated and human evaluation" }, { "key": "B", "text": "Amazon SageMaker Model Monitor — tracks drift in production" }, { "key": "C", "text": "Amazon SageMaker Feature Store — manages training features" }, { "key": "D", "text": "Amazon SageMaker Pipelines — orchestrates workflow steps" }], "correct": ["A"], "explanation": { "correct": "SageMaker Clarify can create model evaluation jobs to evaluate and compare quality metrics for text-based FMs from JumpStart. You can use human workers to compare responses and also specify models outside AWS.", "distractors": { "B": "Model Monitor tracks production drift, not comparative FM evaluation during selection.", "C": "Feature Store manages features for training, not model quality comparison.", "D": "Pipelines orchestrate workflows. Clarify specifically handles model evaluation jobs." } } },
-    { "id": 15, "type": "single", "domain": "business-objectives", "scenario": "A company deploys a generative AI chatbot and wants to determine whether it effectively meets their business objectives of increased productivity and user engagement.", "stem": "What must they define and measure to evaluate business success?", "options": [{ "key": "A", "text": "Define specific business goals, determine metrics for success, and continuously measure, monitor, and review metrics to evaluate performance" }, { "key": "B", "text": "Only measure the model's BLEU score" }, { "key": "C", "text": "Count the number of model parameters as a success metric" }, { "key": "D", "text": "Compare their model size to competitors' models" }], "correct": ["A"], "explanation": { "correct": "You must define business goals (specific problem to solve), determine success metrics (productivity, engagement), provide supporting infrastructure, and continuously measure/monitor/review to evaluate performance.", "distractors": { "B": "BLEU measures translation quality. Business success requires broader metrics like productivity and engagement.", "C": "Parameter count is a model characteristic. Business success is measured by outcomes, not model size.", "D": "Competitor comparison is not a business evaluation metric. Focus on whether your objectives are being met." } } },
-    { "id": 16, "type": "multi", "domain": "rag-deployment", "scenario": "An architect is designing a RAG-based application and needs to understand the integration requirements.", "stem": "What additional considerations does RAG add to model deployment? (Select TWO)", "options": [{ "key": "A", "text": "Requires additional configuration to connect the LLM to external data components" }, { "key": "B", "text": "Needs an orchestration library to manage passing user input to the LLM and returning completions" }, { "key": "C", "text": "Eliminates the need for any infrastructure" }, { "key": "D", "text": "Removes the need for a user interface" }, { "key": "E", "text": "Automatically handles all security without configuration" }], "correct": ["A", "B"], "explanation": { "correct": "RAG requires additional configuration to connect the LLM to external components, plus an orchestration library to manage the flow of user input → retrieval → LLM → completion return.", "distractors": { "C": "RAG adds infrastructure needs (vector databases, retrieval systems), not eliminates them.", "D": "Users still interact through a UI. RAG adds backend retrieval, not removes frontend interfaces.", "E": "Security must be explicitly configured. RAG adds security considerations for external data access." } } },
-    { "id": 17, "type": "multi", "domain": "benchmarks", "scenario": "A research team is reviewing available LLM benchmarks to create a comprehensive evaluation plan.", "stem": "What did SuperGLUE add beyond the original GLUE benchmark? (Select TWO)", "options": [{ "key": "A", "text": "Additional tasks such as multi-sentence reasoning" }, { "key": "B", "text": "Reading comprehension tasks" }, { "key": "C", "text": "Image generation evaluation" }, { "key": "D", "text": "Audio quality scoring" }, { "key": "E", "text": "Video analysis metrics" }], "correct": ["A", "B"], "explanation": { "correct": "SuperGLUE (introduced 2019) adds tasks beyond GLUE including multi-sentence reasoning and reading comprehension. Both GLUE and SuperGLUE have leaderboards for comparing models.", "distractors": { "C": "GLUE/SuperGLUE evaluate language understanding, not image generation.", "D": "Audio evaluation uses different metrics. GLUE/SuperGLUE are text-focused NLP benchmarks.", "E": "Video analysis is separate from language understanding benchmarks." } } },
-    { "id": 18, "type": "multi", "domain": "application-stack", "scenario": "A solutions architect is planning the infrastructure for a generative AI application. They need to consider security, storage, and user access.", "stem": "What security and storage considerations apply to the gen AI application stack? (Select TWO)", "options": [{ "key": "A", "text": "Security must be ensured across the entire AI lifecycle — data preparation, training, and inferencing" }, { "key": "B", "text": "Additional storage may be needed to collect user completions or feedback for fine-tuning and evaluation" }, { "key": "C", "text": "Security is only needed at the user interface layer" }, { "key": "D", "text": "No storage is needed beyond the model weights" }, { "key": "E", "text": "Feedback collection is never useful for improving the model" }], "correct": ["A", "B"], "explanation": { "correct": "Security must span the entire AI lifecycle (prep, training, inference). Additional storage may be needed for collecting user completions/feedback for future fine-tuning, evaluation, or alignment.", "distractors": { "C": "Security applies at every layer, not just UI. Data isolation, model access, and network security all matter.", "D": "Storage is needed for user feedback, completions, RAG data, and monitoring — beyond just model weights.", "E": "User feedback is valuable for additional fine-tuning, alignment, and evaluation as the application matures." } } },
-    { "id": 19, "type": "single", "domain": "helm", "scenario": "A team needs a benchmark that helps with model transparency and provides guidance on which model performs best for specific tasks like summarization, Q&A, and bias detection.", "stem": "Which benchmark provides this holistic evaluation with task-specific guidance?", "options": [{ "key": "A", "text": "HELM (Holistic Evaluation of Language Models) — improves transparency and offers guidance on which model performs well for specific tasks" }, { "key": "B", "text": "MMLU — tests world knowledge across academic subjects" }, { "key": "C", "text": "BIG-bench — focuses on tasks beyond current model capabilities" }, { "key": "D", "text": "BLEU — evaluates translation quality" }], "correct": ["A"], "explanation": { "correct": "HELM (Holistic Evaluation of Language Models) improves model transparency and offers users guidance on which model performs well for specific tasks. It combines metrics for summarization, Q&A, sentiment, and bias.", "distractors": { "B": "MMLU tests knowledge breadth. HELM provides task-specific guidance and transparency across multiple evaluation dimensions.", "C": "BIG-bench tests challenging tasks. HELM provides holistic guidance across standard tasks with transparency focus.", "D": "BLEU is a single translation metric. HELM is a comprehensive benchmark combining multiple evaluation dimensions." } } },
-    { "id": 20, "type": "single", "domain": "human-evaluation", "scenario": "A company wants to supplement automated metrics with human judgment when evaluating their LLM's responses. They need humans to compare outputs from multiple models side-by-side.", "stem": "What approach can be used alongside automated benchmarks for LLM evaluation?", "options": [{ "key": "A", "text": "Use human workers to manually evaluate and compare model responses, including responses from SageMaker JumpStart models and models outside AWS" }, { "key": "B", "text": "Human evaluation is never allowed for LLM assessment" }, { "key": "C", "text": "Only automated metrics should be used because humans are always biased" }, { "key": "D", "text": "Human workers can only evaluate traditional ML models, not LLMs" }], "correct": ["A"], "explanation": { "correct": "You can use human workers to manually evaluate model responses. They can compare responses from SageMaker JumpStart models and also specify responses from models outside AWS for comprehensive evaluation.", "distractors": { "B": "Human evaluation is explicitly supported and recommended as a complement to automated metrics.", "C": "Human evaluation adds nuance that automated metrics miss. Both should be used together.", "D": "Human evaluation applies to LLMs specifically. SageMaker Clarify supports human workers for FM evaluation." } } }
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "evaluation-challenges",
+      "scenario": "A QA team runs the same summarization prompt 5 times against their FM and gets 5 different summaries. All are grammatically correct and factually accurate, but they vary in structure, emphasis, and word choice.",
+      "stem": "What fundamental characteristic of generative AI makes evaluation more difficult than traditional ML?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Generative models are too slow to evaluate at scale"
+        },
+        {
+          "key": "B",
+          "text": "Output is non-deterministic \u2014 the same input can produce multiple valid outputs, making it impossible to compare against a single ground truth"
+        },
+        {
+          "key": "C",
+          "text": "Generative models cannot produce text longer than 100 tokens"
+        },
+        {
+          "key": "D",
+          "text": "Traditional ML models never require evaluation"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Generative AI outputs are non-deterministic \u2014 multiple valid outputs exist for any input. Unlike classification where there's one correct label, summarization has many acceptable variations, requiring task-specific evaluation metrics rather than simple accuracy.",
+        "distractors": {
+          "A": "Speed is an operational concern, not a fundamental evaluation challenge. Evaluation difficulty stems from output variability, not throughput.",
+          "C": "Modern models generate thousands of tokens. The challenge is measuring quality of diverse valid outputs, not output length.",
+          "D": "All ML models require evaluation. Traditional models are simpler to evaluate because predictions can be directly compared to deterministic ground truth."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "rouge",
+      "scenario": "A news organization deploys an FM to summarize articles. They need an automated metric to evaluate how well generated summaries capture the key information from source articles by comparing against human-written reference summaries.",
+      "stem": "Which metric is specifically designed for this summarization evaluation task?",
+      "options": [
+        {
+          "key": "A",
+          "text": "BLEU \u2014 measures precision of n-gram overlap with reference translations"
+        },
+        {
+          "key": "B",
+          "text": "BERTScore \u2014 measures deep semantic similarity using contextual embeddings"
+        },
+        {
+          "key": "C",
+          "text": "ROUGE \u2014 measures recall of n-gram overlap between generated and reference summaries, capturing how much reference content is preserved"
+        },
+        {
+          "key": "D",
+          "text": "Perplexity \u2014 measures how surprised the model is by a sequence of tokens"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "ROUGE (Recall-Oriented Understudy for Gisting Evaluation) evaluates automatic summarization by measuring what proportion of reference summary content appears in the generated summary. Its recall-focus captures information coverage.",
+        "distractors": {
+          "A": "BLEU is precision-focused and designed for translation evaluation. While it uses n-gram overlap, it optimizes for different characteristics than summarization requires.",
+          "B": "BERTScore measures semantic similarity but isn't the established standard for summarization evaluation. ROUGE is the canonical summarization metric.",
+          "D": "Perplexity measures language modeling quality (how well the model predicts text). It doesn't compare generated output against reference summaries."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "bleu",
+      "scenario": "A translation team evaluates their English-to-Japanese model. They compare generated translations against professional human translations to measure how much of the machine translation matches the reference.",
+      "stem": "Which metric is the established standard for evaluating machine translation quality?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ROUGE \u2014 recall-oriented metric for summarization tasks"
+        },
+        {
+          "key": "B",
+          "text": "BLEU \u2014 measures precision of n-gram overlap between machine-generated translations and human reference translations"
+        },
+        {
+          "key": "C",
+          "text": "MMLU \u2014 tests world knowledge across academic domains"
+        },
+        {
+          "key": "D",
+          "text": "HELM \u2014 holistic model evaluation across multiple dimensions"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "BLEU (Bilingual Evaluation Understudy) is the standard metric for machine translation. It measures precision \u2014 what proportion of n-grams in the generated translation also appear in reference human translations.",
+        "distractors": {
+          "A": "ROUGE evaluates summarization with a recall focus. Translation evaluation requires precision-focused metrics like BLEU.",
+          "C": "MMLU is a benchmark for testing knowledge breadth, not a metric for evaluating translation quality.",
+          "D": "HELM evaluates model capabilities holistically across tasks. It's a benchmark framework, not a translation-specific metric."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "bertscore",
+      "scenario": "A team evaluates their RAG-based QA system. They need a metric that captures whether generated answers are semantically faithful to source documents \u2014 even when the model paraphrases rather than copying exact words.",
+      "stem": "Which metric evaluates semantic similarity rather than exact word overlap?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ROUGE-1 \u2014 counts matching unigrams between generated and reference text"
+        },
+        {
+          "key": "B",
+          "text": "Exact match \u2014 checks if generated text is identical to the reference"
+        },
+        {
+          "key": "C",
+          "text": "Word error rate \u2014 counts the number of word-level edits needed to transform one text into another"
+        },
+        {
+          "key": "D",
+          "text": "BERTScore \u2014 uses contextual embeddings to measure semantic similarity, capturing meaning preservation even when wording differs"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "BERTScore computes similarity using contextual embeddings from pre-trained language models. It captures semantic equivalence between paraphrases that share meaning but differ in surface form \u2014 ideal for evaluating faithfulness without requiring exact word matches.",
+        "distractors": {
+          "A": "ROUGE-1 counts matching individual words. It misses semantic similarity when the model paraphrases with different vocabulary.",
+          "B": "Exact match fails when any word differs, even if the meaning is perfectly preserved through paraphrasing.",
+          "C": "Word error rate measures edit distance, penalizing paraphrases that preserve meaning but use different words."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "benchmarks",
+      "scenario": "A company wants to compare multiple LLMs on their ability to answer questions about history, mathematics, law, biology, and computer science \u2014 testing breadth of world knowledge across academic disciplines.",
+      "stem": "Which benchmark specifically evaluates world knowledge across diverse academic domains?",
+      "options": [
+        {
+          "key": "A",
+          "text": "MMLU (Massive Multitask Language Understanding) \u2014 tests knowledge across dozens of academic subjects from STEM to humanities"
+        },
+        {
+          "key": "B",
+          "text": "GLUE \u2014 tests basic language understanding tasks like sentiment and textual entailment"
+        },
+        {
+          "key": "C",
+          "text": "BLEU \u2014 evaluates translation quality against references"
+        },
+        {
+          "key": "D",
+          "text": "BIG-bench \u2014 tests tasks beyond current model capabilities"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "MMLU tests models across dozens of academic subjects including history, math, law, biology, medicine, and computer science. It specifically evaluates breadth of world knowledge and problem-solving across disciplines.",
+        "distractors": {
+          "B": "GLUE tests standard NLP tasks (sentiment, similarity) \u2014 language understanding, not world knowledge across academic fields.",
+          "C": "BLEU is a single metric for translation quality. It doesn't test knowledge breadth across subjects.",
+          "D": "BIG-bench tests challenging capabilities but includes diverse tasks. MMLU is specifically designed for academic world knowledge evaluation."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "benchmarks",
+      "scenario": null,
+      "stem": "Which are established benchmarks for evaluating LLM capabilities? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "GLUE/SuperGLUE \u2014 standard language understanding tasks including reasoning and reading comprehension"
+        },
+        {
+          "key": "B",
+          "text": "HELM \u2014 holistic evaluation combining metrics across summarization, Q&A, sentiment, and bias with task-specific guidance"
+        },
+        {
+          "key": "C",
+          "text": "BIG-bench \u2014 tasks beyond current model capabilities including math, physics, and reasoning"
+        },
+        {
+          "key": "D",
+          "text": "SPEED-INDEX \u2014 measuring model inference throughput per dollar"
+        },
+        {
+          "key": "E",
+          "text": "COST-RANK \u2014 comparing deployment expenses across cloud providers"
+        },
+        {
+          "key": "F",
+          "text": "MEM-SCORE \u2014 measuring GPU memory utilization efficiency"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "GLUE/SuperGLUE evaluates language understanding, HELM provides holistic evaluation with task-specific guidance and transparency, and BIG-bench tests capabilities beyond current model limits. These are recognized research benchmarks.",
+        "distractors": {
+          "D": "No standard benchmark called SPEED-INDEX exists. Throughput is an operational metric measured per deployment, not a capability benchmark.",
+          "E": "COST-RANK is not a real benchmark. Cost comparison is a business decision, not a model capability evaluation.",
+          "F": "MEM-SCORE is not an established benchmark. Memory utilization is an infrastructure metric unrelated to model quality evaluation."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "model-optimization",
+      "scenario": "A team deploys their LLM and finds it exceeds their latency budget. They explore optimization approaches.",
+      "stem": "Which techniques can reduce inference latency? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Reduce model size through quantization or distillation \u2014 smaller models load and process faster"
+        },
+        {
+          "key": "B",
+          "text": "Make prompts more concise \u2014 fewer input tokens means less processing time"
+        },
+        {
+          "key": "C",
+          "text": "Reduce the size and number of retrieved snippets in RAG pipelines \u2014 less context processing per request"
+        },
+        {
+          "key": "D",
+          "text": "Increase model parameters to improve inference speed through parallelism"
+        },
+        {
+          "key": "E",
+          "text": "Add more layers to the model architecture during deployment"
+        },
+        {
+          "key": "F",
+          "text": "Increase temperature to make the model generate tokens faster"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Smaller models process faster (fewer computations), shorter prompts reduce input processing time, and fewer RAG snippets reduce context length. All may trade some quality for improved latency.",
+        "distractors": {
+          "D": "More parameters increase computation per forward pass, increasing latency. Parallelism helps throughput but not per-request latency.",
+          "E": "Adding layers increases computation depth, making inference slower. Architecture changes at deployment time aren't standard practice.",
+          "F": "Temperature affects token selection strategy, not processing speed. It controls randomness, not computational efficiency."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "evaluation-aws",
+      "scenario": "A team needs to evaluate and compare multiple foundation models for their use case using both automated metrics and human judgment.",
+      "stem": "What capabilities does Amazon SageMaker Clarify provide for FM evaluation? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Creates model evaluation jobs to evaluate and compare quality metrics for text-based FMs from JumpStart"
+        },
+        {
+          "key": "B",
+          "text": "Supports human workers to manually evaluate and compare model responses alongside automated metrics"
+        },
+        {
+          "key": "C",
+          "text": "Automatically selects the best model and deploys it to production without human review"
+        },
+        {
+          "key": "D",
+          "text": "Generates synthetic training data to augment fine-tuning datasets"
+        },
+        {
+          "key": "E",
+          "text": "Provides real-time inference endpoints for production traffic"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "SageMaker Clarify creates evaluation jobs for comparing FM quality metrics and supports human workers for manual response comparison \u2014 providing both automated and human evaluation workflows.",
+        "distractors": {
+          "C": "Clarify evaluates and compares but doesn't auto-deploy. Model selection and deployment decisions remain with the team.",
+          "D": "Data generation is a different capability. Clarify focuses on evaluation, not training data creation.",
+          "E": "Inference endpoints are provided by SageMaker Hosting, not Clarify. Clarify is specifically for evaluation and bias analysis."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "business-objectives",
+      "scenario": "A company deploys a generative AI assistant and needs to determine whether it meets their business objectives.",
+      "stem": "What must they establish to evaluate business success of their gen AI deployment? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Define specific business goals the AI should achieve (productivity improvement, user engagement, cost reduction)"
+        },
+        {
+          "key": "B",
+          "text": "Determine measurable metrics that indicate whether goals are being met"
+        },
+        {
+          "key": "C",
+          "text": "Continuously monitor and review metrics to track performance over time"
+        },
+        {
+          "key": "D",
+          "text": "Only measure the model's BLEU score as the sole indicator of business value"
+        },
+        {
+          "key": "E",
+          "text": "Compare model parameter count against competitors as the primary success metric"
+        },
+        {
+          "key": "F",
+          "text": "Count the number of API calls as the only metric regardless of outcome quality"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "Business evaluation requires defined goals (what to achieve), measurable success metrics (how to know if goals are met), and continuous monitoring (tracking over time). Technical metrics alone don't capture business value.",
+        "distractors": {
+          "D": "BLEU measures translation quality \u2014 a technical metric unrelated to business outcomes like productivity or engagement.",
+          "E": "Parameter count is a model characteristic. Business success is measured by outcomes delivered, not model architecture comparisons.",
+          "F": "API call volume measures usage but not value. High usage with poor quality doesn't constitute business success."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "human-evaluation",
+      "scenario": null,
+      "stem": "Why is human evaluation important alongside automated metrics for LLM assessment? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Automated metrics like ROUGE and BLEU capture surface-level features but may miss nuances in quality, helpfulness, and safety that humans can assess"
+        },
+        {
+          "key": "B",
+          "text": "Human evaluators can compare responses from multiple models side-by-side, assessing subjective qualities like tone, clarity, and usefulness"
+        },
+        {
+          "key": "C",
+          "text": "Human evaluation is free and requires no infrastructure"
+        },
+        {
+          "key": "D",
+          "text": "Automated metrics are always wrong and should never be used"
+        },
+        {
+          "key": "E",
+          "text": "Human evaluation eliminates all subjectivity from the assessment process"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Automated metrics capture quantifiable features but miss subjective quality dimensions. Human evaluators assess nuanced qualities (tone, helpfulness, safety) and can compare multiple model outputs holistically.",
+        "distractors": {
+          "C": "Human evaluation requires recruiting, training, and compensating evaluators. It has significant time and cost implications.",
+          "D": "Automated metrics are useful for scalable, reproducible measurement. They complement human evaluation \u2014 neither alone is sufficient.",
+          "E": "Human evaluation introduces subjectivity (different evaluators may disagree). Its value is capturing nuances, not eliminating subjectivity."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "model-optimization",
+      "scenario": "A company deploys their LLM to mobile devices with 4GB RAM and strict 200ms latency requirements. The full model requires 16GB and takes 800ms per completion.",
+      "stem": "What tradeoff must they accept when reducing model size to meet these constraints?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Smaller models always produce identical quality to larger models"
+        },
+        {
+          "key": "B",
+          "text": "Reduced model size decreases memory usage and latency but may decrease accuracy and response quality"
+        },
+        {
+          "key": "C",
+          "text": "Model size reduction only affects storage cost, not inference quality"
+        },
+        {
+          "key": "D",
+          "text": "The only way to meet latency constraints is to switch to a rule-based system"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Reducing model size (through distillation, quantization, or pruning) decreases memory and latency but typically reduces accuracy. This is the fundamental optimization tradeoff \u2014 speed and efficiency vs model performance.",
+        "distractors": {
+          "A": "Smaller models generally have lower quality due to fewer parameters capturing less complex patterns. Quality reduction is the tradeoff.",
+          "C": "Size directly affects inference speed (fewer computations) and quality (fewer parameters). It impacts far more than just storage.",
+          "D": "Model optimization techniques (quantization, distillation) can meet latency constraints while preserving ML capabilities."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "benchmarks",
+      "scenario": "A research team needs a benchmark that provides transparency about model capabilities and offers guidance on which specific model performs best for particular tasks like summarization, Q&A, and sentiment analysis.",
+      "stem": "Which benchmark provides this holistic evaluation with task-specific guidance?",
+      "options": [
+        {
+          "key": "A",
+          "text": "MMLU \u2014 tests factual knowledge across academic domains"
+        },
+        {
+          "key": "B",
+          "text": "BIG-bench \u2014 challenges models with tasks beyond current capabilities"
+        },
+        {
+          "key": "C",
+          "text": "GLUE \u2014 tests basic NLP tasks with a single aggregate score"
+        },
+        {
+          "key": "D",
+          "text": "HELM (Holistic Evaluation of Language Models) \u2014 improves model transparency and provides per-task guidance on model selection"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "HELM evaluates models holistically across multiple dimensions (summarization, Q&A, sentiment, bias) and provides transparency about strengths and weaknesses \u2014 offering guidance on which model performs best for specific tasks.",
+        "distractors": {
+          "A": "MMLU tests knowledge breadth but doesn't provide per-task model selection guidance or holistic transparency across diverse evaluation dimensions.",
+          "B": "BIG-bench focuses on challenging frontier tasks. It doesn't provide the per-task guidance for practical model selection that HELM offers.",
+          "C": "GLUE tests standard NLP tasks but produces aggregate scores rather than the detailed per-task transparency and guidance HELM provides."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "evaluation-challenges",
+      "scenario": "A team evaluates two LLMs for their customer support chatbot. Model A scores higher on ROUGE and BLEU but users consistently prefer Model B's responses in A/B tests, rating them as more helpful and natural.",
+      "stem": "What does this discrepancy reveal about LLM evaluation?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The automated metrics must be calculated incorrectly since users always agree with metrics"
+        },
+        {
+          "key": "B",
+          "text": "User preferences are unreliable and should be ignored in favor of automated metrics"
+        },
+        {
+          "key": "C",
+          "text": "Model B must have been fine-tuned while Model A was not, explaining the preference gap"
+        },
+        {
+          "key": "D",
+          "text": "Automated metrics capture surface-level text features but may not align with human perception of quality, helpfulness, and naturalness \u2014 both evaluation types provide complementary insights"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Automated metrics measure quantifiable text properties (n-gram overlap, similarity scores) but don't capture subjective qualities humans value (helpfulness, naturalness, tone). The discrepancy shows both metrics and human evaluation are needed for comprehensive assessment.",
+        "distractors": {
+          "A": "Metrics and human preferences can legitimately diverge because they measure different aspects of quality.",
+          "B": "User preferences are the ultimate measure of product quality for customer-facing applications. Dismissing them ignores real-world value.",
+          "C": "Training approach is speculative. The point is that metrics and human judgment measure different quality dimensions regardless of how models were built."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "rouge",
+      "scenario": null,
+      "stem": "ROUGE-L measures the longest common subsequence between generated and reference text. A summary that restructures sentences while preserving all key information would score differently on ROUGE-1 vs ROUGE-L. Why?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ROUGE-1 counts individual word overlap regardless of order; ROUGE-L captures sequential structure \u2014 restructured text preserves words (high ROUGE-1) but changes their sequence (potentially lower ROUGE-L)"
+        },
+        {
+          "key": "B",
+          "text": "ROUGE-1 and ROUGE-L always produce identical scores for any text"
+        },
+        {
+          "key": "C",
+          "text": "ROUGE-L only works for translations, not summaries"
+        },
+        {
+          "key": "D",
+          "text": "ROUGE-1 measures semantic meaning while ROUGE-L measures grammar"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "ROUGE-1 counts unigram overlap (order-independent) while ROUGE-L finds the longest common subsequence (order-sensitive). Restructured text with the same words but different order can score high on ROUGE-1 but lower on ROUGE-L.",
+        "distractors": {
+          "B": "They measure different properties and routinely produce different scores. Order-sensitive and order-independent metrics capture different aspects.",
+          "C": "ROUGE-L works for any text comparison task, including summarization. It measures sequential similarity regardless of the generation task.",
+          "D": "Neither measures semantic meaning directly. ROUGE-1 counts word overlap; ROUGE-L measures subsequence alignment. Both are surface-level metrics."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "application-stack",
+      "scenario": "An architect designs the deployment stack for a generative AI application. They need to plan infrastructure, model selection, user interface, and security.",
+      "stem": "Which layer of the gen AI application stack determines what LLMs to use and how inference will be served?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The infrastructure layer \u2014 compute, storage, and networking"
+        },
+        {
+          "key": "B",
+          "text": "The user interface layer \u2014 how end users interact with the application"
+        },
+        {
+          "key": "C",
+          "text": "The security layer \u2014 authentication and access control"
+        },
+        {
+          "key": "D",
+          "text": "The model layer \u2014 choosing LLMs and configuring appropriate infrastructure for inference requirements"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The model layer determines which foundation models to use and ensures appropriate infrastructure for their inference requirements (GPU types, memory, throughput). It bridges between infrastructure capabilities and application needs.",
+        "distractors": {
+          "A": "Infrastructure provides the compute/storage/network resources. The model layer makes decisions about which models to deploy on that infrastructure.",
+          "B": "The UI layer handles user interaction. Model selection and inference configuration are backend decisions in the model layer.",
+          "C": "Security spans all layers. Model selection is a technical capability decision, not a security concern (though security applies to it)."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "application-stack",
+      "scenario": "A solutions architect plans the complete gen AI application stack for an enterprise deployment.",
+      "stem": "What are key components of the generative AI application stack? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Infrastructure layer \u2014 compute, storage, and network to serve LLMs and host application components"
+        },
+        {
+          "key": "B",
+          "text": "Model layer \u2014 selection of LLMs and appropriate inference infrastructure to meet performance requirements"
+        },
+        {
+          "key": "C",
+          "text": "User interface layer \u2014 website or REST API through which the application is consumed by end users"
+        },
+        {
+          "key": "D",
+          "text": "Marketing layer \u2014 social media campaigns to promote the AI features"
+        },
+        {
+          "key": "E",
+          "text": "Legal layer \u2014 patent filing for each model interaction pattern"
+        },
+        {
+          "key": "F",
+          "text": "Hardware layer \u2014 designing custom silicon for each application"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The gen AI stack comprises infrastructure (compute/storage/network), model layer (LLM selection + inference infrastructure), and UI layer (website/API). Security spans all layers.",
+        "distractors": {
+          "D": "Marketing is a business function, not a component of the technical application stack architecture.",
+          "E": "Patent filing is a legal/IP activity unrelated to the technical deployment architecture.",
+          "F": "Custom silicon design is chip engineering. Gen AI applications use existing compute services, not custom hardware per application."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "evaluation-aws",
+      "scenario": "A team uses Amazon Bedrock to evaluate their foundation model's outputs.",
+      "stem": "Which evaluation capabilities does Amazon Bedrock provide? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Automated evaluation using metrics like BERTScore to measure semantic similarity between generated responses and human references"
+        },
+        {
+          "key": "B",
+          "text": "Model evaluation jobs that compare multiple models available in Bedrock's catalog"
+        },
+        {
+          "key": "C",
+          "text": "Automatic correction of all hallucinated content without human review"
+        },
+        {
+          "key": "D",
+          "text": "Guaranteed elimination of all bias in model outputs"
+        },
+        {
+          "key": "E",
+          "text": "Real-time retraining triggered by low evaluation scores"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Bedrock supports automated evaluation metrics (including BERTScore for semantic similarity and faithfulness) and model comparison jobs. These help teams select the best model for their use case through systematic evaluation.",
+        "distractors": {
+          "C": "Evaluation identifies issues but doesn't automatically fix them. Hallucination detection requires separate mitigation strategies.",
+          "D": "Evaluation can detect bias but cannot guarantee its elimination. Bias mitigation requires deliberate intervention beyond evaluation.",
+          "E": "Evaluation and training are separate processes. Low scores inform decisions but don't trigger automatic retraining."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "model-optimization",
+      "scenario": "A team considers tradeoffs when optimizing their LLM deployment for cost efficiency.",
+      "stem": "Which actions trade model performance for operational efficiency? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Reducing model size through quantization \u2014 lower precision decreases memory and compute but may reduce output quality"
+        },
+        {
+          "key": "B",
+          "text": "Reducing prompt length by removing context \u2014 less processing per request but potentially less informed responses"
+        },
+        {
+          "key": "C",
+          "text": "Adding more GPU instances \u2014 increases cost without reducing performance"
+        },
+        {
+          "key": "D",
+          "text": "Increasing model parameters \u2014 larger models use more resources without efficiency gains"
+        },
+        {
+          "key": "E",
+          "text": "Switching to a newer AWS Region \u2014 automatically improves model quality"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Quantization trades precision (potential quality loss) for efficiency (less memory/compute). Shorter prompts trade context (less informed responses) for speed (faster processing). Both sacrifice some quality for operational gains.",
+        "distractors": {
+          "C": "More GPUs increase cost without trading performance. This is scaling, not optimization through tradeoff.",
+          "D": "Increasing parameters worsens efficiency. Optimization trades in the opposite direction \u2014 reducing resources while accepting some quality loss.",
+          "E": "AWS Region affects latency and data residency but doesn't change model quality or create a performance tradeoff."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "single",
+      "domain": "benchmarks",
+      "scenario": "A team needs a benchmark that tests models on challenging tasks intentionally beyond current capabilities \u2014 including advanced math, scientific reasoning, and software development problems.",
+      "stem": "Which benchmark specifically targets tasks beyond the current frontier of model capabilities?",
+      "options": [
+        {
+          "key": "A",
+          "text": "GLUE \u2014 tests standard NLP tasks like sentiment and textual entailment"
+        },
+        {
+          "key": "B",
+          "text": "MMLU \u2014 tests world knowledge across academic subjects"
+        },
+        {
+          "key": "C",
+          "text": "BIG-bench (Beyond the Imitation Game) \u2014 contains tasks in math, physics, biology, reasoning, and software development that challenge current model limits"
+        },
+        {
+          "key": "D",
+          "text": "ROUGE \u2014 measures summarization quality against references"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "BIG-bench (Beyond the Imitation Game Benchmark) specifically targets tasks beyond current capabilities \u2014 including advanced math, scientific reasoning, bias detection, programming, and logical reasoning designed to push model limits.",
+        "distractors": {
+          "A": "GLUE tests standard language understanding. Its tasks are within current model capabilities, not beyond them.",
+          "B": "MMLU tests knowledge breadth but within established academic content. BIG-bench specifically designs tasks beyond current model limits.",
+          "D": "ROUGE is an evaluation metric for summarization, not a benchmark. It measures quality of generated summaries, not model capability limits."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "business-objectives",
+      "scenario": "A company's gen AI chatbot receives positive technical evaluations (high ROUGE scores, good BERTScore) but the business team reports no measurable improvement in customer satisfaction or support ticket resolution time.",
+      "stem": "What does this indicate about their evaluation approach?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Technical metrics are sufficient and the business team's measurements must be wrong"
+        },
+        {
+          "key": "B",
+          "text": "The chatbot should be retrained until ROUGE scores are even higher"
+        },
+        {
+          "key": "C",
+          "text": "Technical quality metrics don't guarantee business value \u2014 evaluation must include business objective metrics (satisfaction, resolution time) alongside technical metrics"
+        },
+        {
+          "key": "D",
+          "text": "All generative AI deployments fail to deliver business value regardless of technical quality"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Technical quality and business value are different dimensions. High ROUGE/BERTScore means the model generates good text, but business success requires measuring actual impact \u2014 customer satisfaction, resolution time, productivity gains. Both must be evaluated.",
+        "distractors": {
+          "A": "Technical metrics and business outcomes measure different things. Both can be accurate while showing a disconnect between text quality and business impact.",
+          "B": "Higher technical scores won't fix a business value gap. The issue is measuring the wrong thing, not insufficient model quality.",
+          "D": "Many gen AI deployments deliver measurable business value. The issue here is incomplete evaluation, not inherent failure of the technology."
+        }
+      }
+    }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "label": "Model Selection & Design Considerations — Part A",
+  "label": "Model Selection & Design Considerations \u2014 Part A",
   "order": 1,
   "topic": "Domain 3: Applications of Foundation Models",
   "questions": [
@@ -7,21 +7,35 @@
       "id": 1,
       "type": "single",
       "domain": "model-selection-cost",
-      "scenario": null,
-      "stem": "When selecting a pre-trained model, what is the key principle regarding cost and accuracy?",
+      "scenario": "A team is evaluating two models for a product recommendation engine. Model X achieves 98.2% accuracy at $45,000/month in compute. Model Y achieves 97.4% accuracy at $4,500/month. The business requirement specifies a minimum accuracy threshold of 95%.",
+      "stem": "Which factor should be the PRIMARY driver of their model selection decision?",
       "options": [
-        { "key": "A", "text": "Find the balance between training time, cost, and model performance based on requirements" },
-        { "key": "B", "text": "Always select the most accurate model regardless of cost" },
-        { "key": "C", "text": "Always select the cheapest model regardless of accuracy" },
-        { "key": "D", "text": "Cost and accuracy have no relationship in pre-trained model selection" }
+        {
+          "key": "A",
+          "text": "The absolute accuracy difference of 0.8% between the two models"
+        },
+        {
+          "key": "B",
+          "text": "The total number of parameters in each model"
+        },
+        {
+          "key": "C",
+          "text": "Which model was released more recently"
+        },
+        {
+          "key": "D",
+          "text": "Whether the accuracy improvement justifies a 10x increase in operational cost given both exceed the requirement"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "D"
+      ],
       "explanation": {
-        "correct": "You need to find the balance between training time, cost, and model performance. The goal is to architect a scalable, efficient solution that does not reduce performance. A 98% accurate model costing hundreds of thousands may not be better than a 97% model costing a few thousand, depending on requirements.",
+        "correct": "When both models exceed the stated requirement (95%), the decision becomes a cost-performance tradeoff. A 0.8% accuracy gain costing 10x more may not deliver proportional business value, making cost-performance balance the primary factor.",
         "distractors": {
-          "B": "Selecting the most accurate model regardless of cost ignores budget constraints. The answer depends on requirements.",
-          "C": "The cheapest model may not meet accuracy requirements. Balance is the principle.",
-          "D": "Cost and accuracy are directly related — more complex models tend to be more accurate but more expensive."
+          "A": "Absolute accuracy difference alone is insufficient for decision-making without considering what that improvement costs and whether it produces meaningful business impact.",
+          "B": "Parameter count influences inference cost and latency but is not the primary selection criterion when concrete accuracy and cost data are already available.",
+          "C": "Release date does not determine model suitability. Older models may outperform newer ones for specific tasks."
         }
       }
     },
@@ -29,21 +43,35 @@
       "id": 2,
       "type": "single",
       "domain": "model-selection-latency",
-      "scenario": null,
-      "stem": "Why is inference speed an important consideration when selecting a model for real-time applications?",
+      "scenario": "An autonomous drone navigation system requires obstacle detection decisions within 15ms. The engineering team has narrowed candidates to three models with inference times of 8ms, 14ms, and 22ms respectively.",
+      "stem": "Why should the 22ms model be eliminated regardless of its accuracy advantage?",
       "options": [
-        { "key": "A", "text": "Complex models might have longer inference times that cannot meet real-time latency requirements" },
-        { "key": "B", "text": "All pre-trained models have identical inference speeds regardless of complexity" },
-        { "key": "C", "text": "Inference speed only matters for batch processing, not real-time applications" },
-        { "key": "D", "text": "Latency requirements can always be solved by increasing the model's training data" }
+        {
+          "key": "A",
+          "text": "Models with higher accuracy always consume more memory than available on drones"
+        },
+        {
+          "key": "B",
+          "text": "Longer inference times reduce training efficiency for future model updates"
+        },
+        {
+          "key": "C",
+          "text": "The model cannot produce predictions within the latency constraint required for safe real-time operation"
+        },
+        {
+          "key": "D",
+          "text": "Higher-latency models are incompatible with edge deployment hardware"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "C"
+      ],
       "explanation": {
-        "correct": "If an AI application needs real-time results, complex models with longer inference times may not meet latency requirements. Understanding inference speed needs for your use case is critical when selecting a model.",
+        "correct": "When a system requires real-time decisions within a hard latency constraint (15ms), any model exceeding that threshold cannot meet the functional requirement regardless of how accurate it is \u2014 safety demands timely predictions.",
         "distractors": {
-          "B": "Models have very different inference speeds. Complex models with more parameters take longer to process predictions.",
-          "C": "Inference speed is critical for real-time applications (e.g., self-driving vehicles). Batch processing is more tolerant of latency.",
-          "D": "More training data affects model quality, not inference speed. Inference speed is determined by model architecture and complexity."
+          "A": "Memory and accuracy do not have a direct causal relationship. Many accurate models are optimized for constrained environments.",
+          "B": "Training efficiency is unrelated to inference latency constraints. The issue is real-time prediction speed, not future training.",
+          "D": "Latency is not inherently tied to hardware compatibility. A model can be hardware-compatible yet still too slow for the application's timing needs."
         }
       }
     },
@@ -52,20 +80,34 @@
       "type": "single",
       "domain": "model-complexity",
       "scenario": null,
-      "stem": "What is a key challenge that comes with greater model complexity?",
+      "stem": "A model with 175 billion parameters outperforms a 7 billion parameter model on benchmark tests. Which tradeoff is MOST directly introduced by choosing the larger model?",
       "options": [
-        { "key": "A", "text": "Greater complexity can enhance performance but increases costs and makes outputs harder to explain" },
-        { "key": "B", "text": "Greater complexity always reduces model accuracy" },
-        { "key": "C", "text": "Greater complexity eliminates the need for training data" },
-        { "key": "D", "text": "Greater complexity makes models easier to interpret" }
+        {
+          "key": "A",
+          "text": "Reduced training data requirements since larger models generalize from fewer examples"
+        },
+        {
+          "key": "B",
+          "text": "Increased explainability because more parameters capture clearer decision boundaries"
+        },
+        {
+          "key": "C",
+          "text": "Higher computational cost and reduced ability to explain why the model produces specific outputs"
+        },
+        {
+          "key": "D",
+          "text": "Lower risk of bias since more parameters dilute individual data point influence"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "C"
+      ],
       "explanation": {
-        "correct": "Greater complexity may enhance performance and uncover intricate data patterns, but it increases costs and makes model outputs harder to explain. The more complicated the model, the harder it is to explain its decisions.",
+        "correct": "Greater model complexity increases computational requirements (cost, memory, inference time) while simultaneously reducing interpretability \u2014 more parameters make it harder to trace how inputs lead to outputs.",
         "distractors": {
-          "B": "Greater complexity typically increases accuracy, not reduces it. The tradeoff is higher cost and lower explainability.",
-          "C": "Complex models require more data, not less. They have more parameters that need data to train effectively.",
-          "D": "Greater complexity makes models harder to interpret, not easier. Simple models like linear regression are interpretable; complex models are black boxes."
+          "A": "Larger models still benefit from more data. While they may generalize better, they do not eliminate data requirements.",
+          "B": "More parameters create more opaque decision processes, not clearer ones. Interpretability decreases with complexity.",
+          "D": "Parameter count does not reduce bias. Bias originates from training data distributions, not model size."
         }
       }
     },
@@ -73,21 +115,35 @@
       "id": 4,
       "type": "single",
       "domain": "model-interpretability",
-      "scenario": null,
-      "stem": "Why are foundation models often referred to as black boxes?",
+      "scenario": "A financial regulator requires that a bank's loan approval system provide a complete mathematical audit trail showing exactly how each input variable contributed to the approval decision.",
+      "stem": "Which approach satisfies this regulatory requirement?",
       "options": [
-        { "key": "A", "text": "They are extremely complex and not interpretable by design, making it impossible to explain through coefficients and formulas why they make predictions" },
-        { "key": "B", "text": "They are always deployed in dark-colored hardware enclosures" },
-        { "key": "C", "text": "They can only process text data, limiting visibility into their function" },
-        { "key": "D", "text": "They are proprietary and never shared with customers" }
+        {
+          "key": "A",
+          "text": "Deploy a foundation model with SHAP explanations attached to each prediction"
+        },
+        {
+          "key": "B",
+          "text": "Use a logistic regression or decision tree model where coefficients and splits are directly auditable"
+        },
+        {
+          "key": "C",
+          "text": "Fine-tune a large language model on historical loan decisions to learn the approval logic"
+        },
+        {
+          "key": "D",
+          "text": "Use a foundation model and log all attention weights as the audit trail"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "B"
+      ],
       "explanation": {
-        "correct": "Foundation models are extremely complex and not interpretable by design. Unlike simple models where you can explain predictions through coefficients and formulas, foundation models are the opposite of transparent.",
+        "correct": "Logistic regression coefficients and decision tree splits provide exact mathematical relationships between inputs and outputs \u2014 true interpretability where every decision step is traceable through formulas.",
         "distractors": {
-          "B": "The term 'black box' refers to their opaque decision-making process, not physical hardware appearance.",
-          "C": "Foundation models handle multiple modalities (text, images, etc.). The term refers to inability to understand internal reasoning.",
-          "D": "Some foundation models are open source. 'Black box' refers to the complexity of understanding their decision process, not availability."
+          "A": "SHAP provides post-hoc approximations of feature importance, not complete mathematical audit trails. It explains behavior without revealing exact internal mechanics.",
+          "C": "Fine-tuning an LLM would create a black-box system. Learning from historical decisions does not produce auditable mathematical logic.",
+          "D": "Attention weights show where the model focuses but do not constitute a mathematical audit trail of how variable values produce the final decision."
         }
       }
     },
@@ -95,21 +151,35 @@
       "id": 5,
       "type": "single",
       "domain": "model-selection-metrics",
-      "scenario": null,
-      "stem": "Why is accuracy not recommended as the primary metric for evaluating models on imbalanced datasets?",
+      "scenario": "A fraud detection model processes 10,000 transactions daily. Only 15 are typically fraudulent. The model correctly identifies 9,985 legitimate transactions and 10 of the 15 fraudulent ones, reporting 99.5% accuracy.",
+      "stem": "Why is this accuracy figure misleading for evaluating the model's effectiveness?",
       "options": [
-        { "key": "A", "text": "Accuracy can be misleading with imbalanced datasets because a model can achieve high accuracy by always predicting the majority class" },
-        { "key": "B", "text": "Accuracy is only valid for neural networks, not for other model types" },
-        { "key": "C", "text": "Accuracy requires labeled data which is never available for imbalanced datasets" },
-        { "key": "D", "text": "Accuracy cannot be calculated for classification problems" }
+        {
+          "key": "A",
+          "text": "Accuracy should only be calculated on weekly aggregates, not daily transactions"
+        },
+        {
+          "key": "B",
+          "text": "A model predicting every transaction as legitimate would achieve 99.85% accuracy, making the metric unreliable for imbalanced classes"
+        },
+        {
+          "key": "C",
+          "text": "Accuracy cannot be applied to binary classification problems with numerical inputs"
+        },
+        {
+          "key": "D",
+          "text": "The sample size of 10,000 is too small for accuracy to be statistically valid"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "B"
+      ],
       "explanation": {
-        "correct": "Accuracy is not recommended with datasets that are not evenly distributed or imbalanced. A model could achieve high accuracy simply by predicting the majority class, missing the minority class entirely.",
+        "correct": "With 15/10,000 positive cases, a naive model predicting all transactions as legitimate achieves 99.85% accuracy. The actual model's 99.5% accuracy obscures that it missed 5 fraudulent transactions \u2014 precision and recall better capture performance on the minority class.",
         "distractors": {
-          "B": "Accuracy can be calculated for any model type. The issue is its unreliability with imbalanced data, not model architecture.",
-          "C": "Accuracy requires labels, but labeled imbalanced data is common. The issue is the metric's behavior, not data availability.",
-          "D": "Accuracy is a standard classification metric. The concern is its misleading nature with class imbalance."
+          "A": "Aggregation period does not fix the fundamental problem of class imbalance distorting accuracy as a metric.",
+          "C": "Accuracy applies to any classification problem. The issue is class imbalance making it misleading, not input data types.",
+          "D": "10,000 samples is statistically sufficient. The problem is the metric's inability to reflect minority-class performance."
         }
       }
     },
@@ -118,22 +188,44 @@
       "type": "multi",
       "domain": "model-selection-criteria",
       "scenario": null,
-      "stem": "Which are criteria for selecting a pre-trained model? (Select THREE)",
+      "stem": "A team is selecting a pre-trained model for a multilingual customer service application that must handle text and image inputs with sub-second response times. Which criteria are MOST relevant to this selection? (Select THREE)",
       "options": [
-        { "key": "A", "text": "Cost and training time requirements" },
-        { "key": "B", "text": "Latency constraints and inference speed needs" },
-        { "key": "C", "text": "Required modalities and multilingual support" },
-        { "key": "D", "text": "The programming language used by the model's original developers" },
-        { "key": "E", "text": "The geographic location where the model was first published" },
-        { "key": "F", "text": "The number of GitHub stars on the model's repository" }
+        {
+          "key": "A",
+          "text": "Support for the required input modalities and target languages"
+        },
+        {
+          "key": "B",
+          "text": "Inference latency under production load conditions"
+        },
+        {
+          "key": "C",
+          "text": "Licensing terms that permit commercial deployment"
+        },
+        {
+          "key": "D",
+          "text": "Whether the model was trained using PyTorch or TensorFlow"
+        },
+        {
+          "key": "E",
+          "text": "The total size of the model's training dataset in terabytes"
+        },
+        {
+          "key": "F",
+          "text": "The number of research papers citing the model"
+        }
       ],
-      "correct": ["A", "B", "C"],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
       "explanation": {
-        "correct": "Key selection criteria include cost (training time, resources), latency constraints (real-time requirements, inference speed), and modality requirements (text, image, multilingual). Other criteria include model size, complexity, customization needs, and input/output length.",
+        "correct": "Modality and language support determines functional fit, inference latency determines whether sub-second SLAs can be met, and licensing determines whether commercial use is legally permitted \u2014 all are blocking criteria.",
         "distractors": {
-          "D": "The original developers' programming language is not a selection criterion. Compatibility with your framework matters, but not the original development language.",
-          "E": "Publication location is irrelevant to model capability. Performance, cost, and fit are what matter.",
-          "F": "GitHub stars indicate popularity, not suitability for your specific requirements."
+          "D": "The original training framework matters for fine-tuning compatibility but most models can be served through framework-agnostic inference runtimes.",
+          "E": "Training dataset size contributes to model quality but is already reflected in benchmark performance. It is not a direct selection criterion.",
+          "F": "Citation count indicates research impact but does not guarantee the model meets specific latency, modality, or licensing requirements."
         }
       }
     },
@@ -141,23 +233,45 @@
       "id": 7,
       "type": "multi",
       "domain": "model-selection-metrics",
-      "scenario": null,
-      "stem": "Which metrics can be used to evaluate and compare pre-trained models? (Select THREE)",
+      "scenario": "A medical imaging team needs to evaluate models for detecting tumors in X-rays. They need metrics that capture both the model's ability to find actual tumors and its tendency to flag healthy tissue as abnormal.",
+      "stem": "Which metrics directly address both of these evaluation needs? (Select THREE)",
       "options": [
-        { "key": "A", "text": "Precision and recall" },
-        { "key": "B", "text": "F1 score" },
-        { "key": "C", "text": "Mean average precision (MAP)" },
-        { "key": "D", "text": "Number of model parameters" },
-        { "key": "E", "text": "Training data file size in gigabytes" },
-        { "key": "F", "text": "Number of API calls per second" }
+        {
+          "key": "A",
+          "text": "Recall \u2014 measures the proportion of actual tumors correctly identified"
+        },
+        {
+          "key": "B",
+          "text": "Precision \u2014 measures the proportion of flagged cases that are actual tumors"
+        },
+        {
+          "key": "C",
+          "text": "F1 score \u2014 balances precision and recall into a single metric"
+        },
+        {
+          "key": "D",
+          "text": "Perplexity \u2014 measures how well the model predicts the next token"
+        },
+        {
+          "key": "E",
+          "text": "BLEU \u2014 measures translation quality against references"
+        },
+        {
+          "key": "F",
+          "text": "Training loss \u2014 measures how well the model fits its training data"
+        }
       ],
-      "correct": ["A", "B", "C"],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
       "explanation": {
-        "correct": "Standard evaluation metrics include accuracy, precision, recall, F1 score, RMSE, MAP, and MAE. You should consider tradeoffs between metrics and choose the most relevant ones for your task.",
+        "correct": "Recall captures tumor detection rate (sensitivity), precision captures false alarm rate, and F1 balances both. Together they directly address finding tumors (recall) and avoiding false positives (precision).",
         "distractors": {
-          "D": "Parameter count measures model size/complexity, not model quality on a specific task.",
-          "E": "Data file size is a storage characteristic, not a performance metric for evaluating model quality.",
-          "F": "API throughput is an infrastructure metric, not a model quality evaluation metric."
+          "D": "Perplexity evaluates language model fluency, not classification performance on medical imaging tasks.",
+          "E": "BLEU evaluates text translation quality by comparing to reference translations. It is irrelevant to image classification.",
+          "F": "Training loss indicates training convergence but does not directly measure the specific behaviors requested \u2014 it could be low while the model still misses tumors."
         }
       }
     },
@@ -165,23 +279,45 @@
       "id": 8,
       "type": "multi",
       "domain": "model-availability",
-      "scenario": null,
-      "stem": "What should you verify when checking the availability and compatibility of a pre-trained model? (Select THREE)",
+      "scenario": "A healthcare startup is evaluating a pre-trained model from an open-source repository for patient symptom triage. Their CTO asks the engineering lead to verify readiness before integration.",
+      "stem": "Which verifications should the engineering lead perform before adopting this model? (Select THREE)",
       "options": [
-        { "key": "A", "text": "Whether the model is compatible with your framework, language, and environment" },
-        { "key": "B", "text": "Whether the model has a license and documentation" },
-        { "key": "C", "text": "Whether the model has been updated and maintained regularly" },
-        { "key": "D", "text": "Whether the model developer lives in your country" },
-        { "key": "E", "text": "Whether the model was trained on exactly 1 billion parameters" },
-        { "key": "F", "text": "Whether the model's name contains your company's initials" }
+        {
+          "key": "A",
+          "text": "Confirm the license permits commercial use in healthcare applications"
+        },
+        {
+          "key": "B",
+          "text": "Check for documented known issues, limitations, and when the model was last maintained"
+        },
+        {
+          "key": "C",
+          "text": "Verify compatibility with their existing inference framework and deployment environment"
+        },
+        {
+          "key": "D",
+          "text": "Confirm the model has been starred by at least 1,000 GitHub users"
+        },
+        {
+          "key": "E",
+          "text": "Verify the model creators have medical degrees"
+        },
+        {
+          "key": "F",
+          "text": "Check that the model repository has a custom domain name"
+        }
       ],
-      "correct": ["A", "B", "C"],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
       "explanation": {
-        "correct": "You should check framework/language/environment compatibility, license and documentation availability, and whether the model has been regularly updated and maintained with no known unresolved issues.",
+        "correct": "License verification prevents legal risk, documentation of issues/maintenance status reveals reliability, and framework compatibility ensures the model can actually be deployed in their environment.",
         "distractors": {
-          "D": "The developer's location is irrelevant. What matters is compatibility, licensing, and maintenance status.",
-          "E": "Parameter count matters for capability, but there's no requirement for a specific number. You evaluate based on your needs.",
-          "F": "Model naming has no bearing on suitability. Technical compatibility and quality matter."
+          "D": "Stars indicate popularity but not quality, safety, or fitness for regulated healthcare applications.",
+          "E": "Model creators need ML expertise, not medical degrees. Clinical validation is a separate process from model evaluation.",
+          "F": "Repository domain names are cosmetic and have no bearing on model quality or safety."
         }
       }
     },
@@ -190,21 +326,39 @@
       "type": "multi",
       "domain": "model-interpretability",
       "scenario": null,
-      "stem": "Which statements about interpretability and explainability of pre-trained models are correct? (Select TWO)",
+      "stem": "Which statements correctly describe the relationship between interpretability and explainability in machine learning? (Select TWO)",
       "options": [
-        { "key": "A", "text": "Explainability approximates a black box locally with a simpler model that is interpretable" },
-        { "key": "B", "text": "Pre-trained foundation models cannot be transparent by design because they are extremely complex" },
-        { "key": "C", "text": "All neural networks are fully interpretable through their weight matrices" },
-        { "key": "D", "text": "Explainability and interpretability are identical concepts" },
-        { "key": "E", "text": "Only models with fewer than 100 parameters can be explained" }
+        {
+          "key": "A",
+          "text": "Interpretability means understanding the model's internal mechanics through coefficients, weights, or decision rules"
+        },
+        {
+          "key": "B",
+          "text": "Explainability approximates a complex model's behavior locally using a simpler, interpretable surrogate model"
+        },
+        {
+          "key": "C",
+          "text": "Explainability requires full access to the model's source code and training data"
+        },
+        {
+          "key": "D",
+          "text": "Interpretable models always achieve higher accuracy than non-interpretable models"
+        },
+        {
+          "key": "E",
+          "text": "A model can be both fully interpretable and have billions of parameters"
+        }
       ],
-      "correct": ["A", "B"],
+      "correct": [
+        "A",
+        "B"
+      ],
       "explanation": {
-        "correct": "Explainability attempts to explain a black box by approximating it locally with a simpler interpretable model. Foundation models cannot be transparent by design due to extreme complexity — they are the opposite of transparent.",
+        "correct": "Interpretability provides direct understanding of internal mechanics (e.g., linear regression coefficients). Explainability treats the model as a black box and approximates its behavior locally with simpler models \u2014 different approaches to understanding predictions.",
         "distractors": {
-          "C": "Neural networks have billions of parameters making direct interpretation of weights impractical. They are treated as black boxes.",
-          "D": "They are different. Interpretability means understanding inner mechanisms (coefficients, formulas). Explainability describes behavior without knowing exactly how.",
-          "E": "Explainability works regardless of parameter count by treating any model as a black box and observing input-output behavior."
+          "C": "Explainability methods like LIME and SHAP work by observing input-output behavior. They do not require source code or training data access.",
+          "D": "Interpretability and accuracy often have an inverse relationship \u2014 simpler interpretable models typically sacrifice some accuracy.",
+          "E": "Billions of parameters create computational paths too complex for human interpretation. True interpretability requires tractable model structures."
         }
       }
     },
@@ -213,21 +367,39 @@
       "type": "multi",
       "domain": "model-selection-criteria",
       "scenario": null,
-      "stem": "Which additional considerations should be evaluated when selecting a pre-trained model? (Select TWO)",
+      "stem": "Beyond performance metrics, which factors should be evaluated when selecting a pre-trained model for production deployment? (Select TWO)",
       "options": [
-        { "key": "A", "text": "Biases that might be present in the training data" },
-        { "key": "B", "text": "Customization options such as adding new layers, classes, or features" },
-        { "key": "C", "text": "The color scheme of the model's documentation website" },
-        { "key": "D", "text": "Whether the model's name is easy to pronounce" },
-        { "key": "E", "text": "The social media following of the model's creator" }
+        {
+          "key": "A",
+          "text": "Potential biases inherited from the model's training data that could produce unfair outputs"
+        },
+        {
+          "key": "B",
+          "text": "Customization flexibility such as adding task-specific layers or adjusting the output space"
+        },
+        {
+          "key": "C",
+          "text": "The geographic timezone of the model's training compute cluster"
+        },
+        {
+          "key": "D",
+          "text": "Whether the model name follows a consistent naming convention with other company models"
+        },
+        {
+          "key": "E",
+          "text": "The total number of contributors to the model's repository"
+        }
       ],
-      "correct": ["A", "B"],
+      "correct": [
+        "A",
+        "B"
+      ],
       "explanation": {
-        "correct": "Bias in training data is important for mitigating ethical risks. Customization ability (adding layers, classes, features) determines whether you can modify the model to suit your specific task.",
+        "correct": "Training data biases can produce discriminatory outputs in production, creating ethical and legal risk. Customization flexibility determines whether the model can be adapted to specific requirements without starting from scratch.",
         "distractors": {
-          "C": "Documentation appearance is cosmetic and irrelevant to model quality or suitability.",
-          "D": "Model naming has no bearing on technical capabilities or fitness for purpose.",
-          "E": "Social media popularity does not indicate model quality, bias characteristics, or task suitability."
+          "C": "Training location has no impact on model behavior or suitability. Performance and capabilities are what matter.",
+          "D": "Naming conventions are organizational preferences with no impact on model quality or fitness.",
+          "E": "Contributor count indicates community activity but does not directly predict model suitability for a specific production use case."
         }
       }
     },
@@ -235,21 +407,35 @@
       "id": 11,
       "type": "single",
       "domain": "model-selection-cost",
-      "scenario": "A startup with limited computing resources needs to deploy an image classification model for their mobile app. They are choosing between a large state-of-the-art model that achieves 99% accuracy and a smaller model that achieves 96% accuracy but requires 10x less compute.",
-      "stem": "What should guide their decision according to model selection best practices?",
+      "scenario": "A startup with $2,000/month compute budget needs an image classification model for their mobile app. They find a state-of-the-art model achieving 99.1% accuracy requiring $18,000/month in inference costs, and a distilled variant achieving 96.8% at $1,800/month.",
+      "stem": "Which model selection principle applies here?",
       "options": [
-        { "key": "A", "text": "Find the balance between cost, performance, and their resource constraints — the 3% accuracy gain may not justify 10x more compute" },
-        { "key": "B", "text": "Always choose the most accurate model because accuracy is the only metric that matters" },
-        { "key": "C", "text": "Choose the cheaper model without considering accuracy requirements" },
-        { "key": "D", "text": "Deploy both models and let users choose which one they prefer" }
+        {
+          "key": "A",
+          "text": "Always choose the highest-accuracy model and seek additional funding to cover costs"
+        },
+        {
+          "key": "B",
+          "text": "Deploy both models and route traffic based on query complexity"
+        },
+        {
+          "key": "C",
+          "text": "Reject both models and build a custom model from scratch to reduce ongoing costs"
+        },
+        {
+          "key": "D",
+          "text": "Select the distilled variant since it meets accuracy needs within budget constraints, balancing performance against available resources"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "D"
+      ],
       "explanation": {
-        "correct": "The goal is to find the balance between training time, cost, and model performance. With limited computing, the 3% improvement may not justify 10x the compute cost. Requirements determine the right choice.",
+        "correct": "Model selection requires balancing performance against resource constraints. The distilled variant delivers strong accuracy (96.8%) within the budget, demonstrating that the right model fits both technical and financial requirements.",
         "distractors": {
-          "B": "Accuracy is one metric among many. Cost, latency, and resource constraints are equally important for a startup with limited compute.",
-          "C": "Blindly choosing cheaper ignores accuracy requirements. The answer is to balance both factors.",
-          "D": "Deploying both wastes limited resources. The team should make a principled selection based on their constraints."
+          "A": "Ignoring budget constraints is not a viable strategy. Model selection must account for financial sustainability.",
+          "B": "Routing adds infrastructure complexity and the expensive model still exceeds budget. This doesn't solve the constraint.",
+          "C": "Building from scratch requires far more than $2,000/month in development costs and typically produces worse results than leveraging pre-trained models."
         }
       }
     },
@@ -257,21 +443,35 @@
       "id": 12,
       "type": "single",
       "domain": "model-selection-latency",
-      "scenario": "An autonomous vehicle company needs an AI model that makes decisions within milliseconds. Their engineers are evaluating models with varying inference speeds for obstacle detection.",
-      "stem": "Why would a highly complex model with superior accuracy still be rejected for this use case?",
+      "scenario": "A conversational AI team measures their current model at 2.3 seconds per response. User research shows that engagement drops 40% when responses exceed 1.5 seconds. The team considers three optimization paths: model distillation, quantization, or switching to a smaller architecture.",
+      "stem": "What does this scenario illustrate about model selection for interactive applications?",
       "options": [
-        { "key": "A", "text": "Complex models may have longer inference times that cannot meet the millisecond latency requirement for real-time decisions" },
-        { "key": "B", "text": "Complex models cannot process image data from vehicle cameras" },
-        { "key": "C", "text": "Autonomous vehicles only use rule-based systems, not ML models" },
-        { "key": "D", "text": "High accuracy models are prohibited in safety-critical applications" }
+        {
+          "key": "A",
+          "text": "Inference speed requirements are determined by user experience thresholds, not just technical capabilities"
+        },
+        {
+          "key": "B",
+          "text": "All three optimization paths will produce identical latency improvements"
+        },
+        {
+          "key": "C",
+          "text": "User engagement is unrelated to response latency in conversational AI"
+        },
+        {
+          "key": "D",
+          "text": "The only solution is to increase hardware resources rather than change the model"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "A"
+      ],
       "explanation": {
-        "correct": "Some complex models have longer inference times and cannot meet real-time latency requirements. A self-driving vehicle needs instant decisions, so models with slow inference would not meet this requirement regardless of accuracy.",
+        "correct": "Latency requirements emerge from application context \u2014 here, user engagement data defines the acceptable threshold (1.5s). Model selection must satisfy these application-driven constraints, not just optimize for accuracy.",
         "distractors": {
-          "B": "Complex models like CNNs excel at image processing. The issue is speed, not capability.",
-          "C": "Autonomous vehicles use sophisticated ML models. The constraint is that these models must meet inference speed requirements.",
-          "D": "High accuracy is desirable in safety-critical applications. The concern is whether the model can produce predictions fast enough."
+          "B": "Distillation, quantization, and architecture changes produce different latency-accuracy tradeoffs. Each has distinct characteristics.",
+          "C": "The scenario explicitly shows a 40% engagement drop tied to latency. Response speed directly impacts user experience.",
+          "D": "Hardware scaling is one option but not the only one. Model-level optimizations (distillation, quantization, smaller architectures) can also meet latency targets."
         }
       }
     },
@@ -279,21 +479,35 @@
       "id": 13,
       "type": "single",
       "domain": "model-selection-modality",
-      "scenario": "A global customer support platform needs an AI system that handles queries in English, Spanish, Japanese, and Arabic. They also need the system to process both text queries and uploaded images of defective products.",
-      "stem": "Which model selection considerations are most relevant for this multi-modal, multilingual requirement?",
+      "scenario": "A manufacturing company needs AI to analyze defective products using photos from assembly lines, audio recordings of machine vibrations, and maintenance logs written in English, Mandarin, and German.",
+      "stem": "What is the PRIMARY architectural consideration for this use case?",
       "options": [
-        { "key": "A", "text": "Choosing multilingual models trained on relevant languages and selecting models that handle the required modalities (text and image)" },
-        { "key": "B", "text": "Selecting the model with the fastest inference speed regardless of language support" },
-        { "key": "C", "text": "Choosing a model trained exclusively on English and using separate translation services" },
-        { "key": "D", "text": "Selecting the model with the fewest parameters to minimize cost" }
+        {
+          "key": "A",
+          "text": "Selecting a single large language model and converting all inputs to text descriptions"
+        },
+        {
+          "key": "B",
+          "text": "Using separate specialized models for each modality \u2014 one team cannot manage multimodal systems"
+        },
+        {
+          "key": "C",
+          "text": "Prioritizing the text modality since maintenance logs contain the most actionable information"
+        },
+        {
+          "key": "D",
+          "text": "Choosing models that support the required modalities and languages, potentially using ensemble approaches to combine specialized capabilities"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "D"
+      ],
       "explanation": {
-        "correct": "Key considerations include choosing multilingual models trained on relevant languages and models that support the required modalities. Each modality may need specific embeddings, and ensemble methods can combine models for better performance.",
+        "correct": "Multi-modal requirements demand models supporting each needed modality (image, audio, text) with multilingual capability. Ensemble methods can combine specialized models for better performance than forcing a single model to handle everything.",
         "distractors": {
-          "B": "Inference speed matters but is secondary to ensuring the model supports the required languages and modalities.",
-          "C": "A separate translation pipeline adds complexity and latency. Models trained on relevant languages are preferred when available.",
-          "D": "Minimizing parameters may compromise multi-modal and multilingual capabilities. Requirements should guide model size selection."
+          "A": "Converting images and audio to text loses critical information (visual defect patterns, vibration frequencies) that text cannot capture.",
+          "B": "Multi-modal systems are standard practice. The concern is selecting appropriate models for each modality, not avoiding the architecture entirely.",
+          "C": "Arbitrarily prioritizing one modality ignores valuable signals from others. Defect detection may require correlating visual, audio, and text data."
         }
       }
     },
@@ -301,21 +515,35 @@
       "id": 14,
       "type": "single",
       "domain": "model-selection-metrics",
-      "scenario": "A logistics company builds an object detection model to identify packages on a conveyor belt. Their evaluation team debates whether to use accuracy or mean average precision (MAP) as the primary metric.",
-      "stem": "Why would MAP be more appropriate than accuracy for this object detection use case?",
+      "scenario": "A search engine team evaluates their ranking model. They need a metric that captures whether relevant results appear at the top of the search results list, not just whether they appear somewhere.",
+      "stem": "Which metric is most appropriate for evaluating ranked retrieval quality?",
       "options": [
-        { "key": "A", "text": "MAP measures how well the model can locate and classify multiple objects in an image, which directly matches the detection task" },
-        { "key": "B", "text": "MAP is always a better metric than accuracy for all ML tasks" },
-        { "key": "C", "text": "Accuracy cannot be calculated for image-based models" },
-        { "key": "D", "text": "MAP is simpler to compute and requires less labeled data" }
+        {
+          "key": "A",
+          "text": "Accuracy \u2014 the percentage of queries that return at least one correct result"
+        },
+        {
+          "key": "B",
+          "text": "Mean Average Precision (MAP) \u2014 measures precision at each rank position where relevant documents are retrieved"
+        },
+        {
+          "key": "C",
+          "text": "Recall \u2014 the proportion of all relevant documents that appear anywhere in results"
+        },
+        {
+          "key": "D",
+          "text": "F1 score \u2014 the harmonic mean of precision and recall across all results"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "B"
+      ],
       "explanation": {
-        "correct": "For object detection, MAP is more relevant because it measures how well the model can locate and classify multiple objects in an image. You should choose metrics most relevant to your specific task rather than defaulting to accuracy.",
+        "correct": "MAP evaluates precision at each rank position where a relevant result appears, directly measuring whether relevant results are ranked higher. It rewards models that place relevant documents at the top of results.",
         "distractors": {
-          "B": "No single metric is universally best. The choice depends on the task. MAP suits detection; other tasks may need different metrics.",
-          "C": "Accuracy can be calculated for image models. The issue is relevance — for detection tasks, MAP better captures performance.",
-          "D": "MAP is actually more complex to compute than accuracy. Its advantage is task relevance, not simplicity."
+          "A": "Accuracy only measures presence/absence. It doesn't capture whether relevant results appear at position 1 vs position 100.",
+          "C": "Recall measures coverage but is position-agnostic. A system returning all relevant results at the bottom of the page scores well on recall but poorly on ranking quality.",
+          "D": "F1 balances precision and recall without considering rank position. It treats a result at position 1 identically to one at position 50."
         }
       }
     },
@@ -323,21 +551,35 @@
       "id": 15,
       "type": "single",
       "domain": "model-interpretability",
-      "scenario": "A credit union's compliance team requires that their loan approval model produce fully interpretable decisions where auditors can trace exactly how each variable leads to the final decision through mathematical formulas.",
-      "stem": "Given this interpretability requirement, should the team use a foundation model?",
+      "scenario": "A data science team deploys a deep neural network for credit scoring. Regulators ask the team to explain why a specific applicant was denied. The team uses LIME to generate a local explanation showing which features most influenced the denial.",
+      "stem": "What type of understanding does this LIME explanation provide?",
       "options": [
-        { "key": "A", "text": "No — if interpretability is a requirement, pre-trained foundation models might not be the best choice; simpler models like linear regression or decision trees are better" },
-        { "key": "B", "text": "Yes — foundation models are fully interpretable through their attention weights" },
-        { "key": "C", "text": "Yes — all pre-trained models automatically provide mathematical explanations" },
-        { "key": "D", "text": "No — because foundation models cannot process numerical financial data" }
+        {
+          "key": "A",
+          "text": "Full interpretability \u2014 the team now understands exactly how every neuron contributed to the decision"
+        },
+        {
+          "key": "B",
+          "text": "Explainability \u2014 an approximation of the model's behavior for this specific prediction using a simpler surrogate"
+        },
+        {
+          "key": "C",
+          "text": "Transparency \u2014 the model's internal decision process is now fully visible and auditable"
+        },
+        {
+          "key": "D",
+          "text": "Reproducibility \u2014 the same explanation will be generated for every applicant regardless of their features"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "B"
+      ],
       "explanation": {
-        "correct": "If interpretability is a requirement, foundation models might not be the best choice because they are not interpretable by design. Linear regression and decision trees are better for full mathematical transparency.",
+        "correct": "LIME provides explainability by approximating the black-box model locally with a simpler interpretable model. It describes behavior for a specific prediction without revealing the actual internal mechanics.",
         "distractors": {
-          "B": "Foundation models are black boxes. While attention weights exist, they do not provide the mathematical traceability that interpretability requires.",
-          "C": "Pre-trained models do not automatically provide mathematical explanations. They require explainability tools that approximate, not fully interpret.",
-          "D": "Foundation models can process numerical data. The issue is interpretability, not data type capability."
+          "A": "LIME does not expose internal neuron-level mechanics. It builds a local surrogate approximation \u2014 an explanation, not full interpretability.",
+          "C": "The deep neural network remains a black box. LIME provides an external approximation, not transparency into the model's actual decision process.",
+          "D": "LIME generates different explanations for different inputs because it approximates local behavior. Each prediction gets its own local explanation."
         }
       }
     },
@@ -345,22 +587,40 @@
       "id": 16,
       "type": "multi",
       "domain": "model-complexity",
-      "scenario": "A data science team is presenting model architecture options to their CTO. They need to explain the implications of choosing a more complex model with more parameters and layers.",
-      "stem": "What are the consequences of greater model complexity? (Select TWO)",
+      "scenario": "An engineering team presents their CTO with two architecture options: a 7B parameter model and a 70B parameter model. Both are candidates for a customer-facing product.",
+      "stem": "What are direct consequences of choosing the 70B parameter model over the 7B? (Select TWO)",
       "options": [
-        { "key": "A", "text": "Greater complexity may enhance performance and uncover intricate patterns in the data" },
-        { "key": "B", "text": "Greater complexity requires more computational resources and data" },
-        { "key": "C", "text": "Greater complexity eliminates all model bias" },
-        { "key": "D", "text": "Greater complexity always reduces training time" },
-        { "key": "E", "text": "Greater complexity makes the model immune to overfitting" }
+        {
+          "key": "A",
+          "text": "Higher computational cost for both training and inference due to processing more parameters"
+        },
+        {
+          "key": "B",
+          "text": "Reduced ability to explain model decisions to customers or auditors"
+        },
+        {
+          "key": "C",
+          "text": "Guaranteed elimination of hallucinations due to broader knowledge"
+        },
+        {
+          "key": "D",
+          "text": "Automatic compliance with data privacy regulations"
+        },
+        {
+          "key": "E",
+          "text": "Faster inference speed due to more efficient parameter utilization"
+        }
       ],
-      "correct": ["A", "B"],
+      "correct": [
+        "A",
+        "B"
+      ],
       "explanation": {
-        "correct": "More complex models (more parameters, layers, operations) can uncover intricate patterns and enhance performance, but require more computational resources and data. This affects speed, memory, accuracy, and cost.",
+        "correct": "More parameters directly increase computational requirements (more multiplications per forward pass) and reduce interpretability (more complex decision paths that cannot be traced by humans).",
         "distractors": {
-          "C": "Complexity does not eliminate bias. Bias comes from training data, not model architecture.",
-          "D": "Greater complexity increases training time due to more parameters to optimize, not reduces it.",
-          "E": "Complex models are actually more prone to overfitting because they can memorize training data patterns."
+          "C": "Larger models reduce but do not eliminate hallucinations. They can still generate plausible-sounding incorrect content on topics with sparse training data.",
+          "D": "Model size has no relationship to regulatory compliance. Compliance requires specific data handling practices regardless of architecture.",
+          "E": "More parameters generally increase inference time because more computations are required per forward pass. Larger models are slower, not faster."
         }
       }
     },
@@ -368,22 +628,40 @@
       "id": 17,
       "type": "multi",
       "domain": "model-selection-modality",
-      "scenario": "An AI product team is designing a system that processes customer reviews (text), product photos (images), and support call recordings (audio). They're deciding on model architecture.",
-      "stem": "What considerations are important for multi-modal AI systems? (Select TWO)",
+      "scenario": "An AI product team is building a system that must process customer reviews (text), product photos (images), and support call recordings (audio) to generate quality scores.",
+      "stem": "Which architectural considerations apply to this multi-modal system? (Select TWO)",
       "options": [
-        { "key": "A", "text": "Each modality typically has a specific embedding representation" },
-        { "key": "B", "text": "Ensemble methods can combine several models to achieve better performance than a single model" },
-        { "key": "C", "text": "Multi-modal systems can only use a single model for all modalities" },
-        { "key": "D", "text": "Audio data cannot be processed by any machine learning model" },
-        { "key": "E", "text": "All modalities must use identical preprocessing pipelines" }
+        {
+          "key": "A",
+          "text": "Each modality requires a distinct embedding representation to capture its unique information structure"
+        },
+        {
+          "key": "B",
+          "text": "Ensemble methods can combine outputs from modality-specific models to produce better overall predictions than any single model"
+        },
+        {
+          "key": "C",
+          "text": "All modalities must be converted to the same embedding dimensionality before any processing can occur"
+        },
+        {
+          "key": "D",
+          "text": "A single transformer architecture can natively process all modalities without any modality-specific preprocessing"
+        },
+        {
+          "key": "E",
+          "text": "Multi-modal systems require separate inference endpoints that cannot share compute resources"
+        }
       ],
-      "correct": ["A", "B"],
+      "correct": [
+        "A",
+        "B"
+      ],
       "explanation": {
-        "correct": "In multi-modal systems, each modality typically has a specific embedding. Ensemble methods combine several models to achieve better performance than a single model for complex multi-modal tasks.",
+        "correct": "Different modalities encode fundamentally different information types requiring distinct embeddings (text uses token embeddings, images use patch/pixel embeddings, audio uses spectral embeddings). Ensemble approaches leverage specialized models' strengths for superior combined predictions.",
         "distractors": {
-          "C": "Multi-modal systems can use multiple specialized models, not just one. Ensemble approaches combine model strengths.",
-          "D": "Audio can be processed by ML models. Speech recognition, audio classification, and generation are well-established tasks.",
-          "E": "Different modalities require different preprocessing. Text tokenization, image resizing, and audio spectrogram conversion are distinct."
+          "C": "While embeddings may eventually be projected to compatible spaces, they do not need identical dimensionality for processing. Cross-attention and projection layers handle dimension differences.",
+          "D": "Even multi-modal transformers require modality-specific preprocessing (tokenizers for text, patch extraction for images, spectrogram conversion for audio).",
+          "E": "Multi-modal models can share compute infrastructure. Separation is an architectural choice, not a technical requirement."
         }
       }
     },
@@ -391,23 +669,45 @@
       "id": 18,
       "type": "multi",
       "domain": "model-selection-criteria",
-      "scenario": "A healthcare company is evaluating pre-trained models from TensorFlow Hub, Hugging Face, and PyTorch Hub for a patient triage system. Their compliance team has specific requirements before any model can be adopted.",
-      "stem": "What should the compliance team verify before adopting a pre-trained model from these repositories? (Select THREE)",
+      "scenario": "A pharmaceutical company is adopting a pre-trained model from Hugging Face for clinical trial document analysis. Their compliance officer needs verification before approval.",
+      "stem": "What should the compliance officer verify before approving model adoption? (Select THREE)",
       "options": [
-        { "key": "A", "text": "The model has a compatible license for commercial healthcare use" },
-        { "key": "B", "text": "The model has known issues or limitations documented" },
-        { "key": "C", "text": "The model is compatible with their existing framework and environment" },
-        { "key": "D", "text": "The model has more GitHub stars than competing models" },
-        { "key": "E", "text": "The model was created by a company with more than 500 employees" },
-        { "key": "F", "text": "The model's README file uses proper English grammar" }
+        {
+          "key": "A",
+          "text": "The model license explicitly permits use in commercial pharmaceutical applications"
+        },
+        {
+          "key": "B",
+          "text": "Known limitations and failure modes are documented, especially for medical text"
+        },
+        {
+          "key": "C",
+          "text": "The model is compatible with the company's existing ML infrastructure and deployment pipelines"
+        },
+        {
+          "key": "D",
+          "text": "The model has more downloads than alternative models on the platform"
+        },
+        {
+          "key": "E",
+          "text": "The model's training code is written in the same programming language the company primarily uses"
+        },
+        {
+          "key": "F",
+          "text": "The model was trained by a company with pharmaceutical industry experience"
+        }
       ],
-      "correct": ["A", "B", "C"],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
       "explanation": {
-        "correct": "Check license and documentation (especially for regulated healthcare), check for known issues or limitations, and verify compatibility with your framework, language, and environment.",
+        "correct": "License compliance is mandatory for legal use, documented limitations inform risk assessment for regulated domains, and infrastructure compatibility ensures practical deployability. All three are blocking criteria.",
         "distractors": {
-          "D": "GitHub stars indicate popularity, not regulatory compliance or clinical suitability.",
-          "E": "Company size is not a relevant criterion for model adoption. Quality, licensing, and compatibility matter.",
-          "F": "Documentation quality matters, but grammar alone is not a compliance or compatibility criterion."
+          "D": "Download count reflects popularity but not regulatory fitness, safety, or suitability for pharmaceutical applications.",
+          "E": "Training code language is irrelevant to deployment. Models are served through inference runtimes independent of training implementation.",
+          "F": "ML expertise matters more than industry background for model development. Clinical validation is separate from model creation."
         }
       }
     },
@@ -415,21 +715,35 @@
       "id": 19,
       "type": "single",
       "domain": "model-complexity",
-      "scenario": "A machine learning engineer finds that their CNN achieves higher accuracy for image recognition compared to a simpler logistic regression model. Their manager asks why they can't use the simpler model instead.",
-      "stem": "Which statement correctly explains the relationship between model architecture and task suitability?",
+      "scenario": "A machine learning engineer's CNN achieves 94% accuracy on image recognition while a logistic regression model achieves 72% on the same task. When asked to justify the more complex model, the engineer must explain the accuracy gap.",
+      "stem": "What fundamentally explains why the CNN outperforms logistic regression on this task?",
       "options": [
-        { "key": "A", "text": "Different architectures have different strengths — CNNs are more suitable for image recognition while simpler models suit different tasks" },
-        { "key": "B", "text": "All architectures perform equally on all tasks given enough training data" },
-        { "key": "C", "text": "Simpler models always outperform complex ones because they don't overfit" },
-        { "key": "D", "text": "CNNs can only be used for text processing tasks" }
+        {
+          "key": "A",
+          "text": "CNNs exploit spatial hierarchies and local patterns in images through convolutional filters \u2014 structural properties that linear models cannot capture"
+        },
+        {
+          "key": "B",
+          "text": "Logistic regression was not given enough training time to converge on the same patterns"
+        },
+        {
+          "key": "C",
+          "text": "CNNs always outperform all simpler models on every possible task"
+        },
+        {
+          "key": "D",
+          "text": "Logistic regression requires more training data than CNNs to achieve comparable accuracy"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "A"
+      ],
       "explanation": {
-        "correct": "Different architectures have different strengths and are more suitable for different tasks. CNNs suit image recognition, RNNs suit NLP, and simpler architectures may suit tasks requiring interpretability.",
+        "correct": "Different architectures have different strengths. CNNs are designed to detect spatial patterns through hierarchical convolutional filters \u2014 a capability absent from linear models that treat each pixel independently.",
         "distractors": {
-          "B": "Architectures are not equal on all tasks. CNNs exploit spatial patterns in images that logistic regression cannot capture.",
-          "C": "Simpler models don't always outperform. Complex models handle complex patterns better, though with overfitting risk.",
-          "D": "CNNs are specifically designed for image/spatial data processing, not text. RNNs and Transformers are better for text."
+          "B": "Logistic regression converges quickly due to its convex loss function. Additional training time cannot make it capture spatial hierarchies it architecturally cannot represent.",
+          "C": "Simpler models outperform CNNs on tasks where spatial structure is irrelevant (e.g., tabular data with independent features). Architecture suitability depends on the task.",
+          "D": "CNNs typically require more data than logistic regression due to having more parameters. The advantage is architectural suitability, not data efficiency."
         }
       }
     },
@@ -437,21 +751,35 @@
       "id": 20,
       "type": "single",
       "domain": "foundation-models",
-      "scenario": "A product team is debating whether to use a foundation model or a traditional ML model for their new sentiment analysis feature. They need to understand what makes foundation models different.",
-      "stem": "What distinguishes foundation models from traditional machine learning models?",
+      "scenario": "A product team must decide between using a foundation model through Amazon Bedrock or training a task-specific BERT classifier for sentiment analysis on product reviews.",
+      "stem": "What is the key architectural distinction that differentiates foundation models from task-specific models?",
       "options": [
-        { "key": "A", "text": "Foundation models are large, general-purpose models that can perform a wide range of tasks based on input prompts, while traditional ML models perform specific tasks" },
-        { "key": "B", "text": "Foundation models can only handle text while traditional ML handles all data types" },
-        { "key": "C", "text": "Traditional ML models are always more accurate than foundation models" },
-        { "key": "D", "text": "Foundation models require no data for training while traditional models need massive datasets" }
+        {
+          "key": "A",
+          "text": "Foundation models require fine-tuning on labeled data before they can perform any task"
+        },
+        {
+          "key": "B",
+          "text": "Task-specific models are always larger and more capable than foundation models"
+        },
+        {
+          "key": "C",
+          "text": "Foundation models cannot be used for classification tasks like sentiment analysis"
+        },
+        {
+          "key": "D",
+          "text": "Foundation models are general-purpose models that can perform diverse tasks through prompting, while task-specific models are optimized for a single function"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "D"
+      ],
       "explanation": {
-        "correct": "Foundation models are large, general-purpose models trained on massive datasets that can perform a wide range of tasks with high accuracy based on prompts. Traditional ML models perform specific tasks like sentiment analysis, image classification, or forecasting.",
+        "correct": "Foundation models are trained on broad data to perform many tasks via prompts without task-specific training. Task-specific models are optimized for one function, potentially achieving higher accuracy on that task but lacking generalization.",
         "distractors": {
-          "B": "Foundation models handle multiple modalities including text, images, audio, and more. They are not limited to text.",
-          "C": "Foundation models often match or exceed traditional ML on many tasks due to their scale and pre-training.",
-          "D": "Foundation models are trained on massive datasets. Their advantage is that they're pre-trained, so users don't need to train from scratch."
+          "A": "Foundation models can perform tasks through zero-shot or few-shot prompting without any fine-tuning. Fine-tuning is optional for specialization.",
+          "B": "Foundation models are typically much larger than task-specific models. A foundation model like Claude has far more parameters than a fine-tuned BERT classifier.",
+          "C": "Foundation models readily perform classification including sentiment analysis through prompting. They handle the same tasks as specialized models plus many more."
         }
       }
     }

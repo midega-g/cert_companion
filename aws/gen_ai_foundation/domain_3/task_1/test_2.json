@@ -1,5 +1,5 @@
 {
-  "label": "Inference Parameters, RAG & Agents — Part A",
+  "label": "Inference Parameters, RAG & Agents \u2014 Part A",
   "order": 2,
   "topic": "Domain 3: Applications of Foundation Models",
   "questions": [
@@ -7,21 +7,35 @@
       "id": 1,
       "type": "single",
       "domain": "inference-parameters",
-      "scenario": null,
-      "stem": "What is inference in the context of foundation models?",
+      "scenario": "A content marketing team uses Amazon Bedrock to draft blog posts. They notice that outputs always follow identical patterns with predictable word choices. The team wants more variety while keeping responses on-topic.",
+      "stem": "Which parameter adjustment achieves this goal?",
       "options": [
-        { "key": "A", "text": "The process of generating an output from an input provided to the model" },
-        { "key": "B", "text": "The process of training the model on new data" },
-        { "key": "C", "text": "The process of storing embeddings in a vector database" },
-        { "key": "D", "text": "The process of evaluating model bias using Clarify" }
+        {
+          "key": "A",
+          "text": "Decrease the response length to force concise answers"
+        },
+        {
+          "key": "B",
+          "text": "Increase the temperature to broaden the probability distribution over candidate tokens"
+        },
+        {
+          "key": "C",
+          "text": "Add stop sequences to end generation at paragraph boundaries"
+        },
+        {
+          "key": "D",
+          "text": "Switch to a different foundation model in a separate AWS Region"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "B"
+      ],
       "explanation": {
-        "correct": "Inference is the process of generating an output from an input that you provide to the model. It is where you process new data through the model to make predictions.",
+        "correct": "Temperature controls randomness in token selection. Higher temperature flattens the probability distribution, making less probable tokens more likely to be chosen \u2014 producing more varied and creative outputs while keeping the model on the same topic.",
         "distractors": {
-          "B": "Training updates model weights with data. Inference uses the trained model to generate outputs without modifying weights.",
-          "C": "Storing embeddings is a data management step. Inference is specifically about generating predictions from inputs.",
-          "D": "Bias evaluation is a separate analysis process. Inference is the act of producing model outputs from inputs."
+          "A": "Response length limits output size but does not affect variety in word choice or sentence structure.",
+          "C": "Stop sequences control where generation ends, not how diverse the content is within that generation.",
+          "D": "AWS Region affects latency and data residency. It does not change model generation behavior."
         }
       }
     },
@@ -29,21 +43,35 @@
       "id": 2,
       "type": "single",
       "domain": "inference-parameters",
-      "scenario": null,
-      "stem": "Which inference parameters in Amazon Bedrock control randomness and diversity in model responses?",
+      "scenario": "A developer sets temperature=0.9, Top K=250, and Top P=0.95 for a medical symptom checker in Amazon Bedrock. The application sometimes generates plausible-sounding but clinically incorrect recommendations.",
+      "stem": "Which parameter change would MOST reduce the risk of generating incorrect medical information?",
       "options": [
-        { "key": "A", "text": "Temperature, Top K, and Top P" },
-        { "key": "B", "text": "Learning rate, batch size, and epochs" },
-        { "key": "C", "text": "Precision, recall, and F1 score" },
-        { "key": "D", "text": "VPC, subnet, and security group" }
+        {
+          "key": "A",
+          "text": "Increase Top K to 500 to consider more token candidates"
+        },
+        {
+          "key": "B",
+          "text": "Increase temperature to 1.0 to explore the full token space"
+        },
+        {
+          "key": "C",
+          "text": "Lower temperature closer to 0 to make outputs more deterministic and favor highest-probability tokens"
+        },
+        {
+          "key": "D",
+          "text": "Remove all stop sequences to allow longer, more detailed responses"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "C"
+      ],
       "explanation": {
-        "correct": "Amazon Bedrock foundation models support temperature, Top K, and Top P parameters to control randomness and diversity in responses. These are inference parameters that shape the model's output behavior.",
+        "correct": "Lower temperature concentrates probability on the most likely tokens, producing more predictable, consistent outputs. For factual applications like medical advice, deterministic responses reduce the risk of sampling low-probability (potentially incorrect) completions.",
         "distractors": {
-          "B": "Learning rate, batch size, and epochs are training hyperparameters, not inference parameters for controlling response diversity.",
-          "C": "Precision, recall, and F1 are evaluation metrics, not parameters that control model output.",
-          "D": "VPC, subnet, and security group are networking configurations, not inference parameters."
+          "A": "Increasing Top K expands the candidate pool, which increases diversity and randomness \u2014 the opposite of what's needed for factual accuracy.",
+          "B": "Higher temperature increases randomness, making it more likely to generate creative but potentially incorrect content.",
+          "D": "Response length does not affect factual accuracy. Longer responses can still contain incorrect information."
         }
       }
     },
@@ -51,21 +79,35 @@
       "id": 3,
       "type": "single",
       "domain": "rag",
-      "scenario": null,
-      "stem": "What is Retrieval Augmented Generation (RAG)?",
+      "scenario": "A pharmaceutical company's foundation model confidently states that a drug approved 3 months ago has no known interactions with statins. The model was trained 18 months ago, and the drug's interaction profile was only published last quarter.",
+      "stem": "Which technique addresses this type of knowledge gap without retraining?",
       "options": [
-        { "key": "A", "text": "A technique that retrieves information from external data sources to augment the generation of model responses" },
-        { "key": "B", "text": "A method for training models from scratch on retrieved internet data" },
-        { "key": "C", "text": "A type of model architecture that replaces transformers" },
-        { "key": "D", "text": "A technique for compressing model weights to reduce storage costs" }
+        {
+          "key": "A",
+          "text": "Increase Top P to sample from a wider token distribution"
+        },
+        {
+          "key": "B",
+          "text": "Fine-tune the model on the new drug interaction data"
+        },
+        {
+          "key": "C",
+          "text": "Implement RAG to retrieve current drug interaction data from an external knowledge base at inference time"
+        },
+        {
+          "key": "D",
+          "text": "Deploy a larger version of the same foundation model"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "C"
+      ],
       "explanation": {
-        "correct": "RAG is a technique in which retrieval of information from data sources augments the generation of model responses. It enhances language models by retrieving and using external knowledge during the generation process.",
+        "correct": "RAG retrieves information from external data sources at inference time, allowing the model to access knowledge published after its training cutoff. The drug interaction database can be kept current without retraining the model.",
         "distractors": {
-          "B": "RAG retrieves knowledge at inference time, not for training from scratch. The model itself is already trained.",
-          "C": "RAG is a technique used with existing architectures (like transformers), not a replacement architecture.",
-          "D": "RAG retrieves external data to improve responses. Model compression is a separate technique for reducing model size."
+          "A": "Top P controls generation diversity, not knowledge. Wider sampling cannot introduce information the model never learned.",
+          "B": "Fine-tuning would work but requires retraining. RAG provides current knowledge without model modification, which is faster and cheaper for frequently updated data.",
+          "D": "A larger model trained at the same time has the same knowledge cutoff. Size does not add post-training information."
         }
       }
     },
@@ -73,43 +115,71 @@
       "id": 4,
       "type": "single",
       "domain": "vector-databases",
-      "scenario": null,
-      "stem": "What is stored in a vector database?",
+      "scenario": "An e-commerce company processes 50,000 product descriptions through an embedding model and stores the resulting vectors. A customer searches 'comfortable shoes for standing all day' and receives results including orthopedic insoles and anti-fatigue mats \u2014 items never containing the word 'shoes'.",
+      "stem": "What explains how these semantically related but keyword-different results were retrieved?",
       "options": [
-        { "key": "A", "text": "Structured and unstructured data with their vector embeddings — numerical representations of meaning and relationships" },
-        { "key": "B", "text": "Only relational tables with primary and foreign keys" },
-        { "key": "C", "text": "Model training checkpoints and hyperparameters" },
-        { "key": "D", "text": "IAM policies and access control configurations" }
+        {
+          "key": "A",
+          "text": "The vector database performed keyword expansion by adding synonyms to the search query"
+        },
+        {
+          "key": "B",
+          "text": "The embedding model memorized associations between product categories during training"
+        },
+        {
+          "key": "C",
+          "text": "The database returned random results because the exact search terms were not found"
+        },
+        {
+          "key": "D",
+          "text": "Vector embeddings capture semantic meaning, so items addressing foot comfort and standing fatigue have similar vector representations regardless of exact wording"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "D"
+      ],
       "explanation": {
-        "correct": "Vector databases store structured and unstructured data (text, images) with vector embeddings — numerical representations that capture meaning and relationships. They are filled with dense vectors by processing input data through an embedding model.",
+        "correct": "Vector embeddings are numerical representations of meaning and relationships. Products addressing similar concepts (foot comfort, standing fatigue) have nearby vectors in embedding space, enabling retrieval based on semantic similarity rather than keyword overlap.",
         "distractors": {
-          "B": "Relational databases store tables with keys. Vector databases store data as mathematical representations (embeddings).",
-          "C": "Training checkpoints are model artifacts stored in S3. Vector databases store embeddings for retrieval and search.",
-          "D": "IAM policies are stored in AWS IAM, not vector databases. Vector databases store data embeddings."
+          "A": "Vector search operates on mathematical similarity between embeddings, not keyword expansion or synonym matching.",
+          "B": "Embeddings capture general semantic relationships from training, not memorized product-category associations. They generalize to unseen combinations.",
+          "C": "Vector databases always return nearest neighbors by similarity. They never return random results \u2014 even dissimilar content gets a relevance score."
         }
       }
     },
     {
       "id": 5,
       "type": "single",
-      "domain": "rag",
-      "scenario": null,
-      "stem": "How does RAG help solve the problem of hallucination in generative LLMs?",
+      "domain": "agents",
+      "scenario": "A customer asks an AI travel assistant: 'Book me the cheapest flight from Nairobi to London next Friday, then reserve a hotel near Heathrow for two nights.' The system must check flight APIs, compare prices, execute a booking, then search hotel availability and confirm a reservation.",
+      "stem": "Why can't a foundation model alone fulfill this request?",
       "options": [
-        { "key": "A", "text": "By complementing the LLM with an external knowledge base built on a vector database containing verified information" },
-        { "key": "B", "text": "By removing all creative capabilities from the model" },
-        { "key": "C", "text": "By reducing the model's parameter count until hallucinations disappear" },
-        { "key": "D", "text": "By blocking all responses that contain more than 100 words" }
+        {
+          "key": "A",
+          "text": "Foundation models cannot understand multi-step requests in natural language"
+        },
+        {
+          "key": "B",
+          "text": "Foundation models can only process requests in English, not multi-city routing"
+        },
+        {
+          "key": "C",
+          "text": "Foundation models lack the context window to process requests longer than one sentence"
+        },
+        {
+          "key": "D",
+          "text": "Foundation models generate text but cannot execute actions against external systems \u2014 agents are needed to orchestrate API calls and complete real-world tasks"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "D"
+      ],
       "explanation": {
-        "correct": "RAG solves hallucination by complementing generative LLMs with an external knowledge base typically built using a vector database hydrated with verified knowledge articles. The model retrieves factual data rather than generating from potentially incomplete training.",
+        "correct": "Foundation models understand and generate language but cannot complete real-world tasks requiring interaction with external systems. Agents orchestrate between the FM, APIs, and knowledge bases to break down tasks and execute actions.",
         "distractors": {
-          "B": "RAG doesn't remove creativity. It grounds responses in factual data while still leveraging the model's generation capabilities.",
-          "C": "Reducing parameters degrades the model. RAG adds external knowledge rather than reducing model capability.",
-          "D": "Response length has no relationship to factual accuracy. Hallucinations can occur in responses of any length."
+          "A": "Foundation models understand complex multi-step requests well. The limitation is executing actions, not understanding intent.",
+          "B": "Foundation models handle multilingual and multi-entity requests. The limitation is action execution, not language understanding.",
+          "C": "Modern foundation models have large context windows handling thousands of tokens. Request length is not the constraint here."
         }
       }
     },
@@ -117,22 +187,40 @@
       "id": 6,
       "type": "multi",
       "domain": "inference-parameters",
-      "scenario": null,
-      "stem": "Which parameters does Amazon Bedrock support to limit the length of model responses? (Select TWO)",
+      "scenario": "A developer is configuring Amazon Bedrock inference parameters for a customer service chatbot that must provide consistent, factual answers about company policies.",
+      "stem": "Which parameter configurations would make responses MORE deterministic and consistent? (Select TWO)",
       "options": [
-        { "key": "A", "text": "Response length parameter" },
-        { "key": "B", "text": "Stop sequences" },
-        { "key": "C", "text": "Temperature" },
-        { "key": "D", "text": "Top K" },
-        { "key": "E", "text": "Learning rate" }
+        {
+          "key": "A",
+          "text": "Set temperature close to 0 to concentrate probability on the most likely tokens"
+        },
+        {
+          "key": "B",
+          "text": "Set Top K to a low value to restrict the candidate token pool"
+        },
+        {
+          "key": "C",
+          "text": "Set temperature to 1.0 to explore the full probability distribution"
+        },
+        {
+          "key": "D",
+          "text": "Set Top P to 0.99 to include nearly all tokens as candidates"
+        },
+        {
+          "key": "E",
+          "text": "Remove all stop sequences to allow maximum response generation"
+        }
       ],
-      "correct": ["A", "B"],
+      "correct": [
+        "A",
+        "B"
+      ],
       "explanation": {
-        "correct": "Amazon Bedrock supports parameters such as response length, penalties, and stop sequences to limit the length of responses. Response length caps output size while stop sequences halt generation at specified tokens.",
+        "correct": "Low temperature concentrates selection on highest-probability tokens (more deterministic), and low Top K restricts the candidate pool to fewer top tokens. Both reduce randomness and increase response consistency.",
         "distractors": {
-          "C": "Temperature controls randomness/diversity in responses, not their length.",
-          "D": "Top K controls the number of candidate tokens considered during generation, affecting diversity not length.",
-          "E": "Learning rate is a training hyperparameter, not an inference parameter available in Amazon Bedrock."
+          "C": "Temperature 1.0 uses the full probability distribution without dampening, maximizing diversity rather than consistency.",
+          "D": "Top P at 0.99 includes nearly all tokens as candidates, which increases diversity rather than restricting it.",
+          "E": "Stop sequences control response termination, not randomness or consistency of content."
         }
       }
     },
@@ -141,22 +229,44 @@
       "type": "multi",
       "domain": "vector-databases",
       "scenario": null,
-      "stem": "Which AWS services can store embeddings within vector databases? (Select THREE)",
+      "stem": "Which AWS services support vector storage for embedding-based retrieval in AI applications? (Select THREE)",
       "options": [
-        { "key": "A", "text": "Amazon OpenSearch Service" },
-        { "key": "B", "text": "Amazon Aurora" },
-        { "key": "C", "text": "Amazon RDS for PostgreSQL (with pgvector extension)" },
-        { "key": "D", "text": "AWS CloudTrail" },
-        { "key": "E", "text": "AWS IAM" },
-        { "key": "F", "text": "Amazon CloudWatch" }
+        {
+          "key": "A",
+          "text": "Amazon OpenSearch Service"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Aurora with vector extensions"
+        },
+        {
+          "key": "C",
+          "text": "Amazon RDS for PostgreSQL with pgvector"
+        },
+        {
+          "key": "D",
+          "text": "Amazon CloudFront"
+        },
+        {
+          "key": "E",
+          "text": "AWS Step Functions"
+        },
+        {
+          "key": "F",
+          "text": "Amazon EventBridge"
+        }
       ],
-      "correct": ["A", "B", "C"],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
       "explanation": {
-        "correct": "AWS services for vector storage include Amazon OpenSearch Service, Amazon Aurora, and Amazon RDS for PostgreSQL (with pgvector extension). Others include Redis, Amazon Neptune, and Amazon DocumentDB.",
+        "correct": "OpenSearch Service provides native vector search capabilities. Aurora supports vector extensions for similarity search. RDS for PostgreSQL with pgvector enables vector storage and similarity queries within a relational database.",
         "distractors": {
-          "D": "CloudTrail logs API calls for auditing. It does not store vector embeddings.",
-          "E": "IAM manages access permissions. It is not a data storage or vector database service.",
-          "F": "CloudWatch monitors metrics and logs. It does not store vector embeddings."
+          "D": "CloudFront is a content delivery network for caching static assets. It does not store or query vector embeddings.",
+          "E": "Step Functions orchestrates workflows. It does not provide data storage or vector search capabilities.",
+          "F": "EventBridge routes events between services. It is not a storage or search engine for vector data."
         }
       }
     },
@@ -164,22 +274,45 @@
       "id": 8,
       "type": "multi",
       "domain": "rag",
-      "scenario": null,
-      "stem": "What are the two components that RAG combines? (Select TWO)",
+      "scenario": "An architect is designing a RAG pipeline for a financial advisory chatbot. They need to understand the complete data flow from document ingestion to user response.",
+      "stem": "Which steps occur during the retrieval phase of a RAG query? (Select THREE)",
       "options": [
-        { "key": "A", "text": "A retriever component that searches through a knowledge base" },
-        { "key": "B", "text": "A generator component that produces outputs based on retrieved information" },
-        { "key": "C", "text": "A training component that retrains the model on new data" },
-        { "key": "D", "text": "A deployment component that manages endpoint scaling" },
-        { "key": "E", "text": "A monitoring component that tracks model drift" }
+        {
+          "key": "A",
+          "text": "The user query is converted into a vector embedding using the same embedding model that processed the source documents"
+        },
+        {
+          "key": "B",
+          "text": "The query embedding is compared against stored document embeddings using similarity search"
+        },
+        {
+          "key": "C",
+          "text": "Retrieved passages are combined with the original query as context for the LLM to generate a response"
+        },
+        {
+          "key": "D",
+          "text": "The foundation model's weights are updated with the retrieved information"
+        },
+        {
+          "key": "E",
+          "text": "The vector database generates the final user-facing response directly"
+        },
+        {
+          "key": "F",
+          "text": "All documents in the knowledge base are sent to the LLM regardless of relevance"
+        }
       ],
-      "correct": ["A", "B"],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
       "explanation": {
-        "correct": "RAG combines a retriever component (which searches through a knowledge base) and a generator component (which produces outputs based on the retrieved information). This helps the model access up-to-date and domain-specific knowledge.",
+        "correct": "RAG flow: (1) query is embedded using the same model as source documents, (2) the embedding searches the vector DB by similarity, (3) retrieved passages augment the prompt sent to the LLM for generation.",
         "distractors": {
-          "C": "RAG does not retrain the model. It retrieves external knowledge at inference time without modifying model weights.",
-          "D": "Endpoint management is an infrastructure concern separate from RAG's retrieval-generation architecture.",
-          "E": "Model monitoring is a production operations concern, not a component of the RAG architecture."
+          "D": "RAG operates at inference time without modifying model weights. The model remains unchanged throughout the process.",
+          "E": "Vector databases retrieve relevant passages. The LLM generates the final response using retrieved context.",
+          "F": "Only semantically relevant passages are retrieved. Sending all documents would exceed context limits and reduce response quality."
         }
       }
     },
@@ -188,45 +321,85 @@
       "type": "multi",
       "domain": "agents",
       "scenario": null,
-      "stem": "What can Agents for Amazon Bedrock do that foundation models alone cannot? (Select THREE)",
+      "stem": "What capabilities distinguish Agents for Amazon Bedrock from a standalone foundation model invocation? (Select THREE)",
       "options": [
-        { "key": "A", "text": "Automatically break down tasks and generate orchestration logic" },
-        { "key": "B", "text": "Securely connect to databases through APIs to complete real-world tasks" },
-        { "key": "C", "text": "Automatically call APIs to take actions and invoke knowledge bases" },
-        { "key": "D", "text": "Train new foundation models from scratch" },
-        { "key": "E", "text": "Replace the need for any vector database" },
-        { "key": "F", "text": "Physically interact with hardware devices" }
+        {
+          "key": "A",
+          "text": "Automatic task decomposition \u2014 breaking complex requests into orchestrated sub-steps"
+        },
+        {
+          "key": "B",
+          "text": "API action execution \u2014 calling external services to complete real-world tasks"
+        },
+        {
+          "key": "C",
+          "text": "Knowledge base invocation \u2014 retrieving contextual information to inform decisions"
+        },
+        {
+          "key": "D",
+          "text": "Model pre-training \u2014 training new foundation models from scratch"
+        },
+        {
+          "key": "E",
+          "text": "Weight modification \u2014 updating the FM's parameters after each interaction"
+        },
+        {
+          "key": "F",
+          "text": "Hardware provisioning \u2014 automatically scaling GPU instances"
+        }
       ],
-      "correct": ["A", "B", "C"],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
       "explanation": {
-        "correct": "Agents can break down tasks and generate orchestration logic, connect to databases through APIs for real-world task completion, and automatically call APIs to take actions and invoke knowledge bases. Foundation models alone cannot complete real-world tasks like booking flights.",
+        "correct": "Agents automatically decompose tasks into steps (orchestration), execute API calls against external systems (actions), and invoke knowledge bases for contextual information \u2014 capabilities a standalone FM call cannot perform.",
         "distractors": {
-          "D": "Agents orchestrate tasks using existing models. They do not train new models from scratch.",
-          "E": "Agents can invoke knowledge bases (which use vector databases). They complement, not replace, vector databases.",
-          "F": "Agents interact with software APIs and databases, not physical hardware directly."
+          "D": "Agents orchestrate existing models. Pre-training is a separate, resource-intensive process unrelated to agent functionality.",
+          "E": "Agents do not modify model weights. They use the FM as-is while orchestrating external interactions.",
+          "F": "Infrastructure scaling is handled by AWS compute services. Agents orchestrate logic, not hardware."
         }
       }
     },
     {
       "id": 10,
       "type": "multi",
-      "domain": "opensearch",
+      "domain": "rag",
       "scenario": null,
-      "stem": "Which capabilities does Amazon OpenSearch Service provide for AI applications? (Select TWO)",
+      "stem": "Which problems does RAG solve compared to relying solely on a foundation model's training data? (Select TWO)",
       "options": [
-        { "key": "A", "text": "Vector storage and processing for semantic search" },
-        { "key": "B", "text": "Support for retrieval augmented generation (RAG) with LLMs" },
-        { "key": "C", "text": "Foundation model training on custom datasets" },
-        { "key": "D", "text": "Automatic model deployment to production endpoints" },
-        { "key": "E", "text": "IAM policy generation for SageMaker roles" }
+        {
+          "key": "A",
+          "text": "Provides access to information published after the model's training cutoff date"
+        },
+        {
+          "key": "B",
+          "text": "Reduces hallucination by grounding responses in retrieved factual content"
+        },
+        {
+          "key": "C",
+          "text": "Eliminates the need for any foundation model in the response pipeline"
+        },
+        {
+          "key": "D",
+          "text": "Automatically corrects all mathematical reasoning errors in model outputs"
+        },
+        {
+          "key": "E",
+          "text": "Removes the need for inference parameter configuration"
+        }
       ],
-      "correct": ["A", "B"],
+      "correct": [
+        "A",
+        "B"
+      ],
       "explanation": {
-        "correct": "OpenSearch Service provides vector database capabilities for semantic search (using language-based embeddings) and supports RAG with LLMs, recommendation engines, and search media use cases.",
+        "correct": "RAG overcomes knowledge cutoff limitations by retrieving current information at inference time. It also reduces hallucination by providing factual context that grounds the model's generation in verified data.",
         "distractors": {
-          "C": "OpenSearch stores and searches data. Model training is handled by SageMaker or Bedrock.",
-          "D": "Model deployment is managed by SageMaker endpoints or Bedrock, not OpenSearch.",
-          "E": "IAM policy generation is handled by IAM or SageMaker Role Manager, not OpenSearch."
+          "C": "RAG augments a foundation model \u2014 it requires an LLM to generate responses from retrieved context. It does not replace the model.",
+          "D": "RAG provides factual grounding but does not fix reasoning capabilities. Mathematical errors stem from model logic, not missing data.",
+          "E": "Inference parameters still control generation behavior (temperature, length) when using RAG. They serve different purposes."
         }
       }
     },
@@ -234,109 +407,179 @@
       "id": 11,
       "type": "single",
       "domain": "rag",
-      "scenario": "A legal firm wants their AI assistant to answer questions about recent court rulings from the past month. The foundation model was trained over a year ago and does not have this information in its training data.",
-      "stem": "Which approach enables the model to provide accurate answers about recent rulings without retraining?",
+      "scenario": "A law firm implements RAG connecting their FM to a knowledge base of 50,000 case law documents. An attorney queries about a 2024 ruling, but the system returns a response mixing accurate retrieved facts with fabricated case citations that don't exist.",
+      "stem": "What does this behavior indicate about RAG's limitations?",
       "options": [
-        { "key": "A", "text": "Use RAG to retrieve recent court ruling information from a knowledge base and augment the model's responses" },
-        { "key": "B", "text": "Increase the model's temperature parameter to generate more creative responses about recent events" },
-        { "key": "C", "text": "Deploy a larger version of the same model since larger models know more" },
-        { "key": "D", "text": "Reduce the model's Top K parameter to focus on more specific responses" }
+        {
+          "key": "A",
+          "text": "The vector database corrupted the stored embeddings during retrieval"
+        },
+        {
+          "key": "B",
+          "text": "RAG eliminates all hallucination, so the system must have a configuration error"
+        },
+        {
+          "key": "C",
+          "text": "RAG reduces but does not eliminate hallucination \u2014 the LLM can still generate fabricated content alongside retrieved facts"
+        },
+        {
+          "key": "D",
+          "text": "The embedding model used for indexing is incompatible with the retrieval model"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "C"
+      ],
       "explanation": {
-        "correct": "RAG helps the model access up-to-date and domain-specific knowledge beyond its training data. By connecting to a knowledge base with recent court rulings, the model can provide accurate responses without retraining.",
+        "correct": "RAG reduces hallucination by providing factual grounding but does not eliminate it. The LLM may still generate plausible-sounding content beyond what was retrieved, especially when retrieved passages partially address the query.",
         "distractors": {
-          "B": "Temperature controls randomness, not knowledge. Increasing it won't add information the model never learned.",
-          "C": "A larger version of the same model still has the same training data cutoff. It won't know about events after its training.",
-          "D": "Top K limits token candidates for diversity, not factual accuracy. It cannot add new knowledge to the model."
+          "A": "Vector databases reliably store and return embeddings. Corruption would cause retrieval failures, not mixed accurate/fabricated content.",
+          "B": "RAG is not a guarantee against hallucination. It improves factual grounding but the generative model can still produce fabricated content.",
+          "D": "Embedding incompatibility would cause poor retrieval relevance, not fabricated citations mixed with accurate content."
         }
       }
     },
     {
       "id": 12,
       "type": "single",
-      "domain": "vector-databases",
-      "scenario": "A company builds a customer support chatbot using Amazon Bedrock. They want the chatbot to search their product documentation (10,000+ articles) and return semantically relevant answers rather than keyword matches.",
-      "stem": "What enables semantic search over the product documentation?",
+      "domain": "knowledge-bases",
+      "scenario": "An enterprise has internal documents spread across 15 S3 buckets, multiple Confluence wikis, and several SharePoint sites. They want a single RAG interface where their FM can retrieve from all these sources without custom pipeline code.",
+      "stem": "Which AWS capability provides this fully managed multi-source RAG integration?",
       "options": [
-        { "key": "A", "text": "Processing documents through an embedding model and storing the vector embeddings in a vector database for similarity search" },
-        { "key": "B", "text": "Storing all documents as plain text in Amazon S3 and using keyword grep" },
-        { "key": "C", "text": "Training a new foundation model exclusively on the product documentation" },
-        { "key": "D", "text": "Increasing the model's response length parameter to include more document content" }
+        {
+          "key": "A",
+          "text": "Amazon SageMaker Feature Store with scheduled ingestion jobs"
+        },
+        {
+          "key": "B",
+          "text": "Knowledge Bases for Amazon Bedrock with configured data source connectors"
+        },
+        {
+          "key": "C",
+          "text": "AWS Glue crawlers indexing all sources into a unified catalog"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Kendra enterprise search with FAQ documents"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "B"
+      ],
       "explanation": {
-        "correct": "Semantic search uses language-based embeddings. Documents are processed through an embedding model, stored as vectors in a vector database, and searched by semantic similarity rather than keyword matching.",
+        "correct": "Knowledge Bases for Amazon Bedrock provides fully managed RAG, connecting foundation models to company data across multiple sources. It handles embedding generation, vector storage, and retrieval without custom pipeline code.",
         "distractors": {
-          "B": "Keyword grep performs exact text matching, not semantic understanding. It misses relevant results with different wording.",
-          "C": "Training a new model is expensive and unnecessary. RAG with a vector database provides the same benefit without retraining.",
-          "D": "Response length controls output size, not the relevance or accuracy of information retrieved."
+          "A": "Feature Store manages ML training features, not RAG retrieval. It does not connect FMs to document knowledge bases.",
+          "C": "Glue crawlers catalog data schemas for ETL. They do not provide embedding-based retrieval or FM integration.",
+          "D": "Kendra provides enterprise search but is a different service from Knowledge Bases for Bedrock. The question specifies RAG with an FM, which is Bedrock's capability."
         }
       }
     },
     {
       "id": 13,
       "type": "single",
-      "domain": "agents",
-      "scenario": "A travel company wants their AI assistant to not just answer questions about destinations, but actually book flights, reserve hotels, and process payments by interacting with their backend systems.",
-      "stem": "Why are Agents for Amazon Bedrock needed for these tasks rather than a foundation model alone?",
+      "domain": "inference-parameters",
+      "scenario": "A developer tests the same prompt 10 times with temperature=0.0 and gets identical responses each time. They then set temperature=0.8 and get 10 different variations.",
+      "stem": "What mechanism explains this behavior difference?",
       "options": [
-        { "key": "A", "text": "Foundation models can understand queries but cannot complete real-world tasks that require organization-specific data and workflows — agents orchestrate these interactions through APIs" },
-        { "key": "B", "text": "Foundation models cannot understand travel-related questions" },
-        { "key": "C", "text": "Agents replace the foundation model entirely with rule-based logic" },
-        { "key": "D", "text": "Foundation models can book flights directly without any agent middleware" }
+        {
+          "key": "A",
+          "text": "Temperature=0 routes requests to a cached response store instead of the model"
+        },
+        {
+          "key": "B",
+          "text": "At temperature=0 the model always selects the single highest-probability token; at higher temperatures it samples probabilistically from multiple candidates"
+        },
+        {
+          "key": "C",
+          "text": "Temperature=0 uses a smaller version of the model that has fewer possible outputs"
+        },
+        {
+          "key": "D",
+          "text": "Temperature=0.8 causes the model to randomly generate tokens without considering the prompt"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "B"
+      ],
       "explanation": {
-        "correct": "Foundation models understand queries but cannot complete real-world tasks like booking flights because these require organization-specific data and workflows. Agents orchestrate the interactions between user requests, the FM, and external systems through APIs.",
+        "correct": "Temperature scales the logits before softmax. At 0 (or near 0), the highest-probability token is always selected (greedy decoding). At higher values, the distribution flattens, allowing probabilistic sampling from multiple candidates.",
         "distractors": {
-          "B": "Foundation models can understand travel queries perfectly well. The limitation is executing actions, not understanding questions.",
-          "C": "Agents work with foundation models, not replace them. They orchestrate the FM's interaction with external systems.",
-          "D": "Foundation models cannot directly interact with booking systems. They need agents to connect to APIs and execute actions."
+          "A": "There is no cached response store. The model still processes the full forward pass \u2014 it just deterministically selects the top token each time.",
+          "C": "The same model processes both requests. Temperature affects the sampling strategy over the model's output distribution, not the model itself.",
+          "D": "At temperature=0.8, the model still conditions on the prompt. It samples from a broader distribution over relevant tokens, not randomly."
         }
       }
     },
     {
       "id": 14,
       "type": "single",
-      "domain": "inference-parameters",
-      "scenario": "A creative writing platform uses Amazon Bedrock to generate story ideas. Users complain that responses are too repetitive and predictable. The engineering team wants more diverse, creative outputs.",
-      "stem": "Which inference parameter adjustment would increase the diversity and creativity of responses?",
+      "domain": "vector-databases",
+      "scenario": null,
+      "stem": "A RAG system uses embedding model A to index 100,000 documents into a vector database. At query time, the system uses embedding model B (a different architecture) to encode user queries before searching the vector database.",
       "options": [
-        { "key": "A", "text": "Increase the temperature parameter to add more randomness to token selection" },
-        { "key": "B", "text": "Decrease the response length to force shorter, varied answers" },
-        { "key": "C", "text": "Add more stop sequences to terminate responses at different points" },
-        { "key": "D", "text": "Switch to a different AWS Region for the Bedrock endpoint" }
+        {
+          "key": "A",
+          "text": "Results will be poor because different embedding models produce incompatible vector spaces \u2014 the same concept maps to different regions in each model's space"
+        },
+        {
+          "key": "B",
+          "text": "Results will be accurate because vector databases normalize all embeddings to a common format"
+        },
+        {
+          "key": "C",
+          "text": "Results will be faster because using two models distributes the computational load"
+        },
+        {
+          "key": "D",
+          "text": "Results will be identical to using a single model because all embeddings encode the same language"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "A"
+      ],
       "explanation": {
-        "correct": "Temperature controls randomness and diversity in responses. Increasing temperature makes the model more likely to select less probable tokens, producing more creative and varied outputs.",
+        "correct": "Each embedding model learns its own vector space. 'Comfortable shoes' might map to region X in model A but region Y in model B. Similarity search requires queries and documents to share the same embedding space.",
         "distractors": {
-          "B": "Shorter responses don't increase creativity. They just limit output length without affecting diversity of word choice.",
-          "C": "Stop sequences control where responses end, not how creative the content is.",
-          "D": "AWS Region affects latency and data residency, not the creativity or diversity of model outputs."
+          "B": "Vector databases store and search vectors as-is. They do not normalize or translate between different models' embedding spaces.",
+          "C": "Using mismatched models doesn't improve speed \u2014 it produces semantically meaningless similarity scores because the vector spaces are incompatible.",
+          "D": "Different models encode language differently. The vector spaces are not interchangeable even though both process the same language."
         }
       }
     },
     {
       "id": 15,
       "type": "single",
-      "domain": "knowledge-bases",
-      "scenario": "An enterprise wants to build a RAG application using their internal documents stored across multiple S3 buckets. They need a fully managed solution that connects foundation models to their data without retraining the FM.",
-      "stem": "Which AWS service provides fully managed RAG by connecting FMs to company data stored as embeddings?",
+      "domain": "agents",
+      "scenario": "A retail company's Bedrock Agent receives the request: 'Check if the blue sneakers in size 10 are in stock, and if so, add them to my cart and apply my loyalty discount.' The agent must interact with inventory, cart, and loyalty APIs.",
+      "stem": "How does the agent determine the sequence of API calls?",
       "options": [
-        { "key": "A", "text": "Knowledge bases for Amazon Bedrock" },
-        { "key": "B", "text": "Amazon SageMaker Training Jobs" },
-        { "key": "C", "text": "AWS Glue Data Catalog" },
-        { "key": "D", "text": "Amazon CloudWatch Logs" }
+        {
+          "key": "A",
+          "text": "A developer must pre-program every possible action sequence in the agent configuration"
+        },
+        {
+          "key": "B",
+          "text": "The agent randomly calls APIs until it achieves the desired outcome"
+        },
+        {
+          "key": "C",
+          "text": "The agent uses the foundation model to decompose the request into logical steps and generates orchestration logic dynamically"
+        },
+        {
+          "key": "D",
+          "text": "The agent sends the entire request to all APIs simultaneously and merges the responses"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "C"
+      ],
       "explanation": {
-        "correct": "Knowledge bases for Amazon Bedrock provide fully managed RAG, securely connecting foundation models to company data stored as embeddings in a vector engine for relevant, context-specific responses without retraining the FM.",
+        "correct": "Agents for Amazon Bedrock automatically break down tasks and generate orchestration logic using the foundation model. The FM reasons about the task, identifies dependencies (check stock before adding to cart), and determines the correct API sequence.",
         "distractors": {
-          "B": "SageMaker Training Jobs train models. RAG retrieves knowledge at inference time without training.",
-          "C": "Glue Data Catalog stores metadata about data sources. It does not provide RAG or connect FMs to knowledge bases.",
-          "D": "CloudWatch Logs stores monitoring data. It does not provide RAG functionality or connect to foundation models."
+          "A": "Agents dynamically generate orchestration logic rather than requiring pre-programmed sequences for every possible request combination.",
+          "B": "Agents reason about task structure and dependencies. They plan logical sequences, not trial-and-error random calls.",
+          "D": "Agents respect task dependencies (must check stock before adding to cart). They orchestrate sequential and conditional calls based on prior results."
         }
       }
     },
@@ -344,23 +587,40 @@
       "id": 16,
       "type": "multi",
       "domain": "rag",
-      "scenario": "A data engineering team is implementing RAG for their customer support chatbot. They need to understand the full flow from user query to model response.",
-      "stem": "What are the steps in a RAG query flow? (Select THREE)",
+      "scenario": "A company's RAG system retrieves product documentation to answer customer questions. They notice that when users ask vague questions, the retriever returns irrelevant passages and the FM generates unhelpful responses.",
+      "stem": "Which approaches can improve retrieval quality in this RAG pipeline? (Select TWO)",
       "options": [
-        { "key": "A", "text": "The user prompt is encoded into an embedding using the same format as the external data" },
-        { "key": "B", "text": "The embedding is used to search the vector database for similar content" },
-        { "key": "C", "text": "Retrieved data is combined with the original prompt before being sent to the LLM for completion" },
-        { "key": "D", "text": "The model is retrained on the retrieved documents before responding" },
-        { "key": "E", "text": "The vector database replaces the LLM and generates the response directly" },
-        { "key": "F", "text": "All user prompts are stored permanently in the vector database" }
+        {
+          "key": "A",
+          "text": "Chunk source documents into smaller, more focused segments before embedding to improve retrieval precision"
+        },
+        {
+          "key": "B",
+          "text": "Use query expansion or rephrasing to generate more specific search embeddings from vague user input"
+        },
+        {
+          "key": "C",
+          "text": "Increase the FM's temperature to generate more creative responses from irrelevant passages"
+        },
+        {
+          "key": "D",
+          "text": "Remove the retrieval step and rely solely on the FM's training knowledge"
+        },
+        {
+          "key": "E",
+          "text": "Store raw text without embeddings and use keyword search instead"
+        }
       ],
-      "correct": ["A", "B", "C"],
+      "correct": [
+        "A",
+        "B"
+      ],
       "explanation": {
-        "correct": "In RAG: (1) the prompt is encoded/embedded into the same format as external data, (2) the embedding searches the vector database for similar content, (3) retrieved data is combined (augmented) with the original prompt and sent to the LLM for completion.",
+        "correct": "Smaller, focused document chunks produce more precise embeddings (reducing noise from long passages). Query expansion or rephrasing converts vague inputs into more specific search vectors that better match relevant content.",
         "distractors": {
-          "D": "RAG does not retrain the model. It retrieves and augments at inference time without modifying weights.",
-          "E": "The vector database provides retrieval, not generation. The LLM generates the final response using retrieved context.",
-          "F": "User prompts are encoded for search but not necessarily stored permanently in the vector database."
+          "C": "Higher temperature adds randomness to generation but cannot make irrelevant passages become relevant. The retrieval problem must be solved upstream.",
+          "D": "Removing retrieval eliminates the knowledge advantage of RAG. The FM's training data may lack the specific product information needed.",
+          "E": "Keyword search loses semantic understanding. Vector embeddings capture meaning, which is essential for handling varied user phrasings."
         }
       }
     },
@@ -368,22 +628,40 @@
       "id": 17,
       "type": "multi",
       "domain": "vector-databases",
-      "scenario": "An AI architect is designing the data layer for their RAG application. They need to understand what vector databases provide beyond simple storage.",
-      "stem": "What additional capabilities do vector databases provide for AI applications? (Select TWO)",
+      "scenario": null,
+      "stem": "Beyond storing embeddings, what operational capabilities do purpose-built vector databases provide? (Select TWO)",
       "options": [
-        { "key": "A", "text": "Efficient and fast lookup through similarity search" },
-        { "key": "B", "text": "Data management, fault tolerance, authentication, and access control" },
-        { "key": "C", "text": "Automatic model training on stored vectors" },
-        { "key": "D", "text": "Foundation model hosting and endpoint management" },
-        { "key": "E", "text": "Automatic prompt engineering optimization" }
+        {
+          "key": "A",
+          "text": "Efficient approximate nearest-neighbor search optimized for high-dimensional vectors"
+        },
+        {
+          "key": "B",
+          "text": "Data management features including fault tolerance, authentication, and access control"
+        },
+        {
+          "key": "C",
+          "text": "Automatic generation of embeddings from raw text without an embedding model"
+        },
+        {
+          "key": "D",
+          "text": "Foundation model training and fine-tuning capabilities"
+        },
+        {
+          "key": "E",
+          "text": "Natural language response generation from stored vectors"
+        }
       ],
-      "correct": ["A", "B"],
+      "correct": [
+        "A",
+        "B"
+      ],
       "explanation": {
-        "correct": "Vector databases provide efficient and fast lookup capabilities and also offer data management, fault tolerance, authentication, access control, and a query engine beyond simple storage.",
+        "correct": "Vector databases provide optimized similarity search algorithms (ANN indices like HNSW) for fast lookup in high-dimensional spaces, plus enterprise features like fault tolerance, authentication, access control, and data management.",
         "distractors": {
-          "C": "Vector databases store embeddings for retrieval. Model training is a separate process handled by training services.",
-          "D": "Model hosting is handled by services like SageMaker or Bedrock, not vector databases.",
-          "E": "Prompt engineering is a human design activity. Vector databases store and retrieve data, not optimize prompts."
+          "C": "Embedding generation requires a separate embedding model. Vector databases store and search pre-computed embeddings, not generate them.",
+          "D": "Model training is handled by ML platforms (SageMaker, Bedrock). Vector databases provide storage and retrieval services.",
+          "E": "Response generation requires an LLM. Vector databases return stored data and similarity scores, not generated text."
         }
       }
     },
@@ -391,22 +669,45 @@
       "id": 18,
       "type": "multi",
       "domain": "agents",
-      "scenario": "A fintech company deploys an AI agent using Agents for Amazon Bedrock to help customers manage their investment portfolios. The agent needs to handle multi-step tasks like checking balances, analyzing risk, and executing trades.",
-      "stem": "How do agents handle these multi-step tasks? (Select TWO)",
+      "scenario": "A banking agent built with Amazon Bedrock handles customer requests like 'Transfer $500 from checking to savings, then show me this month's spending by category.' The agent must interact with multiple backend services.",
+      "stem": "Which components does the agent orchestrate to fulfill this multi-step financial request? (Select THREE)",
       "options": [
-        { "key": "A", "text": "Agents automatically break down complex tasks into steps and generate orchestration logic" },
-        { "key": "B", "text": "Agents invoke knowledge bases to supplement information needed for actions" },
-        { "key": "C", "text": "Agents retrain the foundation model after each user interaction" },
-        { "key": "D", "text": "Agents replace the database with their own internal storage" },
-        { "key": "E", "text": "Agents require users to specify each step manually in their prompt" }
+        {
+          "key": "A",
+          "text": "The foundation model \u2014 to understand the request and plan the execution steps"
+        },
+        {
+          "key": "B",
+          "text": "External APIs \u2014 to execute the transfer and retrieve transaction data"
+        },
+        {
+          "key": "C",
+          "text": "Knowledge bases \u2014 to look up account policies or category definitions"
+        },
+        {
+          "key": "D",
+          "text": "Model pre-training pipeline \u2014 to retrain the FM on the customer's financial history"
+        },
+        {
+          "key": "E",
+          "text": "SageMaker training jobs \u2014 to build a custom model for this customer"
+        },
+        {
+          "key": "F",
+          "text": "CloudFormation \u2014 to provision new infrastructure for each request"
+        }
       ],
-      "correct": ["A", "B"],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
       "explanation": {
-        "correct": "Agents automatically break down tasks and generate orchestration logic, and they invoke knowledge bases to supplement information for actions. They orchestrate between user requests, the FM, and external data/applications.",
+        "correct": "Agents orchestrate: the FM (understanding and planning), external APIs (executing actions like transfers and data retrieval), and knowledge bases (supplementing with policy information). This orchestration enables real-world task completion.",
         "distractors": {
-          "C": "Agents do not retrain the model. They orchestrate existing model capabilities with external systems.",
-          "D": "Agents connect to existing databases through APIs. They don't replace databases with internal storage.",
-          "E": "The point of agents is automatic task decomposition. Users provide high-level requests; agents determine the steps."
+          "D": "Agents do not retrain models. They use the existing FM's capabilities to reason about tasks and plan actions.",
+          "E": "Per-customer models are not built at request time. Agents use existing models and external data to personalize responses.",
+          "F": "Infrastructure is pre-provisioned. Agents make API calls to existing services, not deploy new infrastructure per request."
         }
       }
     },
@@ -414,43 +715,71 @@
       "id": 19,
       "type": "single",
       "domain": "opensearch",
-      "scenario": "A media company wants to implement semantic search over their video library so users can find videos by describing what they're looking for in natural language rather than exact keywords.",
-      "stem": "Which Amazon OpenSearch Service capability enables this semantic search over media content?",
+      "scenario": "A news organization wants users to search their archive of 5 million articles by describing what they remember about a story ('that article about the tech CEO who sailed across the Atlantic') rather than requiring exact headlines or dates.",
+      "stem": "How does Amazon OpenSearch Service enable this type of search?",
       "options": [
-        { "key": "A", "text": "Vector database capabilities that use language-based embeddings to improve retrieved results beyond keyword matching" },
-        { "key": "B", "text": "SQL query support for structured database lookups" },
-        { "key": "C", "text": "CloudWatch integration for monitoring search latency" },
-        { "key": "D", "text": "S3 lifecycle rules for archiving old video metadata" }
+        {
+          "key": "A",
+          "text": "Full-text inverted index matching keywords in the search query against article content"
+        },
+        {
+          "key": "B",
+          "text": "SQL queries against structured metadata tables storing article attributes"
+        },
+        {
+          "key": "C",
+          "text": "Vector search using language-based embeddings that match semantic meaning rather than exact keywords"
+        },
+        {
+          "key": "D",
+          "text": "Regular expression pattern matching against article titles"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "C"
+      ],
       "explanation": {
-        "correct": "OpenSearch Service's vector database capabilities enable semantic search by using language-based embeddings on search documents. This improves results beyond keyword matching by understanding meaning and context.",
+        "correct": "OpenSearch's vector database capabilities use language-based embeddings to match semantic meaning. A description of a story concept matches articles about that topic regardless of whether the exact words appear in the article.",
         "distractors": {
-          "B": "SQL queries perform structured lookups, not semantic understanding of natural language descriptions.",
-          "C": "CloudWatch monitors performance metrics. It does not enable semantic search functionality.",
-          "D": "S3 lifecycle rules manage storage costs. They have no relationship to search relevance or semantic matching."
+          "A": "Inverted index keyword search would miss articles that discuss the same topic using different terminology. Semantic search handles this.",
+          "B": "SQL against metadata would require structured fields. The user's description doesn't map to structured attributes like date or author.",
+          "D": "Regex matches character patterns, not meaning. It cannot connect 'tech CEO who sailed' to an article using different phrasing."
         }
       }
     },
     {
       "id": 20,
       "type": "single",
-      "domain": "foundation-model-customization",
-      "scenario": "A company is evaluating approaches to customize a foundation model for their domain. They want to understand the cost tradeoffs between pre-training, fine-tuning, in-context learning, and RAG.",
-      "stem": "Which approach avoids retraining the model entirely while providing domain-specific knowledge at inference time?",
+      "domain": "inference-parameters",
+      "scenario": "A developer configures Top P=0.1 for a code completion model. The model generates syntactically correct but extremely predictable completions, always choosing the most common patterns even when the context suggests a less common but more appropriate approach.",
+      "stem": "What is happening with this Top P configuration?",
       "options": [
-        { "key": "A", "text": "RAG — retrieves external knowledge during generation without modifying model weights" },
-        { "key": "B", "text": "Pre-training — trains the model from scratch on domain-specific data" },
-        { "key": "C", "text": "Fine-tuning — updates model weights with domain-specific examples" },
-        { "key": "D", "text": "In-context learning — provides examples in the prompt to guide model behavior" }
+        {
+          "key": "A",
+          "text": "Top P=0.1 means the model only considers 10 tokens total regardless of their probability"
+        },
+        {
+          "key": "B",
+          "text": "Top P=0.1 forces the model to skip the top 10% of tokens and sample from less likely ones"
+        },
+        {
+          "key": "C",
+          "text": "Top P=0.1 reduces the model's context window to 10% of its maximum capacity"
+        },
+        {
+          "key": "D",
+          "text": "Top P=0.1 restricts sampling to tokens covering only 10% of cumulative probability, limiting the model to the most probable tokens and preventing exploration of less common but contextually appropriate completions"
+        }
       ],
-      "correct": ["A"],
+      "correct": [
+        "D"
+      ],
       "explanation": {
-        "correct": "RAG retrieves external knowledge during generation without modifying model weights or retraining. It connects the FM to external data sources, avoiding the cost of retraining while providing domain-specific accuracy.",
+        "correct": "Top P (nucleus sampling) includes tokens from the probability distribution until cumulative probability reaches the threshold. At 0.1, only tokens comprising the top 10% of probability mass are considered \u2014 heavily restricting variety to the most predictable completions.",
         "distractors": {
-          "B": "Pre-training is the most expensive approach — training a model from scratch on new data.",
-          "C": "Fine-tuning modifies model weights, which requires compute resources and training time. It is a form of retraining.",
-          "D": "In-context learning doesn't retrain either, but it's limited by context window size and doesn't scale to large knowledge bases like RAG does."
+          "A": "Top P is probability-based, not count-based. That description matches Top K (which limits by count). Top P limits by cumulative probability mass.",
+          "B": "Top P includes the top tokens up to the threshold, not skips them. It restricts sampling TO the most probable tokens.",
+          "C": "Top P controls token sampling during generation. It has no effect on the model's context window or input capacity."
         }
       }
     }
