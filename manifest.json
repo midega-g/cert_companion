@@ -3,19 +3,60 @@
     {
       "id": "aws",
       "label": "AWS",
+      "mode": "exam",
       "children": [
+        {
+          "id": "data_engineer_associate",
+          "label": "Data Engineer - Associate",
+          "mode": "exam",
+          "description": "DEA-C01 \u2014 data engineering on AWS: ingestion, transformation, storage, operations, and security.",
+          "children": [
+            {
+              "id": "topic_tests",
+              "label": "Topic Drills",
+              "mode": "drill",
+              "description": "Rapid-fire quick questions on the specific content you are currently studying.",
+              "children": [
+                {
+                  "id": "compute",
+                  "label": "Compute",
+                  "mode": "drill",
+                  "description": "EC2, Batch, Lambda, SAM, ECS, ECR, and EKS.",
+                  "children": [
+                    {
+                      "id": "overview",
+                      "label": "Compute Overview",
+                      "mode": "drill",
+                      "description": "High-level introduction to AWS compute and container services.",
+                      "tests": [
+                        {
+                          "id": "test_1",
+                          "label": "Compute Overview \u2014 Drill 1",
+                          "path": "aws/data_engineer_associate/topic_tests/compute/overview/test_1.json"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
         {
           "id": "gen_ai_foundation",
           "label": "Gen AI Foundation",
+          "mode": "exam",
           "children": [
             {
               "id": "domain_1",
               "label": "Domain 1",
+              "mode": "exam",
               "description": "Fundamentals of AI and ML",
               "children": [
                 {
                   "id": "task_1",
                   "label": "Task 1.1",
+                  "mode": "exam",
                   "description": "Explain basic AI concepts and terminologies",
                   "tests": [
                     {
@@ -33,6 +74,7 @@
                 {
                   "id": "task_2",
                   "label": "Task 1.2",
+                  "mode": "exam",
                   "description": "Identify practical use cases for AI",
                   "tests": [
                     {
@@ -50,6 +92,7 @@
                 {
                   "id": "task_3",
                   "label": "Task 1.3",
+                  "mode": "exam",
                   "description": "Describe the ML development lifecycle",
                   "tests": [
                     {
@@ -79,11 +122,13 @@
             {
               "id": "domain_2",
               "label": "Domain 2",
+              "mode": "exam",
               "description": "Fundamentals of Generative AI",
               "children": [
                 {
                   "id": "task_1",
                   "label": "Task 2.1",
+                  "mode": "exam",
                   "description": "Explain the basic concepts of generative AI",
                   "tests": [
                     {
@@ -106,6 +151,7 @@
                 {
                   "id": "task_2",
                   "label": "Task 2.2",
+                  "mode": "exam",
                   "description": "Understand the capabilities and limits of generative AI for solving business problems",
                   "tests": [
                     {
@@ -118,6 +164,7 @@
                 {
                   "id": "task_3",
                   "label": "Task 2.3",
+                  "mode": "exam",
                   "description": "Describe AWS infrastructure and technologies for building generative AI applications",
                   "tests": [
                     {
@@ -137,11 +184,13 @@
             {
               "id": "domain_3",
               "label": "Domain 3",
+              "mode": "exam",
               "description": "Applications of Foundation Models",
               "children": [
                 {
                   "id": "task_1",
                   "label": "Task 3.1",
+                  "mode": "exam",
                   "description": "Describe design considerations for applications that use foundation models",
                   "tests": [
                     {
@@ -164,6 +213,7 @@
                 {
                   "id": "task_2",
                   "label": "Task 3.2",
+                  "mode": "exam",
                   "description": "Choose effective prompt engineering techniques",
                   "tests": [
                     {
@@ -181,6 +231,7 @@
                 {
                   "id": "task_3",
                   "label": "Task 3.3",
+                  "mode": "exam",
                   "description": "Describe the training and fine-tuning process for foundation models",
                   "tests": [
                     {
@@ -198,6 +249,7 @@
                 {
                   "id": "task_4",
                   "label": "Task 3.4",
+                  "mode": "exam",
                   "description": "Describe methods to evaluate foundation model performance",
                   "tests": [
                     {
@@ -212,11 +264,13 @@
             {
               "id": "domain_4",
               "label": "Domain 4",
+              "mode": "exam",
               "description": "Guidelines for Responsible AI",
               "children": [
                 {
                   "id": "task_1",
                   "label": "Task 4.1",
+                  "mode": "exam",
                   "description": "Explain the development of AI systems that are responsible",
                   "tests": [
                     {
@@ -239,6 +293,7 @@
                 {
                   "id": "task_2",
                   "label": "Task 4.2",
+                  "mode": "exam",
                   "description": "Recognize the importance of transparent and explainable models",
                   "tests": [
                     {
@@ -258,11 +313,13 @@
             {
               "id": "domain_5",
               "label": "Domain 5",
+              "mode": "exam",
               "description": "Security, Compliance & Governance for AI Solutions",
               "children": [
                 {
                   "id": "task_1",
                   "label": "Task 5.1",
+                  "mode": "exam",
                   "description": "Explain methods to secure AI systems",
                   "tests": [
                     {
@@ -290,6 +347,7 @@
                 {
                   "id": "task_2",
                   "label": "Task 5.2",
+                  "mode": "exam",
                   "description": "Recognize governance and compliance regulations for AI systems",
                   "tests": [
                     {
@@ -323,20 +381,24 @@
     {
       "id": "snowflake",
       "label": "Snowflake",
+      "mode": "exam",
       "children": [
         {
           "id": "snowpro_core",
           "label": "SnowPro Core",
+          "mode": "exam",
           "description": "Snowflake SnowPro Core Certification (COF-C02)",
           "children": [
             {
               "id": "domain_1",
               "label": "Domain 1",
+              "mode": "exam",
               "description": "Snowflake AI Data Cloud Features and Architecture",
               "children": [
                 {
                   "id": "task_1",
                   "label": "Task 1.1",
+                  "mode": "exam",
                   "description": "Describe and Use the Snowflake Architecture",
                   "tests": [
                     {
@@ -349,6 +411,7 @@
                 {
                   "id": "task_3",
                   "label": "Task 1.3",
+                  "mode": "exam",
                   "description": "Differentiate Snowflake Object Hierarchy and Types",
                   "tests": [
                     {
@@ -426,6 +489,7 @@
                 {
                   "id": "task_4",
                   "label": "Task 1.4",
+                  "mode": "exam",
                   "description": "Configure Virtual Warehouses",
                   "tests": [
                     {
@@ -468,6 +532,7 @@
                 {
                   "id": "task_5",
                   "label": "Task 1.5",
+                  "mode": "exam",
                   "description": "Explain Snowflake Storage Concepts",
                   "tests": [
                     {
@@ -515,6 +580,7 @@
                 {
                   "id": "task_6",
                   "label": "Task 1.6",
+                  "mode": "exam",
                   "description": "Explain AI/ML and Application Development Features",
                   "tests": [
                     {
@@ -539,11 +605,13 @@
             {
               "id": "domain_5",
               "label": "Domain 5",
+              "mode": "exam",
               "description": "Data Collaboration",
               "children": [
                 {
                   "id": "task_1",
                   "label": "Task 5.1",
+                  "mode": "exam",
                   "description": "Explain Data Collaboration and Protection",
                   "tests": [
                     {
@@ -571,6 +639,7 @@
                 {
                   "id": "task_2",
                   "label": "Task 5.2",
+                  "mode": "exam",
                   "description": "Explain Snowflake's Data Sharing Capabilities",
                   "tests": [
                     {
@@ -593,6 +662,7 @@
                 {
                   "id": "task_3",
                   "label": "Task 5.3",
+                  "mode": "exam",
                   "description": "Share Data Using the Snowflake Marketplace and Listings",
                   "tests": [
                     {
