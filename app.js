@@ -480,9 +480,106 @@ function navigateToDepth(depth) {
   renderNode();
 }
 
+/* ─── MODE SELECTION (Exam Prep vs Topic Drill) ─────────────────── */
+// A certification shows the Mode Select screen whenever it has drill content
+// (a `topic_tests` subtree). The screen presents whichever modes actually have
+// content — so a cert with only drills still shows the two-mode model, and once
+// Exam Prep content is added the other card appears automatically. Certs with
+// ONLY exam content (existing Snowflake / Gen AI) never see the screen and
+// behave exactly as before (backward compatible).
+function modeChildren(node, mode) {
+  if (!node.children) return [];
+  return node.children.filter((c) => (c.mode || "exam") === mode);
+}
+
+function offersModeSelect(node) {
+  // Only a certification node triggers Mode Select. The reliable structural
+  // signal is a direct child folder named `topic_tests` (the drill root).
+  // Descendant drill nodes (topics/content) must NOT re-trigger the screen.
+  if (node._mode) return false; // already inside a chosen mode's virtual node
+  if (!node.children) return false;
+  return node.children.some((c) => c.id === "topic_tests");
+}
+
+const MODE_INFO = {
+  exam: {
+    label: "Exam Prep",
+    desc: "Structured, blueprint-aligned practice organized by domain and task.",
+  },
+  drill: {
+    label: "Topic Drill",
+    desc: "Rapid-fire quick questions on the specific content you are studying now.",
+  },
+};
+
+function renderModeSelect(node) {
+  showView("topic");
+  const crumbs = [{ label: "Home", action: "renderHome()" }];
+  state.navPath.forEach((n, i) => {
+    if (i < state.navPath.length - 1) {
+      crumbs.push({ label: n.label, action: `navigateToDepth(${i})` });
+    } else {
+      crumbs.push({ label: n.label });
+    }
+  });
+  setBreadcrumb(crumbs);
+
+  let html = `<h1 class="page-title">${node.label}</h1>`;
+  html += `<p class="page-subtitle">Choose a study mode</p>`;
+  html += `<div class="card-grid">`;
+  ["exam", "drill"].forEach((mode) => {
+    const kids = modeChildren(node, mode);
+    if (kids.length === 0) return;
+    const info = MODE_INFO[mode];
+    const total = kids.reduce((n, c) => n + countTests(c), 0);
+    html += `
+      <div class="card" onclick="selectMode('${mode}')">
+        <div class="card-title">${info.label}</div>
+        <div class="card-meta">${total} test${total !== 1 ? "s" : ""}</div>
+        <div class="card-desc">${info.desc}</div>
+      </div>`;
+  });
+  html += `</div>`;
+  $("view-topic").innerHTML = html;
+}
+
+function selectMode(mode) {
+  const cert = state.navPath[state.navPath.length - 1];
+  const kids = modeChildren(cert, mode);
+  if (kids.length === 0) return;
+
+  if (mode === "drill") {
+    // Drill children live under the single `topic_tests` node — dive into it.
+    // (There is exactly one drill child: the topic_tests folder.)
+    if (kids.length === 1) {
+      state.navPath.push(kids[0]);
+      renderNode();
+      return;
+    }
+  }
+  // Exam mode (or multiple drill roots): present the mode's children as a
+  // filtered virtual node so the generic renderer continues unchanged.
+  const virtual = {
+    id: `${cert.id}__${mode}`,
+    label: MODE_INFO[mode].label,
+    children: kids,
+    _mode: mode,
+  };
+  state.navPath.push(virtual);
+  renderNode();
+}
+
 /* ─── NODE VIEW (replaces topic + test list) ────────────────────── */
 function renderNode() {
   const node = state.navPath[state.navPath.length - 1];
+
+  // If this node is a certification with drill content, show Mode Select
+  // instead of its raw (mixed) children.
+  if (offersModeSelect(node)) {
+    renderModeSelect(node);
+    return;
+  }
+
   const hasChildren = node.children && node.children.length > 0;
   const hasTests = node.tests && node.tests.length > 0;
 
