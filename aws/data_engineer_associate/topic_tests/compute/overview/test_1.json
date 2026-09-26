@@ -1,0 +1,343 @@
+{
+  "label": "Compute Overview — Drill 1",
+  "order": 1,
+  "topic": "AWS Compute Overview",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "compute-fundamentals",
+      "scenario": null,
+      "stem": "In the context of AWS, what best describes a compute resource?",
+      "options": [
+        { "key": "A", "text": "The network bandwidth allocated to move data between services" },
+        { "key": "B", "text": "The durable storage used to retain data after a task completes" },
+        { "key": "C", "text": "The identity and access controls that authorize a workload" },
+        { "key": "D", "text": "The processing power an application needs to carry out computational tasks through a series of instructions" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "Compute resources are the processing power required by applications and systems to carry out computational tasks via a series of instructions.",
+        "distractors": {
+          "A": "Network bandwidth concerns data movement, not the processing power that executes instructions.",
+          "B": "Durable storage retains data; it is not the processing power that carries out tasks.",
+          "C": "Identity and access controls authorize workloads; they do not perform computation."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "multi",
+      "domain": "compute-fundamentals",
+      "scenario": null,
+      "stem": "Which TWO common server components is compute most closely related to?",
+      "options": [
+        { "key": "A", "text": "Object storage buckets" },
+        { "key": "B", "text": "CPUs" },
+        { "key": "C", "text": "DNS resolvers" },
+        { "key": "D", "text": "RAM" },
+        { "key": "E", "text": "Load balancers" }
+      ],
+      "correct": ["B", "D"],
+      "explanation": {
+        "correct": "Compute is closely related to CPUs and RAM — the processing and memory components that execute instructions.",
+        "distractors": {
+          "A": "Object storage holds data; it is not a processing component associated with compute.",
+          "C": "DNS resolvers translate names to addresses and are unrelated to raw compute.",
+          "E": "Load balancers distribute traffic and are not core compute components like CPUs or RAM."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "compute-fundamentals",
+      "scenario": null,
+      "stem": "Why is a physical server in a data center considered a compute resource?",
+      "options": [
+        { "key": "A", "text": "Because it stores backups of application data" },
+        { "key": "B", "text": "Because it provides a public IP address to applications" },
+        { "key": "C", "text": "Because it has multiple CPUs and many gigabytes of RAM to process instructions from the OS and applications" },
+        { "key": "D", "text": "Because it encrypts data at rest automatically" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "A physical server qualifies as a compute resource because it has multiple CPUs and many gigabytes of RAM used to process instructions from the operating system and applications.",
+        "distractors": {
+          "A": "Storing backups is a storage function, not what defines the server as a compute resource.",
+          "B": "Providing a public IP is a networking concern, not the reason it is compute.",
+          "D": "Encrypting data at rest is a storage/security feature, unrelated to being a compute resource."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "ec2",
+      "scenario": null,
+      "stem": "What does an Amazon EC2 instance represent?",
+      "options": [
+        { "key": "A", "text": "A virtual server" },
+        { "key": "B", "text": "A managed relational database" },
+        { "key": "C", "text": "A serverless function" },
+        { "key": "D", "text": "A container image registry" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "EC2 instances are virtual servers that provide compute capacity.",
+        "distractors": {
+          "B": "A managed relational database is a database service, not what an EC2 instance is.",
+          "C": "Serverless functions describe Lambda, not EC2 instances.",
+          "D": "A container image registry describes ECR, not an EC2 instance."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "lambda",
+      "scenario": null,
+      "stem": "Which characteristic best describes how compute is consumed by an AWS Lambda function?",
+      "options": [
+        { "key": "A", "text": "It runs continuously for months or years processing billions of instructions" },
+        { "key": "B", "text": "It reserves a fixed pool of virtual servers for the account indefinitely" },
+        { "key": "C", "text": "It uses a small amount of compute for a very short time in response to an event, then relinquishes it" },
+        { "key": "D", "text": "It requires manually provisioning CPUs and RAM before each execution" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "A Lambda function may use only a few milliseconds of compute to run code in response to an event, then relinquish that compute power.",
+        "distractors": {
+          "A": "Continuous, long-running processing of billions of instructions describes the EC2 end of the scale, not Lambda.",
+          "B": "Lambda does not reserve a fixed indefinite pool of servers; it is serverless and event-driven.",
+          "D": "Lambda does not require manually provisioning CPUs and RAM before each run; compute is provided on demand."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "ec2",
+      "scenario": null,
+      "stem": "Which example reflects the long-running end of the AWS compute duration scale?",
+      "options": [
+        { "key": "A", "text": "A couple of lines of Python executed in a few milliseconds" },
+        { "key": "B", "text": "Hundreds of EC2 instances used continuously for months or years" },
+        { "key": "C", "text": "A single event triggering a brief function invocation" },
+        { "key": "D", "text": "A one-time query that returns immediately" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Using hundreds of EC2 instances continuously for months or years to process billions of instructions represents the long-running end of the compute scale.",
+        "distractors": {
+          "A": "A few milliseconds of Python execution is the short-lived, serverless end of the scale.",
+          "C": "A brief event-triggered invocation is characteristic of short-lived Lambda compute.",
+          "D": "A one-time immediate query is not an example of sustained long-running compute."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "compute-services",
+      "scenario": null,
+      "stem": "Which THREE of the following are core AWS compute services (as opposed to container services) introduced in this overview?",
+      "options": [
+        { "key": "A", "text": "Amazon EC2" },
+        { "key": "B", "text": "Amazon ECR" },
+        { "key": "C", "text": "AWS Lambda" },
+        { "key": "D", "text": "Amazon EKS" },
+        { "key": "E", "text": "AWS Batch" },
+        { "key": "F", "text": "Amazon ECS" }
+      ],
+      "correct": ["A", "C", "E"],
+      "explanation": {
+        "correct": "EC2, AWS Batch, and AWS Lambda are core compute services in this overview; SAM is the fourth core compute item.",
+        "distractors": {
+          "B": "Amazon ECR (Elastic Container Registry) is a container service, not a core compute service.",
+          "D": "Amazon EKS (Elastic Kubernetes Service) is a container service, not a core compute service.",
+          "F": "Amazon ECS (Elastic Container Service) is a container service, not a core compute service."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "containers",
+      "scenario": null,
+      "stem": "Which THREE services are the AWS container services covered in this overview?",
+      "options": [
+        { "key": "A", "text": "AWS Lambda" },
+        { "key": "B", "text": "Amazon ECS" },
+        { "key": "C", "text": "AWS Batch" },
+        { "key": "D", "text": "Amazon ECR" },
+        { "key": "E", "text": "AWS SAM" },
+        { "key": "F", "text": "Amazon EKS" }
+      ],
+      "correct": ["B", "D", "F"],
+      "explanation": {
+        "correct": "The AWS container services in this overview are Amazon ECS, Amazon ECR, and Amazon EKS.",
+        "distractors": {
+          "A": "AWS Lambda is a core compute service, not a container service.",
+          "C": "AWS Batch is a core compute service, not a container service.",
+          "E": "AWS SAM (Serverless Application Model) is a core compute item, not a container service."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "compute-services",
+      "scenario": null,
+      "stem": "What does the acronym EC2 stand for?",
+      "options": [
+        { "key": "A", "text": "Elastic Container Cloud" },
+        { "key": "B", "text": "Elastic Compute Cloud" },
+        { "key": "C", "text": "Elastic Compute Cluster" },
+        { "key": "D", "text": "Enterprise Compute Cloud" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "EC2 stands for Amazon Elastic Compute Cloud.",
+        "distractors": {
+          "A": "\"Elastic Container Cloud\" is not the expansion of EC2; container services are ECS/ECR/EKS.",
+          "C": "EC2 is not \"Elastic Compute Cluster\".",
+          "D": "EC2 is not \"Enterprise Compute Cloud\"."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "containers",
+      "scenario": null,
+      "stem": "What does the acronym ECR stand for?",
+      "options": [
+        { "key": "A", "text": "Elastic Compute Registry" },
+        { "key": "B", "text": "Elastic Cluster Registry" },
+        { "key": "C", "text": "Elastic Container Registry" },
+        { "key": "D", "text": "Elastic Container Repository" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "ECR stands for Amazon Elastic Container Registry.",
+        "distractors": {
+          "A": "ECR is not \"Elastic Compute Registry\"; it is a container registry, not compute.",
+          "B": "ECR is not \"Elastic Cluster Registry\".",
+          "D": "The correct term is \"Registry\", not \"Repository\"."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "containers",
+      "scenario": null,
+      "stem": "Which container service's name reflects that it orchestrates Kubernetes?",
+      "options": [
+        { "key": "A", "text": "Amazon ECS — Elastic Container Service" },
+        { "key": "B", "text": "Amazon EKS — Elastic Kubernetes Service" },
+        { "key": "C", "text": "Amazon ECR — Elastic Container Registry" },
+        { "key": "D", "text": "AWS Batch" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Amazon EKS is the Elastic Kubernetes Service, whose name reflects Kubernetes orchestration.",
+        "distractors": {
+          "A": "ECS is the Elastic Container Service and does not carry the Kubernetes name.",
+          "C": "ECR is the Elastic Container Registry, used for images, not Kubernetes orchestration.",
+          "D": "AWS Batch is a core compute service and is not a Kubernetes service."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "compute-fundamentals",
+      "scenario": null,
+      "stem": "Select TWO ways in which compute resources can vary when consumed in AWS.",
+      "options": [
+        { "key": "A", "text": "In the quantity consumed" },
+        { "key": "B", "text": "By requiring the same fixed duration for every workload" },
+        { "key": "C", "text": "In the length of time they are used" },
+        { "key": "D", "text": "By being available only in a single performance option" },
+        { "key": "E", "text": "By being limited to exactly one service category" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Compute can be consumed in different quantities and for different lengths of time, across a range of categories with varied performance options.",
+        "distractors": {
+          "B": "Duration is not fixed; workloads range from milliseconds to years.",
+          "D": "Compute offers a variety of performance options, not a single one.",
+          "E": "Compute spans a wide range of categories, not just one."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "compute-services",
+      "scenario": null,
+      "stem": "What does AWS SAM stand for?",
+      "options": [
+        { "key": "A", "text": "Serverless Application Model" },
+        { "key": "B", "text": "Scalable Application Manager" },
+        { "key": "C", "text": "Server Automation Module" },
+        { "key": "D", "text": "Serverless Availability Model" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "AWS SAM stands for the AWS Serverless Application Model.",
+        "distractors": {
+          "B": "SAM is not \"Scalable Application Manager\".",
+          "C": "SAM is not \"Server Automation Module\".",
+          "D": "SAM is the Serverless Application Model, not \"Serverless Availability Model\"."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "compute-selection",
+      "scenario": "A data engineering team is deciding how much compute to allocate for an upcoming workload. Some jobs will run continuously for long periods, while others are tiny and event-triggered. Leadership asks what should ultimately drive the choice of compute resources.",
+      "stem": "What should ultimately determine which AWS compute resources the team uses?",
+      "options": [
+        { "key": "A", "text": "The alphabetical order of the service names" },
+        { "key": "B", "text": "Their overall business requirements" },
+        { "key": "C", "text": "Always choosing the service with the most CPUs" },
+        { "key": "D", "text": "Whichever service was released most recently" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The compute resources used in AWS ultimately depend on the organization's overall business requirements.",
+        "distractors": {
+          "A": "Service naming order has no bearing on the appropriate compute choice.",
+          "C": "Maximizing CPUs is not the deciding factor; requirements drive the choice.",
+          "D": "Release recency does not determine which compute is appropriate."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "compute-selection",
+      "scenario": "An application must respond to individual events by running a couple of lines of Python for only a few milliseconds at a time, and it should not hold onto compute capacity when idle. The team wants to avoid running and paying for long-lived virtual servers for this task.",
+      "stem": "Which compute approach fits this event-driven, short-lived requirement best?",
+      "options": [
+        { "key": "A", "text": "Running hundreds of EC2 virtual servers continuously" },
+        { "key": "B", "text": "A serverless AWS Lambda function invoked in response to the event" },
+        { "key": "C", "text": "Provisioning a dedicated physical server in a data center" },
+        { "key": "D", "text": "Keeping a fixed fleet of EC2 instances running for months" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "A serverless AWS Lambda function runs briefly in response to an event and relinquishes compute afterward, matching the short-lived, event-driven need.",
+        "distractors": {
+          "A": "Running EC2 servers continuously is the long-running model, the opposite of this requirement.",
+          "C": "A dedicated physical server holds compute indefinitely and does not match a brief, event-driven task.",
+          "D": "A fixed fleet running for months is long-lived compute, not the short-lived approach described."
+        }
+      }
+    }
+  ]
+}
