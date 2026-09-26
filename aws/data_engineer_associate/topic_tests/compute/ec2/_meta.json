@@ -1,0 +1,4 @@
+{
+  "label": "EC2",
+  "description": "Amazon EC2 tenancy, user data, storage, and instance security."
+}

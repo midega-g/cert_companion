@@ -1,0 +1,453 @@
+{
+  "label": "EC2 Tenancy, Storage & Security — Drill 1",
+  "order": 1,
+  "topic": "EC2 Tenancy, User Data, Storage & Security",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "ec2-tenancy",
+      "scenario": null,
+      "stem": "Why is there no inherent security risk when different customers' EC2 instances run on the same physical host?",
+      "options": [
+        { "key": "A", "text": "Each customer is billed for the entire host regardless of usage" },
+        { "key": "B", "text": "AWS implements advanced security mechanisms that prevent instances from accessing each other on the same host" },
+        { "key": "C", "text": "Only one customer's instances are ever placed on a host at a time by default" },
+        { "key": "D", "text": "Instances on a shared host cannot use the network" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "AWS uses advanced security mechanisms that stop different customers' instances from accessing each other on the same host, so shared hosting is not a security risk.",
+        "distractors": {
+          "A": "Billing for the whole host describes dedicated tenancy pricing, not the isolation mechanism.",
+          "C": "Default shared tenancy places multiple customers on a host; isolation—not exclusivity—provides safety.",
+          "D": "Shared-host instances have full networking; connectivity is unrelated to isolation."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "ec2-tenancy",
+      "scenario": null,
+      "stem": "When should you choose dedicated tenancy for your EC2 workloads?",
+      "options": [
+        { "key": "A", "text": "Whenever you want to minimize your overall costs" },
+        { "key": "B", "text": "Whenever an instance needs a public IP address" },
+        { "key": "C", "text": "When workloads must run on dedicated hardware due to internal security policies or external compliance controls" },
+        { "key": "D", "text": "Whenever you attach more than one EBS volume" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Dedicated tenancy is for workloads that must run on dedicated hardware because of internal security policies or external compliance controls.",
+        "distractors": {
+          "A": "Default shared tenancy—not dedicated—reduces overall costs.",
+          "B": "Public IP addressing is unrelated to tenancy choice.",
+          "D": "Attaching EBS volumes has nothing to do with tenancy."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "multi",
+      "domain": "ec2-tenancy",
+      "scenario": null,
+      "stem": "Which TWO options make up dedicated tenancy? (Select TWO.)",
+      "options": [
+        { "key": "A", "text": "Dedicated instances" },
+        { "key": "B", "text": "Spot instances" },
+        { "key": "C", "text": "Reserved instances" },
+        { "key": "D", "text": "Dedicated hosts" },
+        { "key": "E", "text": "Instance store volumes" }
+      ],
+      "correct": ["A", "D"],
+      "explanation": {
+        "correct": "Dedicated tenancy comprises dedicated instances and dedicated hosts.",
+        "distractors": {
+          "B": "Spot instances are a purchasing option, not a dedicated-tenancy type.",
+          "C": "Reserved instances are a pricing commitment, not a tenancy type.",
+          "E": "Instance store volumes are ephemeral storage, not a tenancy option."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "ec2-tenancy",
+      "scenario": null,
+      "stem": "What distinguishes a dedicated host from a dedicated instance?",
+      "options": [
+        { "key": "A", "text": "A dedicated host offers additional visibility and control over how you place instances on the physical host" },
+        { "key": "B", "text": "A dedicated host replicates its data to another Availability Zone" },
+        { "key": "C", "text": "A dedicated host is always cheaper than shared tenancy" },
+        { "key": "D", "text": "A dedicated host cannot run any other resources from your account" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "A dedicated host is effectively the same as a dedicated instance but adds visibility and control over instance placement on the physical host.",
+        "distractors": {
+          "B": "Cross-AZ replication describes EBS behavior, not dedicated hosts.",
+          "C": "Dedicated tenancy costs more than shared tenancy, not less.",
+          "D": "Dedicated hardware can be shared by other resources in your own account."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "ec2-tenancy",
+      "scenario": null,
+      "stem": "Which capability is specifically enabled by using dedicated hosts?",
+      "options": [
+        { "key": "A", "text": "Automatic OS patching of the guest operating system" },
+        { "key": "B", "text": "Using existing per-socket, per-core, or per-VM software licenses tied to a specific machine" },
+        { "key": "C", "text": "Detaching the root volume while the instance runs" },
+        { "key": "D", "text": "Running the instance without a security group" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Dedicated hosts let you use existing per-socket, per-core, or per-VM software licenses that may need to be tied to a specific machine.",
+        "distractors": {
+          "A": "OS patching is the customer's responsibility under the Shared Responsibility model, not a dedicated-host feature.",
+          "C": "Volume detachment relates to EBS, not to dedicated-host licensing.",
+          "D": "Every instance is associated with a security group regardless of tenancy."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "ec2-tenancy",
+      "scenario": null,
+      "stem": "Why do dedicated instances incur additional charges?",
+      "options": [
+        { "key": "A", "text": "Because AWS patches their operating systems for you" },
+        { "key": "B", "text": "Because they must always use encrypted EBS volumes" },
+        { "key": "C", "text": "Because no other customers may run EC2 instances on the same hardware, likely leaving unused capacity" },
+        { "key": "D", "text": "Because their data is replicated across multiple Availability Zones" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "No other customer can run EC2 on the same hardware, so unused capacity likely remains, which is why dedicated instances cost more.",
+        "distractors": {
+          "A": "AWS does not patch guest operating systems; that is the customer's responsibility.",
+          "B": "Encryption is optional and unrelated to dedicated-instance pricing.",
+          "D": "Multi-AZ replication is an EBS/storage concept, not a pricing driver for dedicated instances."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "ec2-user-data",
+      "scenario": null,
+      "stem": "When does the script entered in the EC2 User Data section run?",
+      "options": [
+        { "key": "A", "text": "Every time the instance receives network traffic" },
+        { "key": "B", "text": "During the first boot cycle of the instance" },
+        { "key": "C", "text": "Only when the instance is terminated" },
+        { "key": "D", "text": "Each time an EBS volume is attached" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "User Data lets you enter commands or a script that run during the instance's first boot cycle.",
+        "distractors": {
+          "A": "User Data is not triggered by network traffic.",
+          "C": "User Data runs at first boot, not at termination.",
+          "D": "Attaching a volume does not trigger User Data."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "ec2-user-data",
+      "scenario": null,
+      "stem": "On a Linux instance, what does placing `yum update -y` in User Data accomplish?",
+      "options": [
+        { "key": "A", "text": "It encrypts the instance's root EBS volume" },
+        { "key": "B", "text": "It attaches an instance store volume automatically" },
+        { "key": "C", "text": "It creates a new security group for the instance" },
+        { "key": "D", "text": "It updates the instance's own software automatically at boot time" }
+      ],
+      "correct": ["D"],
+      "explanation": {
+        "correct": "`yum update -y` in User Data updates the Linux instance's software automatically during boot.",
+        "distractors": {
+          "A": "That command updates packages; it does not encrypt volumes.",
+          "B": "Instance store attachment is not performed by yum.",
+          "C": "Security groups are selected during setup, not created by yum."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "ec2-storage",
+      "scenario": null,
+      "stem": "How is EC2 storage classified? (Select TWO.)",
+      "options": [
+        { "key": "A", "text": "Persistent" },
+        { "key": "B", "text": "Federated" },
+        { "key": "C", "text": "Ephemeral (temporary)" },
+        { "key": "D", "text": "Immutable" },
+        { "key": "E", "text": "Replicated" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "EC2 storage is classified as persistent or ephemeral (temporary).",
+        "distractors": {
+          "B": "Federated is not an EC2 storage classification.",
+          "D": "Immutable is not one of the two classifications described.",
+          "E": "Replication is a property of EBS, not a storage classification."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "ec2-storage",
+      "scenario": null,
+      "stem": "Which service provides persistent storage for EC2 by attaching volumes?",
+      "options": [
+        { "key": "A", "text": "Amazon Elastic Block Store (EBS)" },
+        { "key": "B", "text": "Instance store volumes" },
+        { "key": "C", "text": "Amazon Route 53" },
+        { "key": "D", "text": "Elastic Load Balancing" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Persistent storage is available by attaching EBS volumes via Amazon Elastic Block Store.",
+        "distractors": {
+          "B": "Instance store volumes provide ephemeral, not persistent, storage.",
+          "C": "Route 53 is DNS, not block storage.",
+          "D": "Elastic Load Balancing distributes traffic and is not storage."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "ec2-storage",
+      "scenario": null,
+      "stem": "How are EBS volumes attached to an EC2 instance?",
+      "options": [
+        { "key": "A", "text": "They are physically bolted to the same host as the instance" },
+        { "key": "B", "text": "They are network-attached storage devices logically attached via the AWS network" },
+        { "key": "C", "text": "They are embedded directly on the instance's CPU" },
+        { "key": "D", "text": "They are mounted only through a public internet gateway" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "EBS volumes are network-attached storage that is logically attached to the instance over the AWS network—separate devices from the instance itself.",
+        "distractors": {
+          "A": "Physical attachment describes instance store volumes, not EBS.",
+          "C": "EBS is block storage, not part of the CPU.",
+          "D": "EBS uses the AWS network internally, not a public internet gateway."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "ec2-storage",
+      "scenario": null,
+      "stem": "For resiliency, where is data on an EBS volume automatically replicated?",
+      "options": [
+        { "key": "A", "text": "Across all AWS Regions globally" },
+        { "key": "B", "text": "To the local instance store of the attached instance" },
+        { "key": "C", "text": "Within the same Availability Zone" },
+        { "key": "D", "text": "To an on-premises backup appliance" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "AWS automatically replicates EBS volume data within the same Availability Zone for resiliency.",
+        "distractors": {
+          "A": "EBS replication is within one AZ, not across all Regions.",
+          "B": "EBS does not replicate to the ephemeral instance store.",
+          "D": "Replication is managed by AWS within the AZ, not to on-premises hardware."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "ec2-storage",
+      "scenario": null,
+      "stem": "What happens when you detach an EBS volume from an EC2 instance?",
+      "options": [
+        { "key": "A", "text": "The data is wiped immediately for security" },
+        { "key": "B", "text": "The data remains intact and the volume can be reattached to another instance in the same Availability Zone" },
+        { "key": "C", "text": "The volume is converted into an instance store volume" },
+        { "key": "D", "text": "The volume can only be reattached in a different Region" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Detaching an EBS volume leaves the data intact, and it can be reattached to another instance within the same Availability Zone.",
+        "distractors": {
+          "A": "EBS data persists through detachment; it is not wiped.",
+          "C": "Detaching does not change the volume type.",
+          "D": "Reattachment is within the same AZ, not necessarily a different Region."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "ec2-storage",
+      "scenario": null,
+      "stem": "Where do point-in-time snapshots of an EBS volume back up the data?",
+      "options": [
+        { "key": "A", "text": "To Amazon S3" },
+        { "key": "B", "text": "To an instance store volume" },
+        { "key": "C", "text": "To Amazon RDS" },
+        { "key": "D", "text": "To the instance's RAM" }
+      ],
+      "correct": ["A"],
+      "explanation": {
+        "correct": "Point-in-time EBS snapshots back up all data on the volume to Amazon S3.",
+        "distractors": {
+          "B": "Instance store is ephemeral and is not the snapshot target.",
+          "C": "RDS is a managed database service, not the snapshot destination.",
+          "D": "RAM is volatile memory, not snapshot storage."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "ec2-storage",
+      "scenario": null,
+      "stem": "Which TWO ways can you enable encryption on EBS volumes? (Select TWO.)",
+      "options": [
+        { "key": "A", "text": "By enabling encryption by default for all new EBS volumes and snapshot copies from the EC2 dashboard" },
+        { "key": "B", "text": "By rebooting the instance twice in a row" },
+        { "key": "C", "text": "By choosing to enable encryption on a per-volume basis" },
+        { "key": "D", "text": "By deleting the associated security group" },
+        { "key": "E", "text": "By converting the volume to an instance store volume" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "You can turn on encryption by default for all new EBS volumes and snapshot copies from the EC2 dashboard, or enable encryption on a per-volume basis.",
+        "distractors": {
+          "B": "Rebooting does not encrypt a volume.",
+          "D": "Security groups are firewalls and do not control EBS encryption.",
+          "E": "Converting to instance store is not an encryption method and would make storage ephemeral."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "ec2-storage",
+      "scenario": null,
+      "stem": "Which THREE events cause data on an instance store volume to be lost? (Select THREE.)",
+      "options": [
+        { "key": "A", "text": "The instance is rebooted" },
+        { "key": "B", "text": "The instance hibernates" },
+        { "key": "C", "text": "The instance is stopped" },
+        { "key": "D", "text": "The instance is terminated" },
+        { "key": "E", "text": "An EBS snapshot is taken" },
+        { "key": "F", "text": "A new security group is attached" }
+      ],
+      "correct": ["B", "C", "D"],
+      "explanation": {
+        "correct": "Instance store data is lost when the instance hibernates, is stopped, or is terminated (and on underlying disk failure).",
+        "distractors": {
+          "A": "Rebooting retains instance store data; it is not lost.",
+          "E": "Taking an EBS snapshot does not affect instance store data.",
+          "F": "Attaching a security group changes firewall rules, not instance store data."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "ec2-storage",
+      "scenario": null,
+      "stem": "Why are instance store volumes well suited to caching and temporary content?",
+      "options": [
+        { "key": "A", "text": "Because they are automatically backed up to S3" },
+        { "key": "B", "text": "Because they can be detached and moved between instances" },
+        { "key": "C", "text": "Because they are physically attached to the host and therefore extremely fast" },
+        { "key": "D", "text": "Because they are replicated across Availability Zones" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Instance store volumes are physically attached to the underlying host, making them extremely fast—ideal for cache and other temporary content.",
+        "distractors": {
+          "A": "Instance store is not automatically backed up to S3; that is EBS snapshots.",
+          "B": "Instance store volumes cannot be detached from the instance.",
+          "D": "Cross-AZ replication is an EBS feature, not instance store."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "ec2-security",
+      "scenario": null,
+      "stem": "What best describes an EC2 security group?",
+      "options": [
+        { "key": "A", "text": "A managed encryption key store for EBS volumes" },
+        { "key": "B", "text": "An instance-level firewall that restricts ingress and egress traffic by source, ports, and protocols" },
+        { "key": "C", "text": "A dedicated physical host reserved for one customer" },
+        { "key": "D", "text": "A boot-time script that installs software" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "A security group is an instance-level firewall that restricts inbound and outbound traffic by source, ports, and protocols; it can be associated with multiple instances.",
+        "distractors": {
+          "A": "Key management is not the function of a security group.",
+          "C": "A reserved physical host describes dedicated tenancy, not a security group.",
+          "D": "A boot-time install script is User Data, not a security group."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "ec2-security",
+      "scenario": "You are provisioning a Linux and a Windows EC2 instance and must decide how the key pair is used for each.",
+      "stem": "Which TWO statements about EC2 key pairs are correct? (Select TWO.)",
+      "options": [
+        { "key": "A", "text": "For a Linux instance, the private key is used to remotely connect via SSH" },
+        { "key": "B", "text": "AWS keeps the private key while you keep the public key" },
+        { "key": "C", "text": "For a Windows instance, the private key is used to decrypt the login credentials, including the password" },
+        { "key": "D", "text": "The public key is used to decrypt the username and password" },
+        { "key": "E", "text": "A separate key pair must be created for every single instance" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "On Linux the private key connects via SSH, and on Windows the private key decrypts the login credentials including the password.",
+        "distractors": {
+          "B": "AWS keeps the public key; the private key is your responsibility.",
+          "D": "The public key encrypts the credentials; the private key decrypts them.",
+          "E": "The same key pair can be used across multiple instances."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "single",
+      "domain": "ec2-security",
+      "scenario": "Your team reuses one key pair across several EC2 instances to avoid managing many private keys, and that private key is later exposed.",
+      "stem": "What is the main risk of this situation?",
+      "options": [
+        { "key": "A", "text": "The instances will automatically terminate" },
+        { "key": "B", "text": "Access could be gained to any instance that uses that key pair" },
+        { "key": "C", "text": "The EBS volumes will be wiped" },
+        { "key": "D", "text": "AWS will rotate the public key on your behalf" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Because the same key pair can be reused across instances, a compromised private key could grant access to any instance that uses it.",
+        "distractors": {
+          "A": "A compromised key does not terminate instances.",
+          "C": "Key compromise does not wipe EBS volumes.",
+          "D": "AWS does not automatically rotate your key pair; safeguarding the private key is your responsibility."
+        }
+      }
+    }
+  ]
+}
