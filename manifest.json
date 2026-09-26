@@ -24,6 +24,19 @@
                   "description": "EC2, Batch, Lambda, SAM, ECS, ECR, and EKS.",
                   "children": [
                     {
+                      "id": "ec2",
+                      "label": "EC2",
+                      "mode": "drill",
+                      "description": "Amazon EC2 tenancy, user data, storage, and instance security.",
+                      "tests": [
+                        {
+                          "id": "test_1",
+                          "label": "EC2 Tenancy, Storage & Security \u2014 Drill 1",
+                          "path": "aws/data_engineer_associate/topic_tests/compute/ec2/test_1.json"
+                        }
+                      ]
+                    },
+                    {
                       "id": "overview",
                       "label": "Compute Overview",
                       "mode": "drill",
