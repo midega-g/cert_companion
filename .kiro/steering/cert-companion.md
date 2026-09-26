@@ -14,9 +14,9 @@ A static certification exam practice app (GitHub Pages) with Firebase backend fo
 - `index.html` — markup shell
 - `style.css` — all styling
 - `manifest.json` — auto-generated (never edit manually)
-- `generate_exam_questions.md` — instructions for question generation
-- `build_exam_interface.md` — instructions for interface generation
-- `skills.md` — tool index and project overview
+- `.kiro/specs/generate_exam_questions.md` — instructions for question generation
+- `.kiro/specs/build_exam_interface.md` — instructions for interface generation
+- `.kiro/steering/skills.md` — tool index and project overview
 
 **Content pattern:**
 ```
@@ -39,6 +39,45 @@ git stash && git pull --rebase && git stash pop
 
 # If clean:
 git pull --rebase
+```
+
+### Pre-push diagnostic (RUN FIRST — avoids the reject→rebase→stash loop)
+
+Before staging or pushing, run these checks up front. Skipping this causes a
+predictable back-and-forth: push rejected (non-fast-forward) → try rebase →
+rebase blocked by unstaged changes → stash → rebase → push → unstash. Do the
+diagnosis once at the start instead.
+
+```bash
+# 1. Confirm repo root, remote, branch (repo root is the PARENT of snowflake/ and aws/)
+git rev-parse --show-toplevel && git remote -v && git branch --show-current
+
+# 2. See ALL changes — there are often pre-existing modified files (e.g. aws/*.json)
+#    that are NOT yours. Never bundle them into your commit.
+git status --short
+
+# 3. Check divergence from remote BEFORE committing
+git fetch origin main
+git log --oneline HEAD..origin/main   # commits on remote you don't have (usually manifest.json)
+```
+
+Decision based on the diagnostic:
+
+- **Remote is ahead** (step 3 lists commits, typically `chore: update manifest.json`):
+  you WILL need to rebase before pushing.
+- **Unstaged changes exist that aren't yours** (step 2 shows ` M` files you didn't touch):
+  a plain `git pull --rebase` will fail with "cannot pull with rebase: You have
+  unstaged changes." Stash them first, and restore them after — never commit them.
+
+Recommended sequence when BOTH conditions are true (the exact case that caused the loop):
+
+```bash
+git add <your-specific-paths>            # stage ONLY your work
+git commit -m "..."                      # pre-commit hooks run here
+git stash push -u -m "temp: unrelated changes"   # park files that aren't yours
+git pull --rebase origin main            # now clean → rebase succeeds
+git push origin main
+git stash pop                            # restore the unrelated changes untouched
 ```
 
 ### Commit sequence
@@ -92,7 +131,7 @@ Before generating:
 - Distribution: 3 direct single + 3 direct multi + 7 scenario single + 7 scenario multi
 - Multi-select correct answers must NOT cluster at the start (not always [A,B] or [A,B,C])
 - Correct answers distributed across all option keys A–F
-- Reference `generate_exam_questions.md` for full rules
+- Reference `.kiro/specs/generate_exam_questions.md` for full rules
 
 ### Validation after generation
 
@@ -154,7 +193,7 @@ python3 .github/scripts/generate_manifest.py
 
 **Update docs when:**
 - A new command or workflow is introduced that isn't in `docs/verification-commands.md`
-- A new feature changes the interface spec (`build_exam_interface.md`)
+- A new feature changes the interface spec (`.kiro/specs/build_exam_interface.md`)
 - The question generation rules change (`generate_exam_questions.md`)
 - A new setup step is needed (`docs/setup/firebase-setup.md`)
 - The project structure pattern changes (`skills.md`)
@@ -164,11 +203,11 @@ python3 .github/scripts/generate_manifest.py
 | Change | Update |
 |--------|--------|
 | New validation/debug command | `docs/verification-commands.md` |
-| New UI feature or view | `build_exam_interface.md` |
-| Question generation rule change | `generate_exam_questions.md` |
+| New UI feature or view | `.kiro/specs/build_exam_interface.md` |
+| Question generation rule change | `.kiro/specs/generate_exam_questions.md` |
 | Firebase/infra change | `docs/setup/firebase-setup.md` |
 | Git/CI/deploy workflow change | `docs/deployment.md` |
-| Project structure or tool change | `skills.md` |
+| Project structure or tool change | `.kiro/steering/skills.md` |
 | New feature implementation | `docs/implementation-plan-snowpro-firebase.md` (add task) |
 
 **Rule:** If a change introduces something new that a future session wouldn't know about, document it. If a command was run for the first time and isn't in verification-commands.md, add it.

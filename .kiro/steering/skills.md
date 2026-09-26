@@ -6,7 +6,7 @@ Two tools are available. Pass the appropriate one to the agent depending on the 
 
 ## `generate_exam_questions`
 
-**File:** `generate_exam_questions.md`
+**File:** `.kiro/specs/generate_exam_questions.md`
 
 **Purpose:** Generate a 20-question certification practice test as valid JSON from source material.
 
@@ -16,7 +16,7 @@ Two tools are available. Pass the appropriate one to the agent depending on the 
 
 ## `build_exam_interface`
 
-**File:** `build_exam_interface.md`
+**File:** `.kiro/specs/build_exam_interface.md`
 
 **Purpose:** Build the static web interface (`index.html`, `style.css`, `app.js`, `firebase-init.js`) that loads and runs the practice tests.
 
@@ -26,7 +26,9 @@ Two tools are available. Pass the appropriate one to the agent depending on the 
 
 ## Repository Structure
 
-**Root files:** `index.html`, `style.css`, `app.js`, `firebase-init.js`, `manifest.json` (auto-generated), `skills.md`, `generate_exam_questions.md`, `build_exam_interface.md`
+**Root files:** `index.html`, `style.css`, `app.js`, `firebase-init.js`, `manifest.json` (auto-generated)
+
+**Kiro config:** `.kiro/specs/generate_exam_questions.md`, `.kiro/specs/build_exam_interface.md`, `.kiro/steering/skills.md`, `.kiro/steering/cert-companion.md`
 
 **Docs:** `docs/` — implementation plans, setup guides, verification commands, deployment guide. See `docs/README.md` for index.
 
