@@ -9,6 +9,7 @@ const state = {
   feedbackOpen: [], // [bool]
   user: null, // Firebase user object (null = not authenticated)
   authMode: "signin", // 'signin' or 'signup'
+  _historyCache: null, // cached history records (refreshed on load + after saveHistory)
 };
 
 /* ─── Session Persistence (localStorage + Firestore) ──────────── */
@@ -16,6 +17,45 @@ function sessionKey() {
   if (state.navPath.length === 0 || !state.testMeta) return null;
   const pathIds = state.navPath.map((n) => n.id).join("_");
   return `cert_session_${pathIds}_${state.testMeta.id}`;
+}
+
+/* ─── Cert / mode context helpers ─────────────────────────────── */
+// The certification is the node at navPath depth 1 (provider is depth 0).
+// Virtual mode nodes (id like "<cert>__exam") are skipped when resolving.
+function currentCertId() {
+  const n = state.navPath[1];
+  return n ? n.id : null;
+}
+function currentCertLabel() {
+  const n = state.navPath[1];
+  return n ? n.label : null;
+}
+// Mode is "drill" if any node in the path is the topic_tests subtree (real id
+// "topic_tests") or a virtual drill node; otherwise "exam".
+function currentMode() {
+  for (const n of state.navPath) {
+    if (n.id === "topic_tests" || n._mode === "drill") return "drill";
+    if (n._mode === "exam") return "exam";
+  }
+  return "exam";
+}
+
+// Derive cert id / mode for a saved record, backfilling old records that lack
+// the fields by parsing the stored testPath (e.g.
+// "aws/data_engineer_associate/topic_tests/compute/overview/test_1.json").
+function recordCertId(rec) {
+  if (rec.certId) return rec.certId;
+  const parts = (rec.testPath || "").split("/");
+  return parts.length >= 2 ? parts[1] : null;
+}
+function recordMode(rec) {
+  if (rec.mode) return rec.mode;
+  return (rec.testPath || "").includes("/topic_tests/") ? "drill" : "exam";
+}
+function recordCertLabel(rec) {
+  if (rec.certLabel) return rec.certLabel;
+  const id = recordCertId(rec);
+  return id ? toLabel(id) : "Unknown";
 }
 
 async function saveSession() {
@@ -339,8 +379,38 @@ function setBreadcrumb(crumbs) {
 }
 
 function toLabel(id) {
-  // "virtual-machines" → "Virtual Machines", already handled by manifest
-  return id;
+  // Convert a folder id to a display label (mirror of manifest generator).
+  if (!id) return "";
+  const upper = new Set([
+    "ai",
+    "aws",
+    "gcp",
+    "iam",
+    "vpc",
+    "api",
+    "sql",
+    "ml",
+    "dr",
+    "ui",
+    "ci",
+    "cd",
+    "ec2",
+    "ecs",
+    "ecr",
+    "eks",
+    "s3",
+    "rds",
+  ]);
+  return id
+    .replace(/[-_]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) =>
+      upper.has(w.toLowerCase())
+        ? w.toUpperCase()
+        : w.charAt(0).toUpperCase() + w.slice(1),
+    )
+    .join(" ");
 }
 
 function countCorrect(question, selected) {
@@ -380,6 +450,7 @@ async function renderHome() {
 
   try {
     state.manifest = await fetchJSON("manifest.json");
+    state._historyCache = await loadHistory();
   } catch (e) {
     el.innerHTML = `
       <h1 class="page-title">Certification Practice</h1>
@@ -526,6 +597,7 @@ function renderModeSelect(node) {
 
   let html = `<h1 class="page-title">${node.label}</h1>`;
   html += `<p class="page-subtitle">Choose a study mode</p>`;
+  html += `<div class="home-actions"><button class="btn btn-secondary btn-sm" onclick="renderHistory('${node.id}','drill')">History</button></div>`;
   html += `<div class="card-grid">`;
   ["exam", "drill"].forEach((mode) => {
     const kids = modeChildren(node, mode);
@@ -632,15 +704,34 @@ function renderNode() {
 }
 
 function buildTestListHTML(tests) {
+  const history = state._historyCache || [];
   return `<div class="test-list">
     ${tests
-      .map(
-        (t) => `
+      .map((t) => {
+        const attempts = history.filter((h) => h.testPath === t.path);
+        let badge = "";
+        let actions = `<button class="btn btn-primary btn-sm" onclick="startTest('${t.id}')">Start</button>`;
+        if (attempts.length > 0) {
+          const best = Math.max(...attempts.map((a) => a.percentage));
+          const bestCls =
+            best >= 80 ? "score-high" : best >= 60 ? "score-mid" : "score-low";
+          // index of most recent attempt in the full history array (for review)
+          const lastIdx = history.indexOf(attempts[0]);
+          badge = `<span class="test-done-badge ${bestCls}" title="Best score across ${
+            attempts.length
+          } attempt${attempts.length !== 1 ? "s" : ""}">Done · ${best}% · ${
+            attempts.length
+          } attempt${attempts.length !== 1 ? "s" : ""}</span>`;
+          actions = `
+            <button class="btn btn-secondary btn-sm" onclick="reviewHistoryRecord(${lastIdx})">Review</button>
+            <button class="btn btn-primary btn-sm" onclick="startTest('${t.id}')">Retake</button>`;
+        }
+        return `
       <div class="test-row" id="row-${t.id}">
-        <span class="test-row-label">${t.label}</span>
-        <button class="btn btn-primary btn-sm" onclick="startTest('${t.id}')">Start</button>
-      </div>`,
-      )
+        <span class="test-row-label">${t.label} ${badge}</span>
+        <span class="test-row-actions">${actions}</span>
+      </div>`;
+      })
       .join("")}
   </div>`;
 }
@@ -995,6 +1086,9 @@ async function saveHistory() {
     testLabel: state.testMeta.label,
     topic: state.exam.topic,
     provider: state.navPath[0] ? state.navPath[0].id : null,
+    certId: currentCertId(),
+    certLabel: currentCertLabel(),
+    mode: currentMode(),
     score,
     total,
     percentage: Math.round((score / total) * 100),
@@ -1027,6 +1121,14 @@ async function saveHistory() {
     } catch (e) {
       /* network error — localStorage has it */
     }
+  }
+
+  // Refresh the in-memory cache so completion badges reflect this attempt.
+  // Prepend locally to avoid an extra round-trip; matches unshift order above.
+  if (Array.isArray(state._historyCache)) {
+    state._historyCache.unshift(record);
+  } else {
+    state._historyCache = [record];
   }
 }
 
@@ -1062,37 +1164,21 @@ async function loadHistory() {
 }
 
 /* ─── HISTORY VIEW ──────────────────────────────────────────────── */
-async function renderHistory() {
-  showView("history");
-  setBreadcrumb([
-    { label: "Home", action: "renderHome()" },
-    { label: "History" },
-  ]);
-
-  const el = $("view-history");
-  el.innerHTML = `
-    <h1 class="page-title">Performance History</h1>
-    <div class="state-msg">Loading...</div>`;
-
-  const history = await loadHistory();
-
-  if (history.length === 0) {
-    el.innerHTML = `
-      <h1 class="page-title">Performance History</h1>
-      <p class="page-subtitle">No completed tests yet</p>
-      <p class="state-msg">Complete a test to see your performance history here.</p>`;
-    return;
+// Build stats + attempt list HTML for a set of records. `allHistory` is the
+// full array so per-item indices map correctly for review.
+function historySectionHTML(records, allHistory, emptyMsg) {
+  if (records.length === 0) {
+    return `<p class="state-msg">${emptyMsg}</p>`;
   }
 
-  // Aggregate stats
-  const totalTests = history.length;
+  const totalTests = records.length;
   const avgScore = Math.round(
-    history.reduce((sum, h) => sum + h.percentage, 0) / totalTests,
+    records.reduce((sum, h) => sum + h.percentage, 0) / totalTests,
   );
 
-  // Find weakest domains across all attempts
+  // Weakest domains across this set
   const domainAgg = {};
-  history.forEach((h) => {
+  records.forEach((h) => {
     if (h.domainBreakdown) {
       Object.entries(h.domainBreakdown).forEach(([domain, data]) => {
         if (!domainAgg[domain]) domainAgg[domain] = { correct: 0, total: 0 };
@@ -1109,9 +1195,14 @@ async function renderHistory() {
     .sort((a, b) => a.pct - b.pct)
     .slice(0, 5);
 
-  // Build history list
-  const historyItems = history
-    .map((h, idx) => {
+  const scoreCls = (p) =>
+    p >= 80 ? "score-high" : p >= 60 ? "score-mid" : "score-low";
+  const barCls = (p) =>
+    p >= 80 ? "bar-high" : p >= 60 ? "bar-mid" : "bar-low";
+
+  const items = records
+    .map((h) => {
+      const idx = allHistory.indexOf(h); // stable index into full history
       const date = new Date(h.completedAt).toLocaleDateString("en-GB", {
         day: "numeric",
         month: "short",
@@ -1121,13 +1212,6 @@ async function renderHistory() {
         hour: "2-digit",
         minute: "2-digit",
       });
-      const pctClass =
-        h.percentage >= 80
-          ? "score-high"
-          : h.percentage >= 60
-            ? "score-mid"
-            : "score-low";
-
       const domainBars = h.domainBreakdown
         ? Object.entries(h.domainBreakdown)
             .map(([d, v]) => {
@@ -1135,16 +1219,15 @@ async function renderHistory() {
               return `<div class="history-domain-row">
               <span class="history-domain-name">${d}</span>
               <div class="history-bar-track">
-                <div class="history-bar-fill ${
-                  dpct >= 80 ? "bar-high" : dpct >= 60 ? "bar-mid" : "bar-low"
-                }" style="width:${dpct}%"></div>
+                <div class="history-bar-fill ${barCls(
+                  dpct,
+                )}" style="width:${dpct}%"></div>
               </div>
               <span class="history-domain-score">${v.correct}/${v.total}</span>
             </div>`;
             })
             .join("")
         : "";
-
       return `
       <div class="history-item">
         <div class="history-item-header" onclick="toggleHistoryDetail(${idx})">
@@ -1152,19 +1235,21 @@ async function renderHistory() {
             <span class="history-item-label">${h.testLabel || h.topic}</span>
             <span class="history-item-date">${date} ${time}</span>
           </div>
-          <div class="history-item-score ${pctClass}">${h.percentage}%
+          <div class="history-item-score ${scoreCls(h.percentage)}">${
+            h.percentage
+          }%
             <span class="history-item-raw">(${h.score}/${h.total})</span>
           </div>
         </div>
         <div class="history-item-detail hidden" id="history-detail-${idx}">
           ${domainBars}
+          <div style="margin-top:8px"><button class="btn btn-secondary btn-sm" onclick="reviewHistoryRecord(${idx})">Review Answers</button></div>
         </div>
       </div>`;
     })
     .join("");
 
-  // Weak domains section
-  const weakDomainsHTML =
+  const weakHTML =
     weakDomains.length > 0
       ? `<div class="section-heading">Areas to Improve</div>
        <div class="weak-domains">
@@ -1173,33 +1258,129 @@ async function renderHistory() {
              (d) =>
                `<div class="weak-domain-item"><span>${
                  d.domain
-               }</span><span class="${
-                 d.pct >= 80
-                   ? "score-high"
-                   : d.pct >= 60
-                     ? "score-mid"
-                     : "score-low"
-               }">${d.pct}%</span></div>`,
+               }</span><span class="${scoreCls(d.pct)}">${d.pct}%</span></div>`,
            )
            .join("")}
        </div>`
       : "";
 
+  return `
+    <div class="history-stats">
+      <div class="stat-card"><div class="stat-value">${totalTests}</div><div class="stat-label">Tests Taken</div></div>
+      <div class="stat-card"><div class="stat-value">${avgScore}%</div><div class="stat-label">Average Score</div></div>
+    </div>
+    ${weakHTML}
+    <div class="section-heading">All Attempts</div>
+    <div class="history-list">${items}</div>`;
+}
+
+// Home history: global, EXAM (domain) results only, filterable by certification.
+// Per-cert history: pass certId — shows Drill / Domain tabs for that cert.
+async function renderHistory(certId, tab) {
+  showView("history");
+  const el = $("view-history");
+  el.innerHTML = `<h1 class="page-title">Performance History</h1><div class="state-msg">Loading...</div>`;
+
+  const history = state._historyCache || (await loadHistory());
+  state._historyCache = history;
+
+  if (certId) {
+    return renderCertHistory(certId, tab || "drill", history);
+  }
+
+  // ── Home history: exam-only, cert dropdown filter ──
+  setBreadcrumb([
+    { label: "Home", action: "renderHome()" },
+    { label: "History" },
+  ]);
+
+  const examRecords = history.filter((h) => recordMode(h) === "exam");
+
+  // Cert dropdown options: only certs that have exam results
+  const certMap = {};
+  examRecords.forEach((h) => {
+    const id = recordCertId(h);
+    if (id && !certMap[id]) certMap[id] = recordCertLabel(h);
+  });
+  const selected = state._homeHistoryCert || "all";
+  const optionsHTML =
+    `<option value="all"${
+      selected === "all" ? " selected" : ""
+    }>All certifications</option>` +
+    Object.entries(certMap)
+      .map(
+        ([id, label]) =>
+          `<option value="${id}"${
+            selected === id ? " selected" : ""
+          }>${label}</option>`,
+      )
+      .join("");
+
+  const filtered =
+    selected === "all"
+      ? examRecords
+      : examRecords.filter((h) => recordCertId(h) === selected);
+
   el.innerHTML = `
     <h1 class="page-title">Performance History</h1>
-    <div class="history-stats">
-      <div class="stat-card">
-        <div class="stat-value">${totalTests}</div>
-        <div class="stat-label">Tests Taken</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${avgScore}%</div>
-        <div class="stat-label">Average Score</div>
-      </div>
+    <p class="page-subtitle">Exam Prep results across your certifications</p>
+    <div class="history-filter">
+      <label for="home-hist-cert">Certification:</label>
+      <select id="home-hist-cert" onchange="onHomeHistoryCertChange(this.value)">${optionsHTML}</select>
     </div>
-    ${weakDomainsHTML}
-    <div class="section-heading">All Attempts</div>
-    <div class="history-list">${historyItems}</div>`;
+    ${historySectionHTML(filtered, history, "No Exam Prep attempts yet.")}`;
+}
+
+function onHomeHistoryCertChange(value) {
+  state._homeHistoryCert = value;
+  renderHistory();
+}
+
+// Per-certification history with Drill / Domain tabs (separate aggregation).
+function renderCertHistory(certId, tab, history) {
+  const el = $("view-history");
+  const certLabel =
+    history.find((h) => recordCertId(h) === certId)?.certLabel ||
+    recordCertLabel({ certId }) ||
+    toLabel(certId);
+
+  setBreadcrumb([
+    { label: "Home", action: "renderHome()" },
+    { label: certLabel + " — History" },
+  ]);
+
+  const certRecords = history.filter((h) => recordCertId(h) === certId);
+  const drillRecords = certRecords.filter((h) => recordMode(h) === "drill");
+  const examRecords = certRecords.filter((h) => recordMode(h) === "exam");
+
+  const activeDrill = tab === "drill";
+  const body = activeDrill
+    ? historySectionHTML(
+        drillRecords,
+        history,
+        "No Topic Drill attempts yet for this certification.",
+      )
+    : historySectionHTML(
+        examRecords,
+        history,
+        "No Exam Prep attempts yet for this certification.",
+      );
+
+  el.innerHTML = `
+    <h1 class="page-title">${certLabel} — History</h1>
+    <div class="history-tabs">
+      <button class="tab-btn ${
+        activeDrill ? "active" : ""
+      }" onclick="renderHistory('${certId}','drill')">Topic Drill (${
+        drillRecords.length
+      })</button>
+      <button class="tab-btn ${
+        !activeDrill ? "active" : ""
+      }" onclick="renderHistory('${certId}','exam')">Exam Prep (${
+        examRecords.length
+      })</button>
+    </div>
+    ${body}`;
 }
 
 function toggleHistoryDetail(idx) {
@@ -1208,40 +1389,23 @@ function toggleHistoryDetail(idx) {
 }
 
 /* ─── REPORT VIEW ───────────────────────────────────────────────── */
-function renderReport() {
-  clearSession(); // Test complete — no need to resume
-  saveHistory(); // Persist results for performance tracking
-  showView("report");
-  const crumbs = [{ label: "Home", action: "renderHome()" }];
-  state.navPath.forEach((n, i) => {
-    crumbs.push({ label: n.label, action: `navigateToDepth(${i})` });
-  });
-  crumbs.push({
-    label: state.testMeta.label,
-    action: `navigateToDepth(${state.navPath.length - 1})`,
-  });
-  crumbs.push({ label: "Results" });
-  setBreadcrumb(crumbs);
-
-  const questions = state.exam.questions;
+// Build the report body HTML from questions + answers. Reused by the live
+// report (after finishing a test) and the read-only historical review.
+// answers: [{ selected: [...keys] }]  (submitted flag not needed here)
+function buildReportBody(topic, questions, answers, opts = {}) {
   const total = questions.length;
-
-  // Score
   let score = 0;
   questions.forEach((q, i) => {
-    if (countCorrect(q, state.answers[i].selected)) score++;
+    if (countCorrect(q, answers[i].selected)) score++;
   });
-  const pct = Math.round((score / total) * 100);
+  const pct = total ? Math.round((score / total) * 100) : 0;
 
-  // Domain analysis
-  const domainMap = {}; // { domain: { correct, total } }
+  const domainMap = {};
   questions.forEach((q, i) => {
     if (!domainMap[q.domain]) domainMap[q.domain] = { correct: 0, total: 0 };
     domainMap[q.domain].total++;
-    if (countCorrect(q, state.answers[i].selected))
-      domainMap[q.domain].correct++;
+    if (countCorrect(q, answers[i].selected)) domainMap[q.domain].correct++;
   });
-
   const domainRows = Object.entries(domainMap)
     .map(([d, v]) => {
       const missed = v.correct < v.total;
@@ -1252,18 +1416,15 @@ function renderReport() {
     })
     .join("");
 
-  // Question review
   const reviewItems = questions
     .map((q, i) => {
-      const ans = state.answers[i];
+      const ans = answers[i];
       const isCorrect = countCorrect(q, ans.selected);
       const userKeys = ans.selected.join(", ") || "—";
       const correctKeys = q.correct.join(", ");
-
       const scenarioHTML = q.scenario
         ? `<div class="scenario-block" style="margin-bottom:10px">${q.scenario}</div>`
         : "";
-
       const optionReviews = q.options
         .map((opt) => {
           const isUserSel = ans.selected.includes(opt.key);
@@ -1284,7 +1445,6 @@ function renderReport() {
       </div>`;
         })
         .join("");
-
       return `
       <div class="review-item ${isCorrect ? "correct" : "incorrect"}">
         <div class="review-meta">
@@ -1306,9 +1466,19 @@ function renderReport() {
     })
     .join("");
 
-  $("view-report").innerHTML = `
+  const actions = opts.readOnly
+    ? `<div class="report-actions">
+         <button class="btn btn-secondary" onclick="renderHistory()">Back to History</button>
+         <button class="btn btn-primary" onclick="downloadPDF()">Download Report</button>
+       </div>`
+    : `<div class="report-actions">
+         <button class="btn btn-secondary" onclick="retakeTest()">Retake Test</button>
+         <button class="btn btn-primary"   onclick="downloadPDF()">Download Report</button>
+       </div>`;
+
+  return `
     <div class="report-header">
-      <div class="page-title">${state.exam.topic}</div>
+      <div class="page-title">${topic}${opts.readOnly ? " — Review" : ""}</div>
       <div class="score-display">${score} / ${total}</div>
       <div class="score-pct">${pct}%</div>
     </div>
@@ -1322,10 +1492,79 @@ function renderReport() {
     <div class="section-heading">Question Review</div>
     ${reviewItems}
 
-    <div class="report-actions">
-      <button class="btn btn-secondary" onclick="retakeTest()">Retake Test</button>
-      <button class="btn btn-primary"   onclick="downloadPDF()">Download Report</button>
-    </div>`;
+    ${actions}`;
+}
+
+function renderReport() {
+  clearSession(); // Test complete — no need to resume
+  saveHistory(); // Persist results for performance tracking
+  showView("report");
+  const crumbs = [{ label: "Home", action: "renderHome()" }];
+  state.navPath.forEach((n, i) => {
+    crumbs.push({ label: n.label, action: `navigateToDepth(${i})` });
+  });
+  crumbs.push({
+    label: state.testMeta.label,
+    action: `navigateToDepth(${state.navPath.length - 1})`,
+  });
+  crumbs.push({ label: "Results" });
+  setBreadcrumb(crumbs);
+
+  $("view-report").innerHTML = buildReportBody(
+    state.exam.topic,
+    state.exam.questions,
+    state.answers,
+  );
+}
+
+/* ─── READ-ONLY HISTORICAL REVIEW ───────────────────────────────── */
+// Re-fetch the test JSON by its stored path, merge saved answers, and render a
+// locked, read-only report. Falls back gracefully if the test file is missing.
+async function reviewHistoryRecord(idx) {
+  const history = state._historyCache || (await loadHistory());
+  const rec = history[idx];
+  if (!rec) return;
+
+  showView("report");
+  setBreadcrumb([
+    { label: "Home", action: "renderHome()" },
+    { label: "History", action: "renderHistory()" },
+    { label: "Review" },
+  ]);
+  $("view-report").innerHTML = `<div class="state-msg">Loading review…</div>`;
+
+  let exam;
+  try {
+    exam = await fetchJSON(rec.testPath);
+  } catch (e) {
+    $("view-report").innerHTML = `
+      <div class="report-header"><div class="page-title">${
+        rec.testLabel || rec.topic
+      } — Review</div></div>
+      <div class="state-msg error">This test file could not be loaded (it may have been moved or removed), so a full question review isn't available.<br>Recorded score: ${
+        rec.score
+      }/${rec.total} (${rec.percentage}%).</div>
+      <div class="report-actions"><button class="btn btn-secondary" onclick="renderHistory()">Back to History</button></div>`;
+    return;
+  }
+
+  // Rebuild an answers array aligned to the exam questions from perQuestionResults.
+  const byId = {};
+  (rec.perQuestionResults || []).forEach((r) => {
+    byId[r.questionId] = r.userAnswer || [];
+  });
+  const answers = exam.questions.map((q) => ({
+    selected: byId[q.id] || [],
+  }));
+
+  $("view-report").innerHTML = buildReportBody(
+    exam.topic,
+    exam.questions,
+    answers,
+    {
+      readOnly: true,
+    },
+  );
 }
 
 function retakeTest() {

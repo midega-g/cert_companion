@@ -919,3 +919,69 @@ body {
   color: var(--primary, #2563eb);
   background: rgba(37, 99, 235, 0.05);
 }
+
+/* ─── Test completion badge + row actions ───────────────────────── */
+.test-row-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.test-done-badge {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-alt, #f3f4f6);
+  border: 1px solid var(--border);
+}
+
+/* ─── History: cert filter + tabs ───────────────────────────────── */
+.history-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 20px;
+}
+
+.history-filter label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.history-filter select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 0.9rem;
+}
+
+.history-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 16px 0 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  color: var(--text, #111827);
+  border-bottom-color: var(--text, #111827);
+}
+
+.tab-btn:hover {
+  color: var(--text, #111827);
+}
