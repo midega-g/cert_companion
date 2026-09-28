@@ -33,9 +33,9 @@
       "explanation": {
         "correct": "Cloud computing is the on-demand delivery of IT resources over the internet with primarily pay-as-you-go pricing.",
         "distractors": {
+          "A": "Leasing dedicated hardware on multi-year terms is not the pay-as-you-go, on-demand cloud model.",
           "B": "Buying and installing hardware in your own data center describes the on-premises model, not cloud computing.",
-          "C": "Cloud pricing is primarily pay-as-you-go, not a fixed subscription independent of usage.",
-          "A": "Leasing dedicated hardware on multi-year terms is not the pay-as-you-go, on-demand cloud model."
+          "C": "Cloud pricing is primarily pay-as-you-go, not a fixed subscription independent of usage."
         }
       }
     },
@@ -250,8 +250,8 @@
         "correct": "The pay-as-you-go model is based on paying only for the resources that you use, in contrast to investing in data centers and hardware that might not be fully used.",
         "distractors": {
           "A": "A flat fee regardless of usage is the opposite of pay-as-you-go.",
-          "C": "Pre-purchasing yearly capacity is not what the pay-as-you-go advantage describes.",
-          "B": "Payment is tied to resource usage, not to whether a project earns revenue."
+          "B": "Payment is tied to resource usage, not to whether a project earns revenue.",
+          "C": "Pre-purchasing yearly capacity is not what the pay-as-you-go advantage describes."
         }
       }
     },
@@ -429,9 +429,9 @@
       "explanation": {
         "correct": "The IT resources mentioned in the cloud computing definition are AWS services; AWS provides cloud computing services.",
         "distractors": {
+          "A": "ISP bandwidth is the connection to the cloud, not the IT resources being delivered.",
           "B": "The customer's own servers are the on-premises model, not the resources delivered by the cloud.",
-          "C": "The resources are AWS services, not third-party software licenses.",
-          "A": "ISP bandwidth is the connection to the cloud, not the IT resources being delivered."
+          "C": "The resources are AWS services, not third-party software licenses."
         }
       }
     },
@@ -639,9 +639,9 @@
       "explanation": {
         "correct": "By running in the cloud, an entire production environment can be replicated in minutes or even seconds and managed over the internet, avoiding hardware procurement.",
         "distractors": {
+          "A": "Allocating staff to install cabling describes on-premises work, which the cloud removes.",
           "B": "Cloud avoids multi-year hardware leases; this contradicts the on-demand model.",
-          "D": "Cloud pricing is pay-as-you-go, not a flat annual fee for unlimited environments.",
-          "A": "Allocating staff to install cabling describes on-premises work, which the cloud removes."
+          "D": "Cloud pricing is pay-as-you-go, not a flat annual fee for unlimited environments."
         }
       }
     },
@@ -675,9 +675,9 @@
       "explanation": {
         "correct": "Realizing cost savings lets companies focus on projects that differentiate their business and remove undifferentiated heavy lifting instead of racking, stacking, and powering physical infrastructure.",
         "distractors": {
+          "A": "Going global is about deploying to Regions for lower latency, not language translation.",
           "B": "Pre-buying servers for the year is the guessing-capacity problem the cloud avoids, not the described benefit.",
-          "D": "Pay-as-you-go means paying for what you use, not committing to a fixed monthly budget.",
-          "A": "Going global is about deploying to Regions for lower latency, not language translation."
+          "D": "Pay-as-you-go means paying for what you use, not committing to a fixed monthly budget."
         }
       }
     }

@@ -142,8 +142,12 @@ Before generating:
 
 - 20 questions per test
 - Distribution: 3 direct single + 3 direct multi + 7 scenario single + 7 scenario multi
-- Multi-select correct answers must NOT cluster at the start (not always [A,B] or [A,B,C])
+- Multi-select correct answers must NOT cluster at the start. `[A,B]` and
+  `[A,B,C]` are FORBIDDEN in every question (hard rule, enforced below) — at
+  least one correct key must sit outside the leading positions.
 - Correct answers distributed across all option keys A–F
+- Distractor feedback keys (`explanation.distractors`) must be listed in
+  alphabetical order (A→B→C→D…), matching option order
 - Reference `.kiro/specs/generate_exam_questions.md` for full rules
 
 ### Validation after generation
@@ -177,6 +181,16 @@ if any(v > 4 for v in fc_counts.values()):
     print('  ❌ VIOLATION: a letter appears as first correct choice more than 4 times')
 else:
     print('  ✅ OK')
+# HARD: forbid contiguous-from-start clusters ([A,B] / [A,B,C])
+LETTERS = 'ABCDEF'
+lazy = [(q['id'], q['correct']) for q in data['questions']
+        if q['type'] == 'multi'
+        and sorted(LETTERS.index(k) for k in q['correct']) == list(range(len(q['correct'])))]
+print(f'  {\"❌ VIOLATION: lazy [A,B]/[A,B,C] clusters: \"+str(lazy) if lazy else \"✅ OK (no start clusters)\"}')
+# HARD: distractor keys in alphabetical order
+bad_order = [(q['id'], list(q['explanation']['distractors'].keys())) for q in data['questions']
+             if list(q['explanation']['distractors'].keys()) != sorted(q['explanation']['distractors'].keys())]
+print(f'  {\"❌ VIOLATION: distractor keys unsorted: \"+str(bad_order) if bad_order else \"✅ OK (distractor keys sorted)\"}')
 "
 ```
 

@@ -95,6 +95,8 @@ Every incorrect option must have its own explanation identifying the exact detai
 
 The goal is for learners to understand why every option is right or wrong after submission.
 
+**Distractor ordering rule:** The keys in `explanation.distractors` must be listed in alphabetical order (A→B→C→D→E→F), matching the option order. Never emit them out of sequence (e.g. `{"B":..., "A":...}`). If you reorder options to rebalance answer keys, rebuild the `distractors` object with its keys re-sorted.
+
 ---
 
 # JSON SCHEMA
@@ -159,6 +161,8 @@ The JSON schema example shows `"correct": ["A"]` for illustration purposes only.
 
 * Select TWO — valid distributions: [A, D], [B, E], [C, E], [A, E], [B, D]. Invalid patterns: [A, B] for every question.
 * Select THREE — valid distributions: [A, C, E], [B, D, F], [A, D, F], [B, C, F]. Invalid patterns: [A, B, C] for every question.
+
+**HARD rule — no contiguous-from-start clusters:** A multi-select `correct` array must NEVER be a contiguous run beginning at A. `[A, B]` (Select TWO) and `[A, B, C]` (Select THREE) are FORBIDDEN in every question — not just "not every question." Such an array is a sign you placed all correct options first and padded distractors at the end (lazy crafting). At least one correct key must sit outside the leading positions. Achieve this by genuinely shuffling option order when authoring, not by relabeling after the fact. The validator below FAILS the file if any multi-select is `[A, B]` or `[A, B, C]`.
 
 Shuffle the position of correct answers across the full range of options. If you notice a pattern forming (e.g., the first N options are always correct), actively break it by placing correct answers in later positions.
 
@@ -293,6 +297,30 @@ if any(v > 4 for v in fc_counts.values()):
     print('  ❌ VIOLATION: a letter appears as first correct choice more than 4 times')
 else:
     print('  ✅ OK')
+
+# HARD: no multi-select correct array may be a contiguous run starting at A ([A,B] / [A,B,C])
+LETTERS = 'ABCDEF'
+lazy = []
+for q in data['questions']:
+    if q['type'] == 'multi':
+        idx = sorted(LETTERS.index(k) for k in q['correct'])
+        if idx == list(range(len(idx))):
+            lazy.append((q['id'], q['correct']))
+if lazy:
+    print(f'  ❌ VIOLATION: lazy contiguous-from-start multi-select clusters: {lazy}')
+else:
+    print('  ✅ OK (no [A,B] / [A,B,C] clusters)')
+
+# HARD: distractor feedback keys must be listed in alphabetical order
+bad_order = []
+for q in data['questions']:
+    dk = list(q['explanation']['distractors'].keys())
+    if dk != sorted(dk):
+        bad_order.append((q['id'], dk))
+if bad_order:
+    print(f'  ❌ VIOLATION: distractor keys not in alphabetical order: {bad_order}')
+else:
+    print('  ✅ OK (distractor keys sorted)')
 "
 ```
 

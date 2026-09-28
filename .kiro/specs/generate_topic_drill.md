@@ -109,6 +109,19 @@ merging facts that deserve their own question.
   option lists. Distribute correct keys across A–F. No single letter is the
   first correct choice in multi-selects more than 4 times per test, and no
   single letter accounts for more than 40% of total correct keys.
+- **NO contiguous-from-start clusters (hard rule).** A multi-select `correct`
+  array must NEVER be a contiguous run beginning at A — i.e. `[A,B]` and
+  `[A,B,C]` are FORBIDDEN. This is lazy crafting: it means you placed all the
+  correct options first and padded distractors at the end. Instead, interleave
+  correct answers and distractors so at least one correct key is NOT in the
+  leading positions. Valid: `[A,D]`, `[B,E]`, `[C,E]`, `[A,C,E]`, `[B,D,F]`,
+  `[A,D,F]`. Achieve this by genuinely shuffling option order, not by swapping
+  labels after the fact. The validator below FAILS the file if any multi is
+  `[A,B]` or `[A,B,C]`.
+- **Distractor feedback must be listed in alphabetical key order.** The
+  `explanation.distractors` object keys must appear in A→B→C→D(→E→F) order,
+  matching the option order — never out of sequence (e.g. `{"B":..., "A":...}`).
+  If you reorder options, rebuild the distractors object in sorted key order.
 - Questions and options must not reference the source ("according to the
   docs"). Ask as if the facts are simply known.
 
@@ -209,6 +222,22 @@ assert scenario <= 3, 'FAIL: too many scenario questions'
 assert all(v <= 4 for v in fc.values()), 'FAIL: a letter is first correct choice > 4 times'
 mx = max(Counter(keys).values()) if keys else 0
 assert mx <= 0.4*len(keys)+1e-9 or len(keys)==0, 'WARN: a letter exceeds 40% of correct keys'
+# HARD: no multi-select correct array may be a contiguous run starting at A
+LETTERS='ABCDEF'
+lazy=[]
+for q in qs:
+    if q['type']=='multi':
+        idx=sorted(LETTERS.index(k) for k in q['correct'])
+        if idx == list(range(len(idx))):  # e.g. [0,1]=[A,B] or [0,1,2]=[A,B,C]
+            lazy.append((q['id'], q['correct']))
+assert not lazy, f'FAIL: lazy contiguous-from-start multi-select clusters: {lazy}'
+# HARD: distractor feedback keys must be listed in alphabetical order
+bad_order=[]
+for q in qs:
+    dk=list(q['explanation']['distractors'].keys())
+    if dk != sorted(dk):
+        bad_order.append((q['id'], dk))
+assert not bad_order, f'FAIL: distractor keys not in alphabetical order: {bad_order}'
 print('OK')
 "
 ```
