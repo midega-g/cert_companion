@@ -359,6 +359,11 @@ function showView(name) {
       $(`view-${v}`).classList.toggle("hidden", v !== name);
     },
   );
+  // The exam view needs extra width for the far-right question navigator.
+  // Widen the app container only while the exam is showing; all other views
+  // keep the default reading width.
+  const app = document.getElementById("app");
+  if (app) app.classList.toggle("app-wide", name === "exam");
 }
 
 function setBreadcrumb(crumbs) {

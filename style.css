@@ -45,6 +45,12 @@ body {
   padding: 24px 16px 64px;
 }
 
+/* Exam view breaks out wider so the question column is not squeezed by the
+   far-right question navigator. */
+#app.app-wide {
+  max-width: 1080px;
+}
+
 .view {
   width: 100%;
 }
@@ -430,16 +436,18 @@ body {
 .exam-layout {
   display: flex;
   align-items: flex-start;
-  gap: 20px;
+  gap: 40px;
 }
 
 .exam-main {
   flex: 1 1 auto;
   min-width: 0;
+  max-width: 760px;
 }
 
 .q-navigator {
-  flex: 0 0 200px;
+  flex: 0 0 168px;
+  margin-left: auto;
   position: sticky;
   top: 16px;
   background: var(--surface);
@@ -558,16 +566,21 @@ body {
   opacity: 0.7;
 }
 
-/* Stack the navigator above the question on narrow screens */
-@media (max-width: 820px) {
+/* Stack the navigator BELOW the question + feedback on narrow screens */
+@media (max-width: 900px) {
   .exam-layout {
     flex-direction: column;
+    gap: 20px;
+  }
+  .exam-main {
+    max-width: 100%;
   }
   .q-navigator {
     flex: 1 1 auto;
     width: 100%;
+    margin-left: 0;
     position: static;
-    order: -1;
+    /* no order override: navigator follows the question/feedback in DOM order */
   }
   .q-navigator-grid {
     grid-template-columns: repeat(10, 1fr);
@@ -578,7 +591,12 @@ body {
     gap: 12px;
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  .q-navigator-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+@media (max-width: 400px) {
   .q-navigator-grid {
     grid-template-columns: repeat(6, 1fr);
   }
