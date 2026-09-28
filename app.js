@@ -977,16 +977,21 @@ function renderQuestion(idx) {
 
   $("view-exam").innerHTML = `
     ${header}
-    <div class="question-card">
-      ${scenario}
-      <div class="question-stem">${q.stem}</div>
-      ${instruction}
-      <ul class="options-list">${optionsHTML}</ul>
-      ${feedbackHTML}
-    </div>
-    <div class="exam-nav">
-      ${prevBtn}
-      ${actionBtn}
+    <div class="exam-layout">
+      <div class="exam-main">
+        <div class="question-card">
+          ${scenario}
+          <div class="question-stem">${q.stem}</div>
+          ${instruction}
+          <ul class="options-list">${optionsHTML}</ul>
+          ${feedbackHTML}
+        </div>
+        <div class="exam-nav">
+          ${prevBtn}
+          ${actionBtn}
+        </div>
+      </div>
+      ${buildNavigator(idx)}
     </div>`;
 }
 
@@ -1052,6 +1057,66 @@ function goPrev() {
     renderQuestion(state.current);
     $("view-exam").scrollIntoView({ behavior: "smooth", block: "start" });
   }
+}
+
+// Jump directly to a question via the navigator grid. Allowed only for
+// questions the user has already answered (submitted) or the current question;
+// unanswered future questions are disabled in the UI and rejected here too.
+function goToQuestion(idx) {
+  if (idx < 0 || idx >= state.exam.questions.length) return;
+  const canJump = idx === state.current || state.answers[idx].submitted;
+  if (!canJump) return;
+  state.current = idx;
+  saveSession();
+  renderQuestion(state.current);
+  $("view-exam").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// Build the question-navigator grid: answered questions are clickable jump
+// targets, the current question is highlighted, and unanswered ones are
+// greyed out / disabled.
+function buildNavigator(activeIdx) {
+  const buttons = state.exam.questions
+    .map((_, i) => {
+      const ans = state.answers[i];
+      const isCurrent = i === activeIdx;
+      const isAnswered = ans.submitted;
+      const clickable = isAnswered || isCurrent;
+      const classes = [
+        "nav-q",
+        isCurrent ? "nav-q-current" : "",
+        isAnswered ? "nav-q-answered" : "nav-q-unanswered",
+      ]
+        .filter(Boolean)
+        .join(" ");
+      const disabled = clickable ? "" : "disabled";
+      const aria = isCurrent
+        ? 'aria-current="true"'
+        : isAnswered
+          ? ""
+          : 'aria-disabled="true"';
+      return `<button type="button" class="${classes}" ${disabled} ${aria}
+        onclick="goToQuestion(${i})"
+        title="Question ${i + 1}${
+          isAnswered
+            ? " (answered)"
+            : isCurrent
+              ? " (current)"
+              : " (not yet answered)"
+        }">${i + 1}</button>`;
+    })
+    .join("");
+
+  return `
+    <aside class="q-navigator" aria-label="Question navigator">
+      <div class="q-navigator-title">Questions</div>
+      <div class="q-navigator-grid">${buttons}</div>
+      <div class="q-navigator-legend">
+        <span class="legend-item"><span class="legend-swatch legend-answered"></span>Answered</span>
+        <span class="legend-item"><span class="legend-swatch legend-current"></span>Current</span>
+        <span class="legend-item"><span class="legend-swatch legend-unanswered"></span>Locked</span>
+      </div>
+    </aside>`;
 }
 
 /* ─── Performance History ────────────────────────────────────────── */

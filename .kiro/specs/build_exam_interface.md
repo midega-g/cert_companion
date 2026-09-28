@@ -332,6 +332,25 @@ When navigating back to a submitted question:
 * Locked, selections and highlighting preserved
 * Feedback collapsed by default with "Show Feedback" / "Hide Feedback" toggle
 
+### Question Navigator (jump grid)
+
+A numbered question navigator is shown alongside the question (right side on
+desktop via `.exam-layout`/`.q-navigator`; stacked above the question on narrow
+screens). It lets the user jump directly to a question instead of clicking
+Previous/Next repeatedly.
+
+* One numbered button per question, rendered by `buildNavigator(activeIdx)`.
+* **Answered (submitted) questions** are clickable jump targets (green styling).
+* **The current question** is highlighted (accent styling) and clickable.
+* **Unanswered/future questions are greyed out and disabled** — the user can
+  only jump to questions they have already answered (plus the current one).
+* Clicking a button calls `goToQuestion(idx)`, which guards the same rule
+  (`idx === state.current || state.answers[idx].submitted`) so a locked target
+  cannot be reached even programmatically.
+* A small legend explains Answered / Current / Locked.
+* Navigator state is rebuilt on every `renderQuestion` call, so answering a
+  question immediately unlocks its button.
+
 ### State Management
 
 Maintain across navigation without loss:
