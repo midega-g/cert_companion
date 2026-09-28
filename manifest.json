@@ -6,56 +6,6 @@
       "mode": "exam",
       "children": [
         {
-          "id": "data_engineer_associate",
-          "label": "Data Engineer - Associate",
-          "mode": "exam",
-          "description": "DEA-C01 \u2014 data engineering on AWS: ingestion, transformation, storage, operations, and security.",
-          "children": [
-            {
-              "id": "topic_tests",
-              "label": "Topic Drills",
-              "mode": "drill",
-              "description": "Rapid-fire quick questions on the specific content you are currently studying.",
-              "children": [
-                {
-                  "id": "compute",
-                  "label": "Compute",
-                  "mode": "drill",
-                  "description": "EC2, Batch, Lambda, SAM, ECS, ECR, and EKS.",
-                  "children": [
-                    {
-                      "id": "ec2",
-                      "label": "EC2",
-                      "mode": "drill",
-                      "description": "Amazon EC2 tenancy, user data, storage, and instance security.",
-                      "tests": [
-                        {
-                          "id": "test_1",
-                          "label": "EC2 Tenancy, Storage & Security \u2014 Drill 1",
-                          "path": "aws/data_engineer_associate/topic_tests/compute/ec2/test_1.json"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "overview",
-                      "label": "Compute Overview",
-                      "mode": "drill",
-                      "description": "High-level introduction to AWS compute and container services.",
-                      "tests": [
-                        {
-                          "id": "test_1",
-                          "label": "Compute Overview \u2014 Drill 1",
-                          "path": "aws/data_engineer_associate/topic_tests/compute/overview/test_1.json"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
           "id": "gen_ai_foundation",
           "label": "Gen AI Foundation",
           "mode": "exam",
@@ -411,6 +361,40 @@
                       "id": "test_1",
                       "label": "What Is AWS? \u2014 Drill 1",
                       "path": "aws/topic_tests/cloud_fundamentals/what_is_aws/test_1.json"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "compute",
+              "label": "Compute",
+              "mode": "drill",
+              "description": "EC2, Batch, Lambda, SAM, ECS, ECR, and EKS.",
+              "children": [
+                {
+                  "id": "ec2",
+                  "label": "EC2",
+                  "mode": "drill",
+                  "description": "Amazon EC2 tenancy, user data, storage, and instance security.",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "EC2 Tenancy, Storage & Security \u2014 Drill 1",
+                      "path": "aws/topic_tests/compute/ec2/test_1.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "overview",
+                  "label": "Compute Overview",
+                  "mode": "drill",
+                  "description": "High-level introduction to AWS compute and container services.",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Compute Overview \u2014 Drill 1",
+                      "path": "aws/topic_tests/compute/overview/test_1.json"
                     }
                   ]
                 }
