@@ -189,6 +189,13 @@ Auth → Home → Topic → Test List → Exam → Report
 
 Breadcrumb navigation is always visible except on Home and Auth views.
 
+The breadcrumb is a modern pill-style bar. When the trail is deep (more than 5
+levels — e.g. `Home › AWS › Exam Prep › Cert › Domain › Task › Test › Q1`) the
+middle levels collapse behind a `…` button, showing only the first crumb and the
+last two. Clicking `…` (`expandBreadcrumb()`) reveals the full trail in place;
+navigating to a different view/question resets it to collapsed. The final
+(current) crumb truncates with an ellipsis if the label is very long.
+
 ---
 
 ## AUTH VIEW

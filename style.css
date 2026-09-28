@@ -63,27 +63,81 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px;
-  font-size: 0.875rem;
+  gap: 2px;
+  font-size: 0.8rem;
   color: var(--text-muted);
   margin-bottom: 24px;
+  padding: 6px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  width: fit-content;
+  max-width: 100%;
+  box-shadow: var(--shadow);
 }
 
-.breadcrumb a {
-  color: var(--accent);
-  text-decoration: none;
+.breadcrumb .crumb {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  line-height: 1.2;
+  white-space: nowrap;
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  font-family: inherit;
   cursor: pointer;
 }
-.breadcrumb a:hover {
-  text-decoration: underline;
+
+.breadcrumb a.crumb {
+  color: var(--accent);
+  text-decoration: none;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
+}
+.breadcrumb a.crumb:hover {
+  background: var(--bg);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  text-decoration: none;
+}
+
+.breadcrumb span.current {
+  color: var(--text);
+  font-weight: 600;
+  cursor: default;
+  /* Truncate an over-long final crumb (e.g. a test title) gracefully */
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breadcrumb .crumb-ellipsis {
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0 8px;
+}
+.breadcrumb .crumb-ellipsis:hover {
+  background: var(--bg);
+  color: var(--text);
 }
 
 .breadcrumb span.sep {
   color: var(--border);
+  padding: 0 1px;
+  user-select: none;
 }
-.breadcrumb span.current {
-  color: var(--text);
-  font-weight: 500;
+
+@media (max-width: 540px) {
+  .breadcrumb {
+    font-size: 0.75rem;
+    padding: 5px 8px;
+  }
+  .breadcrumb span.current {
+    max-width: 14ch;
+  }
 }
 
 /* ─── Page headings ─────────────────────────────────────────────── */

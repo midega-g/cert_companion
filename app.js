@@ -10,6 +10,9 @@ const state = {
   user: null, // Firebase user object (null = not authenticated)
   authMode: "signin", // 'signin' or 'signup'
   _historyCache: null, // cached history records (refreshed on load + after saveHistory)
+  _breadcrumbExpanded: false, // whether a collapsed breadcrumb is expanded
+  _breadcrumbSig: null, // signature of the current crumb trail (reset detector)
+  _lastCrumbs: null, // last crumbs passed to setBreadcrumb (for in-place expand)
 };
 
 /* ─── Session Persistence (localStorage + Firestore) ──────────── */
@@ -367,20 +370,65 @@ function showView(name) {
 }
 
 function setBreadcrumb(crumbs) {
-  // crumbs: [{ label, action? }]  — last item has no action
+  // crumbs: [{ label, action? }]  — last item has no action.
+  // Deep hierarchies (e.g. Home › AWS › Exam Prep › Cert › Domain › Task ›
+  // Test › Q1) are collapsed: the first crumb and the last two stay visible,
+  // and the middle levels fold behind a "…" button that expands on click.
   const nav = $("breadcrumb");
   if (!crumbs.length) {
     nav.classList.add("hidden");
+    state._lastCrumbs = null;
     return;
   }
   nav.classList.remove("hidden");
-  nav.innerHTML = crumbs
-    .map((c, i) => {
-      const isLast = i === crumbs.length - 1;
-      if (isLast) return `<span class="current">${c.label}</span>`;
-      return `<a onclick="${c.action}">${c.label}</a><span class="sep">›</span>`;
-    })
-    .join("");
+
+  // Reset the expanded state whenever the breadcrumb trail changes (i.e. the
+  // user navigated to a different view/question), so collapse is the default.
+  const signature = crumbs.map((c) => c.label).join("|");
+  if (signature !== state._breadcrumbSig) {
+    state._breadcrumbSig = signature;
+    state._breadcrumbExpanded = false;
+  }
+  state._lastCrumbs = crumbs;
+
+  const sep = '<span class="sep" aria-hidden="true">›</span>';
+  const crumbHTML = (c, i) => {
+    const isLast = i === crumbs.length - 1;
+    if (isLast || !c.action) {
+      return `<span class="crumb current">${c.label}</span>`;
+    }
+    return `<a class="crumb" onclick="${c.action}">${c.label}</a>`;
+  };
+
+  // Collapse only when the chain is long enough to be noisy.
+  const COLLAPSE_THRESHOLD = 5;
+  const shouldCollapse =
+    crumbs.length > COLLAPSE_THRESHOLD && !state._breadcrumbExpanded;
+
+  let items;
+  if (shouldCollapse) {
+    // Keep index 0 (Home) and the last two crumbs; fold the rest.
+    const ellipsis =
+      '<button type="button" class="crumb crumb-ellipsis"' +
+      ' aria-label="Show hidden breadcrumb levels" title="Show all levels"' +
+      ' onclick="expandBreadcrumb()">…</button>';
+    items = [
+      crumbHTML(crumbs[0], 0),
+      ellipsis,
+      crumbHTML(crumbs[crumbs.length - 2], crumbs.length - 2),
+      crumbHTML(crumbs[crumbs.length - 1], crumbs.length - 1),
+    ];
+  } else {
+    items = crumbs.map((c, i) => crumbHTML(c, i));
+  }
+
+  nav.innerHTML = items.join(sep);
+}
+
+// Expand a collapsed breadcrumb in place (no view re-render needed).
+function expandBreadcrumb() {
+  state._breadcrumbExpanded = true;
+  if (state._lastCrumbs) setBreadcrumb(state._lastCrumbs);
 }
 
 function toLabel(id) {
