@@ -30,6 +30,17 @@ Before any questions, distill the pasted content into a concept file.
   truth** for question generation and the traceability record.
 - The concept file is for reference only. **It is NEVER rendered in the app.**
 
+### Line-wrapping rule (no hard column wrapping)
+
+- Do **NOT** hard-wrap prose at a fixed column width (e.g., 80 chars). Write each
+  paragraph or bullet as a **single continuous line** and let it soft-wrap in the
+  editor. Line breaks in the file must be **semantic** (a new bullet, a new
+  paragraph, a new table row) — never inserted mid-sentence to satisfy a column
+  limit.
+- One bullet = one line, regardless of how long it is. One paragraph = one line.
+- This keeps the source content readable end-to-end and avoids mid-sentence
+  breaks that fragment facts across lines.
+
 Append template:
 
 ```markdown

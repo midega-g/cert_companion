@@ -1,0 +1,685 @@
+{
+  "label": "What Is AWS? \u2014 Drill 1",
+  "order": 1,
+  "topic": "Cloud Computing Fundamentals",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "cloud-fundamentals",
+      "scenario": null,
+      "stem": "How is cloud computing defined?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The practice of leasing dedicated hardware for a minimum three-year term"
+        },
+        {
+          "key": "B",
+          "text": "The purchase of physical servers that are installed in a company's own data center"
+        },
+        {
+          "key": "C",
+          "text": "A fixed-cost annual subscription to a set amount of compute regardless of usage"
+        },
+        {
+          "key": "D",
+          "text": "The on-demand delivery of IT resources over the internet with primarily pay-as-you-go pricing"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Cloud computing is the on-demand delivery of IT resources over the internet with primarily pay-as-you-go pricing.",
+        "distractors": {
+          "B": "Buying and installing hardware in your own data center describes the on-premises model, not cloud computing.",
+          "C": "Cloud pricing is primarily pay-as-you-go, not a fixed subscription independent of usage.",
+          "A": "Leasing dedicated hardware on multi-year terms is not the pay-as-you-go, on-demand cloud model."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "cloud-fundamentals",
+      "scenario": null,
+      "stem": "Under the cloud computing model, who owns and maintains the underlying data centers and hardware?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The customer's internal infrastructure department"
+        },
+        {
+          "key": "B",
+          "text": "The cloud provider, such as AWS, which delivers the resources over the internet"
+        },
+        {
+          "key": "C",
+          "text": "A third-party colocation vendor contracted by the customer"
+        },
+        {
+          "key": "D",
+          "text": "The customer, who rents rack space but supplies the servers"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "With cloud computing, providers like AWS own and maintain the data centers and provide virtual data center technologies and services over the internet, so companies do not manage their own hardware.",
+        "distractors": {
+          "A": "Having an internal infrastructure department run the hardware describes on-premises, not cloud.",
+          "C": "Colocation still requires the customer to own and manage the hardware, unlike cloud.",
+          "D": "Renting rack space while supplying your own servers is a data-center/colocation arrangement, not cloud computing."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "deployment-models",
+      "scenario": null,
+      "stem": "Which deployment model connects cloud-based resources with existing resources that are not located in the cloud?",
+      "options": [
+        {
+          "key": "A",
+          "text": "On-premises"
+        },
+        {
+          "key": "B",
+          "text": "Multi-cloud"
+        },
+        {
+          "key": "C",
+          "text": "Hybrid"
+        },
+        {
+          "key": "D",
+          "text": "Cloud-native"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A hybrid deployment connects infrastructure and applications between cloud-based resources and existing on-premises resources, most commonly to extend and grow an organization's infrastructure into the cloud.",
+        "distractors": {
+          "A": "On-premises keeps all hardware in the company's own data centers with no cloud connection.",
+          "B": "Multi-cloud refers to using multiple cloud providers, not connecting cloud to on-premises resources.",
+          "D": "Cloud-native describes building entirely in the cloud, not bridging cloud with non-cloud resources."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "deployment-models",
+      "scenario": null,
+      "stem": "What primarily differentiates the three cloud computing deployment models from one another?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The programming languages each one supports"
+        },
+        {
+          "key": "B",
+          "text": "The levels of control, flexibility, and management they provide"
+        },
+        {
+          "key": "C",
+          "text": "The number of Regions each one can deploy to"
+        },
+        {
+          "key": "D",
+          "text": "The encryption standards each one enforces by default"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Each deployment method provides different levels of control, flexibility, and management, which helps you decide what set of services fits your needs.",
+        "distractors": {
+          "A": "Deployment models are not distinguished by supported programming languages.",
+          "C": "Region availability is not the defining difference between the deployment models.",
+          "D": "Default encryption standards are not what differentiate on-premises, cloud, and hybrid deployments."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "cloud-fundamentals",
+      "scenario": null,
+      "stem": "Why did cloud computing emerge as a solution for many organizations?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Governments mandated that companies stop operating private data centers"
+        },
+        {
+          "key": "B",
+          "text": "The cost of maintaining a large physical presence became unsustainable as demand for compute, storage, and networking grew"
+        },
+        {
+          "key": "C",
+          "text": "On-premises hardware was no longer manufactured"
+        },
+        {
+          "key": "D",
+          "text": "Internet speeds became too slow to support local data centers"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "As internet use grew, demand for compute, storage, and networking increased, and for some organizations the cost of maintaining a large physical presence became unsustainable, so cloud computing emerged to solve this.",
+        "distractors": {
+          "A": "No government mandate drove the shift; it was driven by cost and demand.",
+          "C": "On-premises hardware continued to be available; the issue was the cost of maintaining it at scale.",
+          "D": "Cloud emerged because internet use grew and became widespread, not because speeds became too slow."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "undifferentiated-heavy-lifting",
+      "scenario": null,
+      "stem": "What does the term \"undifferentiated heavy lifting\" refer to?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Repetitive common tasks that do not differentiate a business, such as installing VMs or storing backups"
+        },
+        {
+          "key": "B",
+          "text": "The unique application code that gives a business its competitive edge"
+        },
+        {
+          "key": "C",
+          "text": "The process of migrating an entire data center to a new physical location"
+        },
+        {
+          "key": "D",
+          "text": "Compute-intensive machine learning training jobs"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Undifferentiated heavy lifting is the repetitive common tasks that do not differentiate your business, such as installing virtual machines or storing backups, which AWS can handle for you.",
+        "distractors": {
+          "B": "Unique application code is exactly what differentiates a business \u2014 it is the opposite of undifferentiated heavy lifting.",
+          "C": "Physically relocating a data center is not the meaning of the term.",
+          "D": "ML training is a workload, not the generic non-differentiating tasks the term describes."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "cloud-advantages",
+      "scenario": null,
+      "stem": "What is the core idea of the \"pay-as-you-go\" advantage of cloud computing?",
+      "options": [
+        {
+          "key": "A",
+          "text": "You pay a flat monthly fee regardless of how much you use"
+        },
+        {
+          "key": "B",
+          "text": "You pay only after a project generates revenue"
+        },
+        {
+          "key": "C",
+          "text": "You pre-purchase capacity for the year to lock in a discount"
+        },
+        {
+          "key": "D",
+          "text": "You pay only for the resources that you use"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The pay-as-you-go model is based on paying only for the resources that you use, in contrast to investing in data centers and hardware that might not be fully used.",
+        "distractors": {
+          "A": "A flat fee regardless of usage is the opposite of pay-as-you-go.",
+          "C": "Pre-purchasing yearly capacity is not what the pay-as-you-go advantage describes.",
+          "B": "Payment is tied to resource usage, not to whether a project earns revenue."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "cloud-advantages",
+      "scenario": null,
+      "stem": "How does AWS achieve lower pay-as-you-go prices than a customer could achieve alone?",
+      "options": [
+        {
+          "key": "A",
+          "text": "By using older, cheaper hardware than customers would buy"
+        },
+        {
+          "key": "B",
+          "text": "By aggregating usage from hundreds of thousands of customers to reach higher economies of scale"
+        },
+        {
+          "key": "C",
+          "text": "By charging customers only for successful transactions"
+        },
+        {
+          "key": "D",
+          "text": "By limiting each customer to a small fixed amount of capacity"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Because usage from hundreds of thousands of customers is aggregated in the cloud, AWS achieves higher economies of scale, which translates into lower pay-as-you-go prices.",
+        "distractors": {
+          "A": "Lower prices come from economies of scale, not from using inferior hardware.",
+          "C": "Pricing is based on resources used, not on a per-successful-transaction basis.",
+          "D": "Cloud lets you access as much or as little capacity as needed; it does not cap customers to reduce cost."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "cloud-advantages",
+      "scenario": null,
+      "stem": "The \"stop guessing capacity\" advantage helps organizations avoid which two problematic outcomes of guessing before deployment?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Sitting on expensive idle resources, or dealing with limited capacity"
+        },
+        {
+          "key": "B",
+          "text": "Paying too much tax, or hiring too few engineers"
+        },
+        {
+          "key": "C",
+          "text": "Over-encrypting data, or under-logging events"
+        },
+        {
+          "key": "D",
+          "text": "Choosing the wrong Region, or the wrong programming language"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Guessing capacity before deploying often leads to either sitting on expensive idle resources or dealing with limited capacity; the cloud removes this by letting you scale up and down as needed.",
+        "distractors": {
+          "B": "Taxes and hiring are not the capacity-guessing problems the advantage addresses.",
+          "C": "Encryption and logging are unrelated to the idle-vs-limited-capacity tradeoff.",
+          "D": "Region and language choices are not the outcomes this advantage is about."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "cloud-advantages",
+      "scenario": null,
+      "stem": "According to the \"increase speed and agility\" advantage, the time to make resources available to developers drops from what to what?",
+      "options": [
+        {
+          "key": "A",
+          "text": "From months to days"
+        },
+        {
+          "key": "B",
+          "text": "From days to seconds"
+        },
+        {
+          "key": "C",
+          "text": "From weeks to minutes"
+        },
+        {
+          "key": "D",
+          "text": "From hours to milliseconds"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Because IT resources are only a click away, the time to make resources available to developers is reduced from weeks to minutes, dramatically increasing agility.",
+        "distractors": {
+          "A": "The stated reduction is from weeks to minutes, not months to days.",
+          "B": "The source specifies weeks to minutes, not days to seconds.",
+          "D": "Hours to milliseconds is not the figure given for provisioning resources for developers."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "cloud-advantages",
+      "scenario": null,
+      "stem": "What does the \"go global in minutes\" advantage enable?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Deploying applications in multiple Regions around the world with a few clicks, providing lower latency at minimal cost"
+        },
+        {
+          "key": "B",
+          "text": "Automatically translating an application into every language"
+        },
+        {
+          "key": "C",
+          "text": "Guaranteeing zero downtime across all continents"
+        },
+        {
+          "key": "D",
+          "text": "Eliminating the need to consider data residency laws"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Applications can be deployed in multiple Regions around the world with a few clicks, providing lower latency and a better customer experience at minimal cost.",
+        "distractors": {
+          "B": "The advantage is about global deployment, not automatic language translation.",
+          "C": "It enables lower latency via Regions; it does not guarantee zero downtime everywhere.",
+          "D": "Going global does not remove data residency considerations."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "cloud-fundamentals",
+      "scenario": null,
+      "stem": "In the cloud computing definition, what do the \"IT resources\" being delivered correspond to?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Internet service provider bandwidth"
+        },
+        {
+          "key": "B",
+          "text": "The customer's on-premises servers"
+        },
+        {
+          "key": "C",
+          "text": "Third-party software licenses"
+        },
+        {
+          "key": "D",
+          "text": "AWS services"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The IT resources mentioned in the cloud computing definition are AWS services; AWS provides cloud computing services.",
+        "distractors": {
+          "B": "The customer's own servers are the on-premises model, not the resources delivered by the cloud.",
+          "C": "The resources are AWS services, not third-party software licenses.",
+          "A": "ISP bandwidth is the connection to the cloud, not the IT resources being delivered."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "cloud-advantages",
+      "scenario": null,
+      "stem": "Which of the following are among the six advantages of cloud computing? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Benefit from massive economies of scale"
+        },
+        {
+          "key": "B",
+          "text": "Stop guessing capacity"
+        },
+        {
+          "key": "C",
+          "text": "Go global in minutes"
+        },
+        {
+          "key": "D",
+          "text": "Guaranteed elimination of all security responsibilities"
+        },
+        {
+          "key": "E",
+          "text": "Free unlimited compute for all customers"
+        },
+        {
+          "key": "F",
+          "text": "Mandatory long-term hardware contracts"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The six advantages include benefiting from massive economies of scale, stopping guessing capacity, and going global in minutes (alongside pay-as-you-go, increased speed and agility, and realizing cost savings).",
+        "distractors": {
+          "D": "Cloud does not eliminate all security responsibilities; it is not one of the six advantages.",
+          "E": "Cloud is pay-as-you-go, not free unlimited compute.",
+          "F": "Cloud avoids long-term hardware commitments; mandatory long-term contracts are not an advantage."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "on-premises",
+      "scenario": null,
+      "stem": "In an on-premises solution, what does adding a new environment (such as a QA environment) typically require? (Select THREE)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Buying and installing hardware"
+        },
+        {
+          "key": "B",
+          "text": "Connecting the necessary cabling and provisioning power"
+        },
+        {
+          "key": "C",
+          "text": "Installing operating systems"
+        },
+        {
+          "key": "D",
+          "text": "Clicking a button to replicate the environment in seconds"
+        },
+        {
+          "key": "E",
+          "text": "Submitting a support ticket to AWS to provision Regions"
+        },
+        {
+          "key": "F",
+          "text": "Enabling pay-as-you-go billing"
+        }
+      ],
+      "correct": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": {
+        "correct": "On-premises, an additional environment requires buying and installing hardware, connecting cabling and provisioning power, and installing operating systems \u2014 tasks that are time-consuming and expensive.",
+        "distractors": {
+          "D": "Replicating an environment in seconds by clicking is a cloud capability, not on-premises.",
+          "E": "Provisioning AWS Regions via a support ticket is a cloud concept, not part of on-premises setup.",
+          "F": "Pay-as-you-go billing is a cloud pricing model, not an on-premises requirement."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "undifferentiated-heavy-lifting",
+      "scenario": null,
+      "stem": "Which tasks are examples of \"undifferentiated heavy lifting\" that AWS can handle for you? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Installing virtual machines (VMs)"
+        },
+        {
+          "key": "B",
+          "text": "Storing backups"
+        },
+        {
+          "key": "C",
+          "text": "Writing the unique application code that differentiates your business"
+        },
+        {
+          "key": "D",
+          "text": "Deciding your company's product strategy"
+        },
+        {
+          "key": "E",
+          "text": "Designing your customer-facing brand"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "Installing VMs and storing backups are repetitive common tasks that do not differentiate a business \u2014 classic undifferentiated heavy lifting AWS can handle.",
+        "distractors": {
+          "C": "Unique application code differentiates your business; it is not undifferentiated heavy lifting.",
+          "D": "Product strategy is strategically unique to your business, not a generic task.",
+          "E": "Brand design differentiates your business and is not undifferentiated heavy lifting."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "deployment-models",
+      "scenario": null,
+      "stem": "Which statements accurately describe cloud computing deployment models? (Select TWO)",
+      "options": [
+        {
+          "key": "A",
+          "text": "On-premises means hosting and maintaining hardware in your own data centers"
+        },
+        {
+          "key": "B",
+          "text": "Hybrid connects cloud-based resources with existing on-premises resources"
+        },
+        {
+          "key": "C",
+          "text": "The cloud model requires customers to buy their own servers"
+        },
+        {
+          "key": "D",
+          "text": "On-premises can replicate an entire production environment in seconds with a click"
+        },
+        {
+          "key": "E",
+          "text": "Hybrid means using only cloud resources with no on-premises footprint"
+        }
+      ],
+      "correct": [
+        "A",
+        "B"
+      ],
+      "explanation": {
+        "correct": "On-premises hosts and maintains hardware in your own data centers, while hybrid connects cloud resources with existing on-premises resources to extend infrastructure into the cloud.",
+        "distractors": {
+          "C": "In the cloud model the provider owns the hardware; customers do not buy their own servers.",
+          "D": "Rapid replication in seconds is a cloud capability, not on-premises.",
+          "E": "Hybrid specifically includes an on-premises footprint connected to the cloud, not cloud-only."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "single",
+      "domain": "cloud-advantages",
+      "scenario": "A development team must stand up a temporary QA environment that mirrors production to test a new feature, and they need it available almost immediately without procuring any hardware.",
+      "stem": "Which characteristic of cloud computing most directly enables this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The need to allocate an infrastructure department to install cabling"
+        },
+        {
+          "key": "B",
+          "text": "A requirement to sign a multi-year hardware lease before provisioning"
+        },
+        {
+          "key": "C",
+          "text": "The ability to replicate an entire production environment in minutes or even seconds, managed over the internet"
+        },
+        {
+          "key": "D",
+          "text": "A flat annual fee that covers unlimited environments"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "By running in the cloud, an entire production environment can be replicated in minutes or even seconds and managed over the internet, avoiding hardware procurement.",
+        "distractors": {
+          "B": "Cloud avoids multi-year hardware leases; this contradicts the on-demand model.",
+          "D": "Cloud pricing is pay-as-you-go, not a flat annual fee for unlimited environments.",
+          "A": "Allocating staff to install cabling describes on-premises work, which the cloud removes."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "single",
+      "domain": "cloud-advantages",
+      "scenario": "A startup wants to focus its engineers on building its unique product rather than on racking, stacking, and powering physical infrastructure.",
+      "stem": "Which cloud computing advantage best matches this goal?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Go global in minutes by translating the product into every language"
+        },
+        {
+          "key": "B",
+          "text": "Stop guessing capacity by pre-buying servers for the year"
+        },
+        {
+          "key": "C",
+          "text": "Realize cost savings by removing undifferentiated heavy lifting and focusing on customers"
+        },
+        {
+          "key": "D",
+          "text": "Pay-as-you-go by committing to a fixed monthly infrastructure budget"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Realizing cost savings lets companies focus on projects that differentiate their business and remove undifferentiated heavy lifting instead of racking, stacking, and powering physical infrastructure.",
+        "distractors": {
+          "B": "Pre-buying servers for the year is the guessing-capacity problem the cloud avoids, not the described benefit.",
+          "D": "Pay-as-you-go means paying for what you use, not committing to a fixed monthly budget.",
+          "A": "Going global is about deploying to Regions for lower latency, not language translation."
+        }
+      }
+    }
+  ]
+}
