@@ -1215,3 +1215,20 @@ body {
 .tab-btn:hover {
   color: var(--text, #111827);
 }
+
+/* ─── Recall Disclaimer Banner ──────────────────────────────────── */
+.recall-disclaimer {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: #f0f4ff;
+  border: 1px solid #c7d2fe;
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  line-height: 1.55;
+}
+
+.recall-disclaimer strong {
+  color: var(--text);
+}

@@ -879,6 +879,18 @@ function initFreshExam() {
 }
 
 /* ─── EXAM VIEW ─────────────────────────────────────────────────── */
+function recallDisclaimer() {
+  const isRecall =
+    (state.testMeta && state.testMeta.questionType === "recall") ||
+    (state.exam && state.exam.questionType === "recall");
+  if (!isRecall) return "";
+  return `<div class="recall-disclaimer">
+    <strong>Disclaimer:</strong> These are personal recall questions for private learning purposes.
+    They are derived from concepts in published material but do not reproduce or redistribute any copyrighted text.
+    Source materials are not stored in this repository.
+  </div>`;
+}
+
 function renderExam() {
   showView("exam");
   const crumbs = [{ label: "Home", action: "renderHome()" }];
@@ -1029,6 +1041,7 @@ function renderQuestion(idx) {
     </button>`;
 
   $("view-exam").innerHTML = `
+    ${recallDisclaimer()}
     ${header}
     <div class="exam-layout">
       <div class="exam-main">

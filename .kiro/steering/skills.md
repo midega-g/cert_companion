@@ -3,7 +3,7 @@
 **Read `.kiro/steering/router.md` first.** It is the central entry point and
 explains the two study modes (Exam Prep and Topic Drill) and which spec to use.
 
-Three generation/build tools are available. Pass the appropriate one to the
+Four generation/build tools are available. Pass the appropriate one to the
 agent depending on the task.
 
 ---
@@ -34,6 +34,32 @@ scenario) as valid JSON.
 
 **Invoke when:** The user pastes content they are actively reading and wants
 rapid-fire questions squeezing every fact out of it.
+
+---
+
+## `generate_recall_questions`
+
+**File:** `generate_recall_questions.md`
+
+**Purpose:** Generate a 20-question recall/comprehension test as valid JSON
+from book chapters or other learning material. Not certification questions —
+these test retention of specific concepts, relationships, and practical
+insights from the material.
+
+**Invoke when:** The user provides book chapter content and wants recall-style
+questions to reinforce what they learned.
+
+**Key differences from `generate_exam_questions`:**
+- Questions test recall and understanding, not certification readiness.
+- Includes a `coverage` tracker (areas covered + areas not covered) to guide
+  follow-up question generation.
+- Includes a `source` field to identify the book and chapter.
+- Applied-understanding questions replace generic exam scenarios — they mirror
+  realistic situations from the material.
+- Tests carry `"questionType": "recall"`, which the web UI surfaces as a
+  disclaimer banner.
+- Recall topics must include a `DISCLAIMER.md` and `sources/README.md` (the
+  prompt creates these); source PDFs go under `sources/` and are gitignored.
 
 ---
 

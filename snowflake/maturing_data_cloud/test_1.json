@@ -1,0 +1,502 @@
+{
+  "label": "Maturing the Snowflake Data Cloud — Ch.1 Part A",
+  "order": 1,
+  "questionType": "recall",
+  "topic": "Maturing the Snowflake Data Cloud",
+  "source": "Maturing the Snowflake Data Cloud (Carruthers & Ahmed) — Chapter 1",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "landing-zone",
+      "scenario": null,
+      "stem": "What is the primary purpose of a Landing Zone (LZ) in the context of delivering Snowflake as a platform?",
+      "options": [
+        { "key": "A", "text": "To provide a temporary environment for running production workloads" },
+        { "key": "B", "text": "To enable consistent pattern-based delivery plus controlled maintenance, updates, and releases of platform components" },
+        { "key": "C", "text": "To replace the need for governance and risk management stakeholder engagement" },
+        { "key": "D", "text": "To serve as a data catalog for all organizational metadata" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The Landing Zone enables consistent pattern-based delivery plus controlled maintenance, updates, and releases as new components are developed or existing components are enhanced.",
+        "distractors": {
+          "A": "A LZ is not a temporary production environment — that describes a sandpit account. The LZ is the baseline platform design template.",
+          "C": "The LZ does not replace governance engagement; it requires taking all governance and risk management stakeholder concerns into consideration during design.",
+          "D": "A data catalog is one component that can be delivered within the LZ, but it is not the primary purpose of the LZ itself."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "sandpit",
+      "scenario": null,
+      "stem": "What is the recommended time limit for a Proof of Concept (PoC) conducted in a sandpit account?",
+      "options": [
+        { "key": "A", "text": "One week" },
+        { "key": "B", "text": "Two weeks" },
+        { "key": "C", "text": "One month" },
+        { "key": "D", "text": "Three months" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "A PoC should be restricted to two weeks with the expectation of provisioned service withdrawal at the end of the time period.",
+        "distractors": {
+          "A": "One week is too short — the recommended duration is two weeks.",
+          "C": "One month is longer than the recommended two-week time limit for sandpit PoCs.",
+          "D": "Three months far exceeds the recommended tightly scoped, time-limited two-week period."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "privatelink",
+      "scenario": null,
+      "stem": "What is a key limitation of PrivateLink connectivity with Snowflake?",
+      "options": [
+        { "key": "A", "text": "It can only connect a single CSP account to a Snowflake account" },
+        { "key": "B", "text": "Cross-region PrivateLink is not supported by Snowflake" },
+        { "key": "C", "text": "It requires Snowflake Enterprise edition or higher" },
+        { "key": "D", "text": "It only works with AWS and not other cloud providers" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "PrivateLink can only be created within the same CSP region and Snowflake region — cross-region PrivateLink is not supported.",
+        "distractors": {
+          "A": "Multiple CSP accounts can be linked to a single Snowflake account using multiple PrivateLinks.",
+          "C": "The edition requirement discussed is Business Critical (for DR features), not specifically stated as a PrivateLink prerequisite in this context.",
+          "D": "The material shows that each CSP has a named equivalent to AWS PrivateLink (Azure Private Link, Google Cloud Private Service Connect), indicating cross-CSP support."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "behavior-change",
+      "scenario": null,
+      "stem": "How long does Snowflake provide for testing behavior change bundles before they are enabled across accounts?",
+      "options": [
+        { "key": "A", "text": "One week" },
+        { "key": "B", "text": "One month" },
+        { "key": "C", "text": "Two months" },
+        { "key": "D", "text": "Six months" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "The behavior change release process lets you test new behavior changes for two months before the changes are enabled across Snowflake accounts.",
+        "distractors": {
+          "A": "One week is the frequency of automated deployments, not the testing window for behavior change bundles.",
+          "B": "One month is not the stated testing period — it is two months.",
+          "D": "Six months is far longer than the actual two-month testing window provided."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "disaster-recovery",
+      "scenario": null,
+      "stem": "Which Snowflake edition is required for Failover and Failback capabilities?",
+      "options": [
+        { "key": "A", "text": "Standard" },
+        { "key": "B", "text": "Enterprise" },
+        { "key": "C", "text": "Business Critical" },
+        { "key": "D", "text": "Virtual Private Snowflake (VPS)" }
+      ],
+      "correct": ["C"],
+      "explanation": {
+        "correct": "Failover and Failback are only available with Snowflake Business Critical Edition. To upgrade, you must contact Snowflake Support.",
+        "distractors": {
+          "A": "Standard edition does not include Failover and Failback capabilities.",
+          "B": "Enterprise edition does not include Failover and Failback — these require Business Critical.",
+          "D": "VPS inherits Business Critical capabilities, but Business Critical is the edition where these features are first available."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "sandpit",
+      "scenario": null,
+      "stem": "Which THREE items are recommended as minimum considerations when provisioning a sandpit account?",
+      "options": [
+        { "key": "A", "text": "Network policies restricting access to known IP ranges" },
+        { "key": "B", "text": "Setting Snowflake account flags to prevent data egress to Internet locations" },
+        { "key": "C", "text": "Implementing resource monitors and consumption limits" },
+        { "key": "D", "text": "Configuring multi-cluster warehouses for concurrency" },
+        { "key": "E", "text": "Enabling PrivateLink for all sandpit users" },
+        { "key": "F", "text": "Setting up cross-region replication for disaster recovery" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The three minimum considerations for a sandpit account are: network policies to prevent unauthorized access, account flags to prevent data egress, and resource monitors/consumption limits as a sensible precaution.",
+        "distractors": {
+          "D": "Multi-cluster warehouses are not mentioned as a sandpit requirement — the sample configuration uses a basic XS warehouse.",
+          "E": "PrivateLink is discussed as a separate LZ capability, not a minimum sandpit requirement.",
+          "F": "Cross-region replication and DR are complex capabilities discussed independently and not required for a time-limited PoC sandpit."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "landing-zone",
+      "scenario": null,
+      "stem": "Select TWO correct statements about the relationship between Snowflake Sales Engineers (SEs) and Landing Zone delivery.",
+      "options": [
+        { "key": "A", "text": "SEs will deliver a complete LZ template tailored to your organization" },
+        { "key": "B", "text": "SEs deliver knowledge transfer on core Snowflake capabilities and advice on best practices" },
+        { "key": "C", "text": "SEs are spread thin across many clients and cannot provide full design capacity for organization-specific requirements" },
+        { "key": "D", "text": "SEs are responsible for understanding every aspect of your governance and risk management requirements" },
+        { "key": "E", "text": "SEs can provide a generic Security Features Checklist to prompt and direct your thinking" }
+      ],
+      "correct": ["B", "C"],
+      "explanation": {
+        "correct": "SEs deliver knowledge transfer on core capabilities and best practices advice, but they are spread very thin across clients and unable to provide the design capacity to address every organization-specific governance requirement.",
+        "distractors": {
+          "A": "SEs will NOT deliver a complete LZ template — the book explicitly states this. You must design your own.",
+          "D": "SEs are not responsible for understanding every governance vagary — that responsibility falls on Professional Services and ultimately on your own organization.",
+          "E": "While a Security Features Checklist is mentioned, it is described as something provided during LZ deployment collaboration, not as a general SE deliverable in lieu of LZ design work."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "cost-reporting",
+      "scenario": null,
+      "stem": "Select TWO primary use-cases for a Centralized Monitoring Store (CMS).",
+      "options": [
+        { "key": "A", "text": "Capturing all consumption metrics for consolidated reporting purposes" },
+        { "key": "B", "text": "Capturing federated metrics such as informing Marketing/Sales teams and disaster recovery decision making" },
+        { "key": "C", "text": "Replacing the Snowflake Account Usage Store with a custom solution" },
+        { "key": "D", "text": "Storing application source code for version control" },
+        { "key": "E", "text": "Providing a direct replacement for PrivateLink connectivity monitoring" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The CMS has two primary use-cases: capturing all consumption metrics for consolidated reporting, and capturing federated metrics such as informing Marketing/Sales teams and disaster recovery decision making.",
+        "distractors": {
+          "C": "The CMS leverages the Account Usage Store as a data source — it does not replace it.",
+          "D": "Source code version control is unrelated to the CMS, which focuses on consumption and operational metrics.",
+          "E": "The CMS is for consumption and federated metrics, not specifically for PrivateLink monitoring."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "usage-reporting",
+      "scenario": null,
+      "stem": "Select THREE questions that your data security response must address as a minimum when proving how data is accessed.",
+      "options": [
+        { "key": "A", "text": "Who can see what? — Roles, objects, and attributes accessible by a user" },
+        { "key": "B", "text": "Who can do what? — Roles and objects a user can manipulate" },
+        { "key": "C", "text": "Who has seen what? — The historical evidence of data access" },
+        { "key": "D", "text": "Who owns what? — The creator and current owner of each database object" },
+        { "key": "E", "text": "Who has done what? — The historical evidence of object manipulation" },
+        { "key": "F", "text": "Who pays for what? — The credit consumption by each user role" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The minimum data security questions include: who can see what (roles/objects/attributes accessible), who can do what (roles/objects a user can manipulate), who has seen what (historical evidence of data access), and who has done what (historical evidence of manipulation). A, B, and C represent three of these four.",
+        "distractors": {
+          "D": "Object ownership is a valid concept but is not listed among the minimum data security questions that must be addressed.",
+          "E": "While 'who has done what' IS one of the four minimum questions, the question asks for THREE and A, B, C are all correct — E is also valid but you can only select three.",
+          "F": "Credit consumption attribution relates to cost reporting, not the data security proof requirements discussed in this context."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "disaster-recovery",
+      "scenario": null,
+      "stem": "Select THREE disaster recovery scenarios discussed for Snowflake implementation.",
+      "options": [
+        { "key": "A", "text": "Single database replication" },
+        { "key": "B", "text": "Whole account replication including replication groups/failover groups" },
+        { "key": "C", "text": "Client redirect" },
+        { "key": "D", "text": "Cross-cloud automatic migration" },
+        { "key": "E", "text": "Real-time active-active multi-region writes" },
+        { "key": "F", "text": "Automated CSP account failover without Snowflake involvement" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The three DR scenarios discussed are: single database replication, whole account replication including replication groups/failover groups, and client redirect.",
+        "distractors": {
+          "D": "Cross-cloud automatic migration is not discussed as a DR scenario — the focus is on replication and failover within Snowflake.",
+          "E": "Active-active multi-region writes are not a Snowflake DR feature discussed in this chapter.",
+          "F": "Snowflake DR requires the ORGADMIN role and Snowflake involvement — it is not an automated CSP-only process."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "security-monitoring",
+      "scenario": "Your organization has just deployed its first production application on Snowflake using a Landing Zone. The security team wants to ensure that a single compromised component does not automatically render the entire Snowflake estate vulnerable.",
+      "stem": "Which defensive approach is recommended for protecting Snowflake systems?",
+      "options": [
+        { "key": "A", "text": "A single perimeter-based firewall protecting the entire account" },
+        { "key": "B", "text": "Multiple layers of defense where compromise of one component is isolated" },
+        { "key": "C", "text": "Relying exclusively on Snowflake's built-in security without additional controls" },
+        { "key": "D", "text": "Disabling all external access and only allowing SnowSQL connections" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "The recommended method is to implement multiple layers of defense where a single compromised component does not automatically render all of Snowflake vulnerable but instead isolates the compromise to a single part of the system.",
+        "distractors": {
+          "A": "A single perimeter-based approach contradicts the multi-layered defense strategy explicitly recommended.",
+          "C": "The material recommends third-party tooling as another layer of protection in addition to built-in controls.",
+          "D": "Disabling all external access is not discussed — the material focuses on layered defenses and compensating controls, not blanket access denial."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "landing-zone",
+      "scenario": "You are a second mover with Snowflake in your organization. A different division implemented Snowflake two years ago and you plan to leverage their work as a starting point for your own implementation.",
+      "stem": "Based on real-world experience, what should you expect when trying to reuse a first mover's Snowflake implementation?",
+      "options": [
+        { "key": "A", "text": "Their implementation will fully satisfy your requirements since it was already approved by governance" },
+        { "key": "B", "text": "Not every prior implementation will satisfy your exact requirements, and some details may run orthogonal to your needs" },
+        { "key": "C", "text": "A single unified LZ template will already exist after two years of implementation" },
+        { "key": "D", "text": "The first mover team is obligated to hand over their full design documentation to you" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Through experience, not every prior implementation satisfies your exact requirements, and some implementation details may run orthogonal to your needs.",
+        "distractors": {
+          "A": "Governance approval of the first mover's implementation does not guarantee it meets a different team's specific needs.",
+          "C": "It is highly unlikely a single template will even exist during the early year or two of Snowflake implementation.",
+          "D": "There is no stated obligation for first movers to hand over documentation — the challenge is that implementations may not align with your requirements."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "cost-reporting",
+      "scenario": "Your FinOps team needs to analyze current Snowflake consumption and project future consumption across multiple accounts provisioned through a centralized Landing Zone. Each account currently reports metrics independently using different formats.",
+      "stem": "What approach is recommended for organizations with centralized LZ-provisioned accounts?",
+      "options": [
+        { "key": "A", "text": "Each account should continue delivering metrics individually using their own format" },
+        { "key": "B", "text": "Create a Centralized Monitoring Store (CMS) where all accounts deliver consumption metrics into a single hub using data sharing" },
+        { "key": "C", "text": "Export all consumption data to the CSP billing console and analyze it there exclusively" },
+        { "key": "D", "text": "Assign each account owner to manually email monthly consumption reports to the FinOps team" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Organizations with centralized LZ-provisioned accounts should deliver a plug-and-play cost monitoring capability where all accounts deliver their consumption metrics into a single hub (CMS) using cost monitoring data sharing.",
+        "distractors": {
+          "A": "In a decentralized approach without a consistent format, considerable time would be spent reconciling disparate views — the centralized approach is explicitly preferred.",
+          "C": "While CSP tooling can extend monitoring, the primary recommendation is a Snowflake-based CMS using data sharing from each provisioned account.",
+          "D": "Manual email reporting contradicts the automated, plug-and-play approach that the LZ design enables."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "behavior-change",
+      "scenario": "Your organization's change management team wants to understand when Snowflake behavior change bundles are typically deployed after publication. They need to plan their testing windows and production freeze schedules accordingly.",
+      "stem": "When are behavior change bundles typically deployed after publication, and which months are excluded?",
+      "options": [
+        { "key": "A", "text": "One month after publication; July and August are excluded due to summer holidays" },
+        { "key": "B", "text": "Two months after publication, within the third or fourth weekly release; November and December are excluded due to Christmas holiday period" },
+        { "key": "C", "text": "Three months after publication; no months are excluded" },
+        { "key": "D", "text": "Two weeks after publication; December and January are excluded due to year-end freeze" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "Snowflake typically deploys behavior changes two months after publication, usually within the third or fourth weekly release for the month. November and December are excluded due to most organizations having a change freeze period over the Christmas holiday period.",
+        "distractors": {
+          "A": "The deployment window is two months, not one month, and the excluded months are November/December, not July/August.",
+          "C": "Three months is too long — the actual window is two months — and months are excluded (November and December).",
+          "D": "Two weeks is far too short — the testing period alone is two months — and the excluded months are November/December, not December/January."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "usage-reporting",
+      "scenario": "Your data governance team needs to prove that a specific analyst only accessed data they were entitled to view last quarter. You plan to replay the captured SQL statements to demonstrate data access patterns.",
+      "stem": "What is the key limitation when replaying captured SQL statements to prove historical data access?",
+      "options": [
+        { "key": "A", "text": "SQL statement capture is limited to 7 days of history" },
+        { "key": "B", "text": "Replayed SQL cannot guarantee the same data will be returned because underlying data changes over time" },
+        { "key": "C", "text": "SQL statement capture does not record which role was used during execution" },
+        { "key": "D", "text": "Only SELECT statements are captured, not DML operations" }
+      ],
+      "correct": ["B"],
+      "explanation": {
+        "correct": "SQL statement capture does not guarantee the same data will be returned when replayed later as the underlying data will change over time. This is the Achilles Heel of all monitoring.",
+        "distractors": {
+          "A": "The information_schema is limited to 14 days, and the Account Usage Store has longer retention — but the key limitation is data change, not retention period.",
+          "C": "Role information is captured — the concern is about role entitlement changes between capture time and replay time, not absence of role data.",
+          "D": "There is no stated limitation that only SELECT statements are captured."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "sandpit",
+      "scenario": "Your team is preparing to provision a sandpit account for a development team's two-week Snowflake PoC. You need to create the baseline objects and ensure proper terms are agreed upon before handing over the environment.",
+      "stem": "Select THREE terms of usage that should be agreed upon before providing a sandpit account.",
+      "options": [
+        { "key": "A", "text": "Only public or suitably anonymized data will be used for the PoC" },
+        { "key": "B", "text": "The engaging team agrees to reimburse credits consumed during the PoC period" },
+        { "key": "C", "text": "The sandpit will not be used as a tactical fix for generating Production datasets" },
+        { "key": "D", "text": "The engaging team must have Snowflake certification before accessing the sandpit" },
+        { "key": "E", "text": "All queries must be reviewed and approved by the DBA team before execution" },
+        { "key": "F", "text": "The sandpit must be connected via PrivateLink before any data loading begins" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "The three terms of usage are: only public/anonymized data is used, the engaging team reimburses credits consumed, and strict understanding that the sandpit will not be used as a tactical fix for generating Production datasets.",
+        "distractors": {
+          "D": "The material states Snowflake certifications are not assumed — the sandpit should be supported by an SME, but certification is not a prerequisite.",
+          "E": "DBA review of all queries is not mentioned — the sandpit is intended to let teams try things out with SME guidance, not gatekeep every query.",
+          "F": "PrivateLink is a separate LZ capability and not a prerequisite for sandpit provisioning."
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "multi",
+      "domain": "data-sharing",
+      "scenario": "Your organization is expanding its use of Snowflake data sharing. The business team wants to understand the available data interchange options and how consumers and providers balance transparency with protecting intellectual property.",
+      "stem": "Select TWO correct statements about the Snowflake data interchange landscape.",
+      "options": [
+        { "key": "A", "text": "Consumers do not wish to expose their bespoke algorithms while consuming providers' data" },
+        { "key": "B", "text": "Providers have full visibility into consuming parties' algorithms and query patterns" },
+        { "key": "C", "text": "A compromise exists offering both producers and consumers some information without exposing intellectual property" },
+        { "key": "D", "text": "Data clean rooms eliminate all privacy concerns by encrypting data at rest" },
+        { "key": "E", "text": "Secure direct data sharing, data exchange, and the Data Marketplace are the three interchange options discussed" }
+      ],
+      "correct": ["A", "C"],
+      "explanation": {
+        "correct": "Consumers do not wish to expose their bespoke algorithms, and a sensible compromise is in place offering both producers and consumers some information without exposing the 'secret sauce' or intellectual property of consuming parties.",
+        "distractors": {
+          "B": "Providers do NOT have full visibility into consuming algorithms — the material states that having access to consuming algorithms would provide business intelligence, implying they currently do not have it.",
+          "D": "Data clean rooms are discussed but not described as eliminating all privacy concerns through encryption — they are noted as a topic for further investigation.",
+          "E": "While these three are indeed mentioned, this option conflates them being 'discussed' with being the primary point — the question focuses on the provider/consumer dynamic."
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "multi",
+      "domain": "organizations",
+      "scenario": "Your Snowflake account administrator needs to implement disaster recovery and is told they need to use the ORGADMIN role. They are unfamiliar with the concept of a Snowflake organization and how it relates to account hierarchy.",
+      "stem": "Select TWO correct statements about Snowflake organizations.",
+      "options": [
+        { "key": "A", "text": "A Snowflake organization is an optional high-level container to manage all Snowflake accounts within a corporate structure" },
+        { "key": "B", "text": "The ORGADMIN role is required for implementing disaster recovery across Snowflake accounts" },
+        { "key": "C", "text": "A Snowflake organization is mandatory and automatically created for every Snowflake account" },
+        { "key": "D", "text": "The ACCOUNTADMIN role has all the same privileges as ORGADMIN" },
+        { "key": "E", "text": "A Snowflake organization can only manage accounts within a single CSP region" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "A Snowflake organization is an optional high-level container for managing all accounts, and the ORGADMIN role is specifically required for implementing DR — without it, DR cannot be achieved.",
+        "distractors": {
+          "C": "The Snowflake organization is explicitly described as optional, not mandatory.",
+          "D": "ACCOUNTADMIN and ORGADMIN are distinct roles — ORGADMIN provides organization-level capabilities that ACCOUNTADMIN does not have.",
+          "E": "There is no stated restriction that organizations can only span a single CSP region — the DR discussion involves accounts in different regions."
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "multi",
+      "domain": "landing-zone",
+      "scenario": "You are designing a Landing Zone for your organization and need to identify all the components that should be considered. The LZ has a 'virtuous circle' with Snowflake core capabilities at the center.",
+      "stem": "Select THREE components or capabilities that are part of the Landing Zone virtuous circle discussed in the chapter.",
+      "options": [
+        { "key": "A", "text": "Security monitoring with internal and external alerting mechanisms" },
+        { "key": "B", "text": "Cost reporting and FinOps consumption analysis" },
+        { "key": "C", "text": "Disaster recovery planning and implementation" },
+        { "key": "D", "text": "Building end-user applications and dashboards" },
+        { "key": "E", "text": "Snowflake product roadmap planning" },
+        { "key": "F", "text": "Hiring and onboarding Snowflake developers" }
+      ],
+      "correct": ["A", "B", "C"],
+      "explanation": {
+        "correct": "Security monitoring, cost reporting, and disaster recovery are all explicitly discussed as components of the LZ virtuous circle that represent technical and business capabilities to be implemented.",
+        "distractors": {
+          "D": "Building end-user applications is the responsibility of development teams using the platform — the LZ focuses on delivering the platform itself, not applications built on it.",
+          "E": "Product roadmap planning is Snowflake's responsibility, not a component of your organization's LZ design.",
+          "F": "Hiring and onboarding is an organizational HR function, not a technical component of the LZ virtuous circle."
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": "multi",
+      "domain": "usage-reporting",
+      "scenario": "Your data governance team is debating whether to use the information_schema or the Account Usage Store for capturing whole-account data access evidence. They need comprehensive historical data across all databases.",
+      "stem": "Select TWO reasons why the information_schema is considered a poor choice for whole-account data capture.",
+      "options": [
+        { "key": "A", "text": "The information_schema scope is limited to an individual database" },
+        { "key": "B", "text": "The information_schema is time-limited to 14 days" },
+        { "key": "C", "text": "The information_schema does not capture SQL statement text" },
+        { "key": "D", "text": "The information_schema requires ACCOUNTADMIN role to query" },
+        { "key": "E", "text": "The information_schema is only available in Enterprise edition or higher" }
+      ],
+      "correct": ["A", "B"],
+      "explanation": {
+        "correct": "The information_schema scope is limited to an individual database and is time-limited to 14 days, making it a poor choice for whole-account data capture unless you cycle through each database or UNION all required schemas.",
+        "distractors": {
+          "C": "There is no statement that information_schema does not capture SQL text — the limitations are scope (single database) and time (14 days).",
+          "D": "There is no stated requirement that information_schema queries require ACCOUNTADMIN.",
+          "E": "There is no stated edition restriction on information_schema availability."
+        }
+      }
+    }
+  ],
+  "coverage": {
+    "areas_covered": [
+      "Landing Zone purpose and design rationale",
+      "First mover vs second mover challenges",
+      "Snowflake SE and PS role limitations in LZ delivery",
+      "Sandpit account definition and PoC time limits",
+      "Sandpit minimum considerations (network policy, data egress, consumption)",
+      "Sandpit terms of usage",
+      "PrivateLink limitation (same-region only)",
+      "Security monitoring layered defense approach",
+      "Cost reporting and Centralized Monitoring Store (CMS) use-cases",
+      "Data sharing provider/consumer dynamics",
+      "Usage reporting — four minimum security questions",
+      "information_schema limitations for whole-account capture",
+      "SQL replay limitation (data changes over time)",
+      "Snowflake organizations and ORGADMIN role",
+      "Disaster recovery scenarios and Business Critical edition requirement",
+      "Behavior change bundles — testing period and deployment timing"
+    ],
+    "areas_not_covered": [
+      "LZ virtuous circle outer ring — detailed technical capabilities breakdown",
+      "Sandpit sample SQL configuration details (warehouse settings, role grants)",
+      "SnowSQL installation and configuration (config file, login strings)",
+      "Classic UI vs Snowsight discussion and switching",
+      "PrivateLink federated security token and self-service functions",
+      "PrivateLink checklist approach and Terraform automation",
+      "Security monitoring event detection and automated distribution channels",
+      "Share utilization monitoring and Snowflake-supplied monitoring data sets",
+      "Data catalog and metadata access patterns",
+      "CDMC Framework reference architecture and evidence repository",
+      "Object tagging for CDMC implementation",
+      "Alerting capability (Snowflake alerts, email wrapper procedures, monitoring schedules)",
+      "Behavior change management — selective enablement of private previews",
+      "SCD2 recommendation for data consistency",
+      "LZ maintenance — monthly review of Account Usage Store views",
+      "Cost of retrofitting a LZ vs designing up front"
+    ]
+  }
+}
