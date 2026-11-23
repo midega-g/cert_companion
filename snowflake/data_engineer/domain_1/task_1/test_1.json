@@ -1,0 +1,562 @@
+{
+  "label": "Data Movement Part 1: Loading, Ingestion and Troubleshooting",
+  "order": 1,
+  "topic": "Data Movement: loading, ingestion and troubleshooting",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "data-loading",
+      "scenario": "A Data Engineer runs a nightly COPY INTO sales_raw FROM @landing statement with default options. One night the statement fails because a CSV file contains a malformed row. The next morning the Engineer queries COPY_HISTORY for the table and for that file and gets no rows.",
+      "stem": "Where can the Engineer find the details of the failed statement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "In COPY_HISTORY, by widening the START_TIME window, because aborted statements are recorded there after a delay"
+        },
+        {
+          "key": "B",
+          "text": "In the output of SYSTEM$PIPE_STATUS for the pipe that loads the stage"
+        },
+        {
+          "key": "C",
+          "text": "In QUERY_HISTORY, by looking up the COPY INTO statement"
+        },
+        {
+          "key": "D",
+          "text": "In the output of VALIDATE_PIPE_LOAD for the table"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A bulk COPY INTO defaults to ON_ERROR = ABORT_STATEMENT, and aborted loads are not recorded in COPY_HISTORY. The statement and its error are visible in QUERY_HISTORY.",
+        "distractors": {
+          "A": "Widening the window does not help. Aborted loads never appear in COPY_HISTORY, regardless of the time range.",
+          "B": "SYSTEM$PIPE_STATUS reports the state of a Snowpipe pipe. The failed load was a bulk COPY, not a pipe.",
+          "D": "VALIDATE_PIPE_LOAD reads a pipe's load history. It does not cover a bulk COPY statement."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "schema-detection",
+      "scenario": "A Data Engineer must create a table from CSV files that each start with a header row. The named file format has SKIP_HEADER = 1. The Engineer runs INFER_SCHEMA against the stage path, and the result lists the columns as c1, c2 and c3 instead of the header names.",
+      "stem": "Which change returns the real column names so the result can feed CREATE TABLE ... USING TEMPLATE?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Replace SKIP_HEADER = 1 with PARSE_HEADER = TRUE in the file format"
+        },
+        {
+          "key": "B",
+          "text": "Keep SKIP_HEADER = 1 and add PARSE_HEADER = TRUE to the file format"
+        },
+        {
+          "key": "C",
+          "text": "Call INFER_SCHEMA with IGNORE_CASE => TRUE"
+        },
+        {
+          "key": "D",
+          "text": "Call INFER_SCHEMA with INFER_NESTED_TYPES => TRUE"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "For CSV, INFER_SCHEMA returns generic names (c1, c2, ...) unless the file format sets PARSE_HEADER = TRUE. PARSE_HEADER replaces SKIP_HEADER.",
+        "distractors": {
+          "B": "SKIP_HEADER cannot be combined with PARSE_HEADER = TRUE, so this file format is rejected.",
+          "C": "IGNORE_CASE only changes how returned column names are cased (uppercase) and the expression function used. It does not read the header.",
+          "D": "INFER_NESTED_TYPES controls whether nested data returns structured OBJECT, ARRAY and MAP types. It has no effect on CSV column names."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "snowpipe-error-notifications",
+      "scenario": "A pipe uses ERROR_INTEGRATION with an outbound queue notification integration that publishes to an SNS standard topic, and the pipe uses the default copy options. Alerts arrived reliably until two weeks ago. Since then none have arrived, although COPY_HISTORY shows several files with a Load failed status. SYSTEM$PIPE_STATUS reports RUNNING with no error, and new files keep loading.",
+      "stem": "What is the most likely cause?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The default ON_ERROR = SKIP_FILE suppresses notifications for files that fail to load"
+        },
+        {
+          "key": "B",
+          "text": "Notifications are sent only for files that fail because of repeated internal errors"
+        },
+        {
+          "key": "C",
+          "text": "The pipe has moved to the STALLED_EXECUTION_ERROR state"
+        },
+        {
+          "key": "D",
+          "text": "The pipe owner no longer has USAGE on the notification integration"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The pipe owner needs USAGE on the notification integration. If it is lost, notifications stop without an error and loading continues.",
+        "distractors": {
+          "A": "With the default SKIP_FILE, a notification is sent for every file that has an error. This is the setting that gives the most complete coverage.",
+          "B": "Files that fail from repeated internal errors are not reported by error notifications at all.",
+          "C": "The pipe reports RUNNING and keeps loading files, so it is not stalled."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "snowpipe-troubleshooting",
+      "scenario": "A pipe with auto-ingest loads files from an S3 bucket. Files of about 2 MB load normally. Files of about 40 MB, uploaded with the AWS CLI using default settings, never appear in COPY_HISTORY. SYSTEM$PIPE_STATUS shows RUNNING with no error. The bucket event notification to the queue listed in the pipe's notification_channel is configured for s3:ObjectCreated:Put, s3:ObjectCreated:Post and s3:ObjectCreated:Copy.",
+      "stem": "What should the Engineer do to fix this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set ON_ERROR = CONTINUE on the pipe's COPY statement"
+        },
+        {
+          "key": "B",
+          "text": "Change the bucket notification to send all object create events, then load the files that were missed"
+        },
+        {
+          "key": "C",
+          "text": "Pause the pipe and resume it so that it rescans the bucket"
+        },
+        {
+          "key": "D",
+          "text": "Add PATTERN = '.*' to the pipe's COPY statement"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Uploads above the AWS CLI multipart threshold (8 MiB) finish with s3:ObjectCreated:CompleteMultipartUpload. A notification limited to Put, Post and Copy never fires for them. Notify on all object create events (or add CompleteMultipartUpload), then load the earlier files.",
+        "distractors": {
+          "A": "ON_ERROR affects how errors inside files are handled. These files never reach the pipe, so no error occurs.",
+          "C": "Pausing and resuming does not rescan the bucket. An auto-ingest pipe only loads files it has received event notifications for.",
+          "D": "PATTERN only filters files the pipe was already notified about. It cannot cause a missing notification to arrive."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "snowpipe-troubleshooting",
+      "scenario": "A pipe was paused for 20 days during a migration. Nobody changed its ownership. It is now ready to be restarted, and files arrived in the stage while it was paused. SYSTEM$PIPE_STATUS shows PAUSED, and a plain resume does not work.",
+      "stem": "Which TWO actions are needed to restart ingestion and recover the data? Select TWO.",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run ALTER PIPE ... SET PIPE_EXECUTION_PAUSED = FALSE"
+        },
+        {
+          "key": "B",
+          "text": "Run SYSTEM$PIPE_FORCE_RESUME with the staleness_check_override argument"
+        },
+        {
+          "key": "C",
+          "text": "Run CREATE OR REPLACE PIPE with the same COPY statement"
+        },
+        {
+          "key": "D",
+          "text": "Load the files that arrived during the pause with a bulk COPY INTO statement"
+        },
+        {
+          "key": "E",
+          "text": "Run SYSTEM$PIPE_FORCE_RESUME with only the ownership_transfer_check_override argument"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A pipe paused for more than 14 days is stale, so it needs SYSTEM$PIPE_FORCE_RESUME with staleness_check_override. Files queued while it was paused are dropped after 14 days, so they must be loaded with a bulk COPY INTO.",
+        "distractors": {
+          "A": "A plain resume does not work for a pipe that has been paused for more than 14 days.",
+          "C": "Recreating the pipe is unnecessary for a stale pause, and a recreated pipe loses its load history.",
+          "E": "The ownership_transfer_check_override argument is only added when ownership changed while the pipe was paused. It does not override the staleness check."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "semi-structured-data",
+      "scenario": "A Data Engineer loads JSON events into a VARIANT column. Queries that filter on the event:amount element are much slower than queries on other elements. The Engineer finds that amount is stored as the number 12 in some documents and as the string \"12\" in others. None of the documents contain a JSON null, and the table is far below 200 distinct elements per partition.",
+      "stem": "Which action addresses the cause of the slow queries?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set STRIP_NULL_VALUES = TRUE in the JSON file format and reload the data"
+        },
+        {
+          "key": "B",
+          "text": "Make amount carry a single native data type in the source data and reload"
+        },
+        {
+          "key": "C",
+          "text": "Ask Snowflake Support to raise the limit on extracted elements for the table"
+        },
+        {
+          "key": "D",
+          "text": "Run the queries on an X-Large warehouse instead of a Small warehouse"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Snowflake extracts elements into columnar form when loading VARIANT data, but it does not extract an element that holds multiple data types. Queries on such an element must scan the whole structure for each row. Using one native type per element lets it be extracted.",
+        "distractors": {
+          "A": "STRIP_NULL_VALUES helps only with elements that contain JSON null. These documents contain none, and mixed types would still block extraction.",
+          "C": "The limit is 200 extracted elements per partition, per table, and it can be raised only through Support. The table is far below it, so the limit is not the cause.",
+          "D": "A larger warehouse does not change how the element is stored. The element remains unextracted and each row still needs a scan of the whole structure."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "stage-encryption",
+      "scenario": "A Data Engineer creates an internal named stage with CREATE STAGE docs_stage and no other options, then uploads PDF files with PUT. A BI tool opens URLs produced by GET_PRESIGNED_URL for these files, and every download is corrupt. The same files open correctly when retrieved with GET.",
+      "stem": "What should the Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run ALTER STAGE docs_stage SET ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE')"
+        },
+        {
+          "key": "B",
+          "text": "Pass an expiration_time of 604800 seconds to GET_PRESIGNED_URL"
+        },
+        {
+          "key": "C",
+          "text": "Create the stage with ENCRYPTION = (TYPE = 'SNOWFLAKE_FULL') and CLIENT_ENCRYPTION_KEY_SIZE = 256, then re-upload the files"
+        },
+        {
+          "key": "D",
+          "text": "Create a new stage with ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE') and upload the files to it"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The default internal stage encryption is SNOWFLAKE_FULL, which encrypts files on the client during PUT. Such files are unreadable through pre-signed URLs. SNOWFLAKE_SSE encrypts on the server side, which pre-signed URLs require, and the type can only be chosen when the stage is created.",
+        "distractors": {
+          "A": "The encryption type of an existing stage cannot be changed, so the stage must be recreated.",
+          "B": "The expiration time controls how long the URL stays valid. It has no effect on whether the downloaded file can be read.",
+          "C": "SNOWFLAKE_FULL stays client-side encrypted whatever the key size, so pre-signed URLs would still return unreadable files."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "storage-integrations",
+      "scenario": "An administrator runs CREATE OR REPLACE STORAGE INTEGRATION s3_int with the same role ARN, only to change the allowed locations. The integration is enabled, and the stage URL has not changed and still falls inside the allowed locations. The next COPY INTO from the existing external stage fails with SQL error 003139: Integration associated with the stage cannot be found.",
+      "stem": "Which statement fixes the error?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ALTER STAGE ext_stage SET STORAGE_INTEGRATION = s3_int"
+        },
+        {
+          "key": "B",
+          "text": "GRANT USAGE ON INTEGRATION s3_int TO ROLE loader_role"
+        },
+        {
+          "key": "C",
+          "text": "ALTER STORAGE INTEGRATION s3_int SET ENABLED = TRUE"
+        },
+        {
+          "key": "D",
+          "text": "ALTER STAGE ext_stage SET URL = 's3://mybucket1/path1/'"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "CREATE OR REPLACE gives the integration a new hidden ID, and stages are linked to an integration by that ID, not by name. Setting STORAGE_INTEGRATION on the stage again links it to the new object.",
+        "distractors": {
+          "B": "Grants are tied to the old object as well, and the error says the stage cannot find the integration, not that a role lacks access.",
+          "C": "The integration is already enabled. ENABLED does not reconnect a stage to a replaced integration.",
+          "D": "The URL was never the problem. Resetting it does not change which integration the stage points to."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "error-logging",
+      "scenario": "A Data Engineer enables error logging on a table, then runs a bulk COPY INTO with no ON_ERROR option. The load fails on a malformed row and the table's error table is empty. The Engineer now needs to load all valid rows and keep every rejected row in the error table so they can be fixed and reloaded.",
+      "stem": "Which ON_ERROR setting should the next COPY INTO use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ON_ERROR = SKIP_FILE"
+        },
+        {
+          "key": "B",
+          "text": "ON_ERROR = 'SKIP_FILE_10%'"
+        },
+        {
+          "key": "C",
+          "text": "ON_ERROR = CONTINUE"
+        },
+        {
+          "key": "D",
+          "text": "VALIDATION_MODE = RETURN_ALL_ERRORS"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The bulk default, ABORT_STATEMENT, records no errors, which is why the error table was empty. CONTINUE loads the valid rows and records every rejected row.",
+        "distractors": {
+          "A": "With SKIP_FILE, one error is recorded for each skipped file. Rejected rows are not logged individually and the good rows in those files are skipped.",
+          "B": "Error logging is not supported with the SKIP_FILE_<n> and SKIP_FILE_<n>% variants.",
+          "D": "VALIDATION_MODE returns the errors without loading any data, so the valid rows would not be loaded."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "snowpipe-recovery",
+      "scenario": "A pipe with the default copy options loaded a file, orders/2026/11/20.csv, three days ago. The load failed because of a malformed row, so no rows from that file reached the table. The Engineer corrected the file and uploaded it under the same path and name, but the pipe does nothing. The Engineer must load the corrected file without changing the pipe and without reloading other files.",
+      "stem": "Which TWO approaches load the corrected data? Select TWO.",
+      "options": [
+        {
+          "key": "A",
+          "text": "TRUNCATE the target table, then upload the corrected file again under the same name"
+        },
+        {
+          "key": "B",
+          "text": "Run CREATE OR REPLACE PIPE with the same definition"
+        },
+        {
+          "key": "C",
+          "text": "Upload the corrected file under a new name"
+        },
+        {
+          "key": "D",
+          "text": "Run ALTER PIPE ... REFRESH"
+        },
+        {
+          "key": "E",
+          "text": "Run COPY INTO with FILES = ('orders/2026/11/20.csv') using the pipe's file format and options"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "A pipe ignores a file whose path and name are in its load metadata, which is kept for 14 days and includes failed files. A file with a new name is treated as new. A bulk COPY INTO with FILES keeps separate load metadata from the pipe, so it loads the corrected file.",
+        "distractors": {
+          "A": "Truncating the table does not clear the pipe's load metadata, so the pipe still ignores the file name.",
+          "B": "Recreating the pipe drops the load metadata for all files, so files it already loaded can load again. Do it only when the pipe itself must change.",
+          "D": "REFRESH queues only files that the pipe has not processed, and a failed file counts as processed."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "file-selection",
+      "scenario": "A stage holds several hundred thousand files. A Data Engineer receives a list of 1,200 specific file names to load into one table with a bulk COPY INTO. The names have no shared prefix, and the load must select the files in the fastest way the command allows.",
+      "stem": "Which approach should the Engineer use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "One COPY INTO with a FILES list that names all 1,200 files"
+        },
+        {
+          "key": "B",
+          "text": "One COPY INTO with a PATTERN regex that matches the 1,200 names"
+        },
+        {
+          "key": "C",
+          "text": "Two COPY INTO statements, each with a FILES list of no more than 1,000 names"
+        },
+        {
+          "key": "D",
+          "text": "One COPY INTO that names only the stage path as a prefix"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "FILES is the fastest way to select files, but a list is limited to 1,000 files. Splitting the names across two statements stays within the limit and keeps the fast selection method.",
+        "distractors": {
+          "A": "A FILES list accepts at most 1,000 files, so a list of 1,200 is rejected.",
+          "B": "PATTERN works without a file-count limit but is the slowest selection method, which fails the requirement to be as fast as possible.",
+          "D": "A path prefix selects every file under it, not the 1,200 named files, which share no prefix."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "load-transformations",
+      "scenario": "JSON files in a stage each hold an order with an items array. A Data Engineer writes COPY INTO order_items FROM (SELECT $1:id, f.value FROM @orders_stage, LATERAL FLATTEN(INPUT => $1:items) f). The statement is rejected, and the Engineer needs one row per array element in the end.",
+      "stem": "Which approach produces one row per element?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Keep FLATTEN in the COPY SELECT and set ON_ERROR = CONTINUE"
+        },
+        {
+          "key": "B",
+          "text": "Load the documents into a VARIANT column with COPY INTO, then flatten them with a query"
+        },
+        {
+          "key": "C",
+          "text": "Keep FLATTEN in the COPY SELECT and add MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE"
+        },
+        {
+          "key": "D",
+          "text": "Keep FLATTEN in the COPY SELECT and run it with VALIDATION_MODE = RETURN_ERRORS first"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A transforming COPY supports only simple changes such as reordering, omitting and casting columns, and FLATTEN is not supported in it. Load the raw documents into a VARIANT column first and flatten them in a later query.",
+        "distractors": {
+          "A": "ON_ERROR controls how data errors are handled. It does not make an unsupported function valid inside COPY.",
+          "C": "MATCH_BY_COLUMN_NAME cannot be combined with a transforming SELECT, and it does not enable FLATTEN.",
+          "D": "VALIDATION_MODE cannot be used with a transforming COPY, and a validation run would not change which functions are supported."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "csv-options",
+      "scenario": "A file format sets FIELD_DELIMITER = '|' and FIELD_OPTIONALLY_ENCLOSED_BY = '\"'. A source system writes some records as | \"Hello world\" |, with a space before the opening quote. The Engineer wants these fields to load as Hello world and has not changed any other file format option.",
+      "stem": "Which file format option addresses the space before the opening quote?",
+      "options": [
+        {
+          "key": "A",
+          "text": "TRIM_SPACE = TRUE"
+        },
+        {
+          "key": "B",
+          "text": "SKIP_BLANK_LINES = TRUE"
+        },
+        {
+          "key": "C",
+          "text": "EMPTY_FIELD_AS_NULL = TRUE"
+        },
+        {
+          "key": "D",
+          "text": "ESCAPE_UNENCLOSED_FIELD = NONE"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "TRIM_SPACE = TRUE removes the leading space before the opening quote when the field is optionally enclosed, so | \"Hello world\" | loads as Hello world. It defaults to FALSE.",
+        "distractors": {
+          "B": "SKIP_BLANK_LINES controls whether blank lines in the file are skipped. It does not affect spaces inside a record.",
+          "C": "EMPTY_FIELD_AS_NULL already defaults to TRUE and applies to two successive delimiters, not to spaces.",
+          "D": "ESCAPE_UNENCLOSED_FIELD sets the escape character for unenclosed fields. It does not trim spaces."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "metadata-columns",
+      "scenario": "A Data Engineer wants each loaded row to carry the checksum of its source file, so that the same content re-staged under a different name can be detected later. The files are default-format CSV in a named external stage. The Engineer has already tried SELECT * FROM @ext_stage t and saw only the data columns.",
+      "stem": "Which approach stores the checksum with each row?",
+      "options": [
+        {
+          "key": "A",
+          "text": "COPY INTO from (SELECT * FROM @ext_stage t), then read the metadata columns from the target table"
+        },
+        {
+          "key": "B",
+          "text": "COPY INTO from (SELECT METADATA$FILENAME, t.$1 FROM @ext_stage t)"
+        },
+        {
+          "key": "C",
+          "text": "Load the rows first, then run an UPDATE that sets a column to METADATA$FILE_CONTENT_KEY"
+        },
+        {
+          "key": "D",
+          "text": "COPY INTO from (SELECT METADATA$FILE_CONTENT_KEY, t.$1 FROM @ext_stage t)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "METADATA$FILE_CONTENT_KEY holds the checksum of the file. Metadata columns can only be selected by name, so they are loaded through a COPY INTO with a SELECT that names them.",
+        "distractors": {
+          "A": "Metadata columns are not part of SELECT *, which is why the Engineer saw only data columns.",
+          "B": "METADATA$FILENAME returns the file name with its full path. A renamed copy of the same content would not match.",
+          "C": "Metadata columns cannot be used to update existing rows. They must be loaded as part of the COPY INTO."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "handling-loaded-files",
+      "scenario": "A nightly bulk COPY INTO loads files from an internal named stage with PURGE = TRUE. Over several weeks the stage keeps growing and loads take longer, although the statements report no errors. Some nights COPY_HISTORY still shows a few recent files with a Load in progress status when the Engineer starts cleaning up.",
+      "stem": "Which TWO actions are appropriate? Select TWO.",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set FORCE = TRUE so that the COPY INTO stops checking whether files were loaded"
+        },
+        {
+          "key": "B",
+          "text": "Run LIST on the stage periodically to find files that PURGE did not remove"
+        },
+        {
+          "key": "C",
+          "text": "Rely on an error from the COPY INTO to report any file that PURGE could not remove"
+        },
+        {
+          "key": "D",
+          "text": "Run REMOVE on the stage path while those files still show Load in progress, to free space"
+        },
+        {
+          "key": "E",
+          "text": "Run REMOVE on leftover files after COPY_HISTORY shows their status as Loaded"
+        }
+      ],
+      "correct": [
+        "B",
+        "E"
+      ],
+      "explanation": {
+        "correct": "A failed PURGE raises no error, so periodic LIST calls show which files remain. Remove those files only after COPY_HISTORY shows them as Loaded. Removing files also speeds later loads, because COPY scans fewer files to check whether they were loaded.",
+        "distractors": {
+          "A": "FORCE loads files even if they were loaded before, so it risks duplicates and does not clear the stage.",
+          "C": "A failed PURGE does not raise an error, so the statement gives no signal about leftover files.",
+          "D": "Removing a file while its status is Load in progress can cause a partial load and data loss."
+        }
+      }
+    }
+  ]
+}
