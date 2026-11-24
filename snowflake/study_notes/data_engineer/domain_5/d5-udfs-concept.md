@@ -1,6 +1,6 @@
-# Domain 5: Data Transformation, part 1 (SnowPro Advanced: Data Engineer, DEA-C02)
+# Domain 5: Data Transformation, UDFs (SnowPro Advanced: Data Engineer, DEA-C02)
 
-Weight: **25%**. Domain 5 has sections 5.1 to 5.7. Part 1 will cover 5.1 to 5.3 (functions and procedures). Part 2 is [d5-semi-structured-and-unstructured-data-concept.md](d5-semi-structured-and-unstructured-data-concept.md) (5.4 to 5.7). This draft contains **5.1 only**. Sections 5.2 and 5.3 will be added to this file after 5.1 is approved.
+Weight: **25%**. Domain 5 has sections 5.1 to 5.7. Notes are split by topic across these files: this file, 5.1 UDFs; 5.2 and 5.3 to come; [d5-semi-structured-data-concept.md](d5-semi-structured-data-concept.md) (5.4 semi-structured data); [d5-unstructured-data-and-cortex-concept.md](d5-unstructured-data-and-cortex-concept.md) (5.5 unstructured data, semantic views, Cortex, REST API); [d5-snowpark-transformations-concept.md](d5-snowpark-transformations-concept.md) (5.7 Snowpark for data transformations). Section 5.6 will get its own file. A section is added only after it is approved. The contents table below lists only the sections in this file.
 
 Where Domain 1 already covers a topic, these notes link to it instead of repeating it. In particular, the `CREATE FUNCTION` options (`STRICT`, volatility, `NOT NULL`) and the procedure versus UDF comparison are in [Domain 1, 1.4.22](../domain_1/d1-continuous-pipelines-concept.md#1422-udfs-and-stored-procedures).
 

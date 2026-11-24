@@ -390,7 +390,7 @@ Use Snowpipe when the pipeline already produces files and minutes are acceptable
 Handler languages for UDFs: **Java, JavaScript, Python, Scala, SQL**. Create them in SQL, with the **Snowpark** API, or with the CLI. Snowflake Scripting also works for SQL UDFs.
 
 **`CREATE FUNCTION` options**
-- `SECURE`: makes it a secure UDF (secure UDFs are covered in [Domain 5, 5.1.8](../domain_5/d5-functions-and-procedures-concept.md#518-secure-udfs)). `TEMP`: lasts for the session.
+- `SECURE`: makes it a secure UDF (secure UDFs are covered in [Domain 5, 5.1.8](../domain_5/d5-udfs-concept.md#518-secure-udfs)). `TEMP`: lasts for the session.
 - `CALLED ON NULL INPUT` (default) calls the UDF with nulls. `RETURNS NULL ON NULL INPUT` or `STRICT` returns `NULL` without calling it. **`STRICT` isn't supported for SQL UDFs.** They always use `CALLED ON NULL INPUT`, so handle nulls yourself.
 - `VOLATILE` (**default**) may return different values for the same input. `IMMUTABLE` promises the same result for the same inputs. **Snowflake doesn't check this.** A wrong `IMMUTABLE` gives undefined behavior. Aggregate functions can't be `IMMUTABLE`.
 - `NOT NULL` isn't enforced for SQL UDFs.
@@ -409,7 +409,7 @@ Handler languages for UDFs: **Java, JavaScript, Python, Scala, SQL**. Create the
 
 - Procedures run with **owner's rights by default**, or **caller's rights** if declared at creation. A caller's rights procedure can read the caller's session and uses the caller's privileges. Switch with `ALTER PROCEDURE`. A procedure can't run with both.
 - Pick a procedure for DML and DDL (cleanup, `UPDATE`) and a UDF for per-row calculation.
-- UDF depth for transformation (secure UDFs, Snowpark UDFs) is covered in [Domain 5, section 5.1](../domain_5/d5-functions-and-procedures-concept.md#51-define-user-defined-functions-udfs-and-outline-how-to-use-them) of the study guide. This section covers only the pipeline angle.
+- UDF depth for transformation (secure UDFs, Snowpark UDFs) is covered in [Domain 5, section 5.1](../domain_5/d5-udfs-concept.md#51-define-user-defined-functions-udfs-and-outline-how-to-use-them) of the study guide. This section covers only the pipeline angle.
 
 [Back to contents](#contents)
 
@@ -532,5 +532,5 @@ Openflow is a Snowflake integration service built on **Apache NiFi**. It moves d
 - **SQL API.** The authentication page, multi-statement page and reference were not read. Rate or size limits are not given on the pages read.
 - **Openflow.** The overview says the platform deploys "in customers' own VPCs in both AWS and SPCS", while the availability notes list Snowflake Deployments on AWS, Azure and GCP and BYOC on AWS only. Gen 1 versus gen 2 differences were not read.
 - **Notebooks.** `EXECUTE NOTEBOOK` access control mentions `QUERY_WAREHOUSE`, while its usage notes mention `RUNTIME` and `WAREHOUSE` parameters. The page is inconsistent. The `notebooks-tasks` page returned nothing.
-- **UDFs and Scripting depth.** UDF and Scripting topics also appear in Domain 5 of the study guide, so deeper coverage (Snowpark UDFs, secure UDF details) is in [Domain 5, 5.1](../domain_5/d5-functions-and-procedures-concept.md#51-define-user-defined-functions-udfs-and-outline-how-to-use-them). Scripting cursors and loops are left for Domain 5, 5.3.
+- **UDFs and Scripting depth.** UDF and Scripting topics also appear in Domain 5 of the study guide, so deeper coverage (Snowpark UDFs, secure UDF details) is in [Domain 5, 5.1](../domain_5/d5-udfs-concept.md#51-define-user-defined-functions-udfs-and-outline-how-to-use-them). Scripting cursors and loops are left for Domain 5, 5.3.
 - **Unfetched pages**: `tasks-events`, `tasks-errors`, task graph object (also open in [d1-streams-and-tasks-concept.md](d1-streams-and-tasks-concept.md)).

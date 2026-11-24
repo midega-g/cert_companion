@@ -1,0 +1,601 @@
+{
+  "label": "Semi-Structured Data",
+  "order": 1,
+  "topic": "Data Transformation: semi-structured data",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "flatten-outer",
+      "scenario": "A table named orders has a VARIANT column src. Each document holds an items array. A report runs SELECT o.id, f.value:sku::string AS sku FROM orders o, LATERAL FLATTEN(INPUT => o.src:items) f. Orders whose items array is empty do not appear in the report, and the business wants them listed with a NULL sku.",
+      "stem": "What should the Engineer change?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add MODE => 'ARRAY' to the FLATTEN call"
+        },
+        {
+          "key": "B",
+          "text": "Add RECURSIVE => TRUE to the FLATTEN call"
+        },
+        {
+          "key": "C",
+          "text": "Add OUTER => TRUE to the FLATTEN call"
+        },
+        {
+          "key": "D",
+          "text": "Remove LATERAL and use TABLE(FLATTEN(INPUT => o.src:items))"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "With OUTER => TRUE, an input that is empty or can't be reached produces one row with NULL in KEY, INDEX and VALUE, and the source columns are kept. The order stays in the report and f.value:sku::string evaluates to NULL.",
+        "distractors": {
+          "A": "MODE restricts whether objects, arrays or both are flattened. It does not change how an empty array is handled.",
+          "B": "RECURSIVE => TRUE expands all sub-elements below the path. An empty array still has nothing to expand, so the order is still dropped.",
+          "D": "For a single-level array, TABLE(FLATTEN(...)) without LATERAL returns the same rows as LATERAL FLATTEN. Empty arrays are still omitted because OUTER defaults to FALSE."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "path-notation",
+      "scenario": "A VARIANT column src holds documents such as {\"dealership\": \"Valley Honda\", \"vehicle\": [...]}. A query SELECT src:Dealership::VARCHAR AS dealer FROM car_sales runs without error, but dealer is NULL for every row.",
+      "stem": "What is the cause, and what is the fix?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Element names are case-sensitive. Use src:dealership::VARCHAR"
+        },
+        {
+          "key": "B",
+          "text": "The column name must match the case of the JSON key. Rename the column to Src"
+        },
+        {
+          "key": "C",
+          "text": "The path returns a VARIANT. Use GET_PATH(src, 'Dealership') to return a string"
+        },
+        {
+          "key": "D",
+          "text": "A first-level element needs bracket notation. Use src['Dealership'] only"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "In path notation the column name is case-insensitive but element names are case-sensitive. src:Dealership does not match the key dealership, and a missing key returns SQL NULL instead of an error. src:dealership::VARCHAR matches the key and the cast removes the double quotes.",
+        "distractors": {
+          "B": "The column name is case-insensitive, so src and Src are the same column. The case problem is in the element name.",
+          "C": "GET_PATH follows the same case-sensitive element names as path notation, so 'Dealership' would also return NULL.",
+          "D": "Bracket notation uses the same case-sensitive name, so src['Dealership'] returns NULL as well. The colon form is valid for the first level."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "object-construct-nulls",
+      "scenario": "A nightly job exports orders as JSON with SELECT OBJECT_CONSTRUCT('id', id, 'discount', discount) FROM orders. The discount column is SQL NULL for orders without a discount. The downstream system requires the discount key to be present in every document, with a JSON null value.",
+      "stem": "Which change meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Wrap the discount column in STRIP_NULL_VALUE"
+        },
+        {
+          "key": "B",
+          "text": "Replace OBJECT_CONSTRUCT with ARRAY_CONSTRUCT_COMPACT"
+        },
+        {
+          "key": "C",
+          "text": "Add the 's' parameter to OBJECT_CONSTRUCT"
+        },
+        {
+          "key": "D",
+          "text": "Replace OBJECT_CONSTRUCT with OBJECT_CONSTRUCT_KEEP_NULL"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "OBJECT_CONSTRUCT omits any pair whose value is SQL NULL. OBJECT_CONSTRUCT_KEEP_NULL keeps the pair, so every document carries the discount key with a null value.",
+        "distractors": {
+          "A": "STRIP_NULL_VALUE converts a JSON null to SQL NULL. That is the opposite direction, and OBJECT_CONSTRUCT would still drop the pair.",
+          "B": "ARRAY_CONSTRUCT_COMPACT builds an array without NULLs. It does not build an object and removes values.",
+          "C": "The 's' and 'd' parameters belong to PARSE_JSON and control duplicate-key handling. OBJECT_CONSTRUCT does not take them."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "nested-lateral-flatten",
+      "scenario": "A customers table has a VARIANT column src with an orders array. Each order is an object with an id and a lines array of {sku, qty} objects. An engineer runs SELECT c.id, o.value:id::string AS order_id, o.value:lines AS lines FROM customers c, LATERAL FLATTEN(INPUT => c.src:orders) o. The result has one row per order, and lines still holds a whole array. The report needs one row per order line.",
+      "stem": "What should the Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add OUTER => TRUE to the existing FLATTEN call"
+        },
+        {
+          "key": "B",
+          "text": "Add a second LATERAL FLATTEN over o.value:lines and read sku and qty from its value"
+        },
+        {
+          "key": "C",
+          "text": "Replace c.src:orders with c.src:orders[0].lines in the existing FLATTEN call"
+        },
+        {
+          "key": "D",
+          "text": "Add RECURSIVE => TRUE to the existing FLATTEN call and select value:sku"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Each array level needs its own LATERAL FLATTEN. The second call refers to the output of the first (o.value:lines), and each output row is one order line, with c.id and the order id repeated.",
+        "distractors": {
+          "A": "OUTER only controls what happens to empty or unreachable inputs. It does not expand the nested lines array.",
+          "C": "A path with [0] selects a single occurrence, here the first order only, so the other orders are lost. Path syntax can't return all occurrences.",
+          "D": "RECURSIVE => TRUE expands every sub-element at every level. The rows include orders, arrays and individual fields, so the result isn't one clean row per line."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "array-agg-ordering",
+      "scenario": "A pipeline builds one array of SKUs per customer with SELECT customer_id, ARRAY_AGG(sku) FROM order_lines GROUP BY customer_id. The SKUs must appear in line_no order. The input is read from a subquery that already has ORDER BY line_no, but the element order changes between runs.",
+      "stem": "Which change gives a deterministic element order?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Put ORDER BY customer_id, line_no at the end of the outer query"
+        },
+        {
+          "key": "B",
+          "text": "Use ARRAY_AGG(DISTINCT sku) WITHIN GROUP (ORDER BY line_no)"
+        },
+        {
+          "key": "C",
+          "text": "Use ARRAY_AGG(sku) WITHIN GROUP (ORDER BY 2) to sort by the second column"
+        },
+        {
+          "key": "D",
+          "text": "Use ARRAY_AGG(sku) WITHIN GROUP (ORDER BY line_no)"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Without WITHIN GROUP the element order of ARRAY_AGG is unpredictable, whatever the input order was. WITHIN GROUP (ORDER BY line_no) sorts the elements themselves.",
+        "distractors": {
+          "A": "An ORDER BY outside the aggregate orders the output rows, not the elements inside each array. line_no isn't a grouped column, so the query would also fail.",
+          "B": "When DISTINCT and WITHIN GROUP are used together, both must name the same column. DISTINCT sku with ORDER BY line_no raises an error.",
+          "C": "A number in WITHIN GROUP (ORDER BY ...) is treated as a constant, not a column position, so it does not sort anything."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "null-handling",
+      "scenario": "A VARIANT column src holds JSON documents such as {\"coupon\": null}. The key is present and its value is a JSON null. A reporting query applies COALESCE(src:coupon, 'none') and returns 'null' strings and JSON nulls instead of 'none'. The Engineer needs the JSON null to become a SQL NULL inside the query.",
+      "stem": "Which TWO expressions do this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "IS_NULL_VALUE(src:coupon)"
+        },
+        {
+          "key": "B",
+          "text": "STRIP_NULL_VALUE(src:coupon)"
+        },
+        {
+          "key": "C",
+          "text": "TO_JSON(src:coupon)"
+        },
+        {
+          "key": "D",
+          "text": "src:coupon::VARCHAR"
+        },
+        {
+          "key": "E",
+          "text": "OBJECT_CONSTRUCT_KEEP_NULL('coupon', src:coupon)"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "STRIP_NULL_VALUE converts a JSON null to SQL NULL. Casting the value to a string type such as VARCHAR also turns a JSON null into SQL NULL, so COALESCE can then supply the default.",
+        "distractors": {
+          "A": "IS_NULL_VALUE only tests whether the value is a JSON null and returns a boolean. It does not change the value.",
+          "C": "TO_JSON returns the string 'null' for a JSON null. That is a non-NULL string, so COALESCE does not replace it.",
+          "E": "OBJECT_CONSTRUCT_KEEP_NULL builds an object and keeps the pair. It does not convert the value to SQL NULL."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "parsing-and-validating-json",
+      "scenario": "A staging table raw_events has a VARCHAR column payload with JSON text from several producers. Some strings are malformed. The Engineer must insert the valid rows into a VARIANT column without the statement failing, and must also produce a list of the invalid rows with the parser error message for each.",
+      "stem": "Which TWO functions meet these needs?",
+      "options": [
+        {
+          "key": "A",
+          "text": "TRY_PARSE_JSON(payload) to build the VARIANT values"
+        },
+        {
+          "key": "B",
+          "text": "PARSE_JSON(payload) to build the VARIANT values"
+        },
+        {
+          "key": "C",
+          "text": "CHECK_JSON(payload) to list the invalid rows and their errors"
+        },
+        {
+          "key": "D",
+          "text": "PARSE_JSON(payload, 'd') to skip the malformed strings"
+        },
+        {
+          "key": "E",
+          "text": "TO_VARIANT(payload) to parse the JSON and report errors"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "TRY_PARSE_JSON returns NULL for input that isn't valid JSON, so the insert does not fail. CHECK_JSON returns NULL for valid JSON and the error message for invalid JSON, so filtering on CHECK_JSON(payload) IS NOT NULL lists the bad rows with reasons.",
+        "distractors": {
+          "B": "PARSE_JSON raises an error on malformed input, which fails the statement.",
+          "D": "The 'd' parameter only changes duplicate-key handling, so one instance with the last value is kept. Malformed JSON still raises an error.",
+          "E": "TO_VARIANT wraps the string as a VARIANT string. It does not parse JSON and does not report errors."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "higher-order-functions",
+      "scenario": "An Engineer replaces LATERAL FLATTEN with the higher-order functions FILTER and TRANSFORM to work on array columns directly. Lambda expressions, such as a -> a:value > 50, are used inside them, and some bodies are rejected when the query is compiled.",
+      "stem": "Which THREE lambda bodies are allowed?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A body with a correlated subquery against the outer table"
+        },
+        {
+          "key": "B",
+          "text": "A body that reads a Snowflake Scripting variable"
+        },
+        {
+          "key": "C",
+          "text": "A body that calls a SQL UDF"
+        },
+        {
+          "key": "D",
+          "text": "A body that calls a Python UDF"
+        },
+        {
+          "key": "E",
+          "text": "A body with an uncorrelated scalar subquery"
+        },
+        {
+          "key": "F",
+          "text": "A body that calls the built-in function UPPER"
+        }
+      ],
+      "correct": [
+        "C",
+        "E",
+        "F"
+      ],
+      "explanation": {
+        "correct": "A lambda can call built-in functions that are not aggregate or window functions, SQL UDFs, and uncorrelated scalar subqueries.",
+        "distractors": {
+          "A": "Correlated subqueries are not allowed in a lambda.",
+          "B": "A lambda can't reference Snowflake Scripting variables.",
+          "D": "A lambda can call SQL UDFs only. UDFs in other languages, such as Python, aren't allowed."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "array-access",
+      "scenario": "A pipeline pages through a six-element ARRAY, ARRAY_CONSTRUCT(0, 1, 2, 3, 4, 5), and the Engineer wants the elements at index 1 and index 2. The Engineer runs ARRAY_SLICE(ARRAY_CONSTRUCT(0, 1, 2, 3, 4, 5), 1, 3).",
+      "stem": "What does the call return?",
+      "options": [
+        {
+          "key": "A",
+          "text": "[0, 1, 2]"
+        },
+        {
+          "key": "B",
+          "text": "[1, 2, 3]"
+        },
+        {
+          "key": "C",
+          "text": "[2, 3]"
+        },
+        {
+          "key": "D",
+          "text": "[1, 2]"
+        }
+      ],
+      "correct": "D",
+      "explanation": {
+        "correct": "Array indexes start at 0. ARRAY_SLICE returns elements from the start index up to but not including the end index, so from 1 to 3 gives the elements at index 1 and 2.",
+        "distractors": {
+          "A": "That would start at index 0. The start index here is 1.",
+          "B": "That would include the element at the end index 3. The end index is excluded.",
+          "C": "That would treat the start index as 1-based. Indexes are 0-based."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "path-notation-quoting",
+      "scenario": "A VARIANT column src holds documents whose key names contain a blank, such as {\"company name\": \"Acme\"}. An Engineer needs the value as a VARCHAR without the JSON double quotes.",
+      "stem": "Which expression works?",
+      "options": [
+        {
+          "key": "A",
+          "text": "src:company name::VARCHAR"
+        },
+        {
+          "key": "B",
+          "text": "src:\"company name\"::VARCHAR"
+        },
+        {
+          "key": "C",
+          "text": "src.company name::VARCHAR"
+        },
+        {
+          "key": "D",
+          "text": "src:company_name::VARCHAR"
+        }
+      ],
+      "correct": "B",
+      "explanation": {
+        "correct": "A key that isn't a valid identifier, for example one with blanks, must be in double quotes in path notation. The cast to VARCHAR removes the JSON quotes from the returned value.",
+        "distractors": {
+          "A": "Without double quotes the blank ends the identifier, so the path is invalid.",
+          "C": "The first element after the column name needs a colon, not a dot, and the blank still needs double quotes.",
+          "D": "This asks for a different key, company_name. Element names are case-sensitive and must match exactly, so it returns NULL."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "flatten-recursive",
+      "scenario": "An Engineer receives JSON of unknown structure in a VARIANT column src, nested several levels deep. The task is to list every key name and the full path of every element so the structure can be documented.",
+      "stem": "Which FLATTEN call supports this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "FLATTEN(INPUT => src, RECURSIVE => TRUE), reading the KEY and PATH output columns"
+        },
+        {
+          "key": "B",
+          "text": "FLATTEN(INPUT => src), reading the KEY and PATH output columns"
+        },
+        {
+          "key": "C",
+          "text": "FLATTEN(INPUT => src, MODE => 'ARRAY'), reading the KEY and PATH output columns"
+        },
+        {
+          "key": "D",
+          "text": "FLATTEN(INPUT => src, OUTER => TRUE), reading the KEY and PATH output columns"
+        }
+      ],
+      "correct": "A",
+      "explanation": {
+        "correct": "RECURSIVE => TRUE expands all sub-elements at every level. KEY and PATH then describe each element, and TYPEOF(value) can show its type.",
+        "distractors": {
+          "B": "With RECURSIVE defaulting to FALSE, only the element at PATH is expanded, which is the first level here.",
+          "C": "MODE => 'ARRAY' flattens only arrays. Objects are not expanded, so most keys are missed.",
+          "D": "OUTER controls what happens to empty or unreachable inputs. It does not expand deeper levels."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "lateral-semantics",
+      "scenario": "A colleague says LATERAL in a FROM clause works like a join and needs an ON condition, and that it only works with FLATTEN. The Engineer reads the documentation to check.",
+      "stem": "Which statement about LATERAL is correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "It needs an ON clause that links the inline view to the earlier table"
+        },
+        {
+          "key": "B",
+          "text": "It can only be used with the FLATTEN table function"
+        },
+        {
+          "key": "C",
+          "text": "It behaves like a correlated subquery that runs once for each row of the table expression before it, with no ON clause"
+        },
+        {
+          "key": "D",
+          "text": "The inline view can be a plain table reference, for example LATERAL orders"
+        }
+      ],
+      "correct": "C",
+      "explanation": {
+        "correct": "LATERAL lets an inline view refer to columns from a table expression that comes before it. It behaves like a correlated subquery run once for each left-hand row, and no ON clause is needed.",
+        "distractors": {
+          "A": "No ON clause is needed, because the correlation is by reference to the earlier columns.",
+          "B": "It is used with FLATTEN, but also with other subqueries and table functions, including chaining table functions and calling a UDTF with row-specific arguments.",
+          "D": "The inline view can't be a plain table reference. It must be a subquery or a table function."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "parse-json-duplicate-keys",
+      "scenario": "A feed contains the string '{\"a\": 1, \"a\": 2}'. PARSE_JSON on it raises an error and the load fails. The business accepts keeping the last value for a duplicated key.",
+      "stem": "Which call parses the string and keeps one instance of a with the value 2?",
+      "options": [
+        {
+          "key": "A",
+          "text": "PARSE_JSON(s, 's')"
+        },
+        {
+          "key": "B",
+          "text": "PARSE_JSON(s, 'd')"
+        },
+        {
+          "key": "C",
+          "text": "CHECK_JSON(s)"
+        },
+        {
+          "key": "D",
+          "text": "TO_JSON(s)"
+        }
+      ],
+      "correct": "B",
+      "explanation": {
+        "correct": "The optional parameter of PARSE_JSON is 's' (strict, the default) or 'd'. With 'd' a duplicate key doesn't raise an error and the object keeps one instance with the last value.",
+        "distractors": {
+          "A": "'s' is strict mode, which is the default and the cause of the error.",
+          "C": "CHECK_JSON returns NULL for valid JSON or the error message for invalid JSON. It doesn't produce a VARIANT.",
+          "D": "TO_JSON converts a VARIANT to a JSON string. It doesn't parse the text."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "lambda-argument-priority",
+      "scenario": "A table has a numeric column x and an ARRAY column vals. An Engineer runs SELECT TRANSFORM(vals, x -> x * 2) FROM t. The lambda argument is named x, the same as the table column.",
+      "stem": "What does x refer to inside the lambda?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The lambda argument, which takes priority over the column name"
+        },
+        {
+          "key": "B",
+          "text": "The table column x"
+        },
+        {
+          "key": "C",
+          "text": "Both, and the query fails because of the ambiguity"
+        },
+        {
+          "key": "D",
+          "text": "The first column in the select list"
+        }
+      ],
+      "correct": "A",
+      "explanation": {
+        "correct": "A lambda can refer to table columns, but when a name clashes the lambda argument takes priority. Here x is each array element.",
+        "distractors": {
+          "B": "The column is shadowed by the lambda argument of the same name.",
+          "C": "The clash is resolved by a fixed rule, with no error.",
+          "D": "Select-list position plays no part in name resolution."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "multi",
+      "domain": "building-values",
+      "scenario": "An Engineer builds and modifies semi-structured values with OBJECT_INSERT, OBJECT_PICK, OBJECT_AGG and ARRAY_AGG, and wants to avoid runtime errors.",
+      "stem": "Which TWO statements are correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "OBJECT_PICK raises an error when a listed key is missing from the object"
+        },
+        {
+          "key": "B",
+          "text": "OBJECT_INSERT raises an error when the key already exists, unless the updateFlag argument is TRUE"
+        },
+        {
+          "key": "C",
+          "text": "OBJECT_AGG keeps the last value when a key appears twice in a group"
+        },
+        {
+          "key": "D",
+          "text": "ARRAY_AGG supports LIMIT in its window form"
+        },
+        {
+          "key": "E",
+          "text": "OBJECT_AGG raises an error when a key appears more than once in a group"
+        }
+      ],
+      "correct": [
+        "B",
+        "E"
+      ],
+      "explanation": {
+        "correct": "OBJECT_INSERT on an existing key errors unless updateFlag is TRUE, which updates it. OBJECT_AGG raises an error for a duplicate key in a group.",
+        "distractors": {
+          "A": "OBJECT_PICK ignores keys that are missing from the object.",
+          "C": "A duplicate key in a group is an error, not a last-value-wins merge.",
+          "D": "LIMIT is not supported in the window form of ARRAY_AGG."
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": "multi",
+      "domain": "null-corner-cases",
+      "scenario": "A team loads JSON that contains JSON nulls and missing keys, and must choose how to handle each.",
+      "stem": "Which TWO statements are correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "IS_NULL_VALUE returns TRUE for a key that is missing from the object"
+        },
+        {
+          "key": "B",
+          "text": "Reading a key that is missing from an object returns SQL NULL"
+        },
+        {
+          "key": "C",
+          "text": "IS_NULL_VALUE is the same as the IS NULL operator"
+        },
+        {
+          "key": "D",
+          "text": "ARRAY_CONSTRUCT(1, NULL, PARSE_JSON('null')) shows null for the SQL NULL and undefined for the JSON null"
+        },
+        {
+          "key": "E",
+          "text": "STRIP_NULL_VALUES = TRUE in the JSON file format removes JSON nulls while loading"
+        }
+      ],
+      "correct": [
+        "B",
+        "E"
+      ],
+      "explanation": {
+        "correct": "A key that is missing from an object returns SQL NULL when read. The STRIP_NULL_VALUES file format option removes JSON null values during loading.",
+        "distractors": {
+          "A": "IS_NULL_VALUE is TRUE only for a JSON null. For a missing value it returns NULL.",
+          "C": "They differ: IS_NULL_VALUE tests for a JSON null, which IS NULL does not treat as NULL.",
+          "D": "This is reversed. The array shows undefined for the SQL NULL and null for the JSON null."
+        }
+      }
+    }
+  ]
+}

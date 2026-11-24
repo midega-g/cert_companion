@@ -496,14 +496,27 @@
               "children": [
                 {
                   "id": "task_1",
-                  "label": "Part 1",
+                  "label": "UDFs",
                   "mode": "exam",
-                  "description": "Sections 5.1 to 5.3: UDFs, external functions, stored procedures",
+                  "description": "Section 5.1: user-defined functions (SQL, JavaScript, Java/Python/Scala, Snowpark, UDTFs, UDAFs, secure UDFs)",
                   "tests": [
                     {
                       "id": "test_1",
-                      "label": "Data Transformation Part 1: UDFs (5.1)",
+                      "label": "Data Transformation: UDFs",
                       "path": "snowflake/data_engineer/domain_5/task_1/test_1.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_4",
+                  "label": "Semi-Structured Data",
+                  "mode": "exam",
+                  "description": "Section 5.4: traverse, flatten and build semi-structured data",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Semi-Structured Data",
+                      "path": "snowflake/data_engineer/domain_5/task_4/test_1.json"
                     }
                   ]
                 }
