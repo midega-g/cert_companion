@@ -356,7 +356,62 @@ function $(id) {
   return document.getElementById(id);
 }
 
+/* ─── Browser history (Back/Forward button support) ─────────────── */
+// Every view change records a history entry whose state points at a snapshot
+// (view name + navPath) kept in memory. The popstate handler below restores
+// that snapshot, so the browser Back button behaves like the in-app nav.
+const navStore = {};
+let navSeq = 0;
+let restoringView = false;
+
+function viewSignature(name, path) {
+  return name + "|" + path.map((n) => n.id).join("/");
+}
+
+function trackView(name) {
+  if (restoringView || name === "auth") return;
+  // renderHome clears navPath right after showView, so treat home as empty.
+  const path = name === "home" ? [] : state.navPath.slice();
+  const sig = viewSignature(name, path);
+  if (sig === state._viewSig) return; // e.g. moving between questions
+  state._viewSig = sig;
+  const id = ++navSeq;
+  navStore[id] = { view: name, navPath: path };
+  if (state._historyStarted) history.pushState({ navId: id }, "");
+  else history.replaceState({ navId: id }, "");
+  state._historyStarted = true;
+}
+
+window.addEventListener("popstate", async (e) => {
+  // Ignore while signed out (auth screen is showing).
+  if (!$("view-auth").classList.contains("hidden")) return;
+  const snap = e.state && navStore[e.state.navId];
+  restoringView = true;
+  try {
+    if (!snap || snap.view === "home" || !state.manifest) {
+      await renderHome();
+    } else if (snap.view === "history") {
+      await renderHistory();
+    } else {
+      state.navPath = snap.navPath.slice();
+      if (snap.view === "exam" && state.exam && state.answers) {
+        renderExam();
+      } else if (state.navPath.length) {
+        renderNode(); // topic / tests / report fall back to the test list
+      } else {
+        await renderHome();
+      }
+    }
+    state._viewSig = snap
+      ? viewSignature(snap.view, snap.navPath)
+      : viewSignature("home", []);
+  } finally {
+    restoringView = false;
+  }
+});
+
 function showView(name) {
+  trackView(name);
   ["home", "topic", "tests", "exam", "report", "auth", "history"].forEach(
     (v) => {
       $(`view-${v}`).classList.toggle("hidden", v !== name);

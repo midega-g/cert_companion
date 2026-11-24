@@ -355,6 +355,15 @@ Previous/Next repeatedly.
 * A small legend explains Answered / Current / Unanswered.
 * Navigator state is rebuilt on every `renderQuestion` call.
 
+### Browser Back/Forward
+
+`showView(name)` calls `trackView`, which pushes a `history` entry whose state
+is an id into an in-memory `navStore` snapshot (`view` + `navPath`). The
+`popstate` handler restores the snapshot (home, mode/topic/test lists, history,
+or the exam if one is loaded; report falls back to the test list so results are
+not saved twice). Question-to-question moves do not add entries. Snapshots are
+in memory only, so after a page reload Back falls back to Home.
+
 ### State Management
 
 Maintain across navigation without loss:

@@ -405,6 +405,17 @@ body {
   min-width: 18px;
 }
 
+/* Let the text column shrink inside the flex row and wrap long identifiers */
+.option-item > div {
+  flex: 1;
+  min-width: 0;
+}
+.option-text,
+.option-text code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .option-text {
   flex: 1;
   font-size: 0.95rem;
