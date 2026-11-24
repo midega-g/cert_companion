@@ -1,0 +1,500 @@
+{
+  "label": "Unstructured Data and Cortex",
+  "order": 1,
+  "topic": "Data Transformation: unstructured data and semantic views",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "sharing-unstructured-data",
+      "scenario": "A provider shares a secure view over a directory table so that a consumer account can open contract PDFs from an internal stage. The view returns the FILE_URL column of the directory table. Consumers query the view but cannot open any of the files. The provider requires that each consumer authenticates to Snowflake to reach a file, and that no link works for anyone who just holds it.",
+      "stem": "Which change to the view meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Return BUILD_STAGE_FILE_URL(@contracts, relative_path) instead of FILE_URL"
+        },
+        {
+          "key": "B",
+          "text": "Return GET_PRESIGNED_URL(@contracts, relative_path, 60) instead of FILE_URL"
+        },
+        {
+          "key": "C",
+          "text": "Return BUILD_SCOPED_FILE_URL(@contracts, relative_path) instead of FILE_URL"
+        },
+        {
+          "key": "D",
+          "text": "Run ALTER STAGE contracts REFRESH so that FILE_URL values are regenerated for consumers"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "File URLs can't be accessed through a secure view in a share. A scoped URL does work through a share, is created when the consumer queries the view, and can be used only by the user who generated it, so it needs a Snowflake identity.",
+        "distractors": {
+          "A": "BUILD_STAGE_FILE_URL builds a file URL, the same URL type that fails in a shared secure view.",
+          "B": "A pre-signed URL works through a share, but anyone holding it can open the file without a Snowflake login, which the provider ruled out.",
+          "D": "REFRESH only updates the directory table's file metadata. It does not change which URL type the consumer can use."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "presigned-url-encryption",
+      "scenario": "A team created an internal stage with default settings and enabled a directory table. A BI tool opens files through URLs from GET_PRESIGNED_URL, with report users who have no Snowflake login. The downloaded files are corrupt and will not open.",
+      "stem": "What is the correct fix?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run ALTER STAGE SET ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE') on the existing stage"
+        },
+        {
+          "key": "B",
+          "text": "Recreate the stage with ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE') and load the files again"
+        },
+        {
+          "key": "C",
+          "text": "Pass a longer expiration_time to GET_PRESIGNED_URL"
+        },
+        {
+          "key": "D",
+          "text": "Replace the pre-signed URLs with scoped URLs from BUILD_SCOPED_FILE_URL"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Pre-signed URLs on an internal stage need server-side encryption (SNOWFLAKE_SSE). A stage created without it returns corrupt files, and the encryption type of a stage can't be changed, so the stage has to be recreated.",
+        "distractors": {
+          "A": "The encryption type of an existing stage can't be changed.",
+          "C": "Expiry controls how long the URL stays valid. It has no effect on whether the downloaded file is readable.",
+          "D": "A scoped URL can be used only by the user who generated it, so report users without a Snowflake login couldn't open it."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "directory-table-refresh",
+      "scenario": "An external stage on Amazon S3 has a directory table but no AUTO_REFRESH. The stage holds several million files and grows all day. A nightly job drops files under the prefix 2024/01/31/, and SELECT * FROM DIRECTORY(@landing) does not list them. The Engineer wants them registered at the lowest cost.",
+      "stem": "Which statement should the Engineer run?",
+      "options": [
+        {
+          "key": "A",
+          "text": "GRANT SELECT ON DIRECTORY(@landing) TO ROLE etl_role"
+        },
+        {
+          "key": "B",
+          "text": "ALTER STAGE landing SET DIRECTORY = (ENABLE = TRUE)"
+        },
+        {
+          "key": "C",
+          "text": "ALTER STAGE landing REFRESH"
+        },
+        {
+          "key": "D",
+          "text": "ALTER STAGE landing REFRESH SUBPATH = '2024/01/31'"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "A directory table is updated only by a refresh when auto-refresh is off. A manual refresh performs a list operation, which is slow and costly on big stages. REFRESH SUBPATH narrows the listing to the new prefix.",
+        "distractors": {
+          "A": "A directory table has no grantable privileges of its own, and the problem is stale metadata, not access.",
+          "B": "The directory table is already enabled. Enabling it again doesn't register the new files.",
+          "C": "This would register the files, but it lists the whole stage. That is the cost the Engineer is trying to avoid."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "file-injection-handlers",
+      "scenario": "A Java UDTF reads PDF files from an internal stage and returns the extracted text. The owner role will expose it to many other roles. A security review warns that a caller could supply an arbitrary stage path and read files they should not see.",
+      "stem": "How should the function receive the file location?",
+      "options": [
+        {
+          "key": "A",
+          "text": "As a scoped URL built by the caller with BUILD_SCOPED_FILE_URL"
+        },
+        {
+          "key": "B",
+          "text": "As a VARCHAR stage path that the handler appends to the stage name"
+        },
+        {
+          "key": "C",
+          "text": "As a pre-signed URL built with GET_PRESIGNED_URL"
+        },
+        {
+          "key": "D",
+          "text": "As a file URL taken from the FILE_URL column of the directory table"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Passing a scoped URL protects the handler against file injection. This matters whenever the caller is not the function's owner, because a scoped URL is tied to the user who generated it and can't be pointed at an arbitrary file.",
+        "distractors": {
+          "B": "A free-form path lets the caller choose any file the owner's rights can read, which is the file injection risk.",
+          "C": "A pre-signed URL is valid for anyone who holds it, so it does not tie access to the caller.",
+          "D": "A file URL is permanent and not tied to the user who generated it. It gives no protection against file injection."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "semantic-view-privileges",
+      "scenario": "A data team creates a semantic view named sales_sv over several tables. An analyst role has USAGE on the database and schema, but no privileges on the underlying tables. The analyst runs SELECT * FROM SEMANTIC_VIEW(sales_sv DIMENSIONS customer.segment METRICS orders.total_revenue) and gets an insufficient privileges error.",
+      "stem": "Which grant lets the analyst run the query with the least access?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SELECT on each underlying table"
+        },
+        {
+          "key": "B",
+          "text": "SELECT on the semantic view"
+        },
+        {
+          "key": "C",
+          "text": "CREATE SEMANTIC VIEW on the schema"
+        },
+        {
+          "key": "D",
+          "text": "SELECT on the semantic view and on each underlying table"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A role that doesn't own the semantic view needs only SELECT on the semantic view itself, as with a standard view. It does not need privileges on the underlying tables.",
+        "distractors": {
+          "A": "Privileges on the tables alone don't give access to the semantic view, and they expose more data than needed.",
+          "C": "CREATE SEMANTIC VIEW is needed to create the view. It doesn't allow querying it.",
+          "D": "Table privileges are not needed to query a semantic view, so this grants more than is required."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "directory-table-privileges",
+      "scenario": "A loader role works with an internal stage that has a directory table. The role must list the staged files with SELECT * FROM DIRECTORY(@docs) and upload new files with PUT. The security team wants the role to have only the stage privileges the work needs.",
+      "stem": "Which TWO privileges on the stage does the role need?",
+      "options": [
+        {
+          "key": "A",
+          "text": "USAGE"
+        },
+        {
+          "key": "B",
+          "text": "SELECT on the directory table"
+        },
+        {
+          "key": "C",
+          "text": "READ"
+        },
+        {
+          "key": "D",
+          "text": "OWNERSHIP"
+        },
+        {
+          "key": "E",
+          "text": "WRITE"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Querying a directory table on an internal stage needs READ on the stage, and PUT to an internal stage needs WRITE.",
+        "distractors": {
+          "A": "USAGE is the privilege for external stages. An internal stage uses READ and WRITE.",
+          "B": "A directory table is an implicit object layered on a stage and has no grantable privileges of its own.",
+          "D": "OWNERSHIP gives far more than the work needs, which breaks the least-privilege requirement."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "presigned-url-behavior",
+      "scenario": "A reporting team builds links with GET_PRESIGNED_URL on an Amazon S3 external stage whose storage integration uses AWS_ROLE. Some users open links that show a NoSuchKey error. The team also wants links that stay valid for 3 days.",
+      "stem": "Which TWO statements about GET_PRESIGNED_URL apply?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The default expiration is 604800 seconds"
+        },
+        {
+          "key": "B",
+          "text": "The function returns a URL even when the file does not exist, so a bad path shows as NoSuchKey in the browser"
+        },
+        {
+          "key": "C",
+          "text": "The URLs are permanent unless the file is removed"
+        },
+        {
+          "key": "D",
+          "text": "With an AWS_ROLE stage the maximum expiration is 3600 seconds, so a 3-day link is not possible"
+        },
+        {
+          "key": "E",
+          "text": "On Azure the function works with a SAS token, with no storage integration needed"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "GET_PRESIGNED_URL doesn't check that the file exists. It returns a URL, and the error appears when the URL is opened. For a stage that uses AWS_ROLE the maximum expiration is 3600 seconds, even though the general maximum is 604800.",
+        "distractors": {
+          "A": "The default expiration is 3600 seconds. 604800 (7 days) is the maximum for stages that allow it.",
+          "C": "Pre-signed URLs expire at the expiration time. Permanent URLs are file URLs.",
+          "E": "On Azure the function needs a storage integration, not a SAS token."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "semantic-view-parts",
+      "scenario": "A team designs a semantic view over customers and orders tables. The design needs: the amount of each individual sale, total revenue as SUM of that amount, the customer market segment for grouping and filtering, and a link between orders and customers on the customer key.",
+      "stem": "Which THREE mappings to semantic view parts are correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The amount of each individual sale is a fact"
+        },
+        {
+          "key": "B",
+          "text": "Total revenue is a dimension"
+        },
+        {
+          "key": "C",
+          "text": "The customer market segment is a metric"
+        },
+        {
+          "key": "D",
+          "text": "The link between orders and customers is a relationship"
+        },
+        {
+          "key": "E",
+          "text": "The customer market segment is a dimension"
+        }
+      ],
+      "correct": [
+        "A",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Facts are row-level numeric attributes, relationships join logical tables on shared keys, and dimensions are categorical attributes for grouping and filtering.",
+        "distractors": {
+          "B": "Total revenue is an aggregation of a fact, which makes it a metric.",
+          "C": "A market segment is a categorical attribute used to group and filter, which makes it a dimension. Metrics are aggregations."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "cortex-per-user-limits",
+      "scenario": "An administrator limits Cortex AI usage per user. SNOWFLAKE.CORTEX_USER was revoked from PUBLIC and granted only to a custom role AI_FUNCTIONS_USER_ROLE. A budget table records each user's allowance. An hourly task revokes that role from users who exceed their budget, and a monthly task restores it. Several over-budget users still run AI functions every day.",
+      "stem": "What is the most likely cause?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The monthly task restores the role before the month ends"
+        },
+        {
+          "key": "B",
+          "text": "Those users hold SNOWFLAKE.CORTEX_USER through another role"
+        },
+        {
+          "key": "C",
+          "text": "The warehouse is larger than MEDIUM"
+        },
+        {
+          "key": "D",
+          "text": "SNOWFLAKE.CORTEX_USER can't be revoked once it has been granted to PUBLIC"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The limit works by removing the one custom role that carries CORTEX_USER. A user whose other role also includes CORTEX_USER keeps access when the custom role is revoked, so any other role that includes it bypasses the limit.",
+        "distractors": {
+          "A": "The monthly task restores the role at the month change. It doesn't explain access continuing during the month.",
+          "C": "Warehouse size affects cost, with no gain in speed above MEDIUM. It has no link to who can call the functions.",
+          "D": "CORTEX_USER can be revoked from PUBLIC. That revoke is the first step of the per-user limit design."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "ai-extract-limits",
+      "scenario": "A pipeline runs AI_EXTRACT over contracts on a stage. Files are up to 400 pages and all pages must be read. The account does not have cross-region inference enabled, and each run fails when a file has more than 125 pages. One bad file should not stop the statement either.",
+      "stem": "What should the Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Enable cross-region inference"
+        },
+        {
+          "key": "B",
+          "text": "Set scale_factor to 4.0"
+        },
+        {
+          "key": "C",
+          "text": "Pass FL_FILTER_PAGES so that only the first 125 pages are extracted"
+        },
+        {
+          "key": "D",
+          "text": "Move the query to a warehouse larger than MEDIUM"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "With cross-region inference the page limit is 1,000, and a file that can't be processed sets the error field for that file while the statement continues. Without it the limit is 125 pages and a failing file fails the statement.",
+        "distractors": {
+          "B": "scale_factor applies only when cross-region inference is not used, and it doesn't raise the page limit.",
+          "C": "This keeps the statement running, but it drops the pages after 125, and the task needs all pages.",
+          "D": "Warehouse size doesn't change the page limit. A warehouse larger than MEDIUM costs more with no speed gain."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "ai-classify-cost",
+      "scenario": "A team runs AI_CLASSIFY on 5 million support tickets with 8 categories. To improve accuracy they add a description to every category and a set of few-shot examples. Accuracy improves, but the credit cost per run rises sharply even though the ticket text is unchanged.",
+      "stem": "Why did the cost rise?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The descriptions and examples are billed once per call, and the added cost comes from output tokens"
+        },
+        {
+          "key": "B",
+          "text": "The category descriptions are billed per page, like AI_PARSE_DOCUMENT"
+        },
+        {
+          "key": "C",
+          "text": "The descriptions and examples count as input tokens, and they are billed for every record"
+        },
+        {
+          "key": "D",
+          "text": "The function adds a fixed charge for each category beyond the first two"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Category labels, descriptions and examples count as input tokens for every record, not once per call. Across 5 million rows the added tokens multiply.",
+        "distractors": {
+          "A": "The extra text is input, and it is billed for every record, not once per call.",
+          "B": "Per-page billing applies to AI_PARSE_DOCUMENT. AI_CLASSIFY is billed on input and output tokens.",
+          "D": "AI_CLASSIFY is billed on tokens. It has no per-category charge, though more than twenty categories can reduce accuracy."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "ai-parse-document-options",
+      "scenario": "An Engineer calls AI_PARSE_DOCUMENT on 40-page PDF reports. Only pages 5 to 9 (as people count them) are needed, and the embedded images must be extracted too.",
+      "stem": "Which TWO statements about the function's options are correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The default mode is LAYOUT"
+        },
+        {
+          "key": "B",
+          "text": "extract_images needs the LAYOUT mode"
+        },
+        {
+          "key": "C",
+          "text": "page_filter uses zero-based pages with the end page inclusive"
+        },
+        {
+          "key": "D",
+          "text": "page_filter can safely be combined with FL_FILTER_PAGES"
+        },
+        {
+          "key": "E",
+          "text": "page_filter implies page_split"
+        }
+      ],
+      "correct": [
+        "B",
+        "E"
+      ],
+      "explanation": {
+        "correct": "extract_images works only in LAYOUT mode, so the default OCR mode isn't enough. page_filter implies page_split, so page splitting does not need to be turned on separately.",
+        "distractors": {
+          "A": "The default mode is OCR, which returns text only.",
+          "C": "page_filter is zero-based with an inclusive start and an exclusive end, so pages 5 to 9 need the range 4 to 9.",
+          "D": "page_filter should not be combined with FL_FILTER_PAGES."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "cortex-rest-api",
+      "scenario": "A backend service for a customer chat feature needs low-latency LLM responses. A developer proposes calling AI functions in SQL for every message. The platform team also needs to track the usage and credits of the calls.",
+      "stem": "Which TWO statements are correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "For interactive, low-latency use the Cortex REST API is the better fit than SQL AI functions"
+        },
+        {
+          "key": "B",
+          "text": "The /api/v2/cortex/v1/messages endpoint serves models from every provider"
+        },
+        {
+          "key": "C",
+          "text": "The Cortex REST API authenticates with a programmatic access token"
+        },
+        {
+          "key": "D",
+          "text": "CORTEX_AI_FUNCTIONS_USAGE_HISTORY holds the REST API requests and credits"
+        },
+        {
+          "key": "E",
+          "text": "The /api/v2/cortex/v1/responses endpoint is generally available for all models on every cloud"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "AI functions in SQL are built for throughput on large tables, and the Cortex REST API is for low-latency use. The Cortex REST API authenticates with a programmatic access token (PAT).",
+        "distractors": {
+          "B": "The messages endpoint is Anthropic-compatible and serves Claude models only.",
+          "D": "REST API requests are tracked in CORTEX_REST_API_USAGE_HISTORY. The SQL function views have no granular data for them.",
+          "E": "The responses endpoint is in preview and serves OpenAI models on AWS only."
+        }
+      }
+    }
+  ]
+}
