@@ -82,6 +82,30 @@ A UDF extends the built-in functions. It always returns a value, so it suits cal
   - No cache reuse when the referenced table changes, access control on the table changes, the function calls a nondeterministic function, or it calls an external function or a non-SQL UDF.
   - `CHILD_QUERIES_WAIT_TIME` in `ACCOUNT_USAGE.QUERY_HISTORY` records the cached lookup time.
 
+*Examples follow the documented syntax and were not run in Snowflake.*
+
+**Examples**
+
+```sql
+-- Scalar SQL UDF. The body is one SQL expression.
+CREATE OR REPLACE FUNCTION area_of_circle(radius FLOAT)
+  RETURNS FLOAT
+AS
+$$
+  pi() * radius * radius
+$$;
+
+-- Owner's rights: the caller needs only USAGE on the function, not on tickets.
+CREATE OR REPLACE FUNCTION open_ticket_count()
+  RETURNS NUMBER
+AS
+$$
+  SELECT COUNT(*) FROM tickets WHERE status = 'open'
+$$;
+
+GRANT USAGE ON FUNCTION open_ticket_count() TO ROLE support_viewer;
+```
+
 [Back to contents](#contents)
 
 ### 5.1.3 JavaScript UDFs
@@ -98,6 +122,28 @@ A UDF extends the built-in functions. It always returns a value, so it suits cal
 - **NULL handling.** SQL `NULL` becomes JavaScript `undefined`. A returned `undefined` becomes SQL `NULL`. For non-variant types a returned `null` also gives SQL `NULL`. With `VARIANT`, JavaScript `null` maps to JSON `null`, and an `undefined` inside an object or array drops that element.
 - A scalar JavaScript UDF has a limit of 500 input arguments. Recursion is allowed.
 - JavaScript UDFs are shareable (see 5.1.1). Tabular JavaScript UDFs exist too (5.1.6).
+
+**Examples**
+
+```sql
+-- Works. The argument n is N inside the JavaScript code.
+CREATE OR REPLACE FUNCTION add5(n DOUBLE)
+  RETURNS DOUBLE
+  LANGUAGE JAVASCRIPT
+AS 'return N + 5;';
+
+-- Created without error, but fails when called: n can't be resolved.
+CREATE OR REPLACE FUNCTION add5_bad(n DOUBLE)
+  RETURNS DOUBLE
+  LANGUAGE JAVASCRIPT
+AS 'return n + 5;';
+
+-- A quoted lowercase argument name keeps its case.
+CREATE OR REPLACE FUNCTION add5_lower("n" DOUBLE)
+  RETURNS DOUBLE
+  LANGUAGE JAVASCRIPT
+AS 'return n + 5;';
+```
 
 [Back to contents](#contents)
 
@@ -121,6 +167,68 @@ A UDF extends the built-in functions. It always returns a value, so it suits cal
 - No guarantee of which handler instance sees which batch.
 - Vectorized UDFs are for Python. Snowpark supports them too (5.1.5).
 
+**Examples**
+
+```sql
+-- Python, in-line. The handler is a function.
+CREATE OR REPLACE FUNCTION addone_py(i INT)
+  RETURNS INT
+  LANGUAGE PYTHON
+  RUNTIME_VERSION = '3.12'
+  HANDLER = 'addone_py'
+AS
+$$
+def addone_py(i):
+    return i + 1
+$$;
+
+-- Java, in-line. HANDLER is class.method. TARGET_PATH is where the JAR is written.
+CREATE OR REPLACE FUNCTION echo_varchar(x VARCHAR)
+  RETURNS VARCHAR
+  LANGUAGE JAVA
+  CALLED ON NULL INPUT
+  HANDLER = 'TestFunc.echoVarchar'
+  TARGET_PATH = '@~/testfunc.jar'
+AS
+'class TestFunc {
+  public static String echoVarchar(String x) {
+    return x;
+  }
+}';
+
+-- Scala, in-line. Scalar functions only.
+CREATE OR REPLACE FUNCTION echo_varchar_scala(x VARCHAR)
+  RETURNS VARCHAR
+  LANGUAGE SCALA
+  RUNTIME_VERSION = '2.12'
+  HANDLER = 'Echo.echoVarchar'
+AS
+$$
+class Echo {
+  def echoVarchar(x: String): String = {
+    return x
+  }
+}
+$$;
+
+-- Vectorized Python UDF. The DataFrame columns are positional.
+CREATE OR REPLACE FUNCTION add_inputs(x INT, y INT)
+  RETURNS INT
+  LANGUAGE PYTHON
+  RUNTIME_VERSION = '3.12'
+  PACKAGES = ('pandas')
+  HANDLER = 'add_inputs'
+AS
+$$
+import pandas
+from _snowflake import vectorized
+
+@vectorized(input=pandas.DataFrame)
+def add_inputs(df):
+    return df[0] + df[1]
+$$;
+```
+
 [Back to contents](#contents)
 
 ### 5.1.5 Snowpark UDFs
@@ -140,6 +248,34 @@ You write the function on the client in Java, Python or Scala. Snowpark **upload
 - A UDF created with `CREATE FUNCTION` can be called from Snowpark, and a Snowpark UDF can be called from SQL.
 - Vectorized UDFs and UDTFs are available in Snowpark Python. The Snowpark page says they improve machine-learning inference.
 - Snowpark can also create UDTFs (5.1.6) and UDAFs (5.1.7).
+
+**Examples**
+
+```python
+from snowflake.snowpark.functions import udf, call_udf, col
+from snowflake.snowpark.types import IntegerType
+
+# Anonymous UDF. Lasts while the variable is in scope in the session.
+add_one = udf(lambda x: x + 1, return_type=IntegerType(), input_types=[IntegerType()])
+df.select(add_one(col("a")))
+
+# Named, permanent UDF. is_permanent needs stage_location. replace overwrites.
+session.udf.register(
+    lambda x: x + 1,
+    return_type=IntegerType(),
+    input_types=[IntegerType()],
+    name="add_one_perm",
+    is_permanent=True,
+    stage_location="@my_stage",
+    replace=True,
+)
+df.select(call_udf("add_one_perm", col("a")))
+
+# UDF-level packages override the session-level ones. Pin versions for a temporary UDF.
+@udf(packages=["xgboost==1.5.0"])
+def predict(x: float) -> float:
+    ...
+```
 
 [Back to contents](#contents)
 
@@ -165,6 +301,45 @@ A UDTF returns a set of rows (zero, one or many) with one or more columns for ea
 - Snowpark: register a UDTF with the same API as a UDF. The handler is a class and you give the output schema.
 - UDTFs can process staged files in parallel, UDFs can't (5.1.1).
 
+**Examples**
+
+```sql
+-- SQL UDTF. The body must be a SELECT that matches the RETURNS TABLE list.
+CREATE OR REPLACE FUNCTION get_orders(cust_id NUMBER)
+  RETURNS TABLE (order_id NUMBER, amount NUMBER(10,2))
+AS
+$$
+  SELECT order_id, amount FROM orders WHERE customer_id = cust_id
+$$;
+
+SELECT * FROM TABLE(get_orders(42));
+
+-- Python UDTF. State in __init__ lives for one partition.
+CREATE OR REPLACE FUNCTION partition_total(amount NUMBER)
+  RETURNS TABLE (total NUMBER)
+  LANGUAGE PYTHON
+  RUNTIME_VERSION = '3.12'
+  HANDLER = 'PartitionTotal'
+AS
+$$
+class PartitionTotal:
+    def __init__(self):
+        self._sum = 0
+
+    def process(self, amount):
+        self._sum += amount
+        return []                    # no row per input row
+
+    def end_partition(self):
+        yield (self._sum,)           # one row per partition
+$$;
+
+-- One output row per region.
+SELECT t.total
+FROM sales s,
+     TABLE(partition_total(s.amount) OVER (PARTITION BY s.region)) t;
+```
+
 [Back to contents](#contents)
 
 ### 5.1.7 User-defined aggregate functions (UDAFs)
@@ -188,6 +363,39 @@ A UDAF takes values from many rows and returns one value. The page covers **Pyth
   - It can't be used with `WITHIN GROUP`. The query fails.
   - `IMMUTABLE` isn't supported, so all aggregate functions are `VOLATILE` by default.
 - Use `GROUP BY` as with built-in aggregates: `SELECT item, python_sum(price) FROM sales GROUP BY item`.
+
+**Examples**
+
+```sql
+-- The AGGREGATE keyword is required.
+CREATE OR REPLACE AGGREGATE FUNCTION python_sum(a INT)
+  RETURNS INT
+  LANGUAGE PYTHON
+  RUNTIME_VERSION = '3.12'
+  HANDLER = 'PythonSum'
+AS
+$$
+class PythonSum:
+    def __init__(self):
+        self._partial_sum = 0
+
+    @property
+    def aggregate_state(self):
+        return self._partial_sum
+
+    def accumulate(self, input_value):
+        self._partial_sum += input_value
+
+    def merge(self, other_partial_sum):
+        self._partial_sum += other_partial_sum
+
+    def finish(self):
+        return self._partial_sum
+$$;
+
+SELECT item, python_sum(price) FROM sales GROUP BY item;     -- works
+-- SELECT python_sum(price) OVER (PARTITION BY item) ...     -- fails: no window use
+```
 
 [Back to contents](#contents)
 
@@ -214,6 +422,29 @@ Add `SECURE` to `CREATE FUNCTION`, `ALTER FUNCTION` or `CREATE PROCEDURE`. Secur
 - **Sharing.** With a secure UDF shared to another account, `CURRENT_ROLE` and `CURRENT_USER` return **`NULL`**. Use **`CURRENT_ACCOUNT`** to authorize rows for a given consumer account.
 - With masking policies, the column, the UDF and the masking policy must have matching data types.
 
+**Examples**
+
+```sql
+-- Secure SQL UDTF in a share. Authorize by consumer account, because
+-- CURRENT_ROLE and CURRENT_USER return NULL for a shared secure UDF.
+CREATE OR REPLACE SECURE FUNCTION licensed_items()
+  RETURNS TABLE (item_id NUMBER, item_name VARCHAR)
+AS
+$$
+  SELECT l.item_id, l.item_name
+  FROM licensing l
+  JOIN entitlements e ON e.item_id = l.item_id
+  WHERE e.account_locator = CURRENT_ACCOUNT()
+$$;
+
+-- Turn an existing function into a secure one, then check IS_SECURE.
+ALTER FUNCTION add_one(NUMBER) SET SECURE;
+SHOW FUNCTIONS LIKE 'add_one';
+
+-- Secure procedures use the same keyword.
+-- CREATE OR REPLACE SECURE PROCEDURE ...
+```
+
 [Back to contents](#contents)
 
 ### 5.1.9 Creating, granting and calling
@@ -238,6 +469,29 @@ Add `SECURE` to `CREATE FUNCTION`, `ALTER FUNCTION` or `CREATE PROCEDURE`. Secur
 **Calling**
 - Same as built-in functions in a `SELECT`. You can pass arguments **by position, by name** (`first_arg => 'one'`), or mixed. **Positional arguments must come before named ones.** Don't put double quotes around a named argument. Named arguments can pick between overloads that have different argument names.
 - Snowpark, the Snowflake CLI, the Snowflake Python API and the REST API can also run UDFs.
+
+**Examples**
+
+```sql
+GRANT USAGE ON FUNCTION my_udf(NUMBER, NUMBER) TO ROLE analyst;
+
+-- Replace the function and keep its privileges (except OWNERSHIP).
+CREATE OR REPLACE FUNCTION my_udf(first_arg NUMBER, second_arg NUMBER)
+  COPY GRANTS
+  RETURNS NUMBER
+AS
+$$
+  first_arg + second_arg
+$$;
+
+SELECT my_udf(1, 2);                          -- by position
+SELECT my_udf(first_arg => 1, second_arg => 2);   -- by name
+SELECT my_udf(1, second_arg => 2);            -- mixed: positional first
+-- SELECT my_udf(first_arg => 1, 2);          -- error: positional after named
+
+-- Logging levels can't be set in CREATE FUNCTION.
+ALTER FUNCTION my_udf(NUMBER, NUMBER) SET LOG_LEVEL = 'INFO';
+```
 
 [Back to contents](#contents)
 

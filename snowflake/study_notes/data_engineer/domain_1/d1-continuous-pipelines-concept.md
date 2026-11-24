@@ -396,6 +396,47 @@ Handler languages for UDFs: **Java, JavaScript, Python, Scala, SQL**. Create the
 - `NOT NULL` isn't enforced for SQL UDFs.
 - Volatility matters for dynamic tables (1.4.16). UDFs are not allowed in MVs (1.4.18).
 
+*Examples follow the documented syntax and were not run in Snowflake.*
+
+**Examples**
+
+```sql
+-- SQL scalar UDF. The handler is in-line and LANGUAGE defaults to SQL.
+CREATE OR REPLACE FUNCTION area_of_circle(radius FLOAT)
+  RETURNS FLOAT
+AS
+$$
+  pi() * radius * radius
+$$;
+
+SELECT area_of_circle(2.0);   -- 12.566370614359172
+
+-- SQL UDFs always use CALLED ON NULL INPUT, so handle NULL in the body.
+CREATE OR REPLACE FUNCTION safe_ratio(a NUMBER, b NUMBER)
+  RETURNS NUMBER
+AS
+$$
+  IFF(a IS NULL OR b IS NULL OR b = 0, NULL, a / b)
+$$;
+
+-- Python UDF with the create-time options. Null handling and volatility
+-- come after LANGUAGE and before RUNTIME_VERSION.
+CREATE OR REPLACE SECURE FUNCTION add_one(i NUMBER)
+  RETURNS NUMBER
+  LANGUAGE PYTHON
+  RETURNS NULL ON NULL INPUT      -- same as STRICT. Not allowed for SQL UDFs
+  IMMUTABLE                       -- a promise. Snowflake doesn't check it
+  RUNTIME_VERSION = '3.12'
+  HANDLER = 'add_one_py'
+AS
+$$
+def add_one_py(i):
+    return i + 1
+$$;
+
+SELECT add_one(NULL);             -- NULL, and the handler is not called
+```
+
 **Stored procedure versus UDF**
 
 | | Stored procedure | UDF |
