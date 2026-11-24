@@ -1,4 +1,4 @@
 {
-  "label": "Part 3",
-  "description": "Sections 1.6 to 1.7: data sharing and consumption, table types and data operations"
+  "label": "Continuous Pipelines",
+  "description": "Section 1.4 (1.4.13 to 1.4.26): dynamic tables, materialized views, Snowpipe, Snowpipe Streaming, SQL API, Openflow"
 }

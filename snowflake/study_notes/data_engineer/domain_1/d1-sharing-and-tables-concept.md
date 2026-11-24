@@ -1,6 +1,6 @@
-# Domain 1: Data Movement, part 3 (SnowPro Advanced: Data Engineer, DEA-C02)
+# Domain 1: Data Movement, sharing and tables (SnowPro Advanced: Data Engineer, DEA-C02)
 
-Weight: **28%**. These notes cover Domain 1 sections 1.1 to 1.7 and are divided into three parts. Part 1 is [d1-data-loading-and-ingestion-concept.md](d1-data-loading-and-ingestion-concept.md) (1.1 to 1.3). Part 2 is [d1-pipelines-and-connectors-concept.md](d1-pipelines-and-connectors-concept.md) (1.4 and 1.5). Part 3 (this file) covers 1.6 and 1.7. A section is added only after it is approved. The contents table below lists only the sections in this file.
+Weight: **28%**. Domain 1 notes are split across five files: [d1-data-loading-and-ingestion-concept.md](d1-data-loading-and-ingestion-concept.md) (1.1 to 1.3: loading and ingestion); [d1-streams-and-tasks-concept.md](d1-streams-and-tasks-concept.md) (1.4.1 to 1.4.12: streams and tasks); [d1-continuous-pipelines-concept.md](d1-continuous-pipelines-concept.md) (1.4.13 to 1.4.26: dynamic tables, Snowpipe and developer tools); [d1-connectors-concept.md](d1-connectors-concept.md) (1.5: connectors); this file, 1.6 to 1.7: sharing and tables. A section is added only after it is approved. The contents table below lists only the sections in this file.
 
 ## Contents
 

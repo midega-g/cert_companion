@@ -2,7 +2,7 @@
 
 Weight: **25%**. Domain 5 has sections 5.1 to 5.7. Part 1 will cover 5.1 to 5.3 (functions and procedures). Part 2 is [d5-semi-structured-and-unstructured-data-concept.md](d5-semi-structured-and-unstructured-data-concept.md) (5.4 to 5.7). This draft contains **5.1 only**. Sections 5.2 and 5.3 will be added to this file after 5.1 is approved.
 
-Where Domain 1 already covers a topic, these notes link to it instead of repeating it. In particular, the `CREATE FUNCTION` options (`STRICT`, volatility, `NOT NULL`) and the procedure versus UDF comparison are in [Domain 1, 1.4.22](../domain_1/d1-pipelines-and-connectors-concept.md#1422-udfs-and-stored-procedures).
+Where Domain 1 already covers a topic, these notes link to it instead of repeating it. In particular, the `CREATE FUNCTION` options (`STRICT`, volatility, `NOT NULL`) and the procedure versus UDF comparison are in [Domain 1, 1.4.22](../domain_1/d1-continuous-pipelines-concept.md#1422-udfs-and-stored-procedures).
 
 ## Contents
 
@@ -62,7 +62,7 @@ A UDF extends the built-in functions. It always returns a value, so it suits cal
 - A handler can reach external network locations through **external network access** (`EXTERNAL_ACCESS_INTEGRATIONS`). It can record logs, traces and metrics to an event table. The role needs `USAGE` on the integration and `READ` on any secret it uses.
 - Several UDFs can share a name. A function is identified by its **name plus argument types**. If a function has optional arguments (`DEFAULT`), you can't define another function with the same name and a different signature.
 - Functions that read staged files: UDTFs can process multiple files in parallel, UDFs process them **serially**. If a query calls a UDF on staged files and also queries a view that calls **any** UDF or UDTF, the query fails.
-- Create-time options such as `STRICT`, volatility and `NOT NULL` are in [1.4.22](../domain_1/d1-pipelines-and-connectors-concept.md#1422-udfs-and-stored-procedures).
+- Create-time options such as `STRICT`, volatility and `NOT NULL` are in [1.4.22](../domain_1/d1-continuous-pipelines-concept.md#1422-udfs-and-stored-procedures).
 
 [Back to contents](#contents)
 
@@ -72,7 +72,7 @@ A UDF extends the built-in functions. It always returns a value, so it suits cal
 - Handler is always in-line. The page's example omits `LANGUAGE`: `CREATE FUNCTION area_of_circle(radius FLOAT) RETURNS FLOAT AS $$ pi() * radius * radius $$`.
 - Scalar functions have a limit of **500 input arguments**.
 - **Privileges are the owner's.** An unqualified table in the body is resolved in the **schema that contains the function**. The **owner** needs privileges on the objects the body references. The caller needs only `USAGE` on the function. This lets you expose a count from a table the caller can't query.
-- The `NOT NULL` clause isn't enforced and `STRICT` isn't supported for SQL UDFs. See [1.4.22](../domain_1/d1-pipelines-and-connectors-concept.md#1422-udfs-and-stored-procedures).
+- The `NOT NULL` clause isn't enforced and `STRICT` isn't supported for SQL UDFs. See [1.4.22](../domain_1/d1-continuous-pipelines-concept.md#1422-udfs-and-stored-procedures).
 - **Memoizable UDFs.** Add `MEMOIZABLE` to a scalar SQL UDF to cache its result.
   - Aim: speed up complex queries, such as repeated lookups into mapping tables in a **row access policy or masking policy**. The policy owner replaces the mapping-table subquery with the memoizable function.
   - Needs the `USE_CACHED_RESULT` session parameter set to `TRUE`.
@@ -218,7 +218,7 @@ Add `SECURE` to `CREATE FUNCTION`, `ALTER FUNCTION` or `CREATE PROCEDURE`. Secur
 
 ### 5.1.9 Creating, granting and calling
 
-**Privileges to create** (Domain 1's `CREATE FUNCTION` detail is in [1.4.22](../domain_1/d1-pipelines-and-connectors-concept.md#1422-udfs-and-stored-procedures))
+**Privileges to create** (Domain 1's `CREATE FUNCTION` detail is in [1.4.22](../domain_1/d1-continuous-pipelines-concept.md#1422-udfs-and-stored-procedures))
 
 | Object | Privilege |
 |--------|-----------|
