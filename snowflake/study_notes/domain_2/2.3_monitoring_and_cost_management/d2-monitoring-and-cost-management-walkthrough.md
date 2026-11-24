@@ -1,6 +1,6 @@
 # Subdomain 2.3: Monitoring & Cost Management — End-to-End Walkthroughs
 
-Companion to `concepts.md`. Each feature is shown **end-to-end**: setup → apply → **what you actually see** (result sets, alerts, effects), plus how to verify.
+Companion to `d2-monitoring-and-cost-management-concept.md`. Each feature is shown **end-to-end**: setup → apply → **what you actually see** (result sets, alerts, effects), plus how to verify.
 
 > Convention:
 > - 🟢 = allowed / normal

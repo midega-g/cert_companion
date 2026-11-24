@@ -1,6 +1,6 @@
 # Domain 1: Data Movement, part 3 (SnowPro Advanced: Data Engineer, DEA-C02)
 
-Weight: **28%**. These notes cover Domain 1 sections 1.1 to 1.7 and are divided into three parts. Part 1 is [concepts_part1.md](concepts_part1.md) (1.1 to 1.3). Part 2 is [concepts_part2.md](concepts_part2.md) (1.4 and 1.5). Part 3 (this file) covers 1.6 and 1.7. A section is added only after it is approved. The contents table below lists only the sections in this file.
+Weight: **28%**. These notes cover Domain 1 sections 1.1 to 1.7 and are divided into three parts. Part 1 is [d1-data-loading-and-ingestion-concept.md](d1-data-loading-and-ingestion-concept.md) (1.1 to 1.3). Part 2 is [d1-pipelines-and-connectors-concept.md](d1-pipelines-and-connectors-concept.md) (1.4 and 1.5). Part 3 (this file) covers 1.6 and 1.7. A section is added only after it is approved. The contents table below lists only the sections in this file.
 
 ## Contents
 
@@ -628,7 +628,7 @@ ALTER STREAMLIT my_app ADD LIVE VERSION FROM LAST;
 - **Auto-fulfillment supported objects.** The support table lost its tick marks in the fetched text, so the object-by-product matrix is not reliable. Confirm before relying on a specific object type.
 - **10 TB limit parameter.** The page links to an account parameter that raises the limit and the name did not come through. I did not guess it.
 - **Marketplace navigation.** Pages say both "Data sharing, Internal sharing" and "Data sharing, External sharing" for the Shared with you view.
-- **Not read:** `CREATE SHARE`, `ALTER SHARE`, `GRANT ... TO SHARE`, `CREATE LISTING` and `ALTER LISTING` references, the listing manifest reference, pricing models and offers, Egress Cost Optimizer, monitoring and usage views, replication reference pages, declarative sharing, Open Data Sharing detail, secure UDF page, organizational listings pages, `CREATE ROW ACCESS POLICY` reference, memoizable function example (partly), Streamlit getting started, dependency management, external access, secrets, embedding, security overview, sleep timer, and the troubleshooting pages for auto-fulfillment (only the first entry).
+- **Not read:** `CREATE SHARE`, `ALTER SHARE`, `GRANT ... TO SHARE`, `CREATE LISTING` and `ALTER LISTING` references, the listing manifest reference, pricing models and offers, Egress Cost Optimizer, monitoring and usage views, replication reference pages, declarative sharing, Open Data Sharing detail, secure UDF page (read later for [Domain 5, 5.1.8](../domain_5/d5-functions-and-procedures-concept.md#518-secure-udfs)), organizational listings pages, `CREATE ROW ACCESS POLICY` reference, memoizable function example (partly), Streamlit getting started, dependency management, external access, secrets, embedding, security overview, sleep timer, and the troubleshooting pages for auto-fulfillment (only the first entry).
 - **Streamlit.** The page text for `ADD LIVE VERSION FROM LAST` was cut off after "before users with only USAGE privilege on the Streamlit". I assume it means the live version is what such users see. Check before relying on it.
 - **Edition.** Row access policies require Enterprise Edition or higher. Tag-based RAP likewise. The share restriction logic uses Business Critical as the boundary.
 

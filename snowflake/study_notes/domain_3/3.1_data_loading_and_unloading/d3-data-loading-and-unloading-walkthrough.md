@@ -1,6 +1,6 @@
 # Subdomain 3.1: Data Loading & Unloading — End-to-End Walkthroughs
 
-Companion to `concepts.md`. Each step shows setup → command → **what you actually see** (output, staged files, load results), following one continuous scenario: load a CSV of orders, then unload results.
+Companion to `d3-data-loading-and-unloading-concept.md`. Each step shows setup → command → **what you actually see** (output, staged files, load results), following one continuous scenario: load a CSV of orders, then unload results.
 
 > Convention:
 > - 🟢 = success

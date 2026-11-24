@@ -461,6 +461,27 @@
                   ]
                 }
               ]
+            },
+            {
+              "id": "domain_5",
+              "label": "Domain 5",
+              "mode": "exam",
+              "description": "Data Transformation",
+              "children": [
+                {
+                  "id": "task_1",
+                  "label": "Part 1",
+                  "mode": "exam",
+                  "description": "Sections 5.1 to 5.3: UDFs, external functions, stored procedures",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Data Transformation Part 1: UDFs (5.1)",
+                      "path": "snowflake/data_engineer/domain_5/task_1/test_1.json"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },

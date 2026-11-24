@@ -1,0 +1,202 @@
+{
+  "label": "Data Transformation Part 1: UDFs (5.1)",
+  "order": 1,
+  "topic": "Data Transformation: user-defined functions",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "secure-udf",
+      "scenario": "A provider account shares a secure SQL UDF through a direct share. The UDF returns rows from a licensing table only for consumer accounts listed in an entitlement table. The first version compared CURRENT_ROLE() with a role name stored in the entitlement table. Consumers in every account receive no rows, and the provider confirmed the entitlement table is populated.",
+      "stem": "What should the Engineer change in the UDF?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Compare CURRENT_ACCOUNT() with the account identifier stored in the entitlement table"
+        },
+        {
+          "key": "B",
+          "text": "Compare CURRENT_ROLE() with the role name, and create the UDF with COPY GRANTS"
+        },
+        {
+          "key": "C",
+          "text": "Compare CURRENT_USER() with the user name stored in the entitlement table"
+        },
+        {
+          "key": "D",
+          "text": "Compare CURRENT_DATABASE() with the consumer database name stored in the entitlement table"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "In a secure UDF that is shared, CURRENT_ROLE and CURRENT_USER return NULL, so the comparison never matches. CURRENT_ACCOUNT identifies the consumer account and is the supported way to authorize by account.",
+        "distractors": {
+          "B": "COPY GRANTS copies privileges when a function is replaced. It does not change what CURRENT_ROLE returns in a share, which is NULL.",
+          "C": "CURRENT_USER also returns NULL in a shared secure UDF, so it fails for the same reason as CURRENT_ROLE.",
+          "D": "Inside a function, CURRENT_DATABASE returns the database that contains the UDF, not the consumer's database."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "multi",
+      "domain": "udaf",
+      "scenario": "A team writes a Python UDAF named py_median with CREATE AGGREGATE FUNCTION. The class defines __init__, an aggregate_state property, accumulate, merge and finish. The team plans several ways to call and define it against a sales table.",
+      "stem": "Which TWO of the following will fail?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SELECT item, py_median(price) FROM sales GROUP BY item"
+        },
+        {
+          "key": "B",
+          "text": "SELECT item, py_median(price) OVER (PARTITION BY item) FROM sales"
+        },
+        {
+          "key": "C",
+          "text": "Storing the aggregate state in a Python data class"
+        },
+        {
+          "key": "D",
+          "text": "SELECT py_median(price) WITHIN GROUP (ORDER BY price) FROM sales"
+        },
+        {
+          "key": "E",
+          "text": "Declaring the function with CREATE AGGREGATE FUNCTION and LANGUAGE PYTHON"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A Python UDAF cannot be used as a window function, so a call with OVER fails. It also cannot be combined with WITHIN GROUP, so that query fails too.",
+        "distractors": {
+          "A": "A UDAF is called like a built-in aggregate, so GROUP BY works.",
+          "C": "A data class is the suggested way to hold complex state, as long as the state can be pickled and stays under 64 MB serialized.",
+          "E": "CREATE AGGREGATE FUNCTION is the required syntax. The AGGREGATE keyword is what makes it a UDAF."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "javascript-udf",
+      "scenario": "An Engineer runs this statement and it succeeds: CREATE FUNCTION add_tax(price DOUBLE) RETURNS DOUBLE LANGUAGE JAVASCRIPT AS 'return price * 1.16;'. Calling SELECT add_tax(100) then returns an error that the identifier price cannot be resolved.",
+      "stem": "What is the correct explanation and fix?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Snowflake validated the body at creation and warned about it. Recreate the function with RUNTIME_VERSION set"
+        },
+        {
+          "key": "B",
+          "text": "The body returns undefined, which becomes NULL. Add STRICT so that NULL input is handled"
+        },
+        {
+          "key": "C",
+          "text": "Creation fails for lowercase argument names. Rename the argument to a reserved word"
+        },
+        {
+          "key": "D",
+          "text": "Snowflake does not validate JavaScript at creation. Argument names are uppercase in the code, so use PRICE in the body or create the argument as \"price\""
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "JavaScript bodies are not validated at creation, so the error shows up at call time. Unquoted argument names are uppercase inside the JavaScript code. Refer to PRICE, or declare the argument with double quotes to keep the lowercase name.",
+        "distractors": {
+          "A": "JavaScript is not validated at creation. RUNTIME_VERSION is a Python and Scala setting.",
+          "B": "The failure is an unresolved identifier error, not a NULL result. STRICT does not address argument naming.",
+          "C": "Creation succeeded, so the claim that it fails is wrong. Reserved words cannot be used as function or argument names."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "multi",
+      "domain": "memoizable-udf",
+      "scenario": "A row access policy on an orders table calls a memoizable SQL UDF, region_allowed(region VARCHAR), which looks up a mapping table. The session has USE_CACHED_RESULT set to TRUE and callers pass constant arguments. The Engineer wants to know when the cached result stops being reused.",
+      "stem": "Which THREE events stop the cache from being reused?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The session resizes its warehouse"
+        },
+        {
+          "key": "B",
+          "text": "Rows are updated in the mapping table that the function references"
+        },
+        {
+          "key": "C",
+          "text": "The function body is changed to call a Python UDF"
+        },
+        {
+          "key": "D",
+          "text": "The function is called again with the same constant argument in the same session"
+        },
+        {
+          "key": "E",
+          "text": "The cached result is about 2 KB in size"
+        },
+        {
+          "key": "F",
+          "text": "Access control on the mapping table changes"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "F"
+      ],
+      "explanation": {
+        "correct": "The cache is not reused after the referenced table is updated, after access control on it changes, or when the function calls a non-SQL UDF (or an external function or a nondeterministic function).",
+        "distractors": {
+          "A": "Warehouse size has no effect on the cached value.",
+          "D": "A repeat call with the same constant argument is the case the cache is built for.",
+          "E": "The limit is 10 KB per function for the session. A result of 2 KB is well inside it."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "snowpark-udf",
+      "scenario": "A data engineer registers a Snowpark Python UDF with session.udf.register(func, name='to_celsius', return_type=FloatType(), input_types=[FloatType()]). It works in the same session. A scheduled job that opens a new session the next day calls SELECT to_celsius(98.6) and fails because the function does not exist. The engineer has a stage named @udf_stage.",
+      "stem": "What should the engineer change in the registration?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add replace=True so that the function is overwritten at each registration"
+        },
+        {
+          "key": "B",
+          "text": "Add is_permanent=True and nothing else"
+        },
+        {
+          "key": "C",
+          "text": "Add is_permanent=True and stage_location='@udf_stage'"
+        },
+        {
+          "key": "D",
+          "text": "Add session.add_packages for the function's dependencies"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A named Snowpark UDF is temporary by default and disappears with the session. A permanent UDF needs is_permanent=True together with a stage_location where the code is uploaded.",
+        "distractors": {
+          "A": "replace=True only allows overwriting an existing function. The function would still be temporary.",
+          "B": "is_permanent=True requires a stage_location as well, so this registration is incomplete.",
+          "D": "Package settings control dependencies. They do not change whether the UDF is temporary."
+        }
+      }
+    }
+  ]
+}

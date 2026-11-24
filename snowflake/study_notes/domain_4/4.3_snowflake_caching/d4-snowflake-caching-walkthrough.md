@@ -1,6 +1,6 @@
 # Subdomain 4.3: Snowflake Caching — End-to-End Walkthroughs
 
-Companion to `concepts.md`. Each cache layer is shown **end-to-end**: run a query → observe the effect → **what you actually see** (profile stats, query history flags, timings) that proves which cache served it.
+Companion to `d4-snowflake-caching-concept.md`. Each cache layer is shown **end-to-end**: run a query → observe the effect → **what you actually see** (profile stats, query history flags, timings) that proves which cache served it.
 
 > Convention:
 > - 🟢 = cache hit (fast / free)

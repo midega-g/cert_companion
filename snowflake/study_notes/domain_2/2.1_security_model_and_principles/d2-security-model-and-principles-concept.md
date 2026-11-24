@@ -142,7 +142,7 @@ ACCOUNTADMIN
 
 ## 7. Granting and Revoking Privileges
 
-Core commands (details and worked examples in `walkthroughs.md`):
+Core commands (details and worked examples in `d2-security-model-and-principles-walkthrough.md`):
 
 | Action | Command |
 |--------|---------|

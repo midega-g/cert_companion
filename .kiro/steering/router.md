@@ -80,3 +80,25 @@ Both modes:
 
 The manifest generator stamps every node with its resolved `mode`. The app uses
 it to route the user after they pick a certification.
+
+---
+
+## Study notes (outside the two modes)
+
+Reference notes that are not rendered in the app live under
+`<provider>/study_notes/` (SnowPro Core) and
+`<provider>/study_notes/<certification>/` (e.g. `data_engineer`), grouped by
+`domain_N/`. Never rendered, never in the manifest.
+
+File naming (hyphenated, lowercase, no task numbers):
+
+```
+d<N>-<topic-slug>-concept.md        # d = domain, N = domain number
+d<N>-<topic-slug>-walkthrough.md    # optional companion with worked examples
+d<N>-<topic-slug>-concept-part<M>.md  # only when one topic needs several files
+```
+
+Examples: `d4-snowflake-caching-concept.md`,
+`d1-data-loading-and-ingestion-concept.md`. PDF exports share the same stem
+(PDFs are gitignored). Cross-links between notes must use these filenames.
+Topic Drill concept files keep their own `<content>_concept.md` naming.

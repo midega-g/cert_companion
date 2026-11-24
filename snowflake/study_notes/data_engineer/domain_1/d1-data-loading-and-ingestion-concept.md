@@ -1,6 +1,6 @@
 # Domain 1: Data Movement (SnowPro Advanced: Data Engineer, DEA-C02)
 
-Weight: **28%**. These notes cover Domain 1 sections 1.1 to 1.7 and are divided into three parts. Part 1 (this file) covers 1.1 to 1.3. Part 2 is [concepts_part2.md](concepts_part2.md) (1.4 and 1.5). Part 3 is [concepts_part3.md](concepts_part3.md) (1.6 and 1.7). A section is added only after it is approved. The contents table below lists only the sections in this file.
+Weight: **28%**. These notes cover Domain 1 sections 1.1 to 1.7 and are divided into three parts. Part 1 (this file) covers 1.1 to 1.3. Part 2 is [d1-pipelines-and-connectors-concept.md](d1-pipelines-and-connectors-concept.md) (1.4 and 1.5). Part 3 is [d1-sharing-and-tables-concept.md](d1-sharing-and-tables-concept.md) (1.6 and 1.7). A section is added only after it is approved. The contents table below lists only the sections in this file.
 
 ## Contents
 
@@ -315,7 +315,7 @@ Limits of COPY transformations:
 ### Open items (not covered by the pages read)
 
 - Snowpipe internals (auto-ingest versus REST API, `SYSTEM$PIPE_STATUS`, `PIPE_USAGE_HISTORY`) belong in 1.4.
-- Schema evolution (`ENABLE_SCHEMA_EVOLUTION`) is covered in [1.7.6](concepts_part3.md#176-schema-evolution). A short pointer is in 1.2.8.
+- Schema evolution (`ENABLE_SCHEMA_EVOLUTION`) is covered in [1.7.6](d1-sharing-and-tables-concept.md#176-schema-evolution). A short pointer is in 1.2.8.
 
 [Back to contents](#contents)
 
@@ -569,7 +569,7 @@ FROM TABLE(INFER_SCHEMA(LOCATION => '@mystage', FILE_FORMAT => 'my_parquet_forma
 - Second argument: `table`, `external_table` or `view`. It returns a formatted column list you paste into `CREATE`.
 - `CREATE TABLE ... USING TEMPLATE` does it in one step. It also works for `CREATE EXTERNAL TABLE` and `CREATE ICEBERG TABLE`.
 
-**Schema evolution (full coverage in [1.7.6](concepts_part3.md#176-schema-evolution))**
+**Schema evolution (full coverage in [1.7.6](d1-sharing-and-tables-concept.md#176-schema-evolution))**
 - Needs `ENABLE_SCHEMA_EVOLUTION = TRUE` on the table, `MATCH_BY_COLUMN_NAME` in the COPY, and `EVOLVE SCHEMA` or `OWNERSHIP` on the table. Snowpipe uses the pipe owner's role.
 - For CSV with `PARSE_HEADER` and `MATCH_BY_COLUMN_NAME`, set `ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE`.
 - Works for COPY and Snowpipe, **not** `INSERT` and **not** tasks.

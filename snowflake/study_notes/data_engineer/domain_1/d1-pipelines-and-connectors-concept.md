@@ -1,12 +1,14 @@
 # Domain 1: Data Movement, part 2 (SnowPro Advanced: Data Engineer, DEA-C02)
 
-Weight: **28%**. These notes cover Domain 1 sections 1.1 to 1.7 and are divided into three parts. Part 1 is [concepts_part1.md](concepts_part1.md) (1.1 to 1.3). Part 2 (this file) covers 1.4 and 1.5. Part 3 is [concepts_part3.md](concepts_part3.md) (1.6 and 1.7). A section is added only after it is approved. The contents table below lists only the sections in this file.
+Weight: **28%**. These notes cover Domain 1 sections 1.1 to 1.7 and are divided into three parts. Part 1 is [d1-data-loading-and-ingestion-concept.md](d1-data-loading-and-ingestion-concept.md) (1.1 to 1.3). Part 2 (this file) covers 1.4 and 1.5. Part 3 is [d1-sharing-and-tables-concept.md](d1-sharing-and-tables-concept.md) (1.6 and 1.7). A section is added only after it is approved. The contents table below lists only the sections in this file.
 
 ## Contents
 
 | Section | Topic | Status |
 |---------|-------|--------|
 | 1.4 | [Design, build and troubleshoot continuous data pipelines](#14-design-build-and-troubleshoot-continuous-data-pipelines) | Approved |
+| 1.4 Part A | [Streams and tasks (1.4.1 to 1.4.12)](#part-a) | Approved |
+| 1.4 Part B | [Dynamic tables, materialized views, Snowpipe, streaming and developer tools (1.4.13 to 1.4.26)](#part-b) | Approved |
 | 1.5 | [Install, configure and use connectors](#15-install-configure-and-use-connectors) | Approved |
 
 ---
@@ -15,7 +17,11 @@ Weight: **28%**. These notes cover Domain 1 sections 1.1 to 1.7 and are divided 
 
 This section is split in two. **Part A** covers streams and tasks. **Part B** (after the Part A open items) covers dynamic tables, materialized views, Snowpipe (auto-ingest versus REST API), Snowpipe Streaming versus the Kafka connector, UDFs, the SQL API, Openflow, notebooks and Snowflake Scripting. Stages in pipelines are covered in 1.2 (directory tables with streams and triggered tasks are in 1.4.3 and 1.4.8).
 
-**Sections in 1.4 Part A**
+**Jump to:** [Part A: streams and tasks](#part-a) | [Part B: dynamic tables, Snowpipe, streaming and developer tools](#part-b)
+
+<a id="part-a"></a>
+
+**Sections in 1.4 Part A** (go to [Part B](#part-b))
 
 - [1.4.1 How the pieces fit](#141-how-the-pieces-fit)
 - [1.4.2 Streams: offset, columns and consumption](#142-streams-offset-columns-and-consumption)
@@ -392,11 +398,15 @@ CREATE TASK task_finalizer FINALIZE = task_root AS SELECT 1;
 - **Snowflake Scripting, stored procedures called from tasks, and notebooks** are not covered here. They are in Part B.
 - "Task graph as an object" (`TASK GRAPH` declared object) appears on the graphs page. I did not read it.
 
+[Go to Part B](#part-b) | [Back to contents](#contents)
+
 ---
+
+<a id="part-b"></a>
 
 ### 1.4 Part B: dynamic tables, materialized views, Snowpipe, streaming and developer tools
 
-**Sections in 1.4 Part B**
+**Sections in 1.4 Part B** (go to [Part A](#part-a))
 
 - [1.4.13 Dynamic tables: definition and creation](#1413-dynamic-tables-definition-and-creation)
 - [1.4.14 Dynamic tables: target lag](#1414-dynamic-tables-target-lag)
@@ -772,7 +782,7 @@ Use Snowpipe when the pipeline already produces files and minutes are acceptable
 Handler languages for UDFs: **Java, JavaScript, Python, Scala, SQL**. Create them in SQL, with the **Snowpark** API, or with the CLI. Snowflake Scripting also works for SQL UDFs.
 
 **`CREATE FUNCTION` options**
-- `SECURE`: makes it a secure UDF (the secure UDF page was not read). `TEMP`: lasts for the session.
+- `SECURE`: makes it a secure UDF (secure UDFs are covered in [Domain 5, 5.1.8](../domain_5/d5-functions-and-procedures-concept.md#518-secure-udfs)). `TEMP`: lasts for the session.
 - `CALLED ON NULL INPUT` (default) calls the UDF with nulls. `RETURNS NULL ON NULL INPUT` or `STRICT` returns `NULL` without calling it. **`STRICT` isn't supported for SQL UDFs.** They always use `CALLED ON NULL INPUT`, so handle nulls yourself.
 - `VOLATILE` (**default**) may return different values for the same input. `IMMUTABLE` promises the same result for the same inputs. **Snowflake doesn't check this.** A wrong `IMMUTABLE` gives undefined behavior. Aggregate functions can't be `IMMUTABLE`.
 - `NOT NULL` isn't enforced for SQL UDFs.
@@ -791,7 +801,7 @@ Handler languages for UDFs: **Java, JavaScript, Python, Scala, SQL**. Create the
 
 - Procedures run with **owner's rights by default**, or **caller's rights** if declared at creation. A caller's rights procedure can read the caller's session and uses the caller's privileges. Switch with `ALTER PROCEDURE`. A procedure can't run with both.
 - Pick a procedure for DML and DDL (cleanup, `UPDATE`) and a UDF for per-row calculation.
-- UDF depth for transformation (secure UDFs, Snowpark UDFs) is also in Domain 3 of the study guide. This section covers only the pipeline angle.
+- UDF depth for transformation (secure UDFs, Snowpark UDFs) is covered in [Domain 5, section 5.1](../domain_5/d5-functions-and-procedures-concept.md#51-define-user-defined-functions-udfs-and-outline-how-to-use-them) of the study guide. This section covers only the pipeline angle.
 
 [Back to contents](#contents)
 
@@ -914,8 +924,10 @@ Openflow is a Snowflake integration service built on **Apache NiFi**. It moves d
 - **SQL API.** The authentication page, multi-statement page and reference were not read. Rate or size limits are not given on the pages read.
 - **Openflow.** The overview says the platform deploys "in customers' own VPCs in both AWS and SPCS", while the availability notes list Snowflake Deployments on AWS, Azure and GCP and BYOC on AWS only. Gen 1 versus gen 2 differences were not read.
 - **Notebooks.** `EXECUTE NOTEBOOK` access control mentions `QUERY_WAREHOUSE`, while its usage notes mention `RUNTIME` and `WAREHOUSE` parameters. The page is inconsistent. The `notebooks-tasks` page returned nothing.
-- **UDFs and Scripting depth.** UDF and Scripting topics also appear in other domains of the study guide, so deeper coverage (Snowpark UDFs, secure UDF details, cursors and loops) is left for those domains.
+- **UDFs and Scripting depth.** UDF and Scripting topics also appear in Domain 5 of the study guide, so deeper coverage (Snowpark UDFs, secure UDF details) is in [Domain 5, 5.1](../domain_5/d5-functions-and-procedures-concept.md#51-define-user-defined-functions-udfs-and-outline-how-to-use-them). Scripting cursors and loops are left for Domain 5, 5.3.
 - **Unfetched pages**: `tasks-events`, `tasks-errors`, task graph object (also open in Part A).
+
+[Go to Part A](#part-a) | [Next: 1.5 Connectors](#15-install-configure-and-use-connectors) | [Back to contents](#contents)
 
 ---
 

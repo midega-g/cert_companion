@@ -1,6 +1,6 @@
 # Subdomain 4.2: Optimize Query Performance — End-to-End Walkthroughs
 
-Companion to `concepts.md`. Each optimization is shown **end-to-end**: baseline problem → enable feature → **what you actually see** (before/after profile stats, estimates, clustering info).
+Companion to `d4-optimize-query-performance-concept.md`. Each optimization is shown **end-to-end**: baseline problem → enable feature → **what you actually see** (before/after profile stats, estimates, clustering info).
 
 > Convention:
 > - 🔴 = before (slow)

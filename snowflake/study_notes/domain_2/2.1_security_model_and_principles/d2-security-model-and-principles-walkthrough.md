@@ -1,6 +1,6 @@
 # Subdomain 2.1: Security Model — End-to-End Walkthroughs
 
-Companion to `concepts.md`. Where that file explains *what* each security feature is, this file walks through each command **end-to-end**: setup → apply → **what the user actually sees** (success/failure output), plus how to verify.
+Companion to `d2-security-model-and-principles-concept.md`. Where that file explains *what* each security feature is, this file walks through each command **end-to-end**: setup → apply → **what the user actually sees** (success/failure output), plus how to verify.
 
 > Convention:
 > - 🟢 = allowed / success

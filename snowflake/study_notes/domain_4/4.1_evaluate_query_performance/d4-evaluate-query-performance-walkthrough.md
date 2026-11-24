@@ -1,6 +1,6 @@
 # Subdomain 4.1: Evaluate Query Performance — End-to-End Walkthroughs
 
-Companion to `concepts.md`. Each tool is shown **end-to-end**: run something → inspect it → **what you actually see** (profile stats, insight banners, history rows) → what the numbers mean and how to fix.
+Companion to `d4-evaluate-query-performance-concept.md`. Each tool is shown **end-to-end**: run something → inspect it → **what you actually see** (profile stats, insight banners, history rows) → what the numbers mean and how to fix.
 
 > Convention:
 > - 🔴 = symptom of a problem

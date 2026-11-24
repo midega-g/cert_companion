@@ -1,6 +1,6 @@
 # Subdomain 3.2: Automated Data Ingestion — End-to-End Walkthroughs
 
-Companion to `concepts.md`. Each feature is shown **end-to-end**: setup → apply → **what you actually see** (output, change records, refresh history). The examples build a small automated pipeline so you can see how the pieces connect.
+Companion to `d3-automated-data-ingestion-concept.md`. Each feature is shown **end-to-end**: setup → apply → **what you actually see** (output, change records, refresh history). The examples build a small automated pipeline so you can see how the pieces connect.
 
 > Convention:
 > - 🟢 = success / rows present

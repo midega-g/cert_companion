@@ -135,3 +135,9 @@ Security rules restrict access to `users/{uid}/**` where `request.auth.uid == ui
 2. Add `_meta.json` at each level (cert, domain, task) with `label`, `description`, and optionally `weight` for domains.
 3. Generate test files and place them in the correct task folders.
 4. Push to `main` — the manifest auto-updates.
+
+## Study Notes Naming
+
+Study notes under `<provider>/study_notes/` use
+`d<N>-<topic-slug>-concept.md` and `d<N>-<topic-slug>-walkthrough.md`
+(`d` = domain). See the "Study notes" section of `.kiro/steering/router.md`.

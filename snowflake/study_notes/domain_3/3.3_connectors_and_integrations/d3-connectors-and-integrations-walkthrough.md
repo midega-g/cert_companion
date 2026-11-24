@@ -1,6 +1,6 @@
 # Subdomain 3.3: Connectors & Integrations — End-to-End Walkthroughs
 
-Companion to `concepts.md`. Each item is shown **end-to-end**: setup → command → **what you actually see** (connection output, integration properties, staged repo files). Because integrations require a paired cloud/Git-side step, those are shown too.
+Companion to `d3-connectors-and-integrations-concept.md`. Each item is shown **end-to-end**: setup → command → **what you actually see** (connection output, integration properties, staged repo files). Because integrations require a paired cloud/Git-side step, those are shown too.
 
 > Convention:
 > - 🟢 = success
