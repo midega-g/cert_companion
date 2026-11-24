@@ -51,6 +51,10 @@ function recordCertId(rec) {
   const parts = (rec.testPath || "").split("/");
   return parts.length >= 2 ? parts[1] : null;
 }
+function recordProviderId(rec) {
+  if (rec.provider) return rec.provider;
+  return (rec.testPath || "").split("/")[0] || null;
+}
 function recordMode(rec) {
   if (rec.mode) return rec.mode;
   return (rec.testPath || "").includes("/topic_tests/") ? "drill" : "exam";
@@ -391,7 +395,11 @@ window.addEventListener("popstate", async (e) => {
     if (!snap || snap.view === "home" || !state.manifest) {
       await renderHome();
     } else if (snap.view === "history") {
-      await renderHistory();
+      if (snap.navPath.length) {
+        await renderProviderHistory(snap.navPath[0].id);
+      } else {
+        await renderHistory();
+      }
     } else {
       state.navPath = snap.navPath.slice();
       if (snap.view === "exam" && state.exam && state.answers) {
@@ -705,7 +713,7 @@ function renderModeSelect(node) {
 
   let html = `<h1 class="page-title">${node.label}</h1>`;
   html += `<p class="page-subtitle">Choose a study mode</p>`;
-  html += `<div class="home-actions"><button class="btn btn-secondary btn-sm" onclick="renderHistory('${node.id}','drill')">History</button></div>`;
+  html += providerHistoryButtonHTML();
   html += `<div class="card-grid">`;
   ["exam", "drill"].forEach((mode) => {
     const kids = modeChildren(node, mode);
@@ -750,6 +758,14 @@ function selectMode(mode) {
 }
 
 /* ─── NODE VIEW (replaces topic + test list) ────────────────────── */
+// History button shown on every browsing screen. Scoped to the provider the
+// user is currently inside (navPath[0]); the Home screen has its own global one.
+function providerHistoryButtonHTML() {
+  const p = state.navPath[0];
+  if (!p) return "";
+  return `<div class="home-actions"><button class="btn btn-secondary btn-sm" onclick="renderProviderHistory('${p.id}')">History</button></div>`;
+}
+
 function renderNode() {
   const node = state.navPath[state.navPath.length - 1];
 
@@ -784,6 +800,7 @@ function renderNode() {
   // If node has both, show children cards + tests below
   showView("topic");
   let html = `<h1 class="page-title">${node.label}</h1>`;
+  html += providerHistoryButtonHTML();
 
   if (hasChildren) {
     html += `<p class="page-subtitle">Select a topic</p>`;
@@ -860,6 +877,7 @@ function renderTestList(node) {
 
   $("view-tests").innerHTML = `
     <h1 class="page-title">${node.label}</h1>
+    ${providerHistoryButtonHTML()}
     <p class="page-subtitle">Choose a test to begin</p>
     ${buildTestListHTML(node.tests)}`;
 }
@@ -1463,7 +1481,9 @@ async function renderHistory(certId, tab) {
   state._historyCache = history;
 
   if (certId) {
-    return renderCertHistory(certId, tab || "drill", history);
+    const pid =
+      providerOfCert(certId) || (state.navPath[0] && state.navPath[0].id);
+    return renderProviderHistory(pid, certId, tab);
   }
 
   // ── Home history: exam-only, cert dropdown filter ──
@@ -1514,48 +1534,85 @@ function onHomeHistoryCertChange(value) {
   renderHistory();
 }
 
-// Per-certification history with Drill / Domain tabs (separate aggregation).
-function renderCertHistory(certId, tab, history) {
+function providerOfCert(certId) {
+  const p = (state.manifest?.providers || []).find((p) =>
+    (p.children || []).some((c) => c.id === certId),
+  );
+  return p ? p.id : null;
+}
+
+// Provider-scoped history. The dropdown lists only the certifications under
+// this provider (from the manifest), so Snowflake shows Snowflake certs and
+// AWS shows AWS ones. Exam Prep / Topic Drill tabs split the records.
+async function renderProviderHistory(providerId, certId, tab) {
+  showView("history");
   const el = $("view-history");
-  const certLabel =
-    history.find((h) => recordCertId(h) === certId)?.certLabel ||
-    recordCertLabel({ certId }) ||
-    toLabel(certId);
+  el.innerHTML = `<h1 class="page-title">Performance History</h1><div class="state-msg">Loading...</div>`;
+
+  const history = state._historyCache || (await loadHistory());
+  state._historyCache = history;
+
+  const provider = (state.manifest?.providers || []).find(
+    (p) => p.id === providerId,
+  );
+  const providerLabel = provider ? provider.label : toLabel(providerId);
+  const certs = provider ? provider.children || [] : [];
+  const selected = certs.some((c) => c.id === certId) ? certId : "all";
 
   setBreadcrumb([
     { label: "Home", action: "renderHome()" },
-    { label: certLabel + " — History" },
+    { label: providerLabel, action: "navigateToDepth(0)" },
+    { label: "History" },
   ]);
 
-  const certRecords = history.filter((h) => recordCertId(h) === certId);
-  const drillRecords = certRecords.filter((h) => recordMode(h) === "drill");
-  const examRecords = certRecords.filter((h) => recordMode(h) === "exam");
+  const records = history.filter(
+    (h) =>
+      recordProviderId(h) === providerId &&
+      (selected === "all" || recordCertId(h) === selected),
+  );
+  const examRecords = records.filter((h) => recordMode(h) === "exam");
+  const drillRecords = records.filter((h) => recordMode(h) === "drill");
+  const activeTab =
+    tab || (examRecords.length || !drillRecords.length ? "exam" : "drill");
 
-  const activeDrill = tab === "drill";
-  const body = activeDrill
-    ? historySectionHTML(
-        drillRecords,
-        history,
-        "No Topic Drill attempts yet for this certification.",
+  const optionsHTML =
+    `<option value="all"${
+      selected === "all" ? " selected" : ""
+    }>All ${providerLabel} certifications</option>` +
+    certs
+      .map(
+        (c) =>
+          `<option value="${c.id}"${
+            selected === c.id ? " selected" : ""
+          }>${c.label}</option>`,
       )
-    : historySectionHTML(
-        examRecords,
-        history,
-        "No Exam Prep attempts yet for this certification.",
-      );
+      .join("");
+
+  const body =
+    activeTab === "drill"
+      ? historySectionHTML(
+          drillRecords,
+          history,
+          "No Topic Drill attempts yet.",
+        )
+      : historySectionHTML(examRecords, history, "No Exam Prep attempts yet.");
 
   el.innerHTML = `
-    <h1 class="page-title">${certLabel} — History</h1>
+    <h1 class="page-title">${providerLabel} — History</h1>
+    <div class="history-filter">
+      <label for="prov-hist-cert">Certification:</label>
+      <select id="prov-hist-cert" onchange="renderProviderHistory('${providerId}', this.value, '${activeTab}')">${optionsHTML}</select>
+    </div>
     <div class="history-tabs">
       <button class="tab-btn ${
-        activeDrill ? "active" : ""
-      }" onclick="renderHistory('${certId}','drill')">Topic Drill (${
-        drillRecords.length
+        activeTab === "exam" ? "active" : ""
+      }" onclick="renderProviderHistory('${providerId}','${selected}','exam')">Exam Prep (${
+        examRecords.length
       })</button>
       <button class="tab-btn ${
-        !activeDrill ? "active" : ""
-      }" onclick="renderHistory('${certId}','exam')">Exam Prep (${
-        examRecords.length
+        activeTab === "drill" ? "active" : ""
+      }" onclick="renderProviderHistory('${providerId}','${selected}','drill')">Topic Drill (${
+        drillRecords.length
       })</button>
     </div>
     ${body}`;
