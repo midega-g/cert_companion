@@ -569,13 +569,16 @@ body {
   color: #fff;
 }
 
-/* Unanswered/locked: greyed out, not clickable */
+/* Unanswered: neutral, still clickable */
 .nav-q-unanswered {
   background: var(--bg);
   border-color: var(--border);
   color: var(--text-muted);
-  cursor: not-allowed;
-  opacity: 0.55;
+  cursor: pointer;
+}
+.nav-q-unanswered:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 .nav-q:active:not(:disabled) {
   transform: scale(0.94);

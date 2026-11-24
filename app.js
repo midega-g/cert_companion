@@ -1130,8 +1130,6 @@ function goPrev() {
 // unanswered future questions are disabled in the UI and rejected here too.
 function goToQuestion(idx) {
   if (idx < 0 || idx >= state.exam.questions.length) return;
-  const canJump = idx === state.current || state.answers[idx].submitted;
-  if (!canJump) return;
   state.current = idx;
   saveSession();
   renderQuestion(state.current);
@@ -1147,7 +1145,6 @@ function buildNavigator(activeIdx) {
       const ans = state.answers[i];
       const isCurrent = i === activeIdx;
       const isAnswered = ans.submitted;
-      const clickable = isAnswered || isCurrent;
       const classes = [
         "nav-q",
         isCurrent ? "nav-q-current" : "",
@@ -1155,13 +1152,8 @@ function buildNavigator(activeIdx) {
       ]
         .filter(Boolean)
         .join(" ");
-      const disabled = clickable ? "" : "disabled";
-      const aria = isCurrent
-        ? 'aria-current="true"'
-        : isAnswered
-          ? ""
-          : 'aria-disabled="true"';
-      return `<button type="button" class="${classes}" ${disabled} ${aria}
+      const aria = isCurrent ? 'aria-current="true"' : "";
+      return `<button type="button" class="${classes}" ${aria}
         onclick="goToQuestion(${i})"
         title="Question ${i + 1}${
           isAnswered
@@ -1180,7 +1172,7 @@ function buildNavigator(activeIdx) {
       <div class="q-navigator-legend">
         <span class="legend-item"><span class="legend-swatch legend-answered"></span>Answered</span>
         <span class="legend-item"><span class="legend-swatch legend-current"></span>Current</span>
-        <span class="legend-item"><span class="legend-swatch legend-unanswered"></span>Locked</span>
+        <span class="legend-item"><span class="legend-swatch legend-unanswered"></span>Unanswered</span>
       </div>
     </aside>`;
 }

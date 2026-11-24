@@ -349,14 +349,11 @@ Previous/Next repeatedly.
 * One numbered button per question, rendered by `buildNavigator(activeIdx)`.
 * **Answered (submitted) questions** are clickable jump targets (green styling).
 * **The current question** is highlighted (accent styling) and clickable.
-* **Unanswered/future questions are greyed out and disabled** — the user can
-  only jump to questions they have already answered (plus the current one).
-* Clicking a button calls `goToQuestion(idx)`, which guards the same rule
-  (`idx === state.current || state.answers[idx].submitted`) so a locked target
-  cannot be reached even programmatically.
-* A small legend explains Answered / Current / Locked.
-* Navigator state is rebuilt on every `renderQuestion` call, so answering a
-  question immediately unlocks its button.
+* **Unanswered questions** use neutral styling and are clickable. No question
+  is locked; the user can jump to any question at any time.
+* Clicking a button calls `goToQuestion(idx)`, which only bounds-checks `idx`.
+* A small legend explains Answered / Current / Unanswered.
+* Navigator state is rebuilt on every `renderQuestion` call.
 
 ### State Management
 
