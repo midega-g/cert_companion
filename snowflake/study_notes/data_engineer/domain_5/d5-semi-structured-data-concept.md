@@ -14,7 +14,7 @@ Weight: **25%**. Domain 5 has sections 5.1 to 5.7. Notes are split by topic acro
 
 The study guide lists: traverse and transform semi-structured data to structured data, and transform structured data to semi-structured data. The linked functions are `ARRAY_AGG`, `OBJECT_CONSTRUCT` and `TRY_PARSE_JSON`.
 
-Domain 1 already covers the storage side: the three types, the 128 MB limit, VARIANT versus flattened columns, SQL NULL versus JSON null, subcolumnarization and `STRIP_NULL_VALUES`. See [1.2.6](../domain_1/d1-data-loading-and-ingestion-concept.md#126-semi-structured-data-in-variant) and [1.1.4](../domain_1/d1-data-loading-and-ingestion-concept.md#114-preparing-data-files). These notes cover querying and transforming.
+Domain 1 already covers the storage side: the three types, the 128 MB limit, VARIANT versus flattened columns, SQL NULL versus JSON null, subcolumnarization and `STRIP_NULL_VALUES`. See [1.2.6](../domain_1/d1-ingest-data-formats-concept.md#126-semi-structured-data-in-variant) and [1.1.4](../domain_1/d1-load-data-concept.md#114-preparing-data-files). These notes cover querying and transforming.
 
 **Sections in 5.4**
 
@@ -226,7 +226,7 @@ Same rows as example 3 for `id` and `sku`. For nested arrays, as in example 5, u
 **Uses beyond flattening one array**
 - Filter on key-value pairs: `FROM pets a, LATERAL FLATTEN(input => a.v) b WHERE b.value LIKE '%dog%'`.
 - List the distinct key names and paths in unknown data with `RECURSIVE => TRUE`, using the `PATH` and `KEY` output columns and `TYPEOF(value)`. The page applies `REGEXP_REPLACE` to `PATH` to turn array indexes such as `[0]` into `[]`, so array elements group into one path.
-- Flatten a staged file in `CREATE TABLE AS SELECT`. `FLATTEN` is not allowed inside a `COPY INTO` transform (see [1.1.10](../domain_1/d1-data-loading-and-ingestion-concept.md#1110-simple-transformations-during-load)).
+- Flatten a staged file in `CREATE TABLE AS SELECT`. `FLATTEN` is not allowed inside a `COPY INTO` transform (see [1.1.10](../domain_1/d1-load-data-concept.md#1110-simple-transformations-during-load)).
 
 [Back to contents](#contents)
 
@@ -283,7 +283,7 @@ Same rows as example 3 for `id` and `sku`. For nested arrays, as in example 5, u
 
 ### 5.4.6 Handling nulls
 
-The two kinds of NULL, and how storage treats them, are in [1.2.6](../domain_1/d1-data-loading-and-ingestion-concept.md#126-semi-structured-data-in-variant). Functions to work with them:
+The two kinds of NULL, and how storage treats them, are in [1.2.6](../domain_1/d1-ingest-data-formats-concept.md#126-semi-structured-data-in-variant). Functions to work with them:
 
 | Task | Use |
 |------|-----|

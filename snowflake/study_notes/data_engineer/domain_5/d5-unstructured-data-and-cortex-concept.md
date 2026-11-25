@@ -30,7 +30,7 @@ The study guide lists: use unstructured data (URL types), use directory tables, 
 
 ### 5.5.1 Unstructured data, URL types and directory tables
 
-[Domain 1, 1.2.11](../domain_1/d1-data-loading-and-ingestion-concept.md#1211-unstructured-data-urls-and-directory-tables) already covers this in full, so it is not repeated here. It has the comparison of scoped, file and pre-signed URLs, the file functions (`BUILD_SCOPED_FILE_URL`, `BUILD_STAGE_FILE_URL`, `GET_PRESIGNED_URL`, `TO_FILE` and others), `SNOWFLAKE_SSE` versus `SNOWFLAKE_FULL` stage encryption, directory table creation, refresh and billing, and the privileges to query them.
+[Domain 1, 1.2.11](../domain_1/d1-ingest-data-formats-concept.md#1211-unstructured-data-urls-and-directory-tables) already covers this in full, so it is not repeated here. It has the comparison of scoped, file and pre-signed URLs, the file functions (`BUILD_SCOPED_FILE_URL`, `BUILD_STAGE_FILE_URL`, `GET_PRESIGNED_URL`, `TO_FILE` and others), `SNOWFLAKE_SSE` versus `SNOWFLAKE_FULL` stage encryption, directory table creation, refresh and billing, and the privileges to query them.
 
 Two points from the intro page that 1.2.11 lacks:
 
@@ -187,7 +187,7 @@ The guide's "Use the Rest API" bullet doesn't say which API. Three are documente
 
 | API | Purpose | Where covered |
 |-----|---------|---------------|
-| REST API for unstructured data support | `GET /api/files/<url path>` downloads a staged file from a scoped or file URL. Needs an OAuth token or key-pair token, and the client must allow redirects | [1.2.11](../domain_1/d1-data-loading-and-ingestion-concept.md#1211-unstructured-data-urls-and-directory-tables) |
+| REST API for unstructured data support | `GET /api/files/<url path>` downloads a staged file from a scoped or file URL. Needs an OAuth token or key-pair token, and the client must allow redirects | [1.2.11](../domain_1/d1-ingest-data-formats-concept.md#1211-unstructured-data-urls-and-directory-tables) |
 | Cortex REST API | Low-latency LLM inference | Below |
 | UDF REST API | Manage and run UDFs | Below |
 
