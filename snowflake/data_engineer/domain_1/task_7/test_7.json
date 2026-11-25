@@ -1,0 +1,233 @@
+{
+  "label": "Data Movement: Unload Data",
+  "order": 7,
+  "topic": "Data Movement: unloading data with COPY INTO a location",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "unload-data",
+      "scenario": "A Data Engineer runs COPY INTO @exports/daily/ FROM (SELECT ...) FILE_FORMAT = (TYPE = CSV COMPRESSION = GZIP) SINGLE = TRUE FILE_EXTENSION = 'csv.gz' MAX_FILE_SIZE = 1073741824. A downstream job expects exactly one file named report.csv.gz in that location. The unload succeeds, but the stage contains a single file named data, with no extension. The result set is about 600 MB before compression.",
+      "stem": "What change produces report.csv.gz?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add INCLUDE_QUERY_ID = TRUE so the file is named from the query ID, then rename it"
+        },
+        {
+          "key": "B",
+          "text": "Put the file name and extension in the path, as in @exports/daily/report.csv.gz, and keep the compression matching the extension"
+        },
+        {
+          "key": "C",
+          "text": "Remove FILE_EXTENSION and rely on COMPRESSION = GZIP to add .csv.gz"
+        },
+        {
+          "key": "D",
+          "text": "Raise MAX_FILE_SIZE to 5368709120 so Snowflake names the file from the file format"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "With SINGLE = TRUE, Snowflake writes one file named data and ignores FILE_EXTENSION. The name and extension must be part of the path, and the compression should match the extension.",
+        "distractors": {
+          "A": "INCLUDE_QUERY_ID = TRUE is not allowed with SINGLE = TRUE, and it would add a UUID to the name anyway.",
+          "C": "FILE_EXTENSION is already ignored with SINGLE = TRUE, so removing it changes nothing. The file still comes out as data.",
+          "D": "MAX_FILE_SIZE only sets the target size per file, up to 5 GB. It does not affect the name, and 600 MB already fits in the current 1 GB value."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "unload-data",
+      "scenario": "A Data Engineer must unload the relational table customers, which has NUMBER and VARCHAR columns, as JSON to a stage. The statement COPY INTO @exports/customers/ FROM customers FILE_FORMAT = (TYPE = JSON) fails.",
+      "stem": "Which change makes the unload work?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add HEADER = TRUE so that the column names become the keys of each JSON record"
+        },
+        {
+          "key": "B",
+          "text": "Set TYPE = AVRO, which writes each row as a JSON-like record with its column names"
+        },
+        {
+          "key": "C",
+          "text": "Add STRIP_OUTER_ARRAY = TRUE so that each row is written as one separate JSON document"
+        },
+        {
+          "key": "D",
+          "text": "Unload FROM (SELECT OBJECT_CONSTRUCT(*) FROM customers) with TYPE = JSON"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "TYPE = JSON works only when unloading a VARIANT column. Wrapping each row with OBJECT_CONSTRUCT turns it into one, and the output is one JSON document per line.",
+        "distractors": {
+          "A": "HEADER writes column headings in CSV files. It does not make a relational table unloadable as JSON.",
+          "B": "Avro is not supported for unload. The formats are CSV, JSON and Parquet.",
+          "C": "TYPE = JSON works only for a VARIANT column, whatever other options are set."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "unload-data",
+      "scenario": "A nightly job runs COPY INTO @exports/orders/ FROM (SELECT ...) PARTITION BY (TO_VARCHAR(order_date)) OVERWRITE = TRUE and fails. The goal is one set of files for each order date.",
+      "stem": "What should the Data Engineer change?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Remove OVERWRITE = TRUE, because a partitioned unload cannot be combined with it"
+        },
+        {
+          "key": "B",
+          "text": "Set INCLUDE_QUERY_ID = FALSE, because the query ID in file names conflicts with PARTITION BY"
+        },
+        {
+          "key": "C",
+          "text": "Add SINGLE = TRUE so that each value of the partition expression is written to one file"
+        },
+        {
+          "key": "D",
+          "text": "Replace TO_VARCHAR(order_date) with an integer expression, because PARTITION BY needs a number"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "PARTITION BY cannot be combined with OVERWRITE = TRUE, SINGLE = TRUE or INCLUDE_QUERY_ID = FALSE.",
+        "distractors": {
+          "B": "INCLUDE_QUERY_ID is forced to TRUE with PARTITION BY and cannot be set to FALSE.",
+          "C": "SINGLE = TRUE cannot be combined with PARTITION BY.",
+          "D": "The PARTITION BY expression must evaluate to a string. An integer expression is not accepted."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "unload-data",
+      "scenario": "A nightly unload writes files to a fixed path in a bucket. Snowflake occasionally retries the unload internally, and after those retries the path holds extra files from the earlier attempts.",
+      "stem": "Which option avoids the extra files?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set OVERWRITE = TRUE so that every retry replaces all of the files that an earlier attempt wrote"
+        },
+        {
+          "key": "B",
+          "text": "Set SINGLE = TRUE so that the retry writes one file and cannot create extra files"
+        },
+        {
+          "key": "C",
+          "text": "Set INCLUDE_QUERY_ID = TRUE so that a retry removes the files that carry its query ID"
+        },
+        {
+          "key": "D",
+          "text": "Set DETAILED_OUTPUT = TRUE so that a retry lists the earlier files and skips writing them"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "With INCLUDE_QUERY_ID = TRUE the file names carry the query ID, and a retry removes files with the current query ID before it rewrites them. It is recommended over OVERWRITE to avoid duplicates.",
+        "distractors": {
+          "A": "OVERWRITE replaces only files with the same name and does not remove other files, so retries may still leave extra files.",
+          "B": "SINGLE = TRUE writes one file, but a retry can still leave a file behind from the earlier attempt.",
+          "D": "DETAILED_OUTPUT changes only what the statement returns, one row per file. It does not change how files are written."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "unload-data",
+      "scenario": "A security team creates the AWS policy for a storage integration that the nightly unload job uses to write to s3://exports-bucket/daily/. The policy must grant only the object permissions that unloading needs on that path.",
+      "stem": "Which permissions should the policy grant?",
+      "options": [
+        {
+          "key": "A",
+          "text": "s3:GetObject and s3:GetObjectVersion on the path"
+        },
+        {
+          "key": "B",
+          "text": "s3:PutObject on the path, and nothing else"
+        },
+        {
+          "key": "C",
+          "text": "s3:ListBucket and s3:GetBucketLocation on the bucket"
+        },
+        {
+          "key": "D",
+          "text": "s3:PutObject and s3:DeleteObject on the path"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Unloading to S3 needs s3:PutObject and s3:DeleteObject on the path.",
+        "distractors": {
+          "A": "These permissions let Snowflake read objects, which loading needs. They do not allow writing files.",
+          "B": "s3:DeleteObject is also required for unloading, so PutObject alone is not enough.",
+          "C": "These are bucket-level permissions and do not allow writing or deleting objects on the path."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "unload-data",
+      "scenario": "A team reviews how COPY INTO <location> behaves before it automates unloads. The jobs write to cloud storage paths, and some run against tables that can be empty or that have masked columns.",
+      "stem": "Which THREE statements are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "When the source has zero rows, no file is written to the location"
+        },
+        {
+          "key": "B",
+          "text": "GET can download files from a named external stage as well as from internal stages"
+        },
+        {
+          "key": "C",
+          "text": "Snowflake gives no warning when it unloads into a location that holds files"
+        },
+        {
+          "key": "D",
+          "text": "A single COPY INTO <location> can unload every table in a schema"
+        },
+        {
+          "key": "E",
+          "text": "NULL_IF on unload writes NULL as the last value in the NULL_IF list"
+        },
+        {
+          "key": "F",
+          "text": "Masking policies on the source columns apply, so a role may unload masked values"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "F"
+      ],
+      "explanation": {
+        "correct": "A source with zero rows writes no file. There is no warning when the location is not empty, so use an empty path or INCLUDE_QUERY_ID = TRUE. Masking policies on source columns apply to the unload.",
+        "distractors": {
+          "B": "GET works on internal stages only. External stages are read with the cloud provider's tools.",
+          "D": "One statement unloads one table or one query. A schema or database cannot be unloaded in one statement.",
+          "E": "On unload, NULL becomes the first value in the NULL_IF list."
+        }
+      }
+    }
+  ]
+}

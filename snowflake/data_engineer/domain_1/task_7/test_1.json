@@ -42,190 +42,267 @@
     {
       "id": 2,
       "type": "single",
-      "domain": "iceberg-tables",
-      "scenario": "A Data Engineer created an externally managed Iceberg table from an AWS Glue catalog integration with REFRESH_INTERVAL_SECONDS = 30, and set AUTO_REFRESH = TRUE on the table. Another team's Spark job ran ALTER TABLE ... ADD COLUMN on the Iceberg table in Glue. No new rows have been written since. Several hours later, Snowflake queries still do not show the new column, while rows written by earlier Spark jobs appeared within a minute of each write.",
-      "stem": "What is the correct way to make the new column visible in Snowflake now?",
+      "domain": "external-tables",
+      "scenario": "A Data Engineer keeps an external table over S3 files whose partitions are also registered in an AWS Glue catalog. The table was created with PARTITION_TYPE = USER_SPECIFIED. A new path, dt=2026-11-25, arrives each day, and queries do not return its rows.",
+      "stem": "Which statement makes the new day's files queryable?",
       "options": [
         {
           "key": "A",
-          "text": "Run ALTER ICEBERG TABLE ... REFRESH manually"
+          "text": "Run ALTER EXTERNAL TABLE ... REFRESH '<path>' so that Snowflake registers the files of the new partition"
         },
         {
           "key": "B",
-          "text": "Lower REFRESH_INTERVAL_SECONDS on the catalog integration to its minimum value"
+          "text": "Set AUTO_REFRESH = TRUE on the table so that event notifications register the files of the new partition"
         },
         {
           "key": "C",
-          "text": "Set AUTO_REFRESH to FALSE and back to TRUE so the polling restarts"
+          "text": "Run ALTER EXTERNAL TABLE ... ADD FILES for the files in the new path so that they are registered one by one"
         },
         {
           "key": "D",
-          "text": "Configure an event notification on the underlying S3 bucket so Snowflake learns about metadata changes"
-        }
-      ],
-      "correct": [
-        "A"
-      ],
-      "explanation": {
-        "correct": "Automated refresh of an externally managed Iceberg table syncs schema changes only together with DML. A change that is DDL only, such as a new column with no new data, needs a manual ALTER ICEBERG TABLE ... REFRESH.",
-        "distractors": {
-          "B": "A shorter interval makes Snowflake poll more often, but the poll still does not pick up a DDL-only change.",
-          "C": "Toggling AUTO_REFRESH does not change what the poll syncs, and frequent toggling is documented as slowing refreshes.",
-          "D": "Automated refresh for Iceberg tables polls the catalog. It does not use cloud storage event notifications, so adding one has no effect."
-        }
-      }
-    },
-    {
-      "id": 3,
-      "type": "single",
-      "domain": "hybrid-tables",
-      "scenario": "A retail company keeps an order-tracking application on 40 hybrid tables in the PROD_APP database, spread over three schemas. Every table has a PRIMARY KEY and some have FOREIGN KEY constraints to each other. The Data Engineer must build a development copy that contains all hybrid tables with their data as of 08:00 this morning. The Time Travel retention of PROD_APP covers 08:00. The Engineer has the load's query ID but prefers a timestamp for the point in time.",
-      "stem": "Which statement meets the requirement?",
-      "options": [
-        {
-          "key": "A",
-          "text": "CREATE SCHEMA dev_app.orders CLONE prod_app.orders AT (TIMESTAMP => '2026-11-23 08:00:00'::TIMESTAMP_LTZ);"
-        },
-        {
-          "key": "B",
-          "text": "CREATE HYBRID TABLE dev_app.orders.t1 CLONE prod_app.orders.t1 for each of the 40 tables"
-        },
-        {
-          "key": "C",
-          "text": "CREATE DATABASE dev_app CLONE prod_app AT (STATEMENT => '<query id of the 08:00 load>');"
-        },
-        {
-          "key": "D",
-          "text": "CREATE DATABASE dev_app CLONE prod_app AT (TIMESTAMP => '2026-11-23 08:00:00'::TIMESTAMP_LTZ);"
+          "text": "Run ALTER EXTERNAL TABLE ... ADD PARTITION (dt = '2026-11-25') LOCATION 'dt=2026-11-25' for the new path"
         }
       ],
       "correct": [
         "D"
       ],
       "explanation": {
-        "correct": "Hybrid tables can be cloned only as part of a database clone. A point-in-time database clone that includes hybrid tables accepts AT or BEFORE with TIMESTAMP or OFFSET, so the timestamp form copies all tables and their data.",
+        "correct": "With USER_SPECIFIED partitions, partitions are added with ALTER EXTERNAL TABLE ... ADD PARTITION and removed with DROP PARTITION LOCATION.",
         "distractors": {
-          "A": "A schema clone that contains hybrid tables fails unless IGNORE HYBRID TABLES is added, and that option leaves the hybrid tables out of the copy.",
-          "B": "CREATE HYBRID TABLE ... CLONE is not supported and fails with error 391411.",
-          "C": "A point-in-time database clone with hybrid tables does not accept STATEMENT. A clone at a statement requires IGNORE HYBRID TABLES, which again excludes the hybrid tables."
+          "A": "REFRESH is not supported on a table with user-specified partitions. A manual refresh raises a user error.",
+          "B": "AUTO_REFRESH is not supported for PARTITION_TYPE = USER_SPECIFIED.",
+          "C": "ADD FILES and REMOVE FILES are not supported on a table with user-specified partitions."
         }
       }
     },
     {
-      "id": 4,
+      "id": 3,
       "type": "single",
-      "domain": "unload-data",
-      "scenario": "A Data Engineer runs COPY INTO @exports/daily/ FROM (SELECT ...) FILE_FORMAT = (TYPE = CSV COMPRESSION = GZIP) SINGLE = TRUE FILE_EXTENSION = 'csv.gz' MAX_FILE_SIZE = 1073741824. A downstream job expects exactly one file named report.csv.gz in that location. The unload succeeds, but the stage contains a single file named data, with no extension. The result set is about 600 MB before compression.",
-      "stem": "What change produces report.csv.gz?",
+      "domain": "external-tables",
+      "scenario": "A bucket holds about 5 million Parquet files under dated prefixes. A Data Engineer runs CREATE EXTERNAL TABLE with the default settings, and the statement takes very long because it refreshes the metadata for all of the files.",
+      "stem": "Which approach registers all of the files without relying on one very long statement?",
       "options": [
         {
           "key": "A",
-          "text": "Add INCLUDE_QUERY_ID = TRUE so the file is named from the query ID, then rename it"
+          "text": "Create the table with REFRESH_ON_CREATE = FALSE, then run ALTER EXTERNAL TABLE ... REFRESH per sub-path"
         },
         {
           "key": "B",
-          "text": "Put the file name and extension in the path, as in @exports/daily/report.csv.gz, and keep the compression matching the extension"
+          "text": "Create the table with AUTO_REFRESH = FALSE only, because the refresh at creation depends on that setting"
         },
         {
           "key": "C",
-          "text": "Remove FILE_EXTENSION and rely on COMPRESSION = GZIP to add .csv.gz"
+          "text": "Name the individual files in the LOCATION clause so that Snowflake registers only the files that are listed"
         },
         {
           "key": "D",
-          "text": "Raise MAX_FILE_SIZE to 5368709120 so Snowflake names the file from the file format"
-        }
-      ],
-      "correct": [
-        "B"
-      ],
-      "explanation": {
-        "correct": "With SINGLE = TRUE, Snowflake writes one file named data and ignores FILE_EXTENSION. The name and extension must be part of the path, and the compression should match the extension.",
-        "distractors": {
-          "A": "INCLUDE_QUERY_ID = TRUE is not allowed with SINGLE = TRUE, and it would add a UUID to the name anyway.",
-          "C": "FILE_EXTENSION is already ignored with SINGLE = TRUE, so removing it changes nothing. The file still comes out as data.",
-          "D": "MAX_FILE_SIZE only sets the target size per file, up to 5 GB. It does not affect the name, and 600 MB already fits in the current 1 GB value."
-        }
-      }
-    },
-    {
-      "id": 5,
-      "type": "multi",
-      "domain": "schema-evolution",
-      "scenario": "A Snowpipe pipe loads Parquet files from an external stage into the RAW.EVENTS table. Upstream added a new top-level column, session_length, to the files. The pipe's COPY statement is COPY INTO raw.events FROM @ext/events FILE_FORMAT = (TYPE = PARQUET). The Data Engineer wants new columns added to the table automatically. Currently files load without errors, but session_length never appears in the table. The pipe is owned by role PIPE_OWNER, and files are uploaded by role UPLOADER.",
-      "stem": "Which THREE changes are required for the table to evolve automatically? (Select THREE.)",
-      "options": [
-        {
-          "key": "A",
-          "text": "Set ON_ERROR = CONTINUE in the pipe so files with unknown columns are not skipped"
-        },
-        {
-          "key": "B",
-          "text": "Set ENABLE_SCHEMA_EVOLUTION = TRUE on the RAW.EVENTS table"
-        },
-        {
-          "key": "C",
-          "text": "Grant EVOLVE SCHEMA on the table to UPLOADER, the role that puts files in the stage"
-        },
-        {
-          "key": "D",
-          "text": "Recreate the pipe with MATCH_BY_COLUMN_NAME in its COPY statement"
-        },
-        {
-          "key": "E",
-          "text": "Set ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE in the Parquet file format"
-        },
-        {
-          "key": "F",
-          "text": "Grant EVOLVE SCHEMA (or OWNERSHIP) on the table to PIPE_OWNER"
-        }
-      ],
-      "correct": [
-        "B",
-        "D",
-        "F"
-      ],
-      "explanation": {
-        "correct": "Automatic evolution happens only when the table has ENABLE_SCHEMA_EVOLUTION = TRUE, the load uses MATCH_BY_COLUMN_NAME, and the loading role has EVOLVE SCHEMA or OWNERSHIP on the table. For Snowpipe the loading role is the role that owns the pipe.",
-        "distractors": {
-          "A": "ON_ERROR does not drive evolution. The files already load without errors, and the column is missing because the three conditions are not met.",
-          "C": "The role that uploads files to the stage plays no part in the load. For Snowpipe the privilege must be held by the pipe owner.",
-          "E": "ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE is needed only for CSV loads that combine MATCH_BY_COLUMN_NAME with PARSE_HEADER. It is not part of the requirements for Parquet."
-        }
-      }
-    },
-    {
-      "id": 6,
-      "type": "single",
-      "domain": "catalog-linked-databases",
-      "scenario": "A team links an external Iceberg REST catalog to Snowflake with a catalog integration and a catalog-linked database, using the default LINKED_CATALOG settings apart from the catalog name. During testing, an engineer runs DROP ICEBERG TABLE on a table in the linked database and finds that the table and its data are gone from the remote catalog as well. Production analysts must read the remote tables through Snowflake but must never be able to drop or write them.",
-      "stem": "Which setting meets the requirement when the linked database is created?",
-      "options": [
-        {
-          "key": "A",
-          "text": "ALLOWED_WRITE_OPERATIONS = NONE in the LINKED_CATALOG parameters"
-        },
-        {
-          "key": "B",
-          "text": "BLOCKED_NAMESPACES listing every namespace that analysts should not change"
-        },
-        {
-          "key": "C",
-          "text": "SYNC_INTERVAL_SECONDS = 86400 so that Snowflake rarely contacts the remote catalog"
-        },
-        {
-          "key": "D",
-          "text": "CATALOG_CASE_SENSITIVITY = CASE_SENSITIVE"
+          "text": "Copy the files to an internal stage and create the external table on that stage for faster registration"
         }
       ],
       "correct": [
         "A"
       ],
       "explanation": {
-        "correct": "ALLOWED_WRITE_OPERATIONS defaults to ALL. With ALL, dropping a table propagates to the remote catalog and removes the table and data in both places. Setting it to NONE makes the linked database read-only.",
+        "correct": "With about a million files or more, REFRESH_ON_CREATE = FALSE skips the refresh at creation. Refreshing one relative sub-path at a time with ALTER EXTERNAL TABLE ... REFRESH then registers all of the files.",
         "distractors": {
-          "B": "BLOCKED_NAMESPACES excludes namespaces from the sync, so analysts could not read those tables at all. It does not make the remaining ones read-only.",
-          "C": "SYNC_INTERVAL_SECONDS only sets how often Snowflake polls the remote catalog (30 to 86400). It does not restrict drops or writes.",
-          "D": "CATALOG_CASE_SENSITIVITY controls how identifiers are matched. It has no effect on write operations."
+          "B": "REFRESH_ON_CREATE is a separate setting and defaults to TRUE, so the refresh at creation still runs.",
+          "C": "LOCATION cannot name individual files. PATTERN is the way to filter by file name.",
+          "D": "External tables are not supported on internal stages."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "An external table points at S3 files stored under 2026/11/25/ style prefixes. The table has only the VALUE column. Queries filter with WHERE value:event_date::DATE = '2026-11-25', and every query scans all of the files.",
+      "stem": "Which change reduces the files that are scanned?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add a clustering key on the event date column of the external table so that files are grouped by date"
+        },
+        {
+          "key": "B",
+          "text": "Increase the size of the warehouse so that the scan of all of the files finishes sooner"
+        },
+        {
+          "key": "C",
+          "text": "Recreate the table with a partition column derived from METADATA$FILENAME, and filter on that column"
+        },
+        {
+          "key": "D",
+          "text": "Move the date filter into the WHERE clause on the VALUE column so that file pruning applies to it"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "External tables prune files with partition columns, which are defined with PARTITION BY and an expression over METADATA$FILENAME. The partition method cannot be changed after creation, so the table is recreated, and queries must filter on the partition column.",
+        "distractors": {
+          "A": "Clustering keys are not supported on external tables.",
+          "B": "A larger warehouse scans the same files faster, but it does not reduce the files that are scanned.",
+          "D": "A filter on the VALUE column does not prune files. Only filters on partition columns do."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A finance analyst sees credits for external table auto-refresh across 30 external tables on S3. The Data Engineer needs, for each table, the files that were registered and the credits that auto-refresh used.",
+      "stem": "Which history report shows this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "WAREHOUSE_METERING_HISTORY, because auto-refresh runs on the warehouse that last queried each table"
+        },
+        {
+          "key": "B",
+          "text": "AUTO_REFRESH_REGISTRATION_HISTORY, which needs ACCOUNTADMIN or the MONITOR USAGE privilege"
+        },
+        {
+          "key": "C",
+          "text": "COPY_HISTORY, because each registered file is loaded into the external table like a COPY"
+        },
+        {
+          "key": "D",
+          "text": "QUERY_HISTORY, because each auto-refresh appears as a query with its own credits used"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "AUTO_REFRESH_REGISTRATION_HISTORY shows the files that were registered and the credits used by auto-refresh. It needs ACCOUNTADMIN or MONITOR USAGE.",
+        "distractors": {
+          "A": "Auto-refresh overhead is billed as Snowpipe charges, not as warehouse credits.",
+          "C": "An external table does not load files. It registers file metadata, so nothing is loaded by COPY.",
+          "D": "Auto-refresh overhead is billed as Snowpipe charges, so it is not tracked as the credits of a query."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A Data Engineer must create an external table over a Delta Lake table in S3 with TABLE_FORMAT = DELTA. The Delta table receives new commits every hour.",
+      "stem": "Which approach is supported?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set REFRESH_ON_CREATE = FALSE and AUTO_REFRESH = FALSE, then refresh the table manually"
+        },
+        {
+          "key": "B",
+          "text": "Set AUTO_REFRESH = FALSE only, because a refresh at creation is allowed for Delta tables"
+        },
+        {
+          "key": "C",
+          "text": "Keep the defaults and add AWS_SNS_TOPIC so that new Delta commits are registered by event"
+        },
+        {
+          "key": "D",
+          "text": "Set both options to FALSE and refresh with a relative path so that only new log files are read"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "A Delta Lake external table needs both REFRESH_ON_CREATE and AUTO_REFRESH set to FALSE, and it is refreshed manually. A manual refresh of a Delta external table uses a warehouse.",
+        "distractors": {
+          "B": "Both REFRESH_ON_CREATE and AUTO_REFRESH must be FALSE for Delta tables.",
+          "C": "AUTO_REFRESH is not supported for Delta Lake external tables, so event notifications do not register Delta commits.",
+          "D": "A relative path on REFRESH is not supported for Delta Lake external tables."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": "A team plans to expose Parquet files in an S3 bucket as an external table and checks which table features and storage options it can rely on. Some of the objects are in the S3 Glacier Deep Archive storage class.",
+      "stem": "Which THREE statements are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A clustering key can be added to the table to group rows from the same file"
+        },
+        {
+          "key": "B",
+          "text": "A row access policy can be attached to the table with ON (VALUE)"
+        },
+        {
+          "key": "C",
+          "text": "Constraints such as NOT NULL are defined but not enforced on the table"
+        },
+        {
+          "key": "D",
+          "text": "The table can be cloned to give developers their own copy to work on"
+        },
+        {
+          "key": "E",
+          "text": "Objects that need restoration from Glacier Deep Archive cannot be read"
+        },
+        {
+          "key": "F",
+          "text": "The LOCATION of the table can be an internal named stage in Snowflake"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Row access policies and masking policies work on external tables. Integrity constraints, including NOT NULL, are not enforced. Archive-tier objects that need restoration, such as S3 Glacier Deep Archive, cannot be used.",
+        "distractors": {
+          "A": "Clustering keys are not supported on external tables.",
+          "D": "Cloning is not supported on external tables.",
+          "F": "An external table reads files in an external stage. Internal stages are not supported."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "external-tables",
+      "scenario": "The role ANALYST_RO must query an external table. It already holds USAGE on the database, the schema and the file format, and SELECT on the table. A query still fails with an error that the stage is not accessible to the role.",
+      "stem": "Which TWO grants are needed to fix the error? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "WRITE on the named stage that the table uses as its LOCATION"
+        },
+        {
+          "key": "B",
+          "text": "USAGE on the named stage that the table uses as its LOCATION"
+        },
+        {
+          "key": "C",
+          "text": "OWNERSHIP on the external table so that the role can read it"
+        },
+        {
+          "key": "D",
+          "text": "READ on the named stage that the table uses as its LOCATION"
+        },
+        {
+          "key": "E",
+          "text": "OPERATE on the external table so that the role can read it"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A role that is not the owner needs USAGE on the database, schema and file format, USAGE and READ on the named stage, and SELECT on the table.",
+        "distractors": {
+          "A": "WRITE on the stage is not needed to read an external table, which is read-only.",
+          "C": "OWNERSHIP is needed to run ALTER EXTERNAL TABLE, for example to refresh it, and not to query it.",
+          "E": "OPERATE is not one of the privileges that querying an external table requires."
         }
       }
     }

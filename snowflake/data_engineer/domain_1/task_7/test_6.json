@@ -1,0 +1,197 @@
+{
+  "label": "Data Movement: General Table Management",
+  "order": 6,
+  "topic": "Data Movement: table types, CREATE TABLE variants, Time Travel, Fail-safe and clustering keys",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "general-table-management",
+      "scenario": "A staging table is fully reloaded every night. TABLE_STORAGE_METRICS shows FAILSAFE_BYTES several times larger than ACTIVE_BYTES. The data can be rebuilt from the source system at any time, and the team wants to stop paying for Fail-safe storage on this table.",
+      "stem": "Which approach meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run ALTER TABLE ... SET TRANSIENT to change the existing table into a transient table"
+        },
+        {
+          "key": "B",
+          "text": "Set DATA_RETENTION_TIME_IN_DAYS = 0 on the table, which also removes its Fail-safe period"
+        },
+        {
+          "key": "C",
+          "text": "Create a transient table from the data with CTAS, then replace the permanent table with it"
+        },
+        {
+          "key": "D",
+          "text": "Recreate the table as TEMPORARY, which has no Fail-safe and stays visible to other sessions"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A table cannot be converted to transient, so the data goes into a new transient table. Transient tables have no Fail-safe.",
+        "distractors": {
+          "A": "There is no way to convert a permanent table to transient in place. The conversion is not possible.",
+          "B": "Fail-safe is fixed at 7 days and is not configurable. With retention 0, a dropped permanent table goes straight to Fail-safe.",
+          "D": "A temporary table exists only for its session and is visible only to that session, so other sessions and jobs could not use it."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "general-table-management",
+      "scenario": "On an Enterprise Edition account, ACCOUNTADMIN sets MIN_DATA_RETENTION_TIME_IN_DAYS = 5. A table in the account has DATA_RETENTION_TIME_IN_DAYS = 2, set directly on the table.",
+      "stem": "What is the effective Time Travel retention of the table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "1 day, the default retention that the table's own setting replaces"
+        },
+        {
+          "key": "B",
+          "text": "2 days, the value that is set directly on the table, which wins"
+        },
+        {
+          "key": "C",
+          "text": "7 days, the retention of the table plus the Fail-safe period"
+        },
+        {
+          "key": "D",
+          "text": "5 days, the larger of the table's value and the account minimum"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The effective retention is the larger of DATA_RETENTION_TIME_IN_DAYS and MIN_DATA_RETENTION_TIME_IN_DAYS, so 5 days.",
+        "distractors": {
+          "A": "1 day is the default retention. The table has its own setting, and the account minimum is higher.",
+          "B": "The table's own value is lower than the account minimum, so the minimum applies.",
+          "C": "Fail-safe is separate from Time Travel and is not added to the retention."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "general-table-management",
+      "scenario": "A source table has a clustering key, and Automatic Clustering is suspended on it. A Data Engineer creates three copies for testing: one with CLONE, one with LIKE and one with CTAS that includes CLUSTER BY.",
+      "stem": "Which statement about the copies is correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The clone keeps the clustering key, and Automatic Clustering starts out resumed on the clone"
+        },
+        {
+          "key": "B",
+          "text": "The LIKE table keeps the clustering key, and its Automatic Clustering is not suspended"
+        },
+        {
+          "key": "C",
+          "text": "The CTAS table with CLUSTER BY starts with Automatic Clustering suspended, as on the source"
+        },
+        {
+          "key": "D",
+          "text": "The LIKE table loses the clustering key because it copies only column definitions"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A LIKE copy keeps the source's clustering keys, and Automatic Clustering is not suspended by default, even if it was suspended on the source.",
+        "distractors": {
+          "A": "A clone keeps the clustering key, but Automatic Clustering is suspended by default on the clone.",
+          "C": "A CTAS with clustering keys enables Automatic Clustering by default, even if it was suspended on the source.",
+          "D": "A LIKE copy keeps the source's clustering keys."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "general-table-management",
+      "scenario": "A Data Engineer uses CREATE OR ALTER TABLE to rename the column cust_nm to customer_name by changing it in the table definition. The column holds data in every row.",
+      "stem": "What happens to the data in that column?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The old column is dropped and a new one is added, so the data in that column is lost"
+        },
+        {
+          "key": "B",
+          "text": "The column is renamed in place and keeps its data, because the type and position match"
+        },
+        {
+          "key": "C",
+          "text": "The column is renamed and the data is kept only if the definition adds a CLONE clause"
+        },
+        {
+          "key": "D",
+          "text": "The statement fails because CREATE OR ALTER TABLE cannot change the names of columns"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "With CREATE OR ALTER TABLE, a rename is a drop plus an add, so the data in that column is lost.",
+        "distractors": {
+          "B": "There is no in-place rename. CREATE OR ALTER TABLE treats a changed name as a drop and an add.",
+          "C": "CLONE is not supported inside CREATE OR ALTER TABLE, and it would not carry the data over.",
+          "D": "The statement runs. The result is a dropped column and a new one."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "general-table-management",
+      "scenario": "A Data Engineer reviews how Time Travel and Fail-safe behave on permanent tables in an Enterprise Edition account before documenting the recovery process for a team.",
+      "stem": "Which THREE statements are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Transient tables keep a 7-day Fail-safe period that Snowflake can recover from"
+        },
+        {
+          "key": "B",
+          "text": "Fail-safe lasts 7 days, cannot be changed, and only Snowflake can recover from it"
+        },
+        {
+          "key": "C",
+          "text": "A query that uses AT or BEFORE sees the table schema as it was at that earlier time"
+        },
+        {
+          "key": "D",
+          "text": "With retention set to 0, a dropped permanent table goes straight to Fail-safe"
+        },
+        {
+          "key": "E",
+          "text": "ACCOUNTADMIN can turn Time Travel off for the account as a whole for every object"
+        },
+        {
+          "key": "F",
+          "text": "UNDROP fails if an object with the same name already exists in the schema"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Fail-safe is 7 days, not configurable, and recoverable only by Snowflake. With retention 0, a dropped permanent table goes straight to Fail-safe. UNDROP fails if an object with the same name exists, so the existing one must be renamed first.",
+        "distractors": {
+          "A": "Transient tables have no Fail-safe.",
+          "C": "A query that uses AT or BEFORE uses the current table schema, not the earlier one.",
+          "E": "Time Travel cannot be turned off for an account as a whole. ACCOUNTADMIN can set the account value to 0, which changes only the default for new objects, and any database, schema or table can override it."
+        }
+      }
+    }
+  ]
+}

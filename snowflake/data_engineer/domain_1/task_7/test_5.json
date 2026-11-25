@@ -1,0 +1,284 @@
+{
+  "label": "Data Movement: Schema Evolution",
+  "order": 5,
+  "topic": "Data Movement: automatic schema evolution, nested types and column type choices",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "schema-evolution",
+      "scenario": "A table has ENABLE_SCHEMA_EVOLUTION = TRUE, and a COPY INTO with MATCH_BY_COLUMN_NAME loads Parquet files. The role that runs it has EVOLVE SCHEMA on the table. A new batch of files needs more than one schema change, and the COPY fails with the error 'Schema evolution is incomplete'.",
+      "stem": "What should the Data Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set ON_ERROR = CONTINUE so that the COPY skips the files that need more than one change"
+        },
+        {
+          "key": "B",
+          "text": "Increase the warehouse size so that the COPY can apply several changes at the same time"
+        },
+        {
+          "key": "C",
+          "text": "Load the files with INSERT ... SELECT, which applies all of the changes in one statement"
+        },
+        {
+          "key": "D",
+          "text": "Run the same COPY again until it succeeds, because each run applies one schema change"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "By default a COPY applies one schema change. Running it again applies the next change, and only the run that succeeds loads the files. Snowflake Support can raise the default caps.",
+        "distractors": {
+          "A": "The error is about incomplete schema evolution, and skipping the files would leave their data unloaded.",
+          "B": "Warehouse size does not change how many schema changes one COPY applies.",
+          "C": "INSERT cannot evolve a table. Only COPY INTO a table and Snowpipe can."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "schema-evolution",
+      "scenario": "A COPY INTO statement loads JSON files with a transformation: COPY INTO raw.orders FROM (SELECT $1:order_id, $1:address FROM @orders_stage) FILE_FORMAT = (TYPE = JSON). The table has ENABLE_SCHEMA_EVOLUTION = TRUE. A new nested address object arrives as a VARIANT column, so the Data Engineer adds INFER_NESTED_TYPES = TRUE and gets the error 'infer_nested_types is not supported with copy transform'.",
+      "stem": "Which change fixes the error and lets the new column arrive as a structured type?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Remove the SELECT transformation and load with MATCH_BY_COLUMN_NAME"
+        },
+        {
+          "key": "B",
+          "text": "Set USE_VECTORIZED_SCANNER = TRUE in the file format of the COPY"
+        },
+        {
+          "key": "C",
+          "text": "Grant EVOLVE SCHEMA on the table to the role that runs the COPY"
+        },
+        {
+          "key": "D",
+          "text": "Move the load to Snowpipe Streaming, which supports INFER_NESTED_TYPES"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "INFER_NESTED_TYPES does not work with SELECT transformations. Loading with MATCH_BY_COLUMN_NAME and no transform lets new nested columns arrive as structured types.",
+        "distractors": {
+          "B": "USE_VECTORIZED_SCANNER helps with Parquet map data. It does not remove the transform restriction.",
+          "C": "A missing EVOLVE SCHEMA privilege stops evolution silently. It does not cause this error.",
+          "D": "INFER_NESTED_TYPES does not work with Snowpipe Streaming."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "schema-evolution",
+      "scenario": "A Snowpipe pipe loads JSON into a Snowflake-managed Iceberg table that uses Iceberg v2, with ENABLE_SCHEMA_EVOLUTION = TRUE and MATCH_BY_COLUMN_NAME. A new nested object appears in the files, and loads fail with the error \"Unsupported data type 'VARIANT' for iceberg tables\". The team wants the new column added to the table.",
+      "stem": "Which change meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set ICEBERG_VERSION_DEFAULT = 3 on the schema so that the existing table is upgraded"
+        },
+        {
+          "key": "B",
+          "text": "Set INFER_NESTED_TYPES = TRUE so that the new column is added as a structured type"
+        },
+        {
+          "key": "C",
+          "text": "Add a VARIANT column to the table with ALTER ICEBERG TABLE before the next load"
+        },
+        {
+          "key": "D",
+          "text": "Set ENABLE_SCHEMA_EVOLUTION = FALSE so that the new column is left out of the load"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The error means the load would add a type that the table cannot hold. An Iceberg v2 table has no VARIANT, so setting INFER_NESTED_TYPES = TRUE adds the column as a structured type. Iceberg v3 is the other route, because it supports VARIANT.",
+        "distractors": {
+          "A": "ICEBERG_VERSION_DEFAULT affects only tables created afterward. Upgrading an existing table is a separate, permanent step.",
+          "C": "An Iceberg v2 table has no VARIANT type, so the ALTER would fail.",
+          "D": "Turning evolution off stops the new column from being added at all, so its data never reaches the table."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "schema-evolution",
+      "scenario": "A Data Engineer plans to create a table from sample Parquet files with CREATE TABLE ... USING TEMPLATE and INFER_SCHEMA. In the sample files an amount column holds only one-digit values, but production values will be much larger. Schema evolution will be enabled on the table.",
+      "stem": "Which approach avoids load failures on larger amounts?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Enable schema evolution, because Snowflake widens an existing column when a larger value arrives"
+        },
+        {
+          "key": "B",
+          "text": "Create the table directly from the INFER_SCHEMA output, because it sizes columns for later files"
+        },
+        {
+          "key": "C",
+          "text": "Run GENERATE_COLUMN_DESCRIPTION, edit the types, and create the table from the edited list"
+        },
+        {
+          "key": "D",
+          "text": "Set ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE so that values that are too wide are trimmed"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "INFER_SCHEMA sizes types from the sampled files, for example NUMBER(1,0) when every value is one digit. Generating the column description, editing it and creating the table from the list controls the types up front.",
+        "distractors": {
+          "A": "Schema evolution does not change existing column types, so a record whose value does not fit fails.",
+          "B": "INFER_SCHEMA sizes columns from the sampled files only, so a column inferred as NUMBER(1,0) rejects larger values.",
+          "D": "ERROR_ON_COLUMN_COUNT_MISMATCH deals with the number of columns in a file. It does not trim values."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "schema-evolution",
+      "scenario": "A Data Engineer reviews what automatic schema evolution does when it runs on a table that is loaded with COPY INTO and MATCH_BY_COLUMN_NAME. The files include columns that the table does not have and omit some columns that the table has.",
+      "stem": "Which THREE statements describe what schema evolution does? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "It adds columns that appear in the files but not in the table"
+        },
+        {
+          "key": "B",
+          "text": "It widens an existing column when a loaded value does not fit"
+        },
+        {
+          "key": "C",
+          "text": "It drops the NOT NULL constraint from columns that the files omit"
+        },
+        {
+          "key": "D",
+          "text": "It adds ORC and Avro UNION columns as VARIANT columns"
+        },
+        {
+          "key": "E",
+          "text": "It renames a column when the field name in the files changes"
+        },
+        {
+          "key": "F",
+          "text": "It removes columns that the files no longer contain"
+        }
+      ],
+      "correct": [
+        "A",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Schema evolution adds new columns and drops NOT NULL from columns that are missing in the new files. ORC and Avro UNION columns are always added as VARIANT.",
+        "distractors": {
+          "B": "Schema evolution does not change existing column types, so a record whose value does not fit fails.",
+          "E": "Schema evolution does not rename columns. It adds new ones.",
+          "F": "Schema evolution does not remove columns. It adds columns and drops NOT NULL."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "schema-evolution",
+      "scenario": "A team wants new nested fields to arrive as structured columns instead of VARIANT. A Data Engineer lists the loading setups that the team uses and checks which of them can use INFER_NESTED_TYPES = TRUE.",
+      "stem": "Which TWO setups can use INFER_NESTED_TYPES = TRUE? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Snowpipe Streaming ingest of JSON rows into a standard table"
+        },
+        {
+          "key": "B",
+          "text": "COPY INTO a hybrid table from Parquet files with MATCH_BY_COLUMN_NAME"
+        },
+        {
+          "key": "C",
+          "text": "Snowpipe loading JSON into a Snowflake-managed Iceberg table"
+        },
+        {
+          "key": "D",
+          "text": "COPY INTO a standard table from JSON files with a SELECT transformation"
+        },
+        {
+          "key": "E",
+          "text": "COPY INTO a standard table from Parquet files with MATCH_BY_COLUMN_NAME"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "INFER_NESTED_TYPES works with COPY INTO or Snowpipe for Parquet, JSON, Avro and ORC files, into standard tables or Snowflake-managed Iceberg tables.",
+        "distractors": {
+          "A": "INFER_NESTED_TYPES does not work with Snowpipe Streaming.",
+          "B": "INFER_NESTED_TYPES does not work with hybrid tables.",
+          "D": "INFER_NESTED_TYPES does not work with SELECT transformations. MATCH_BY_COLUMN_NAME is needed."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "schema-evolution",
+      "scenario": "A Snowpipe pipe loads Parquet files from an external stage into the RAW.EVENTS table. Upstream added a new top-level column, session_length, to the files. The pipe's COPY statement is COPY INTO raw.events FROM @ext/events FILE_FORMAT = (TYPE = PARQUET). The Data Engineer wants new columns added to the table automatically. Currently files load without errors, but session_length never appears in the table. The pipe is owned by role PIPE_OWNER, and files are uploaded by role UPLOADER.",
+      "stem": "Which THREE changes are required for the table to evolve automatically? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set ON_ERROR = CONTINUE in the pipe so files with unknown columns are not skipped"
+        },
+        {
+          "key": "B",
+          "text": "Set ENABLE_SCHEMA_EVOLUTION = TRUE on the RAW.EVENTS table"
+        },
+        {
+          "key": "C",
+          "text": "Grant EVOLVE SCHEMA on the table to UPLOADER, the role that puts files in the stage"
+        },
+        {
+          "key": "D",
+          "text": "Recreate the pipe with MATCH_BY_COLUMN_NAME in its COPY statement"
+        },
+        {
+          "key": "E",
+          "text": "Set ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE in the Parquet file format"
+        },
+        {
+          "key": "F",
+          "text": "Grant EVOLVE SCHEMA (or OWNERSHIP) on the table to PIPE_OWNER"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Automatic evolution happens only when the table has ENABLE_SCHEMA_EVOLUTION = TRUE, the load uses MATCH_BY_COLUMN_NAME, and the loading role has EVOLVE SCHEMA or OWNERSHIP on the table. For Snowpipe the loading role is the role that owns the pipe.",
+        "distractors": {
+          "A": "ON_ERROR does not drive evolution. The files already load without errors, and the column is missing because the three conditions are not met.",
+          "C": "The role that uploads files to the stage plays no part in the load. For Snowpipe the privilege must be held by the pipe owner.",
+          "E": "ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE is needed only for CSV loads that combine MATCH_BY_COLUMN_NAME with PARSE_HEADER. It is not part of the requirements for Parquet."
+        }
+      }
+    }
+  ]
+}

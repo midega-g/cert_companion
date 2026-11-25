@@ -1,0 +1,346 @@
+{
+  "label": "Data Movement: Iceberg Tables",
+  "order": 2,
+  "topic": "Data Movement: Iceberg table types, storage, properties and optimization",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "iceberg-convert-to-managed",
+      "scenario": "A Data Engineer manages an externally managed Iceberg table that is partitioned by day. A Spark job maintains it through an AWS Glue catalog integration. The Spark job is being retired. The team wants Snowflake to write to the table and to own compaction and snapshot expiry, and plans to run ALTER ICEBERG TABLE ... CONVERT TO MANAGED.",
+      "stem": "What should the Engineer expect after the conversion?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Every Parquet file is rewritten into Snowflake's layout and the partitioning by day is kept"
+        },
+        {
+          "key": "B",
+          "text": "The table stays read-only until its rows are copied into a new Snowflake-managed table"
+        },
+        {
+          "key": "C",
+          "text": "The table becomes writable, Snowflake cleans up all files, and Iceberg partitioning is removed"
+        },
+        {
+          "key": "D",
+          "text": "The table becomes writable, but Snowflake cleans up only the files that it writes after the conversion"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "After CONVERT TO MANAGED the table is writable and Snowflake owns cleanup of every file, including files that existed before the conversion. Iceberg partitioning is removed. No Parquet file is rewritten.",
+        "distractors": {
+          "A": "Conversion does not rewrite any Parquet file, and the Iceberg partitioning is removed rather than kept.",
+          "B": "The conversion itself makes the table writable. Copying rows into a new Snowflake-managed table is not required.",
+          "D": "Snowflake takes ownership of cleanup for every file, including the files that were written before the conversion."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "iceberg-storage-fail-safe",
+      "scenario": "A team keeps a staging Iceberg table on Snowflake-managed storage. The data is reloaded from the source every day and never needs recovery. The team wants to avoid Fail-safe storage cost, and the data must stay on Snowflake-managed storage.",
+      "stem": "Which table definition meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE TRANSIENT ICEBERG TABLE ... CATALOG = 'SNOWFLAKE' EXTERNAL_VOLUME = 'SNOWFLAKE_MANAGED'"
+        },
+        {
+          "key": "B",
+          "text": "CREATE ICEBERG TABLE ... CATALOG = 'SNOWFLAKE' EXTERNAL_VOLUME = 'SNOWFLAKE_MANAGED' DATA_RETENTION_TIME_IN_DAYS = 0"
+        },
+        {
+          "key": "C",
+          "text": "CREATE TRANSIENT ICEBERG TABLE ... CATALOG = 'SNOWFLAKE' EXTERNAL_VOLUME = 'my_ext_vol'"
+        },
+        {
+          "key": "D",
+          "text": "CREATE ICEBERG TABLE ... CATALOG = 'SNOWFLAKE' EXTERNAL_VOLUME = 'my_ext_vol' BASE_LOCATION = 'stg'"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "A permanent Iceberg table on Snowflake storage has a 7-day Fail-safe period. A TRANSIENT table has none, and the TRANSIENT keyword is allowed with SNOWFLAKE_MANAGED storage.",
+        "distractors": {
+          "B": "Setting Time Travel retention to 0 does not remove Fail-safe. A permanent table on Snowflake storage still has 7 days of Fail-safe.",
+          "C": "The TRANSIENT keyword is not allowed for tables that use an external volume, so this statement fails.",
+          "D": "An external volume has no Fail-safe, but the data would then sit in the team's own cloud storage, which the requirement rules out."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "iceberg-creation-properties",
+      "scenario": "A Data Engineer created a Snowflake-managed Iceberg table with the default storage serialization policy. A partner team's engine has to read the table, and the team has decided that this requires STORAGE_SERIALIZATION_POLICY = COMPATIBLE. The table holds 2 TB.",
+      "stem": "Which action meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run ALTER ICEBERG TABLE ... SET STORAGE_SERIALIZATION_POLICY = COMPATIBLE on the table"
+        },
+        {
+          "key": "B",
+          "text": "Run ALTER ICEBERG TABLE ... REFRESH so that the table metadata is rewritten in the compatible form"
+        },
+        {
+          "key": "C",
+          "text": "Change BASE_LOCATION to a new path, which makes Snowflake write the table files again"
+        },
+        {
+          "key": "D",
+          "text": "Create a new table with STORAGE_SERIALIZATION_POLICY = COMPATIBLE using CREATE ... AS SELECT"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "STORAGE_SERIALIZATION_POLICY cannot be changed after the table is created. The way to get COMPATIBLE is to create a new table with that policy and load the data into it.",
+        "distractors": {
+          "A": "The policy cannot be altered after creation, so the statement is rejected.",
+          "B": "REFRESH syncs an externally managed table with its catalog. It does not rewrite a Snowflake-managed table or change its policy.",
+          "C": "BASE_LOCATION cannot be changed after creation, and it controls the file path rather than the serialization policy."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "iceberg-merge-on-read",
+      "scenario": "A Snowflake-managed Iceberg table uses Iceberg v3. After Snowflake runs a large DELETE, a Spark job in the same company fails to read the table. The cause is deletion vectors that the Spark version cannot read. The team needs Snowflake to stop writing them and does not want to change the table version.",
+      "stem": "Which setting meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set ICEBERG_VERSION = 2 on the table with ALTER ICEBERG TABLE"
+        },
+        {
+          "key": "B",
+          "text": "Set ICEBERG_MERGE_ON_READ_BEHAVIOR = 'DISABLED' with ALTER ICEBERG TABLE"
+        },
+        {
+          "key": "C",
+          "text": "Set ENABLE_DATA_COMPACTION = FALSE on the table with the ALTER ICEBERG TABLE command"
+        },
+        {
+          "key": "D",
+          "text": "Set TARGET_FILE_SIZE = '128MB' on the table with ALTER ICEBERG TABLE"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "ICEBERG_MERGE_ON_READ_BEHAVIOR = 'DISABLED' makes Snowflake rewrite files for row-level deletes, which is copy-on-write, so no deletion vectors are written. Snowflake recommends DISABLED when other engines cannot read v3 deletion vectors.",
+        "distractors": {
+          "A": "The Iceberg specification does not support a downgrade of the table version, and the team wants to keep the version.",
+          "C": "Data compaction merges small files. It does not control how row-level deletes are recorded.",
+          "D": "File size influences when a deletion vector is used, but it does not turn deletion vectors off."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "iceberg-optimization",
+      "scenario": "A Snowflake-managed Iceberg table has CLUSTER BY (event_date) and ENABLE_DATA_COMPACTION = FALSE. Compaction of its data files still shows up in the monitoring views. The team wants no compaction of the data files and can give up the clustering.",
+      "stem": "What should the Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set ENABLE_DATA_COMPACTION = FALSE on the account to cover all tables"
+        },
+        {
+          "key": "B",
+          "text": "Set DATA_RETENTION_TIME_IN_DAYS = 0 on the table to remove old snapshots"
+        },
+        {
+          "key": "C",
+          "text": "Run ALTER ICEBERG TABLE ... DROP CLUSTERING KEY to stop reclustering"
+        },
+        {
+          "key": "D",
+          "text": "Set TARGET_FILE_SIZE = '128MB' on the table to produce larger files"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Automatic Clustering compacts data files even when data compaction is disabled. Dropping the clustering key stops that work, so with data compaction already off no compaction of data files remains.",
+        "distractors": {
+          "A": "Data compaction is already disabled on the table, and the most specific setting wins. An account-level setting changes nothing here.",
+          "B": "Time Travel retention controls how long history is kept. It does not stop compaction or clustering.",
+          "D": "A larger target file size changes how files are sized, but it does not stop clustering from compacting them."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "iceberg-billing",
+      "scenario": "A team moves its Iceberg tables from Snowflake-managed storage to an external volume in its own S3 bucket. The finance group asks which charges remain on the Snowflake bill for the tables that use the external volume.",
+      "stem": "Which THREE items does Snowflake still bill? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Warehouse compute used to query and load the tables"
+        },
+        {
+          "key": "B",
+          "text": "Storage of the Parquet data files in the external volume"
+        },
+        {
+          "key": "C",
+          "text": "Fail-safe storage for seven days after each change to the data"
+        },
+        {
+          "key": "D",
+          "text": "Cloud services usage that the table operations generate"
+        },
+        {
+          "key": "E",
+          "text": "Automated refresh of tables that use a catalog integration"
+        }
+      ],
+      "correct": [
+        "A",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Snowflake does not bill storage for tables on an external volume. It bills warehouse compute, cloud services and automated refresh.",
+        "distractors": {
+          "B": "The cloud provider bills the data files in an external volume, because the files sit in the team's own bucket.",
+          "C": "Tables on an external volume have no Fail-safe, so there is no Fail-safe storage to bill."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "iceberg-externally-managed",
+      "scenario": "A team queries externally managed Iceberg tables through an AWS Glue catalog integration. A Spark job owned by another team writes to the tables and runs the table maintenance.",
+      "stem": "Which THREE statements are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Snowflake expires the old snapshots of these tables automatically on its own schedule"
+        },
+        {
+          "key": "B",
+          "text": "The team must refresh the Snowflake table after each maintenance run on the Spark side"
+        },
+        {
+          "key": "C",
+          "text": "CLUSTER BY with Automatic Clustering is available on these tables for query pruning"
+        },
+        {
+          "key": "D",
+          "text": "Time Travel to an older snapshot works if a refresh ran before that snapshot expired"
+        },
+        {
+          "key": "E",
+          "text": "The engine that writes the table is responsible for compaction and snapshot expiry"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "For an externally managed table the lifecycle work, compaction and snapshot expiry, belongs to the engine that manages it, and the Snowflake table has to be refreshed after each maintenance run. Time Travel to a snapshot works if the table was refreshed before the snapshot expired.",
+        "distractors": {
+          "A": "Snapshot expiry is a Snowflake-managed table feature. For externally managed tables the owner handles it with its own engine.",
+          "C": "Clustering keys and Automatic Clustering are not supported on externally managed Iceberg tables."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "iceberg-default-parameters",
+      "scenario": "The EXTERNAL_VOLUME parameter is set to vol_a at the account level and to vol_b on the analytics database. A Data Engineer then runs ALTER SCHEMA analytics.raw SET EXTERNAL_VOLUME = 'vol_c'. Some Iceberg tables already exist in analytics.raw, and the analytics database has other schemas without their own setting.",
+      "stem": "Which TWO statements are correct? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Existing Iceberg tables in analytics.raw move to vol_c"
+        },
+        {
+          "key": "B",
+          "text": "New Iceberg tables in analytics.raw that name no volume use vol_c"
+        },
+        {
+          "key": "C",
+          "text": "New Iceberg tables in the other analytics schemas use vol_a"
+        },
+        {
+          "key": "D",
+          "text": "A role that creates tables in analytics.raw needs USAGE on vol_c"
+        },
+        {
+          "key": "E",
+          "text": "The account-level value wins because it was set first"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "The parameter can be set at account, database or schema level, and the lowest scope wins. It affects only tables created afterward, and the creating role needs USAGE on the volume.",
+        "distractors": {
+          "A": "The parameter affects only tables created after it is set. Existing tables keep their volume.",
+          "C": "A schema without its own setting uses the database value, so the other analytics schemas use vol_b.",
+          "E": "The lowest scope wins, not the first one set, so the schema value overrides the account value."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "iceberg-tables",
+      "scenario": "A Data Engineer created an externally managed Iceberg table from an AWS Glue catalog integration with REFRESH_INTERVAL_SECONDS = 30, and set AUTO_REFRESH = TRUE on the table. Another team's Spark job ran ALTER TABLE ... ADD COLUMN on the Iceberg table in Glue. No new rows have been written since. Several hours later, Snowflake queries still do not show the new column, while rows written by earlier Spark jobs appeared within a minute of each write.",
+      "stem": "What is the correct way to make the new column visible in Snowflake now?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run ALTER ICEBERG TABLE ... REFRESH manually"
+        },
+        {
+          "key": "B",
+          "text": "Lower REFRESH_INTERVAL_SECONDS on the catalog integration to its minimum value"
+        },
+        {
+          "key": "C",
+          "text": "Set AUTO_REFRESH to FALSE and back to TRUE so the polling restarts"
+        },
+        {
+          "key": "D",
+          "text": "Configure an event notification on the underlying S3 bucket so Snowflake learns about metadata changes"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Automated refresh of an externally managed Iceberg table syncs schema changes only together with DML. A change that is DDL only, such as a new column with no new data, needs a manual ALTER ICEBERG TABLE ... REFRESH.",
+        "distractors": {
+          "B": "A shorter interval makes Snowflake poll more often, but the poll still does not pick up a DDL-only change.",
+          "C": "Toggling AUTO_REFRESH does not change what the poll syncs, and frequent toggling is documented as slowing refreshes.",
+          "D": "Automated refresh for Iceberg tables polls the catalog. It does not use cloud storage event notifications, so adding one has no effect."
+        }
+      }
+    }
+  ]
+}

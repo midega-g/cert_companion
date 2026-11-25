@@ -1,0 +1,351 @@
+{
+  "label": "Data Movement: Hybrid Tables",
+  "order": 4,
+  "topic": "Data Movement: hybrid table constraints, loading, consistency, limits and unsupported features",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A Data Engineer must load 50 million rows from CSV files in a stage into a hybrid table. Some rows violate a CHECK constraint on the table. The load must keep every valid row and set the invalid ones aside.",
+      "stem": "Which approach meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Load into a standard table with ON_ERROR = CONTINUE, then INSERT ... SELECT into the hybrid table"
+        },
+        {
+          "key": "B",
+          "text": "Run COPY INTO the hybrid table with ON_ERROR = SKIP_FILE so that files holding invalid rows are skipped"
+        },
+        {
+          "key": "C",
+          "text": "Run COPY INTO the hybrid table with ON_ERROR = CONTINUE so that invalid rows are skipped and the rest load"
+        },
+        {
+          "key": "D",
+          "text": "Create a Snowpipe on the stage that loads into the hybrid table and logs the rows that violate the constraint"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "COPY INTO a hybrid table supports only ON_ERROR = ABORT_STATEMENT, and a CHECK violation fails the load. Loading into a standard table with ON_ERROR = CONTINUE and then running INSERT ... SELECT keeps the valid rows, and INSERT ... SELECT stays on the bulk load path.",
+        "distractors": {
+          "B": "SKIP_FILE is not supported on hybrid tables and returns an error.",
+          "C": "CONTINUE is not supported on hybrid tables either. Only ABORT_STATEMENT is.",
+          "D": "Snowpipe is not supported on hybrid tables."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "An order table is a live hybrid table with 100 million rows and a PRIMARY KEY. The business now wants every email value to be unique and every quantity to be greater than zero, and the table must stay available while the changes are made.",
+      "stem": "Which approach meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run ALTER TABLE ... ADD CONSTRAINT for a UNIQUE constraint and for a CHECK constraint, and both build online"
+        },
+        {
+          "key": "B",
+          "text": "Run ALTER TABLE ... ALTER COLUMN email SET UNIQUE and add the CHECK condition to the quantity column the same way"
+        },
+        {
+          "key": "C",
+          "text": "Add the UNIQUE constraint with ALTER TABLE ... ADD CONSTRAINT, and create a new table with the CHECK constraint"
+        },
+        {
+          "key": "D",
+          "text": "Run ALTER TABLE ... ADD CONSTRAINT with NOT ENFORCED for both constraints so that no index has to be built"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "UNIQUE and FOREIGN KEY constraints can be added online with ALTER TABLE ... ADD CONSTRAINT. A CHECK constraint can only be defined when the table is created, so it needs a new table.",
+        "distractors": {
+          "A": "A CHECK constraint can be renamed or dropped but not added to an existing hybrid table.",
+          "B": "A column cannot be altered to UNIQUE. The constraint must be added with ADD CONSTRAINT.",
+          "D": "NOT ENFORCED on a PRIMARY KEY, UNIQUE or FOREIGN KEY constraint returns an error on hybrid tables. On a CHECK it silently creates no constraint."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "An application team stores session state in a hybrid table. A Data Engineer is asked which of several additional requirements the table can meet directly.",
+      "stem": "Which requirement can the hybrid table meet?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add a clustering key on the last_seen column to speed up range scans"
+        },
+        {
+          "key": "B",
+          "text": "Create a stream on the table to capture changes for a downstream pipeline"
+        },
+        {
+          "key": "C",
+          "text": "Ingest events straight into the table with Snowpipe Streaming from Kafka"
+        },
+        {
+          "key": "D",
+          "text": "Join the table with a standard table in one atomic transaction"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Hybrid tables join with standard tables, and atomic transactions across both are supported. All the hybrid tables in the transaction must be in the same database.",
+        "distractors": {
+          "A": "Clustering keys are not supported on hybrid tables. Data is ordered by the primary key.",
+          "B": "Streams are not supported on hybrid tables.",
+          "C": "Snowpipe and Snowpipe Streaming are not supported on hybrid tables."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A service writes a row to a hybrid table in one session and immediately triggers a second service that reads the row through a different session. The second service sometimes does not see the new row for a few milliseconds. The default consistency settings are in use.",
+      "stem": "Which change removes the delay with the least impact on the design?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Move the reading service to a larger warehouse so that queries return faster"
+        },
+        {
+          "key": "B",
+          "text": "Set READ_LATEST_WRITES = true for the reading session or statement, at a cost of a few milliseconds"
+        },
+        {
+          "key": "C",
+          "text": "Enable the Query Acceleration Service on the reader's warehouse so that the read sees the latest data"
+        },
+        {
+          "key": "D",
+          "text": "Read the row with AT (OFFSET => -1) so that Snowflake returns the committed version of the table"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The default consistency is session-based, so other sessions can be stale by under 100 ms. READ_LATEST_WRITES = true removes the staleness for a few ms of extra latency.",
+        "distractors": {
+          "A": "Warehouse size affects compute, not visibility of other sessions' writes.",
+          "C": "The Query Acceleration Service is not supported on hybrid tables, and it does not change consistency.",
+          "D": "Time Travel on hybrid tables supports only AT (TIMESTAMP => ...). It returns older data, not the latest."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "The database that holds a hybrid table has reached the 2 TB limit of hybrid data, and writes that add data are blocked. The largest table is an archive with no foreign keys pointing at it, and its contents are no longer needed. Writes must resume as soon as possible.",
+      "stem": "Which statement frees the space fastest?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run DELETE FROM the archive table without a WHERE clause, which removes every row"
+        },
+        {
+          "key": "B",
+          "text": "Run ALTER TABLE ... SET DATA_RETENTION_TIME_IN_DAYS = 0 to release the space held for history"
+        },
+        {
+          "key": "C",
+          "text": "Run TRUNCATE TABLE on the archive table, which frees the space in seconds"
+        },
+        {
+          "key": "D",
+          "text": "Run DROP TABLE on the archive table and then UNDROP it to refresh its storage"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "DROP or TRUNCATE frees hybrid table space in seconds, because it does not need compaction. DELETE takes hours because compaction is required.",
+        "distractors": {
+          "A": "DELETE takes hours on hybrid tables because compaction is required.",
+          "B": "Changing the retention time does not remove the current rows, which are the data filling the quota.",
+          "D": "UNDROP TABLE is not supported on hybrid tables, so the dropped table could not be restored. It would not refresh anything either."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": "A Data Engineer is designing indexes for a hybrid table that holds customer orders. The table has a PRIMARY KEY, a UNIQUE constraint on order_ref, and a VARIANT column with the raw payload.",
+      "stem": "Which THREE statements about indexes on hybrid tables are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A secondary index can be altered later to add another column to its key"
+        },
+        {
+          "key": "B",
+          "text": "PRIMARY KEY, UNIQUE and FOREIGN KEY constraints each build their own index"
+        },
+        {
+          "key": "C",
+          "text": "A VARIANT column cannot be used as an indexed column in any index"
+        },
+        {
+          "key": "D",
+          "text": "A predicate such as LIKE 'ab%' on an indexed column can use the index"
+        },
+        {
+          "key": "E",
+          "text": "An ILIKE predicate on an indexed column uses the index in the same way"
+        }
+      ],
+      "correct": [
+        "B",
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "PRIMARY KEY, UNIQUE and FOREIGN KEY constraints build their own indexes. VARIANT, OBJECT, ARRAY, GEOGRAPHY, GEOMETRY and VECTOR columns cannot be indexed. Predicates with =, >, >=, <, <=, IN, BETWEEN, STARTSWITH and LIKE 'prefix%' can use an index.",
+        "distractors": {
+          "A": "A secondary index cannot have columns added or be altered. It has to be dropped and recreated.",
+          "E": "ILIKE does not use an index."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": "A team models an order system with hybrid tables for orders and order lines in one database, and a standard table in a second database for reporting. One transaction updates all three tables, and a foreign key links order lines to orders.",
+      "stem": "Which TWO statements are correct? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A foreign key can point to a hybrid table that lives in a different database"
+        },
+        {
+          "key": "B",
+          "text": "A foreign key can use ON DELETE CASCADE so that order lines follow the order"
+        },
+        {
+          "key": "C",
+          "text": "All hybrid tables in the same transaction must be in the same database"
+        },
+        {
+          "key": "D",
+          "text": "The referenced orders table can be truncated while the foreign key exists"
+        },
+        {
+          "key": "E",
+          "text": "Standard tables in the same transaction can span more than one database"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "The scope of a transaction is the database, so all hybrid tables in one transaction must be in the same database. Standard tables in the same transaction can span databases.",
+        "distractors": {
+          "A": "A foreign key works only between hybrid tables in the same database.",
+          "B": "Foreign keys on hybrid tables support only RESTRICT and NO ACTION.",
+          "D": "A referenced table cannot be truncated while the foreign key exists."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "hybrid-tables",
+      "scenario": "A company plans to run a latency-sensitive application on hybrid tables and is estimating cost and capacity. A Data Engineer reviews the billing model, the limits and the warehouse guidance.",
+      "stem": "Which THREE statements are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Row-store storage is billed at a flat per-GB rate plus warehouse credits"
+        },
+        {
+          "key": "B",
+          "text": "The object-storage copy of the data is billed in addition to the row store"
+        },
+        {
+          "key": "C",
+          "text": "Snowsight query times are a reliable measure of the application's latency"
+        },
+        {
+          "key": "D",
+          "text": "Requests are throttled per database, at about 16,000 operations per second"
+        },
+        {
+          "key": "E",
+          "text": "An account can hold any number of databases that contain hybrid tables"
+        },
+        {
+          "key": "F",
+          "text": "An X-Small warehouse is often enough, and extra clusters add concurrency"
+        }
+      ],
+      "correct": [
+        "A",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Row-store storage is billed at a flat per-GB rate, and the copy in object storage is not billed. Requests are throttled per database, at about 16,000 operations per second for an 80/20 mix. X-Small is often enough, and a multi-cluster warehouse adds concurrency.",
+        "distractors": {
+          "B": "The object-storage copy is not billed. Only the row-store storage is.",
+          "C": "Snowsight adds overhead, so its latency is not representative of the application's latency.",
+          "E": "An account is limited to 200 databases that contain hybrid tables, and at most 100 can be added in one hour."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A retail company keeps an order-tracking application on 40 hybrid tables in the PROD_APP database, spread over three schemas. Every table has a PRIMARY KEY and some have FOREIGN KEY constraints to each other. The Data Engineer must build a development copy that contains all hybrid tables with their data as of 08:00 this morning. The Time Travel retention of PROD_APP covers 08:00. The Engineer has the load's query ID but prefers a timestamp for the point in time.",
+      "stem": "Which statement meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE SCHEMA dev_app.orders CLONE prod_app.orders AT (TIMESTAMP => '2026-11-23 08:00:00'::TIMESTAMP_LTZ);"
+        },
+        {
+          "key": "B",
+          "text": "CREATE HYBRID TABLE dev_app.orders.t1 CLONE prod_app.orders.t1 for each of the 40 tables"
+        },
+        {
+          "key": "C",
+          "text": "CREATE DATABASE dev_app CLONE prod_app AT (STATEMENT => '<query id of the 08:00 load>');"
+        },
+        {
+          "key": "D",
+          "text": "CREATE DATABASE dev_app CLONE prod_app AT (TIMESTAMP => '2026-11-23 08:00:00'::TIMESTAMP_LTZ);"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Hybrid tables can be cloned only as part of a database clone. A point-in-time database clone that includes hybrid tables accepts AT or BEFORE with TIMESTAMP or OFFSET, so the timestamp form copies all tables and their data.",
+        "distractors": {
+          "A": "A schema clone that contains hybrid tables fails unless IGNORE HYBRID TABLES is added, and that option leaves the hybrid tables out of the copy.",
+          "B": "CREATE HYBRID TABLE ... CLONE is not supported and fails with error 391411.",
+          "C": "A point-in-time database clone with hybrid tables does not accept STATEMENT. A clone at a statement requires IGNORE HYBRID TABLES, which again excludes the hybrid tables."
+        }
+      }
+    }
+  ]
+}

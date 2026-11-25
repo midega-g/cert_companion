@@ -1,0 +1,315 @@
+{
+  "label": "Data Movement: Horizon Catalog",
+  "order": 3,
+  "topic": "Data Movement: catalog integrations, catalog-linked databases and the Horizon Iceberg REST Catalog API",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "horizon-vended-credentials",
+      "scenario": "A Data Engineer federates tables from an external Iceberg REST catalog into Snowflake. The catalog supports credential vending, and each table sits in a single bucket. The security team does not want to create and maintain external volumes and their trust relationships for every bucket.",
+      "stem": "Which configuration meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set ACCESS_DELEGATION_MODE = EXTERNAL_VOLUME_CREDENTIALS and create one external volume per bucket"
+        },
+        {
+          "key": "B",
+          "text": "Set ACCESS_DELEGATION_MODE = VENDED_CREDENTIALS on the integration and create no external volume"
+        },
+        {
+          "key": "C",
+          "text": "Create a storage integration for each bucket and reference each one in the catalog integration"
+        },
+        {
+          "key": "D",
+          "text": "Set CATALOG_API_TYPE = PRIVATE on the catalog integration so that the catalog delegates storage access"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "With vended credentials the catalog hands Snowflake short-lived storage credentials, so no external volume is needed. This requires a catalog that supports credential vending and tables that each sit in a single bucket.",
+        "distractors": {
+          "A": "EXTERNAL_VOLUME_CREDENTIALS works, but it needs the external volumes that the team wants to avoid.",
+          "C": "Iceberg tables get storage access from an external volume or from vended credentials. A storage integration is neither of them.",
+          "D": "CATALOG_API_TYPE sets how Snowflake connects to the catalog, for example over a private connection. It does not control how storage credentials are obtained."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "horizon-iceberg-rest-api",
+      "scenario": "A Spark job connects to the Horizon Iceberg REST Catalog API with a programmatic access token and the role spark_rw. The job reads a Snowflake-managed Iceberg table, but its writes fail. spark_rw holds USAGE on the database and schema, and SELECT and INSERT on the table.",
+      "stem": "Which grant is the minimum that completes the privileges needed for writes?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Grant DELETE on the table, because SELECT and INSERT are already held"
+        },
+        {
+          "key": "B",
+          "text": "Grant UPDATE and DELETE on the table, because TRUNCATE is not used by writes"
+        },
+        {
+          "key": "C",
+          "text": "Grant UPDATE, TRUNCATE and DELETE on the table to complete the write set"
+        },
+        {
+          "key": "D",
+          "text": "Grant OWNERSHIP on the table, because only the owner can write through the API"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Writes through the Horizon Iceberg REST Catalog API need SELECT, UPDATE, TRUNCATE, INSERT and DELETE on the table, plus USAGE or any privilege on its database and schema. UPDATE, TRUNCATE and DELETE are the missing ones.",
+        "distractors": {
+          "A": "DELETE alone leaves out UPDATE and TRUNCATE, which writes through the API also need.",
+          "B": "TRUNCATE is part of the required write privileges, so leaving it out keeps writes failing.",
+          "D": "OWNERSHIP is not required for writes. It is needed for rename and other alterations, and it grants more than the job needs."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "horizon-cross-account",
+      "scenario": "A consumer account reads Snowflake-managed Iceberg tables that live in a provider account. It connects through a catalog integration that uses workload identity federation to the provider's Horizon Iceberg REST Catalog API. The consumer's role is allowed to write to some of the tables.",
+      "stem": "Which statement is correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The consumer can read a provider table that is protected by a row access policy through its own role"
+        },
+        {
+          "key": "B",
+          "text": "The consumer can run CREATE ICEBERG TABLE in a catalog-linked database to add a new table to the provider"
+        },
+        {
+          "key": "C",
+          "text": "The consumer must store a client secret in the catalog integration and rotate it on a schedule"
+        },
+        {
+          "key": "D",
+          "text": "Data that the consumer writes belongs to the provider, who pays for the storage of that data"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The provider pays for storage, including data the consumer writes, and that data belongs to the provider. The consumer pays for compute.",
+        "distractors": {
+          "A": "Tables that are protected by masking policies or row access policies are not supported in this setup.",
+          "B": "CREATE ICEBERG TABLE is not supported when a consumer accesses another account's Iceberg tables this way. DROP ICEBERG TABLE and schema operations are.",
+          "C": "Workload identity federation removes the need to store or rotate a secret, which is its advantage over client credentials."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "horizon-catalog-linked-database",
+      "scenario": "A catalog-linked database was created with SYNC_INTERVAL_SECONDS = 86400. A Spark team has just created a table in the remote catalog. An analyst runs SHOW ICEBERG TABLES in the linked database and does not see it. The analyst needs to query the table now and does not want to wait for the next sync.",
+      "stem": "What should the analyst do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run a SELECT that references the table, which creates it during that statement"
+        },
+        {
+          "key": "B",
+          "text": "Run ALTER ICEBERG TABLE ... REFRESH on the table, which registers it in the linked database"
+        },
+        {
+          "key": "C",
+          "text": "Run GRANT SELECT on the table to the analyst's role, which creates it in the linked database"
+        },
+        {
+          "key": "D",
+          "text": "Run DROP ICEBERG TABLE on the table name, which makes Snowflake sync it again right away"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Referencing a remote table that is not yet synced in a SELECT, DML, CTAS or DESCRIBE TABLE creates it during that statement, on the analyst's warehouse. It then appears in SHOW ICEBERG TABLES.",
+        "distractors": {
+          "B": "ALTER ... REFRESH does not trigger on-demand creation, and the table does not exist yet for it to refresh.",
+          "C": "GRANT does not trigger on-demand creation. It would fail because the table is not registered yet.",
+          "D": "DROP does not trigger on-demand creation. With ALLOWED_WRITE_OPERATIONS = ALL, a drop is also sent to the remote catalog, where it removes the table and its data."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "horizon-catalog-linked-database-limits",
+      "scenario": "A team creates a catalog-linked database over an Iceberg REST catalog and reviews what it can and cannot do before rolling it out to analysts.",
+      "stem": "Which THREE statements are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Remote users and roles are synced into Snowflake as matching roles and grants"
+        },
+        {
+          "key": "B",
+          "text": "Remote namespaces appear in the linked database as schemas that analysts can use"
+        },
+        {
+          "key": "C",
+          "text": "The linked database can be cloned to give developers a private copy to test in"
+        },
+        {
+          "key": "D",
+          "text": "Remote Iceberg tables appear as externally managed tables with auto-refresh on"
+        },
+        {
+          "key": "E",
+          "text": "Masking policies and tags can be applied to objects in the linked database"
+        },
+        {
+          "key": "F",
+          "text": "The linked database can hold Snowflake-managed tables, views, stages and streams"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Remote namespaces appear as schemas, and remote Iceberg tables appear as externally managed Iceberg tables with auto-refresh on by default. Masking policies and tags are supported.",
+        "distractors": {
+          "A": "Remote access control, meaning users and roles, is not synced.",
+          "C": "Replication and cloning are not supported for a catalog-linked database.",
+          "F": "A catalog-linked database can create only schemas, externally managed Iceberg tables and database roles, and no other object types."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "horizon-catalog-sync-behavior",
+      "scenario": "A Spark team renames one table in the remote catalog. Another remote table cannot be initialized in the linked database. An engineer inspects both through a catalog-linked database that uses the default sync settings.",
+      "stem": "Which TWO statements describe what Snowflake does? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "A table that was dropped in the remote catalog stays in the linked database until someone drops it"
+        },
+        {
+          "key": "B",
+          "text": "A table-uuid mismatch during a refresh drops the table from the remote catalog"
+        },
+        {
+          "key": "C",
+          "text": "A table that was renamed in the remote catalog is dropped and recreated in the linked database"
+        },
+        {
+          "key": "D",
+          "text": "A table that fails to initialize keeps auto-refresh on and returns the last good data"
+        },
+        {
+          "key": "E",
+          "text": "A table that fails to initialize shows ICEBERG_TABLE_NOT_INITIALIZED in auto_refresh_status"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "A remote rename drops and recreates the table in the linked database. A table that fails to initialize shows executionState ICEBERG_TABLE_NOT_INITIALIZED in the auto_refresh_status column of SHOW ICEBERG TABLES.",
+        "distractors": {
+          "A": "A remote drop drops the Snowflake table too, and Snowflake does it asynchronously.",
+          "B": "A table-uuid mismatch drops the table from the linked database and leaves the remote table unchanged.",
+          "D": "For a table that fails to initialize, auto-refresh is off and queries return errors until the problem is fixed and auto-refresh is enabled again."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "horizon-iceberg-rest-api-serving",
+      "scenario": "A data platform team lets Spark and Trino use the Horizon Iceberg REST Catalog API to reach Snowflake-managed Iceberg tables, and security wants to know how access is controlled and what the API supports.",
+      "stem": "Which TWO statements are correct? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Roles and policies already in place in Snowflake also apply to the engine"
+        },
+        {
+          "key": "B",
+          "text": "The API serves read requests only, and writes have to go through Snowflake SQL"
+        },
+        {
+          "key": "C",
+          "text": "Only tables that use Iceberg v3 can be reached through the API from an engine"
+        },
+        {
+          "key": "D",
+          "text": "Engines can read and write Snowflake-managed Iceberg v2 and v3 tables"
+        },
+        {
+          "key": "E",
+          "text": "Engines read the Parquet files directly because the API returns no table metadata"
+        }
+      ],
+      "correct": [
+        "A",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Engines such as Spark, Flink and Trino can read and write Snowflake-managed Iceberg v2 and v3 tables through the API. Existing roles and policies apply to their requests.",
+        "distractors": {
+          "B": "Writes are supported through the API when the role holds the required privileges.",
+          "C": "The API serves Snowflake-managed Iceberg tables of both v2 and v3.",
+          "E": "The API is a catalog service that returns table metadata, and it can vend storage credentials."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "catalog-linked-databases",
+      "scenario": "A team links an external Iceberg REST catalog to Snowflake with a catalog integration and a catalog-linked database, using the default LINKED_CATALOG settings apart from the catalog name. During testing, an engineer runs DROP ICEBERG TABLE on a table in the linked database and finds that the table and its data are gone from the remote catalog as well. Production analysts must read the remote tables through Snowflake but must never be able to drop or write them.",
+      "stem": "Which setting meets the requirement when the linked database is created?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ALLOWED_WRITE_OPERATIONS = NONE in the LINKED_CATALOG parameters"
+        },
+        {
+          "key": "B",
+          "text": "BLOCKED_NAMESPACES listing every namespace that analysts should not change"
+        },
+        {
+          "key": "C",
+          "text": "SYNC_INTERVAL_SECONDS = 86400 so that Snowflake rarely contacts the remote catalog"
+        },
+        {
+          "key": "D",
+          "text": "CATALOG_CASE_SENSITIVITY = CASE_SENSITIVE"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "ALLOWED_WRITE_OPERATIONS defaults to ALL. With ALL, dropping a table propagates to the remote catalog and removes the table and data in both places. Setting it to NONE makes the linked database read-only.",
+        "distractors": {
+          "B": "BLOCKED_NAMESPACES excludes namespaces from the sync, so analysts could not read those tables at all. It does not make the remaining ones read-only.",
+          "C": "SYNC_INTERVAL_SECONDS only sets how often Snowflake polls the remote catalog (30 to 86400). It does not restrict drops or writes.",
+          "D": "CATALOG_CASE_SENSITIVITY controls how identifiers are matched. It has no effect on write operations."
+        }
+      }
+    }
+  ]
+}
