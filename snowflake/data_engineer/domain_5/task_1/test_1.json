@@ -197,6 +197,319 @@
           "D": "Package settings control dependencies. They do not change whether the UDF is temporary."
         }
       }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "udtf",
+      "scenario": "A data engineer writes a Python UDTF, region_total(amount NUMBER), and calls it with TABLE(region_total(s.amount) OVER (PARTITION BY s.region)). The handler class sets self._sum = 0 in __init__, and process adds each amount to the sum. The engineer needs exactly one output row per region, produced after all rows of that region have been seen.",
+      "stem": "Where should the handler return the summary row?",
+      "options": [
+        {
+          "key": "A",
+          "text": "From __init__, because it runs once for each partition"
+        },
+        {
+          "key": "B",
+          "text": "From end_partition, as a tuple, with process returning no rows"
+        },
+        {
+          "key": "C",
+          "text": "From process, by returning the row once the sum passes a threshold"
+        },
+        {
+          "key": "D",
+          "text": "From a finish method on the handler class"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "end_partition is called after the last row of a partition and returns rows as tuples. __init__ sets up per-partition state, and process handles one row at a time.",
+        "distractors": {
+          "A": "__init__ takes only self, runs before any row is processed and cannot output rows.",
+          "C": "process is called per input row and has no way to know it is on the last row of the partition.",
+          "D": "finish is a UDAF method. A UDTF handler uses __init__, process and end_partition."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "sql-udf",
+      "scenario": "The role SUPPORT_OWNER owns a SQL UDF in ops.public: CREATE FUNCTION open_ticket_count() RETURNS NUMBER AS $$ SELECT COUNT(*) FROM tickets WHERE status = 'open' $$. SUPPORT_OWNER has SELECT on ops.public.tickets. The role ANALYST has USAGE on the database, the schema and the function, and no privileges on tickets. An analyst sets the session schema to analytics.reports and runs SELECT open_ticket_count().",
+      "stem": "What happens?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The call returns the count. The table is resolved in the function's schema and read with the owner's privileges"
+        },
+        {
+          "key": "B",
+          "text": "The call fails because the caller needs SELECT on tickets"
+        },
+        {
+          "key": "C",
+          "text": "The call fails because tickets is resolved in analytics.reports, the session schema"
+        },
+        {
+          "key": "D",
+          "text": "The call returns the count only if ANALYST also has USAGE on every warehouse that SUPPORT_OWNER can use"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "SQL UDFs run with the owner's privileges and resolve unqualified tables in the schema that contains the function. The caller only needs USAGE on the function.",
+        "distractors": {
+          "B": "The owner's privileges are used for objects in the body, so the caller does not need SELECT on tickets.",
+          "C": "An unqualified table in the body resolves in the schema that contains the function, not the caller's current schema.",
+          "D": "Access to the table comes from the owner's privileges. Warehouse privileges of the owner are not part of this check."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "create-function",
+      "scenario": "A team deploys a SQL UDF from a release script with CREATE OR REPLACE FUNCTION. The role ANALYST has USAGE on the function. After each release the analysts get insufficient-privilege errors until someone runs the GRANT again.",
+      "stem": "Which change to the script keeps the existing grants on each replacement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add IF NOT EXISTS next to OR REPLACE"
+        },
+        {
+          "key": "B",
+          "text": "Create the function as TEMP so the privileges last for the session"
+        },
+        {
+          "key": "C",
+          "text": "Create the function as SECURE so the privileges survive a replacement"
+        },
+        {
+          "key": "D",
+          "text": "Add the COPY GRANTS clause to the CREATE OR REPLACE FUNCTION statement"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "COPY GRANTS with CREATE OR REPLACE copies all privileges, except OWNERSHIP, from the old function to the replacement.",
+        "distractors": {
+          "A": "OR REPLACE and IF NOT EXISTS cannot be used together, and neither one preserves grants.",
+          "B": "TEMP makes the function last only for the session. It does not carry grants over a replacement.",
+          "C": "SECURE hides the definition and changes optimizer behavior. It has no effect on grants."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "java-udf",
+      "scenario": "A Java UDF is created with an in-line handler and TARGET_PATH = '@~/testfunc.jar'. After the first deployment a developer changes the code and runs the same CREATE OR REPLACE FUNCTION statement again. The statement fails.",
+      "stem": "What is the cause and the fix?",
+      "options": [
+        {
+          "key": "A",
+          "text": "In-line Java handlers cannot be replaced. Use ALTER FUNCTION to set a new handler instead"
+        },
+        {
+          "key": "B",
+          "text": "RUNTIME_VERSION is missing, so the statement must name a Java version"
+        },
+        {
+          "key": "C",
+          "text": "TARGET_PATH cannot overwrite an existing file. Remove the old JAR from the stage or use a new path"
+        },
+        {
+          "key": "D",
+          "text": "A JAR written to a user stage is read-only, so it must be written to a named internal stage"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "TARGET_PATH can't overwrite an existing file. The same rule means dropping the function leaves the JAR on the stage, so it must be removed with REMOVE.",
+        "distractors": {
+          "A": "CREATE OR REPLACE works for in-line Java UDFs. The failure comes from the JAR that already exists.",
+          "B": "RUNTIME_VERSION is not needed for a Java handler here. It is used for Python and Scala.",
+          "D": "The stage type is not the problem. The problem is an existing file at the target path."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "udf-overloading",
+      "scenario": "A schema already contains the SQL UDF fmt_amount(amount NUMBER). A developer runs CREATE FUNCTION fmt_amount(amount NUMBER, currency VARCHAR DEFAULT 'USD') RETURNS VARCHAR AS $$ ... $$ in the same schema.",
+      "stem": "What happens?",
+      "options": [
+        {
+          "key": "A",
+          "text": "It succeeds, and calls with one argument go to the older function"
+        },
+        {
+          "key": "B",
+          "text": "It fails, because a function with optional arguments cannot coexist with another function of the same name and a different signature"
+        },
+        {
+          "key": "C",
+          "text": "It succeeds and replaces the older function because the names match"
+        },
+        {
+          "key": "D",
+          "text": "It fails because DEFAULT arguments are not supported in SQL UDFs"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Functions are identified by name plus argument types, so overloads are normally allowed. When a function has optional (DEFAULT) arguments, you can't define another function with the same name and a different signature.",
+        "distractors": {
+          "A": "Overloading is blocked here. A one-argument call would also be ambiguous with the optional argument.",
+          "C": "Nothing is replaced without OR REPLACE, and a different signature identifies a different function.",
+          "D": "Optional arguments are supported. The conflict is with the existing function."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "multi",
+      "domain": "secure-udf",
+      "scenario": "A secure Python UDF named score_risk is owned by the role MODEL_OWNER. An analyst whose role does not own the function runs DESCRIBE FUNCTION and SHOW FUNCTIONS against it to understand how it behaves before using it in a query.",
+      "stem": "Which THREE items can the analyst still see?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The function body"
+        },
+        {
+          "key": "B",
+          "text": "The return type"
+        },
+        {
+          "key": "C",
+          "text": "The list of files in IMPORTS"
+        },
+        {
+          "key": "D",
+          "text": "The handler language"
+        },
+        {
+          "key": "E",
+          "text": "The list of packages in PACKAGES"
+        },
+        {
+          "key": "F",
+          "text": "The volatility (VOLATILE or IMMUTABLE)"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Secure functions hide the body, the imports list, the handler name and the packages list from non-owners. Parameter types, the return type, the handler language, null handling and volatility stay visible.",
+        "distractors": {
+          "A": "The body is hidden from users whose role does not own the function.",
+          "C": "The imports list is hidden for a secure function.",
+          "E": "The packages list is hidden for a secure function."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "multi",
+      "domain": "vectorized-udf",
+      "scenario": "A team has a scalar Python UDF, discount(price, rate), that applies the discount row by row and is slow on large tables. They want to convert it to a vectorized Python UDF that receives batches of rows as a pandas DataFrame. The first attempt is rejected or returns wrong results.",
+      "stem": "Which TWO changes are required in the handler?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Create it as a UDTF with RETURNS TABLE so that it can receive batches"
+        },
+        {
+          "key": "B",
+          "text": "Read the inputs from the DataFrame by column name, such as df['price']"
+        },
+        {
+          "key": "C",
+          "text": "Import vectorized from the _snowflake module and mark the handler with @vectorized(input=pandas.DataFrame)"
+        },
+        {
+          "key": "D",
+          "text": "Return one value that summarizes the whole batch"
+        },
+        {
+          "key": "E",
+          "text": "Return a pandas Series with one result for each input row"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "The handler must be marked as vectorized (the @vectorized decorator, or the _sf_vectorized_input attribute) and must return a pandas array or Series with one value per input row. DataFrame columns are addressed by position.",
+        "distractors": {
+          "A": "A vectorized UDF is still a scalar UDF. Batching comes from the vectorized handler, not from a table return type.",
+          "B": "Columns in the DataFrame are positional, so use df[0] and df[1].",
+          "D": "The function must return one result for every input row in the batch, as a pandas array or Series."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "multi",
+      "domain": "create-function-privileges",
+      "scenario": "A role has USAGE on a database and schema, and CREATE FUNCTION on that schema. An engineer uses it to create a Python UDF whose handler imports a library from an internal stage and that calls an external API through an external access integration, with a secret holding the API key. The statement fails on privilege errors.",
+      "stem": "Which THREE additional privileges does the creating role need?",
+      "options": [
+        {
+          "key": "A",
+          "text": "READ on the internal stage"
+        },
+        {
+          "key": "B",
+          "text": "USAGE on the internal stage"
+        },
+        {
+          "key": "C",
+          "text": "OWNERSHIP on the external access integration"
+        },
+        {
+          "key": "D",
+          "text": "USAGE on the external access integration"
+        },
+        {
+          "key": "E",
+          "text": "READ on the secret"
+        },
+        {
+          "key": "F",
+          "text": "CREATE INTEGRATION on the account"
+        }
+      ],
+      "correct": [
+        "A",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Creating the function requires READ on an internal stage (USAGE for an external one), USAGE on the external access integration, and READ on the secret (plus USAGE on the schema that holds the secret).",
+        "distractors": {
+          "B": "USAGE is the stage privilege for external stages. An internal stage needs READ.",
+          "C": "Using an integration needs USAGE only. Ownership is not required.",
+          "F": "That privilege is for creating integrations, not for referencing an existing one."
+        }
+      }
     }
   ]
 }
