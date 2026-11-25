@@ -99,6 +99,6 @@ d<N>-<topic-slug>-concept-part<M>.md  # only when one topic needs several files
 ```
 
 Examples: `d4-snowflake-caching-concept.md`,
-`d1-data-loading-and-ingestion-concept.md`. PDF exports share the same stem
+`d1-load-data-concept.md`. PDF exports share the same stem
 (PDFs are gitignored). Cross-links between notes must use these filenames.
 Topic Drill concept files keep their own `<content>_concept.md` naming.
