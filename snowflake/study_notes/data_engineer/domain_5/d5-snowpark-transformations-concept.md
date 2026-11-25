@@ -256,8 +256,8 @@ df_agg.write.save_as_table("aggregate_customers", mode="append")
 - **Language scope.** I read the Python pages. The Java and Scala developer guides were not read, so method names and behaviors there may differ.
 - **Not read:** the stored procedure and UDF Snowpark pages (`creating-sprocs`, `creating-udfs`) beyond the overview, the Python worksheets page, the API reference for `sort`, `drop`, `distinct`, `pivot`, `unpivot`, `na`, `sample` and `limit`, window functions (`Window`), async jobs, `DataFrame.queries`, and the "Handler writing in Snowpark" page the study guide lists.
 - **Aggregations beyond the examples.** The DataFrame guide does not have an aggregation section. I used the `group_by` and `agg` API reference pages. `pivot`, `rollup`, `cube` and window functions were not read.
-- **"Understand Snowpark architecture."** The docs I read describe pushdown, lazy evaluation and the client library. I found no page called "architecture". Check whether the exam expects more (for example the server-side Python sandbox or the packages model).
+- **"Understand Snowpark architecture."** The Snowflake pages I read describe pushdown, lazy evaluation and the client library. I found no page called "architecture". Check whether the exam expects more (for example the server-side Python sandbox or the packages model).
 - **`join` types.** The `how` parameter (inner, left, and so on) was not read. The examples use the default.
-- **`save_as_table` modes.** The guide points to the API documentation for modes. I only saw `overwrite` and `append`.
+- **`save_as_table` modes.** The guide points to the API reference for modes. I only saw `overwrite` and `append`.
 - **Python versions.** The setup page lists 3.9 as deprecated and goes up to 3.14, and gives client version dependencies (1.5.0, 1.5.1, 1.9.0). Check the current list before the exam.
 - **Scope of async jobs.** The concurrency page mentions async jobs but does not describe the API.

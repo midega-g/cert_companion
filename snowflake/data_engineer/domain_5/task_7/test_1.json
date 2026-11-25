@@ -1,0 +1,238 @@
+{
+  "label": "Snowpark Transformations: Architecture, DataFrames and Aggregations",
+  "order": 1,
+  "topic": "Data Transformation: use Snowpark for data transformations",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "snowpark-lazy-evaluation",
+      "scenario": "A Data Engineer writes df = session.table('orders').filter(col('amount') > 100).select('id', 'amount') in a Snowpark Python script. The query history in Snowflake shows no query from the script yet.",
+      "stem": "Which next call makes Snowpark send SQL to Snowflake for execution?",
+      "options": [
+        {
+          "key": "A",
+          "text": "df.schema, to read the column names and data types"
+        },
+        {
+          "key": "B",
+          "text": "df.explain(), to print the queries that would run"
+        },
+        {
+          "key": "C",
+          "text": "df.count(), to get the number of result rows"
+        },
+        {
+          "key": "D",
+          "text": "df.with_column('flag', lit(1)), to add a column"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "count is an action. It evaluates the DataFrame and sends the generated SQL to Snowflake, and it returns the number of rows.",
+        "distractors": {
+          "A": "The schema property needs no action. It returns the column names and types without running the query.",
+          "B": "explain prints the queries that would run to evaluate the DataFrame. It does not evaluate the DataFrame.",
+          "D": "with_column is a transformation. It returns a new DataFrame and retrieves no data."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "snowpark-joins",
+      "scenario": "A Data Engineer joins an employees DataFrame to itself on manager_id = employee_id to list each employee with a manager. The join raises SnowparkJoinException because the column references cannot be resolved.",
+      "stem": "What is the correct fix?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Pass lsuffix and rsuffix to the join so that the columns get unique names"
+        },
+        {
+          "key": "B",
+          "text": "Join the DataFrame to a copy of itself made with copy.copy(df)"
+        },
+        {
+          "key": "C",
+          "text": "Combine the DataFrame with itself by using union_all instead of a join"
+        },
+        {
+          "key": "D",
+          "text": "Call collect on the DataFrame and then join the returned result"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A self-join fails in Snowpark. Making a copy with copy.copy(df) and joining the DataFrame to its copy resolves the column references.",
+        "distractors": {
+          "A": "lsuffix and rsuffix rename overlapping columns in the result. They do not fix a self-join that cannot be resolved.",
+          "C": "union_all appends rows from both DataFrames, including duplicates. It does not match employees to managers.",
+          "D": "collect returns a list of Row objects, not a DataFrame, so it cannot be joined with the join method."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "snowpark-dataframes",
+      "scenario": "JSON event files sit in the internal stage @events. A Data Engineer reads them with session.read.json('@events/2025/') and wants the value of the color key without defining a schema.",
+      "stem": "Which approach returns that value?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run session.file.put first, so file contents land in a table"
+        },
+        {
+          "key": "B",
+          "text": "Pass a StructType with a color field to schema() before json()"
+        },
+        {
+          "key": "C",
+          "text": "Select col('color'), because every JSON key is a column"
+        },
+        {
+          "key": "D",
+          "text": "Select sql_expr('$1:color'), as JSON is one VARIANT column"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Snowpark reads JSON into a single VARIANT column named $1, so no schema is needed. sql_expr lets the engineer use the SQL path $1:color.",
+        "distractors": {
+          "A": "session.file.put uploads local files to an internal stage. It does not insert file contents into a table.",
+          "B": "A schema is set with schema() for CSV files. JSON is read as one VARIANT column and needs none.",
+          "C": "JSON keys are not split into columns. The data arrives in the single column $1."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "snowpark-aggregations",
+      "scenario": "A Data Engineer needs one row with the total of the sales column across every row of a DataFrame, returned as a DataFrame so that it can be written with save_as_table.",
+      "stem": "Which expression does this?",
+      "options": [
+        {
+          "key": "A",
+          "text": "df.group_by().agg(sum_('sales').alias('total'))"
+        },
+        {
+          "key": "B",
+          "text": "df.group_by('sales').agg(sum_('sales').alias('total'))"
+        },
+        {
+          "key": "C",
+          "text": "df.select(sum_('sales').alias('total')).collect()"
+        },
+        {
+          "key": "D",
+          "text": "df.with_column('total', sum_('sales')).limit(1)"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "group_by with no columns treats the whole DataFrame as one group, and agg returns a DataFrame with the computed aggregate.",
+        "distractors": {
+          "B": "This groups by sales, so it returns one row for each distinct sales value, not a single total.",
+          "C": "collect returns a list of Row objects, not a DataFrame, so save_as_table cannot be called on it.",
+          "D": "with_column adds or replaces a column. It is not a grouped aggregation that returns one row."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "snowpark-architecture",
+      "scenario": "A team that runs Spark jobs outside Snowflake is evaluating Snowpark Python for its transformations.",
+      "stem": "Which THREE statements about Snowpark are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Data is pulled to the client, and transformations run on the client machine"
+        },
+        {
+          "key": "B",
+          "text": "All computation runs inside Snowflake, with no separate cluster to manage"
+        },
+        {
+          "key": "C",
+          "text": "Each transformation changes the DataFrame that it is called on in place"
+        },
+        {
+          "key": "D",
+          "text": "A DataFrame is lazy, so an action sends the generated SQL to Snowflake"
+        },
+        {
+          "key": "E",
+          "text": "A lambda passed to udf is pushed to the server and runs there"
+        },
+        {
+          "key": "F",
+          "text": "Snowpark libraries exist only for Python, not for Java or Scala"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Snowpark pushes processing to Snowflake with no separate cluster. DataFrames are evaluated lazily, so an action sends the SQL, and a lambda passed to udf is pushed to the server so it runs where the data is.",
+        "distractors": {
+          "A": "Snowpark queries and processes data in Snowflake without moving it to the system that runs the application code.",
+          "C": "Transformation methods return a new DataFrame and do not change the original.",
+          "F": "Snowpark libraries exist for Java, Python and Scala."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "snowpark-concurrency",
+      "scenario": "A Data Engineer runs several Snowpark Python queries in parallel threads that share one Session object, on a version that supports thread-safe sessions.",
+      "stem": "Which TWO statements are correct? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Calling session.close() lets running queries finish first, then closes"
+        },
+        {
+          "key": "B",
+          "text": "The server holds the GIL while submitting queries, so threads run serially"
+        },
+        {
+          "key": "C",
+          "text": "Threads on one session cannot run concurrent transactions, so split them"
+        },
+        {
+          "key": "D",
+          "text": "Session settings such as the warehouse must stay fixed while threads run"
+        },
+        {
+          "key": "E",
+          "text": "A Session cannot be shared, so each thread must create a new one"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "Threads on one session do not support concurrent transactions, and session settings must not change while other threads are active. Use separate sessions in both cases.",
+        "distractors": {
+          "A": "session.close() cancels any queries that are still running on that session.",
+          "B": "Inside Snowflake the server releases the GIL before submitting queries, so queries from several threads can run in parallel.",
+          "E": "Thread-safe Session objects let several threads submit queries on the same session."
+        }
+      }
+    }
+  ]
+}
