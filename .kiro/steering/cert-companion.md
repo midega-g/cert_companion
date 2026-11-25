@@ -132,6 +132,20 @@ options without the answer and wait for the user to ask for the key. When
 reporting balance, give only aggregate counts per letter, never a letter per
 question.
 
+### Wording and question style
+
+- Never use the words "docs" or "documentation" in question text, options or
+  explanations. Say "Snowflake" or name the feature instead.
+- Model questions on the official study guide's sample questions: a short
+  realistic scenario with a Data Engineer as the actor, concrete commands,
+  parameters or values in the options, qualifiers such as "MOST cost
+  effectively" where they matter, and distractors that are each a real
+  feature used for the wrong problem.
+- Option length must not give the answer away. Keep every option in a question
+  at a similar length and level of detail. The correct option must not be the
+  longest, the most specific or the only one with a qualifier. Check this
+  before writing the file and trim or extend options to match.
+
 ### Source material
 
 1. User provides Snowflake documentation links
