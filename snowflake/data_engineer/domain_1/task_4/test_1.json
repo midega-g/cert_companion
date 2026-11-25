@@ -1,303 +1,380 @@
 {
-  "label": "Data Movement: Connectors",
+  "label": "Data Movement: Streams and Tasks",
   "order": 1,
-  "topic": "Data Movement: Kafka, Spark, Python and native connectors",
+  "topic": "Data Movement: streams and tasks",
   "questions": [
     {
       "id": 1,
       "type": "single",
-      "domain": "kafka-connector-v4",
-      "scenario": "A team runs Kafka connector v4. To mask a column and cast another, they created a pipe with the same name as the destination table. They also set snowflake.validation=client_side so that bad records go to a dead-letter queue. At startup the connector task fails with ERROR_5030.",
-      "stem": "What is the fix?",
+      "domain": "stream-staleness",
+      "scenario": "A Standard Edition account has a table with DATA_RETENTION_TIME_IN_DAYS = 1 and MAX_DATA_EXTENSION_TIME_IN_DAYS left at its default. A stream on the table feeds a task. The task was suspended after repeated failures and nobody consumed the stream for 9 days. The stream holds unconsumed changes. An engineer now runs SHOW STREAMS and finds that STALE is FALSE.",
+      "stem": "Which statement explains this result and its cost?",
       "options": [
         {
           "key": "A",
-          "text": "Set errors.tolerance=all, which lets the task continue past the error."
+          "text": "The stream is not stale only because the retention of 1 day was reset each day by SYSTEM$STREAM_HAS_DATA calls on the stream."
         },
         {
           "key": "B",
-          "text": "Rename the pipe to {tableName}-STREAMING so that the connector recognizes it."
+          "text": "Snowflake extended the table's retention to the stream's offset, up to MAX_DATA_EXTENSION_TIME_IN_DAYS (default 14 days), and the extra retained history adds storage cost."
         },
         {
           "key": "C",
-          "text": "Grant CREATE PIPE on the schema to the connector role."
+          "text": "The extension applies only to Enterprise Edition or higher, so the Standard Edition stream must have been consumed by another process."
         },
         {
           "key": "D",
-          "text": "Switch snowflake.validation to server_side, which is the default, or remove the user-created pipe."
-        }
-      ],
-      "correct": [
-        "D"
-      ],
-      "explanation": {
-        "correct": "With client_side validation the connector works only in default pipe mode. A user-created pipe with client-side validation fails with ERROR_5030. A user-defined pipe needs server_side validation. The dead-letter queue then covers only converter errors, and invalid records go to the Error Table.",
-        "distractors": {
-          "A": "errors.tolerance controls how record errors are handled. It doesn't make a user-created pipe valid with client-side validation.",
-          "B": "{tableName}-STREAMING is the name of the default pipe that the connector creates. A user-defined pipe takes the same name as the table.",
-          "C": "CREATE PIPE is for the connector auto-creating a pipe in default pipe mode. The pipe here already exists, and the error is about the validation mode."
-        }
-      }
-    },
-    {
-      "id": 2,
-      "type": "single",
-      "domain": "kafka-connector-migration",
-      "scenario": "A company runs Kafka connector v3 in the default Snowpipe ingestion mode and wants to move to v4 with no gaps or duplicates. The v3 connector is named orders-sink. Its committed offsets are stored in the Kafka consumer group connect-orders-sink.",
-      "stem": "Which procedure is correct?",
-      "options": [
-        {
-          "key": "A",
-          "text": "Change connector.class on the existing orders-sink configuration to the v4 class and restart it."
-        },
-        {
-          "key": "B",
-          "text": "Stop or delete the v3 connector, wait until the consumer group is Empty, then create the v4 connector with the same name. Keep snowflake.streaming.classic.offset.migration at skip."
-        },
-        {
-          "key": "C",
-          "text": "Create the v4 connector under a new name so both run side by side until v4 catches up."
-        },
-        {
-          "key": "D",
-          "text": "Create the v4 connector with the same name and set snowflake.streaming.classic.offset.migration to strict."
+          "text": "The stream is stale after 1 day, and SHOW STREAMS reports a stale stream as FALSE until the next query reads it."
         }
       ],
       "correct": [
         "B"
       ],
       "explanation": {
-        "correct": "v4 isn't a drop-in. The connector name decides the consumer group that holds the committed offsets, so keep the same name. Stop or delete v3 and wait until the group is Empty. Use the default skip setting for v3 Snowpipe mode, because it uses the Kafka consumer group offset.",
+        "correct": "When a stream is not consumed, Snowflake extends the source table's data retention to the stream's offset, up to MAX_DATA_EXTENSION_TIME_IN_DAYS, which defaults to 14 days. This applies regardless of edition and the extra retained history costs storage. Here 9 days is inside the 14-day window.",
         "distractors": {
-          "A": "v4 is a rewrite with a new connector class, different defaults and removed properties. Create a new configuration by hand.",
-          "C": "A new name means a new consumer group, so the committed offsets are lost. Two connectors on the same topic also insert duplicates.",
-          "D": "strict resumes from a v3 Snowpipe Streaming channel's committed offset and fails if the channel is missing. A Snowpipe-mode connector has no such channel, so use skip."
+          "A": "SYSTEM$STREAM_HAS_DATA prevents staleness only when the stream is empty and the function returns FALSE. This stream holds unconsumed changes, and nothing in the scenario calls the function.",
+          "C": "The retention extension applies regardless of edition. Nothing needs to have consumed the stream.",
+          "D": "SHOW STREAMS reports staleness directly through the STALE and STALE_AFTER columns. It doesn't wait for a query to mark a stream stale."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "stream-transactions",
+      "scenario": "A stream s_orders is defined on table orders and holds 100 unconsumed change rows. An engineer runs BEGIN; INSERT INTO audit_a SELECT * FROM s_orders; INSERT INTO audit_b SELECT * FROM s_orders; COMMIT;. After the transaction starts but before the first INSERT runs, another session inserts 20 new rows into orders and commits.",
+      "stem": "What happens when the transaction commits?",
+      "options": [
+        {
+          "key": "A",
+          "text": "audit_a gets 100 rows and audit_b gets 0 rows, because the first INSERT moved the stream offset."
+        },
+        {
+          "key": "B",
+          "text": "audit_a gets 100 rows and audit_b gets 120 rows, because tables and streams use read committed isolation."
+        },
+        {
+          "key": "C",
+          "text": "audit_a and audit_b each get the same 100 rows, and the 20 new rows stay in the stream for the next consumption."
+        },
+        {
+          "key": "D",
+          "text": "audit_a and audit_b each get 120 rows, because a stream is read as of the time each statement runs."
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Streams use repeatable read isolation. Within a transaction, every statement sees the stream as of the transaction start. The DML consumes the records only if the transaction commits, and changes committed by other transactions in the meantime appear after it.",
+        "distractors": {
+          "A": "The offset moves only when the transaction that uses the stream commits, not at the first INSERT. Both statements see the same records.",
+          "B": "Tables use read committed isolation but streams use repeatable read. The two statements can't see different record sets.",
+          "D": "A stream queried in an explicit transaction is read as of the transaction start, not the statement time, so the 20 later rows are excluded."
         }
       }
     },
     {
       "id": 3,
       "type": "single",
-      "domain": "spark-connector",
-      "scenario": "A Spark job on a self-managed cluster writes a very large DataFrame to Snowflake. The transfer is expected to run for more than 36 hours. The team uses the default internal transfer, and earlier runs of this size failed partway through.",
-      "stem": "What should the team do?",
+      "domain": "triggered-tasks",
+      "scenario": "A team wants a task that loads rows from the stream s_events into a target table only when the stream has data. They want no polling schedule and no compute spent until changes arrive. They also want Snowflake to manage the compute, so no warehouse is named.",
+      "stem": "Which task definition meets these requirements?",
       "options": [
         {
           "key": "A",
-          "text": "Keep internal transfer and set usestagingtable=off to avoid the temporary table."
+          "text": "CREATE TASK t TARGET_COMPLETION_INTERVAL = '15 MINUTES' WHEN SYSTEM$STREAM_HAS_DATA('s_events') AS INSERT INTO tgt SELECT * FROM s_events;"
         },
         {
           "key": "B",
-          "text": "Keep internal transfer and raise s3MaxFileSize so that fewer files are written."
+          "text": "CREATE TASK t WHEN SYSTEM$STREAM_HAS_DATA('s_events') AS INSERT INTO tgt SELECT * FROM s_events;"
         },
         {
           "key": "C",
-          "text": "Switch to external transfer with a bucket or container the team owns, and plan cleanup of its temporary files."
+          "text": "CREATE TASK t WAREHOUSE = etl_wh WHEN SYSTEM$STREAM_HAS_DATA('s_events') AS INSERT INTO tgt SELECT * FROM s_events;"
         },
         {
           "key": "D",
-          "text": "Set autopushdown to off, so that the work moves into Spark."
+          "text": "CREATE TASK t SCHEDULE = '1 MINUTE' TARGET_COMPLETION_INTERVAL = '15 MINUTES' WHEN SYSTEM$STREAM_HAS_DATA('s_events') AS INSERT INTO tgt SELECT * FROM s_events;"
         }
       ],
       "correct": [
-        "C"
+        "A"
       ],
       "explanation": {
-        "correct": "Internal transfer uses temporary credentials that expire after 36 hours. For a transfer that is likely to take 36 hours or more, use external transfer with your own S3 or Azure bucket. Cleanup isn't automatic: set purge=on (Spark to Snowflake only), delete manually, or use a bucket lifecycle policy.",
+        "correct": "A triggered task has a WHEN clause on the stream and no SCHEDULE. A serverless triggered task omits WAREHOUSE and must set TARGET_COMPLETION_INTERVAL.",
         "distractors": {
-          "A": "usestagingtable controls whether the load goes through a temporary table that is swapped in. It doesn't change the credential lifetime.",
-          "B": "s3MaxFileSize is the file size for transfers from Snowflake to Spark. It doesn't change the credential lifetime.",
-          "D": "autopushdown applies to reads that push Spark plans into Snowflake. It has no effect on a write's credential expiry."
+          "B": "A serverless triggered task requires TARGET_COMPLETION_INTERVAL. Without it, and without a warehouse, the definition is incomplete.",
+          "C": "Naming a warehouse makes this a user-managed triggered task. The requirement was for Snowflake-managed compute.",
+          "D": "Adding SCHEDULE turns this into a scheduled task that checks the condition every minute and skips when empty. It is not event-triggered."
         }
       }
     },
     {
       "id": 4,
       "type": "single",
-      "domain": "python-connector",
-      "scenario": "A Python job inserts 100,000 tuples with cursor.executemany() on a connection that uses paramstyle='qmark'. The connect() call sets user, account and authentication but not database or schema. The statement fails with an error about creating the temporary stage SYSTEM$BIND.",
-      "stem": "What is the cause?",
+      "domain": "task-graph-retry",
+      "scenario": "A scheduled task graph has a root task and five child tasks. The fourth task in the chain fails at 02:10 after the first three have succeeded. The nightly run cannot wait for the next schedule. The team wants to rerun only the failed part of that run, without rerunning the tasks that already succeeded.",
+      "stem": "Which action meets the requirement?",
       "options": [
         {
           "key": "A",
-          "text": "With server-side binding, large executemany inserts stream values through a temporary stage, so the session needs a current database and schema."
+          "text": "Run EXECUTE TASK on the root task with no extra clause."
         },
         {
           "key": "B",
-          "text": "qmark placeholders are bound on the client, which can't send more than a few thousand rows at once."
+          "text": "Set TASK_AUTO_RETRY_ATTEMPTS = 1 on the failed child task and wait."
         },
         {
           "key": "C",
-          "text": "executemany works only with pyformat placeholders, so qmark must be changed back."
+          "text": "Run EXECUTE TASK on the root task with RETRY LAST."
         },
         {
           "key": "D",
-          "text": "executemany can't run an INSERT with bound values. The job should call execute_string instead."
-        }
-      ],
-      "correct": [
-        "A"
-      ],
-      "explanation": {
-        "correct": "With server-side binding (qmark or numeric), executemany for an INSERT streams values above a threshold to a temporary stage. The session needs a current database and schema, or CREATE TEMPORARY STAGE SYSTEM$BIND fails.",
-        "distractors": {
-          "B": "qmark is bound on the server, not the client. The client-bound styles are pyformat and format.",
-          "C": "executemany works with either binding style. Server binding is the better choice for batch inserts.",
-          "D": "execute_string doesn't support bind parameters. executemany with server-side binding is the batch insert route."
-        }
-      }
-    },
-    {
-      "id": 5,
-      "type": "multi",
-      "domain": "native-connectors",
-      "scenario": "A company deploys the Snowflake native app connector for MySQL with its agent, which runs inside the company network. The team reviews the operating model before go-live.",
-      "stem": "Which THREE statements are correct? (Select THREE.)",
-      "options": [
-        {
-          "key": "A",
-          "text": "Several agent instances should run in parallel against the same Native App instance for availability."
-        },
-        {
-          "key": "B",
-          "text": "Tables without a primary key are not supported."
-        },
-        {
-          "key": "C",
-          "text": "Replication mode is set per table, so each table can be continuous or scheduled."
-        },
-        {
-          "key": "D",
-          "text": "The operational warehouse can be shared with other workloads to save credits."
-        },
-        {
-          "key": "E",
-          "text": "In continuous mode the operational warehouse never suspends. To let it auto-suspend, switch all data sources to scheduled mode."
-        },
-        {
-          "key": "F",
-          "text": "A table that failed permanently stays stopped until it is removed from replication and added again, which repeats the snapshot load."
-        }
-      ],
-      "correct": [
-        "B",
-        "E",
-        "F"
-      ],
-      "explanation": {
-        "correct": "Tables need a primary key. The operational warehouse never suspends in continuous mode, so all data sources must be scheduled to allow auto-suspend. A permanently failed table is fixed by removing it from replication and adding it again, which repeats the snapshot.",
-        "distractors": {
-          "A": "Exactly one agent instance must run at all times. One agent connects to one Native App instance.",
-          "C": "The mode is set per data source, not per table.",
-          "D": "The operational warehouse can't be shared between instances or with other workloads. Only the compute warehouse may be shared."
-        }
-      }
-    },
-    {
-      "id": 6,
-      "type": "single",
-      "domain": "kafka-connector-v3",
-      "scenario": "A v3 Kafka connector in Snowpipe mode loads a table. Checks show some rows duplicated, each with the same partition and offset in RECORD_METADATA. The Kafka Connect log shows CommitFailedException with the message that the group has already rebalanced. The loads take longer than the default 300,000 ms execution timeout.",
-      "stem": "Which change fixes this?",
-      "options": [
-        {
-          "key": "A",
-          "text": "Raise buffer.flush.time above its 120-second default."
-        },
-        {
-          "key": "B",
-          "text": "Set behavior.on.null.values to IGNORE."
-        },
-        {
-          "key": "C",
-          "text": "Raise consumer.max.poll.interval.ms to 900000, or lower consumer.max.poll.records to 50, in the Kafka Connect worker configuration."
-        },
-        {
-          "key": "D",
-          "text": "Raise tasks.max above the number of CPU cores."
+          "text": "Run ALTER TASK on the failed child to RESUME it, which reruns it."
         }
       ],
       "correct": [
         "C"
       ],
       "explanation": {
-        "correct": "Duplicates with the same partition and offset come from a load that exceeds the default 300-second execution timeout, which triggers a rebalance and a retry. Raise consumer.max.poll.interval.ms to 900000 or lower consumer.max.poll.records to 50.",
+        "correct": "EXECUTE TASK ... RETRY LAST reruns from the last failed task or tasks in the latest graph run, as a new run with the attempt number increased by one.",
         "distractors": {
-          "A": "buffer.flush.time controls when buffered records are written to a file. A longer value doesn't shorten the poll cycle.",
-          "B": "behavior.on.null.values controls how NULL records are handled. It has no link to rebalance retries.",
-          "D": "More tasks raise memory use and rebalances. Snowflake recommends the total number of partitions, not more than the CPU core count."
+          "A": "A plain EXECUTE TASK on the root starts a new full run of the graph, including the tasks that already succeeded.",
+          "B": "TASK_AUTO_RETRY_ATTEMPTS is set on the root, and when a child fails it retries the whole graph. It doesn't apply retroactively to the failed run.",
+          "D": "RESUME changes the task's state and doesn't rerun it. The graph version is set when the root is resumed or executed."
         }
       }
     },
     {
-      "id": 7,
-      "type": "single",
-      "domain": "spark-connector",
-      "scenario": "A nightly Spark job refreshes a Snowflake table with SaveMode.Overwrite. The table has a GEOGRAPHY column, but after each run the column is VARCHAR, because the Spark column is a StringType holding WKT text. The team wants to keep the table's schema, including GEOGRAPHY.",
-      "stem": "Which approach works?",
+      "id": 5,
+      "type": "multi",
+      "domain": "streams-on-views",
+      "scenario": "A data engineer owns several views and their underlying tables and has enabled change tracking on all of them. The engineer wants to create a stream on views that meet the requirements for streams on views.",
+      "stem": "Which TWO views can have a stream created on them? (Select TWO.)",
       "options": [
         {
           "key": "A",
-          "text": "Set continue_on_error=on."
+          "text": "A view that aggregates order totals per customer with GROUP BY"
         },
         {
           "key": "B",
-          "text": "Set usestagingtable=off."
+          "text": "A view that returns SELECT DISTINCT customer_id from a table"
         },
         {
           "key": "C",
-          "text": "Set column_mapping=name."
+          "text": "A view that inner joins orders to customers and filters on region"
         },
         {
           "key": "D",
-          "text": "Keep the existing table with GEOGRAPHY and write with truncate_table=on."
+          "text": "A view defined over an external table"
+        },
+        {
+          "key": "E",
+          "text": "A view that combines two tables with UNION ALL"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "A stream on a view allows projections, filters, inner or cross joins, and UNION ALL.",
+        "distractors": {
+          "A": "GROUP BY is not allowed in a view that has a stream.",
+          "B": "DISTINCT is not allowed in a view that has a stream.",
+          "D": "Views over external tables and directory tables are not supported for streams."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "stream-types",
+      "scenario": "A pipeline reads files that land in an S3 bucket through an external table. The team wants a stream on the external table to drive a downstream load. Files are sometimes removed from the bucket by a lifecycle rule, and those removals must not appear as deleted rows in the stream.",
+      "stem": "Which statement creates a stream that works for this external table?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE STREAM s ON EXTERNAL TABLE ext_t;"
+        },
+        {
+          "key": "B",
+          "text": "CREATE STREAM s ON EXTERNAL TABLE ext_t APPEND_ONLY = TRUE;"
+        },
+        {
+          "key": "C",
+          "text": "CREATE STREAM s ON EXTERNAL TABLE ext_t SHOW_INITIAL_ROWS = TRUE;"
+        },
+        {
+          "key": "D",
+          "text": "CREATE STREAM s ON EXTERNAL TABLE ext_t INSERT_ONLY = TRUE;"
         }
       ],
       "correct": [
         "D"
       ],
       "explanation": {
-        "correct": "SaveMode.Overwrite replaces the table and its schema, so a StringType column becomes VARCHAR. With truncate_table=on, the connector truncates the table and keeps its schema. Write to an existing table that already has the GEOGRAPHY column.",
+        "correct": "Streams on external tables must be insert-only. An insert-only stream records inserts only, so a file removed from cloud storage is not recorded as a delete.",
         "distractors": {
-          "A": "continue_on_error=on skips bad rows. It doesn't affect the schema.",
-          "B": "usestagingtable=off loads directly instead of into a temporary table that is swapped in. The overwrite still replaces the schema.",
-          "C": "column_mapping=name changes how columns are matched. It doesn't stop an overwrite from replacing the table."
+          "A": "A default stream is a standard stream, which also records deletes. External tables require INSERT_ONLY = TRUE.",
+          "B": "APPEND_ONLY applies to standard tables, dynamic tables, Snowflake-managed Iceberg tables and views. External tables use INSERT_ONLY instead.",
+          "C": "SHOW_INITIAL_ROWS only changes what the first consumption returns. It doesn't make the stream insert-only, so the stream type is still invalid for an external table."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "stream-types",
+      "scenario": "A table holds GPS pings in a GEOGRAPHY column. Rows are only ever inserted, and the table is truncated every night right after the load task consumes the new rows. A standard stream on this table does not return change data for the geospatial data. The team wants the cheapest stream that works.",
+      "stem": "Which stream option fits?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A standard stream created with SHOW_INITIAL_ROWS = TRUE"
+        },
+        {
+          "key": "B",
+          "text": "A stream created with APPEND_ONLY = TRUE"
+        },
+        {
+          "key": "C",
+          "text": "A stream created with INSERT_ONLY = TRUE"
+        },
+        {
+          "key": "D",
+          "text": "A standard stream created AT (OFFSET => -3600)"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Standard streams can't return change data for geospatial data, so an append-only stream is used. It records inserts only, is faster than a standard stream, and lets the source be truncated right after consumption without extra cost for the next query.",
+        "distractors": {
+          "A": "SHOW_INITIAL_ROWS affects only the first consumption. The stream is still a standard stream and still can't return geospatial change data.",
+          "C": "INSERT_ONLY is for external tables and externally managed Iceberg tables, and for some Delta Direct tables. It is not the option for a standard table.",
+          "D": "AT (OFFSET => ...) sets where the stream starts with Time Travel. It doesn't change the stream type."
         }
       }
     },
     {
       "id": 8,
       "type": "single",
-      "domain": "python-connector",
-      "scenario": "A Python job runs a query that returns a very large result and wants several worker processes to download different parts of the result at the same time, instead of one process fetching all rows.",
-      "stem": "Which call supports this?",
+      "domain": "stream-creation",
+      "scenario": "A deployment script runs CREATE OR REPLACE STREAM s_orders ON TABLE orders every release. The stream usually has unconsumed changes when the script runs. The team wants the replaced stream to keep the current offset, so that no pending changes are lost.",
+      "stem": "Which statement does this?",
       "options": [
         {
           "key": "A",
-          "text": "cursor.get_result_batches(), then hand different ResultBatch objects to different workers."
+          "text": "CREATE OR REPLACE STREAM s_orders ON TABLE orders AT (STREAM => 's_orders');"
         },
         {
           "key": "B",
-          "text": "cursor.fetch_pandas_all() in every worker."
+          "text": "CREATE OR REPLACE STREAM s_orders ON TABLE orders COPY GRANTS;"
         },
         {
           "key": "C",
-          "text": "cursor.fetchmany() repeatedly in a single loop."
+          "text": "CREATE OR REPLACE STREAM s_orders ON TABLE orders SHOW_INITIAL_ROWS = TRUE;"
         },
         {
           "key": "D",
-          "text": "cursor.execute_async(), which returns results from parallel threads in order."
+          "text": "CREATE OR REPLACE STREAM s_orders ON TABLE orders;"
         }
       ],
       "correct": [
         "A"
       ],
       "explanation": {
-        "correct": "get_result_batches() returns ResultBatch objects. Each has rowcount, sizes, and to_arrow() and to_pandas(), so you can send different batches to different workers to fetch in parallel. It returns None if the query hasn't finished.",
+        "correct": "AT (STREAM => 'name') starts the new stream at the same offset as the named stream. With OR REPLACE it keeps the current offset when the stream is recreated.",
         "distractors": {
-          "B": "fetch_pandas_all() pulls the whole result into one DataFrame in one process.",
-          "C": "fetchmany() in a loop is a sequential fetch in one process.",
-          "D": "execute_async() submits a query without waiting. It doesn't parallelize fetching, and async queries don't guarantee ordered results."
+          "B": "COPY GRANTS keeps the privileges, except OWNERSHIP. It doesn't carry over the offset.",
+          "C": "SHOW_INITIAL_ROWS makes the first consumption return all rows that existed at creation, which would reprocess data that was already consumed.",
+          "D": "A plain CREATE OR REPLACE starts a new stream at the current point. CREATE OR REPLACE STREAM is also a way to advance the offset without using the changes, so unconsumed changes are lost."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "domain": "stream-privileges",
+      "scenario": "The table sales is owned by role DATA_OWNER. Change tracking has never been enabled on it and no stream exists on it. Role ETL_ROLE has CREATE STREAM on the schema, USAGE on the database and schema, and SELECT on sales. When ETL_ROLE runs CREATE STREAM s_sales ON TABLE sales, the statement fails.",
+      "stem": "What is the cause?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ETL_ROLE also needs OPERATE on the table before it can create a stream."
+        },
+        {
+          "key": "B",
+          "text": "ETL_ROLE needs USAGE on a warehouse, because creating a stream starts the change tracking job."
+        },
+        {
+          "key": "C",
+          "text": "Change tracking isn't enabled yet, and only the table owner can create the first stream on the table. DATA_OWNER can create it."
+        },
+        {
+          "key": "D",
+          "text": "A stream can't be created on a table unless the creator role owns the schema."
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "If change tracking isn't yet enabled on the table, only the table owner can create the first stream. Creating that stream enables change tracking.",
+        "distractors": {
+          "A": "OPERATE on a table is not a stream creation requirement. Creating a stream needs CREATE STREAM on the schema and SELECT on the source.",
+          "B": "A warehouse is billed only when the stream is queried. The object itself has no charge, and a warehouse isn't a creation requirement.",
+          "D": "The creator needs CREATE STREAM on the schema and some privilege on the database and schema, not ownership of the schema."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "multi",
+      "domain": "serverless-tasks",
+      "scenario": "A team is moving several tasks to serverless compute and reviewing how serverless sizing and the related parameters behave.",
+      "stem": "Which THREE statements about serverless tasks are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Serverless sizing history is discarded on suspend, so a resumed task starts again from its initial size."
+        },
+        {
+          "key": "B",
+          "text": "USER_TASK_MANAGED_INITIAL_WAREHOUSE_SIZE defaults to MEDIUM and is ignored after a few successful runs."
+        },
+        {
+          "key": "C",
+          "text": "USER_TASK_MANAGED_INITIAL_WAREHOUSE_SIZE can be set together with WAREHOUSE to size the first run on that warehouse."
+        },
+        {
+          "key": "D",
+          "text": "TARGET_COMPLETION_INTERVAL has no effect once the task is already running at its maximum size."
+        },
+        {
+          "key": "E",
+          "text": "Serverless tasks are the right choice for workloads larger than XXLARGE."
+        },
+        {
+          "key": "F",
+          "text": "The maximum serverless size is XXLARGE, and SERVERLESS_TASK_MAX_STATEMENT_SIZE defaults to XXLARGE."
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "The initial size parameter defaults to MEDIUM and stops mattering after a few successful runs. TARGET_COMPLETION_INTERVAL is ignored once the task is at maximum size. The serverless maximum is XXLARGE, which is also the default of the max-size bound.",
+        "distractors": {
+          "A": "Serverless sizing history is kept across suspend and resume. It is removed only when the task is recreated with CREATE OR REPLACE.",
+          "C": "Setting USER_TASK_MANAGED_INITIAL_WAREHOUSE_SIZE together with WAREHOUSE is an error. The parameter applies only to serverless tasks.",
+          "E": "Workloads larger than XXLARGE are a case for a user-managed warehouse, because serverless tops out at XXLARGE."
         }
       }
     }

@@ -1,363 +1,183 @@
 {
-  "label": "Data Movement: Continuous Pipelines",
+  "label": "Data Movement: Troubleshoot Ingestion",
   "order": 1,
-  "topic": "Data Movement: dynamic tables, Snowpipe and developer tools",
+  "topic": "Data Movement: troubleshooting bulk load and Snowpipe ingestion",
   "questions": [
     {
       "id": 1,
       "type": "single",
-      "domain": "dynamic-tables-target-lag",
-      "scenario": "A data engineer builds dt_silver with TARGET_LAG = '10 minutes' from a raw table. A second dynamic table, dt_gold, reads dt_silver. To avoid managing two lag values, the engineer creates dt_gold with TARGET_LAG = DOWNSTREAM. Nothing else in the account reads dt_gold, because analysts query dt_silver directly.",
-      "stem": "What happens to dt_gold?",
+      "domain": "data-loading",
+      "scenario": "A Data Engineer runs a nightly COPY INTO sales_raw FROM @landing statement with default options. One night the statement fails because a CSV file contains a malformed row. The next morning the Engineer queries COPY_HISTORY for the table and for that file and gets no rows.",
+      "stem": "Where can the Engineer find the details of the failed statement?",
       "options": [
         {
           "key": "A",
-          "text": "The CREATE statement fails, because a DOWNSTREAM table must have at least one consumer."
+          "text": "In COPY_HISTORY, by widening the START_TIME window, because aborted statements are recorded there after a delay"
         },
         {
           "key": "B",
-          "text": "dt_gold inherits the 10-minute lag of dt_silver and refreshes on that cadence."
+          "text": "In the output of SYSTEM$PIPE_STATUS for the pipe that loads the stage"
         },
         {
           "key": "C",
-          "text": "dt_gold refreshes every 60 seconds, which is the minimum target lag."
+          "text": "In QUERY_HISTORY, by looking up the COPY INTO statement"
         },
         {
           "key": "D",
-          "text": "dt_gold never refreshes automatically, and Snowflake gives no warning."
+          "text": "In the output of VALIDATE_PIPE_LOAD for the table"
         }
       ],
       "correct": [
-        "D"
+        "C"
       ],
       "explanation": {
-        "correct": "A DOWNSTREAM table has no schedule of its own. It refreshes only when a downstream table needs it. With no consumer it never refreshes automatically, and Snowflake doesn't warn about it.",
+        "correct": "A bulk COPY INTO defaults to ON_ERROR = ABORT_STATEMENT, and aborted loads are not recorded in COPY_HISTORY. The statement and its error are visible in QUERY_HISTORY.",
         "distractors": {
-          "A": "The statement succeeds. Snowflake doesn't validate that a DOWNSTREAM table has consumers.",
-          "B": "DOWNSTREAM takes its lag from the consumers of the table, not from its upstream. It doesn't copy the upstream lag.",
-          "C": "60 seconds is the lowest value you can set for a target lag. It is not a default that DOWNSTREAM falls back to."
+          "A": "Widening the window does not help. Aborted loads never appear in COPY_HISTORY, regardless of the time range.",
+          "B": "SYSTEM$PIPE_STATUS reports the state of a Snowpipe pipe. The failed load was a bulk COPY, not a pipe.",
+          "D": "VALIDATE_PIPE_LOAD reads a pipe's load history. It does not cover a bulk COPY statement."
         }
       }
     },
     {
       "id": 2,
       "type": "single",
-      "domain": "dynamic-tables-refresh-modes",
-      "scenario": "A dynamic table was created with the default refresh mode. Its query used EXCEPT, so SHOW DYNAMIC TABLES reported refresh_mode = FULL with an unsupported-operator reason. The team has since rewritten the query without EXCEPT, and every construct is now supported incrementally. They want the table to refresh incrementally.",
-      "stem": "What should they do?",
+      "domain": "snowpipe-error-notifications",
+      "scenario": "A pipe uses ERROR_INTEGRATION with an outbound queue notification integration that publishes to an SNS standard topic, and the pipe uses the default copy options. Alerts arrived reliably until two weeks ago. Since then none have arrived, although COPY_HISTORY shows several files with a Load failed status. SYSTEM$PIPE_STATUS reports RUNNING with no error, and new files keep loading.",
+      "stem": "What is the most likely cause?",
       "options": [
         {
           "key": "A",
-          "text": "Recreate it with CREATE OR REPLACE DYNAMIC TABLE and an explicit REFRESH_MODE such as ADAPTIVE."
+          "text": "The default ON_ERROR = SKIP_FILE suppresses notifications for files that fail to load"
         },
         {
           "key": "B",
-          "text": "Run ALTER DYNAMIC TABLE ... SET REFRESH_MODE = ADAPTIVE."
+          "text": "Notifications are sent only for files that fail because of repeated internal errors"
         },
         {
           "key": "C",
-          "text": "Suspend and resume the table so that AUTO is evaluated again."
+          "text": "The pipe has moved to the STALLED_EXECUTION_ERROR state"
         },
         {
           "key": "D",
-          "text": "Wait. AUTO re-evaluates the definition at every refresh and will switch."
-        }
-      ],
-      "correct": [
-        "A"
-      ],
-      "explanation": {
-        "correct": "The refresh mode is set at creation and can't be changed with ALTER. AUTO is evaluated once at creation and the result is locked in. Use CREATE OR REPLACE (or CREATE OR ALTER, where some transitions reinitialize) with an explicit mode.",
-        "distractors": {
-          "B": "ALTER can't change the refresh mode.",
-          "C": "Suspend and resume don't re-evaluate the mode. AUTO was resolved once at creation.",
-          "D": "AUTO never switches after creation. The resolved mode is locked in."
-        }
-      }
-    },
-    {
-      "id": 3,
-      "type": "single",
-      "domain": "materialized-views",
-      "scenario": "Three materialized views are defined on the table sales, and none of them reads the column discount_code. A developer drops discount_code from sales during a cleanup.",
-      "stem": "What is the effect, and what is the fix?",
-      "options": [
-        {
-          "key": "A",
-          "text": "Nothing happens, because the views don't use the dropped column."
-        },
-        {
-          "key": "B",
-          "text": "All materialized views on sales are suspended and can't be resumed. Recreate each with CREATE OR REPLACE MATERIALIZED VIEW ... COPY GRANTS."
-        },
-        {
-          "key": "C",
-          "text": "The views are suspended, and ALTER MATERIALIZED VIEW ... RESUME restores them once the table is stable."
-        },
-        {
-          "key": "D",
-          "text": "The views are dropped automatically and must be created again, and their grants are lost."
-        }
-      ],
-      "correct": [
-        "B"
-      ],
-      "explanation": {
-        "correct": "Changing or dropping a column on the base table suspends all materialized views on it, even if they don't use that column. They can't be resumed. Recreate them with CREATE OR REPLACE ... COPY GRANTS to keep the grants.",
-        "distractors": {
-          "A": "A changed or dropped column suspends every materialized view on the table, whether or not the view uses it.",
-          "C": "RESUME doesn't work for this case, since these views can't be resumed.",
-          "D": "The views are suspended, not dropped. COPY GRANTS on the recreate keeps the grants."
-        }
-      }
-    },
-    {
-      "id": 4,
-      "type": "single",
-      "domain": "snowpipe-streaming",
-      "scenario": "Thousands of billing meters send readings to a service. Each meter's readings must land in the target table in order, with no duplicates after a client retry or restart. The business accepts latency of a few seconds. There are no files, and rows come straight from application code.",
-      "stem": "Which design fits?",
-      "options": [
-        {
-          "key": "A",
-          "text": "Snowpipe Streaming (high-performance) with Named Channels, one per source partition, resuming from the committed offset token"
-        },
-        {
-          "key": "B",
-          "text": "Snowpipe Streaming (high-performance) with Elastic Channels, where Snowflake manages one implicit channel per pipe"
-        },
-        {
-          "key": "C",
-          "text": "Snowpipe with auto-ingest, writing a file about once a minute to an external stage"
-        },
-        {
-          "key": "D",
-          "text": "The Snowpipe REST API, calling insertFiles for each reading"
-        }
-      ],
-      "correct": [
-        "A"
-      ],
-      "explanation": {
-        "correct": "Named Channels give exactly-once, ordered delivery within a channel using offset tokens, and the app can replay from the last committed offset. Rows arrive with latency of seconds and with no files.",
-        "distractors": {
-          "B": "Elastic Channels are at-least-once with no ordering, so a retry after an ambiguous failure can duplicate rows.",
-          "C": "Auto-ingest works on files, with typical latency of about a minute, and doesn't track per-source ordering.",
-          "D": "insertFiles queues staged files. It doesn't take rows and doesn't give per-source ordering."
-        }
-      }
-    },
-    {
-      "id": 5,
-      "type": "multi",
-      "domain": "snowpipe-rest-api",
-      "scenario": "An application stages files and loads them through the Snowpipe REST API with a pipe created with AUTO_INGEST = FALSE. The team is writing the monitoring and permission model for it.",
-      "stem": "Which TWO statements are correct? (Select TWO.)",
-      "options": [
-        {
-          "key": "A",
-          "text": "A 200 response from insertFiles means the files have been loaded."
-        },
-        {
-          "key": "B",
-          "text": "insertReport returns load results for the last 14 days."
-        },
-        {
-          "key": "C",
-          "text": "A file that failed, once corrected and resubmitted under the same path, loads again at once."
-        },
-        {
-          "key": "D",
-          "text": "The pipe owner, not the calling user, needs the privileges on the stage and the table."
-        },
-        {
-          "key": "E",
-          "text": "insertFiles accepts up to 5,000 staged files in one request."
-        }
-      ],
-      "correct": [
-        "D",
-        "E"
-      ],
-      "explanation": {
-        "correct": "The pipe owner needs the load privileges (USAGE or READ on the stage, INSERT on the table). The caller needs OPERATE on the pipe for insertFiles. One insertFiles request can queue up to 5,000 staged files.",
-        "distractors": {
-          "A": "A 200 means the files are queued. Check insertReport, loadHistoryScan or COPY_HISTORY for the load result.",
-          "B": "insertReport covers the last 10 minutes. loadHistoryScan covers a time range within the last 14 days.",
-          "C": "Snowpipe remembers file paths for 14 days. Resubmitting a file under the same name doesn't reload it, even if it was corrected."
-        }
-      }
-    },
-    {
-      "id": 6,
-      "type": "single",
-      "domain": "udfs-and-procedures",
-      "scenario": "A team writes a SQL UDF that formats a customer name and declares it RETURNS NULL ON NULL INPUT (STRICT), expecting Snowflake to skip the body and return NULL whenever the input is NULL. Some rows in the source table have NULL names, and the body calls a string function that fails on NULL.",
-      "stem": "Which statement is correct?",
-      "options": [
-        {
-          "key": "A",
-          "text": "The body is skipped for NULL inputs, so the string function never sees NULL."
-        },
-        {
-          "key": "B",
-          "text": "STRICT isn't supported for SQL UDFs. They always run as CALLED ON NULL INPUT, so the body must handle NULLs itself."
-        },
-        {
-          "key": "C",
-          "text": "The body is skipped only if the UDF is also declared IMMUTABLE."
-        },
-        {
-          "key": "D",
-          "text": "Declaring the return type NOT NULL makes Snowflake reject NULL inputs before the body runs."
-        }
-      ],
-      "correct": [
-        "B"
-      ],
-      "explanation": {
-        "correct": "STRICT (RETURNS NULL ON NULL INPUT) isn't supported for SQL UDFs. They are always called on NULL input, so the body has to handle NULLs, for example with COALESCE or IFNULL.",
-        "distractors": {
-          "A": "This is what STRICT does for other handler languages, but not for SQL UDFs.",
-          "C": "IMMUTABLE is a promise about repeatable results and has no link to NULL handling. Snowflake doesn't check it.",
-          "D": "NOT NULL isn't enforced for SQL UDFs."
-        }
-      }
-    },
-    {
-      "id": 7,
-      "type": "single",
-      "domain": "sql-api",
-      "scenario": "A custom application submits a long-running transformation with POST /api/v2/statements. The call returns HTTP 202 with a statement handle instead of a result set. The developer needs the application to get the final result without running the statement twice.",
-      "stem": "What should the application do?",
-      "options": [
-        {
-          "key": "A",
-          "text": "Treat the 202 as a failure and resubmit the same POST without a requestId."
-        },
-        {
-          "key": "B",
-          "text": "Treat the 202 as a statement error, since statement errors return 202."
-        },
-        {
-          "key": "C",
-          "text": "Cancel the statement with POST /api/v2/statements/{handle}/cancel and run it again."
-        },
-        {
-          "key": "D",
-          "text": "Poll GET /api/v2/statements/{statementHandle} until the statement finishes, then read the result partitions."
+          "text": "The pipe owner no longer has USAGE on the notification integration"
         }
       ],
       "correct": [
         "D"
       ],
       "explanation": {
-        "correct": "A 202 means the statement hasn't finished (or was submitted with async=true). Poll the statement handle with GET until it completes. The results come back in partitions that you can fetch with the partition parameter.",
+        "correct": "The pipe owner needs USAGE on the notification integration. If it is lost, notifications stop without an error and loading continues.",
         "distractors": {
-          "A": "Resubmitting without a requestId can run the statement twice. A resubmission should carry the same UUID requestId and retry=true.",
-          "B": "Statement errors return 422. A 202 means not finished.",
-          "C": "Cancelling throws away the running work. The statement is still in progress, so there is nothing to retry."
+          "A": "With the default SKIP_FILE, a notification is sent for every file that has an error. This is the setting that gives the most complete coverage.",
+          "B": "Files that fail from repeated internal errors are not reported by error notifications at all.",
+          "C": "The pipe reports RUNNING and keeps loading files, so it is not stalled."
         }
       }
     },
     {
-      "id": 8,
+      "id": 3,
       "type": "single",
-      "domain": "openflow",
-      "scenario": "A company wants to replicate change data from an operational database and from several SaaS applications into Snowflake with Openflow. Security requires that the Openflow data plane runs inside the company's own cloud account, with Snowflake managing only the control plane.",
-      "stem": "Which Openflow deployment type fits?",
+      "domain": "snowpipe-troubleshooting",
+      "scenario": "A pipe with auto-ingest loads files from an S3 bucket. Files of about 2 MB load normally. Files of about 40 MB, uploaded with the AWS CLI using default settings, never appear in COPY_HISTORY. SYSTEM$PIPE_STATUS shows RUNNING with no error. The bucket event notification to the queue listed in the pipe's notification_channel is configured for s3:ObjectCreated:Put, s3:ObjectCreated:Post and s3:ObjectCreated:Copy.",
+      "stem": "What should the Engineer do to fix this?",
       "options": [
         {
           "key": "A",
-          "text": "BYOC (Bring Your Own Cloud)"
+          "text": "Set ON_ERROR = CONTINUE on the pipe's COPY statement"
         },
         {
           "key": "B",
-          "text": "Snowflake Deployments on Snowpark Container Services"
+          "text": "Change the bucket notification to send all object create events, then load the files that were missed"
         },
         {
           "key": "C",
-          "text": "Snowpipe Streaming with the Kafka connector v4"
+          "text": "Pause the pipe and resume it so that it rescans the bucket"
         },
         {
           "key": "D",
-          "text": "A Snowpipe pipe with AUTO_INGEST = TRUE"
+          "text": "Add PATTERN = '.*' to the pipe's COPY statement"
         }
       ],
       "correct": [
-        "A"
+        "B"
       ],
       "explanation": {
-        "correct": "BYOC runs the Openflow data plane in the customer's cloud, and Snowflake manages the control plane. Openflow is the Snowflake service for database CDC and SaaS sources.",
+        "correct": "Uploads above the AWS CLI multipart threshold (8 MiB) finish with s3:ObjectCreated:CompleteMultipartUpload. A notification limited to Put, Post and Copy never fires for them. Notify on all object create events (or add CompleteMultipartUpload), then load the earlier files.",
         "distractors": {
-          "B": "Snowflake Deployments run on Snowpark Container Services in Snowflake, not in the customer's own cloud account.",
-          "C": "This is a data ingestion path for Kafka topics and doesn't fit database CDC or SaaS sources. It isn't an Openflow deployment type.",
-          "D": "Auto-ingest loads files that land in cloud storage. It isn't an Openflow deployment type and isn't meant for a database or SaaS source."
+          "A": "ON_ERROR affects how errors inside files are handled. These files never reach the pipe, so no error occurs.",
+          "C": "Pausing and resuming does not rescan the bucket. An auto-ingest pipe only loads files it has received event notifications for.",
+          "D": "PATTERN only filters files the pipe was already notified about. It cannot cause a missing notification to arrive."
         }
       }
     },
     {
-      "id": 9,
-      "type": "single",
-      "domain": "dynamic-tables-suspend-resume",
-      "scenario": "An incremental dynamic table reads a base table with DATA_RETENTION_TIME_IN_DAYS set to the default of 1. The dynamic table was suspended during a source migration and stayed suspended for three days. The engineer now tries to resume it.",
-      "stem": "What is the outcome?",
-      "options": [
-        {
-          "key": "A",
-          "text": "The incremental refresh fails after resume, because change-tracking data expired. The only recovery is to drop and recreate the dynamic table."
-        },
-        {
-          "key": "B",
-          "text": "RESUME works. The first refresh replays the three missed days of changes from the base table."
-        },
-        {
-          "key": "C",
-          "text": "The first refresh fails, but raising the base table's retention to 7 days and running RESUME again recovers it."
-        },
-        {
-          "key": "D",
-          "text": "Resume switches the table to FULL refresh mode for the first refresh, then returns to INCREMENTAL."
-        }
-      ],
-      "correct": [
-        "A"
-      ],
-      "explanation": {
-        "correct": "If a dynamic table is suspended longer than the base tables' data retention period, the change-tracking data it needs expires. An incremental dynamic table then fails on resume, and the only recovery is to drop and recreate it.",
-        "distractors": {
-          "B": "The changes are no longer available after retention expires, so there is nothing to replay.",
-          "C": "Raising retention doesn't bring back change data that has already expired. The notes give drop and recreate as the only recovery.",
-          "D": "Resume doesn't change the refresh mode. The mode is fixed at creation."
-        }
-      }
-    },
-    {
-      "id": 10,
+      "id": 4,
       "type": "multi",
-      "domain": "dynamic-tables-operations",
-      "scenario": "A team runs a chain of dynamic tables and plans to orchestrate some of them with an external scheduler. They are reviewing how suspension, the scheduler setting and cost work.",
-      "stem": "Which TWO statements are correct? (Select TWO.)",
+      "domain": "snowpipe-troubleshooting",
+      "scenario": "A pipe was paused for 20 days during a migration. Nobody changed its ownership. It is now ready to be restarted, and files arrived in the stage while it was paused. SYSTEM$PIPE_STATUS shows PAUSED, and a plain resume does not work.",
+      "stem": "Which TWO actions are needed to restart ingestion and recover the data? Select TWO.",
       "options": [
         {
           "key": "A",
-          "text": "Suspending a dynamic table leaves its downstream dynamic tables refreshing on their own schedules."
+          "text": "Run ALTER PIPE ... SET PIPE_EXECUTION_PAUSED = FALSE"
         },
         {
           "key": "B",
-          "text": "Cloud Services cost for a dynamic table accrues only in refresh cycles where the base data changed."
+          "text": "Run SYSTEM$PIPE_FORCE_RESUME with the staleness_check_override argument"
         },
         {
           "key": "C",
-          "text": "After SCHEDULER = DISABLE, the table's TARGET_LAG is reported as NULL, and a manual refresh does not cascade to upstream or downstream dynamic tables."
+          "text": "Run CREATE OR REPLACE PIPE with the same COPY statement"
         },
         {
           "key": "D",
-          "text": "SUSPEND is a permanent detach from scheduling that clears TARGET_LAG."
+          "text": "Load the files that arrived during the pause with a bulk COPY INTO statement"
         },
         {
           "key": "E",
-          "text": "When an upstream table is resumed, a downstream table that a user suspended directly (USER_SUSPENDED) stays suspended."
+          "text": "Run SYSTEM$PIPE_FORCE_RESUME with only the ownership_transfer_check_override argument"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A pipe paused for more than 14 days is stale, so it needs SYSTEM$PIPE_FORCE_RESUME with staleness_check_override. Files queued while it was paused are dropped after 14 days, so they must be loaded with a bulk COPY INTO.",
+        "distractors": {
+          "A": "A plain resume does not work for a pipe that has been paused for more than 14 days.",
+          "C": "Recreating the pipe is unnecessary for a stale pause, and a recreated pipe loses its load history.",
+          "E": "The ownership_transfer_check_override argument is only added when ownership changed while the pipe was paused. It does not override the staleness check."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "snowpipe-recovery",
+      "scenario": "A pipe with the default copy options loaded a file, orders/2026/11/20.csv, three days ago. The load failed because of a malformed row, so no rows from that file reached the table. The Engineer corrected the file and uploaded it under the same path and name, but the pipe does nothing. The Engineer must load the corrected file without changing the pipe and without reloading other files.",
+      "stem": "Which TWO approaches load the corrected data? Select TWO.",
+      "options": [
+        {
+          "key": "A",
+          "text": "TRUNCATE the target table, then upload the corrected file again under the same name"
+        },
+        {
+          "key": "B",
+          "text": "Run CREATE OR REPLACE PIPE with the same definition"
+        },
+        {
+          "key": "C",
+          "text": "Upload the corrected file under a new name"
+        },
+        {
+          "key": "D",
+          "text": "Run ALTER PIPE ... REFRESH"
+        },
+        {
+          "key": "E",
+          "text": "Run COPY INTO with FILES = ('orders/2026/11/20.csv') using the pipe's file format and options"
         }
       ],
       "correct": [
@@ -365,11 +185,11 @@
         "E"
       ],
       "explanation": {
-        "correct": "SCHEDULER = DISABLE detaches the table from scheduling: TARGET_LAG shows NULL and a manual refresh doesn't cascade, which suits external orchestrators such as dbt or Airflow. Resuming an upstream table also resumes downstream tables that were suspended by cascade, but not those a user suspended directly.",
+        "correct": "A pipe ignores a file whose path and name are in its load metadata, which is kept for 14 days and includes failed files. A file with a new name is treated as new. A bulk COPY INTO with FILES keeps separate load metadata from the pipe, so it loads the corrected file.",
         "distractors": {
-          "A": "Suspending a dynamic table also suspends its downstream dynamic tables.",
-          "B": "Cloud Services work (change detection, compilation, scheduling) runs on every refresh cycle, even when no data changed. Lengthening the lag cuts that cost.",
-          "D": "SUSPEND is a temporary stop that keeps the configuration, including TARGET_LAG. The permanent detach is SCHEDULER = DISABLE."
+          "A": "Truncating the table does not clear the pipe's load metadata, so the pipe still ignores the file name.",
+          "B": "Recreating the pipe drops the load metadata for all files, so files it already loaded can load again. Do it only when the pipe itself must change.",
+          "D": "REFRESH queues only files that the pipe has not processed, and a failed file counts as processed."
         }
       }
     }

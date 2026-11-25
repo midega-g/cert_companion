@@ -1,380 +1,221 @@
 {
-  "label": "Data Movement: Streams and Tasks",
+  "label": "Data Movement: Ingest Data Formats",
   "order": 1,
-  "topic": "Data Movement: streams and tasks",
+  "topic": "Data Movement: ingesting data of various formats",
   "questions": [
     {
       "id": 1,
       "type": "single",
-      "domain": "stream-staleness",
-      "scenario": "A Standard Edition account has a table with DATA_RETENTION_TIME_IN_DAYS = 1 and MAX_DATA_EXTENSION_TIME_IN_DAYS left at its default. A stream on the table feeds a task. The task was suspended after repeated failures and nobody consumed the stream for 9 days. The stream holds unconsumed changes. An engineer now runs SHOW STREAMS and finds that STALE is FALSE.",
-      "stem": "Which statement explains this result and its cost?",
+      "domain": "schema-detection",
+      "scenario": "A Data Engineer must create a table from CSV files that each start with a header row. The named file format has SKIP_HEADER = 1. The Engineer runs INFER_SCHEMA against the stage path, and the result lists the columns as c1, c2 and c3 instead of the header names.",
+      "stem": "Which change returns the real column names so the result can feed CREATE TABLE ... USING TEMPLATE?",
       "options": [
         {
           "key": "A",
-          "text": "The stream is not stale only because the retention of 1 day was reset each day by SYSTEM$STREAM_HAS_DATA calls on the stream."
+          "text": "Replace SKIP_HEADER = 1 with PARSE_HEADER = TRUE in the file format"
         },
         {
           "key": "B",
-          "text": "Snowflake extended the table's retention to the stream's offset, up to MAX_DATA_EXTENSION_TIME_IN_DAYS (default 14 days), and the extra retained history adds storage cost."
+          "text": "Keep SKIP_HEADER = 1 and add PARSE_HEADER = TRUE to the file format"
         },
         {
           "key": "C",
-          "text": "The extension applies only to Enterprise Edition or higher, so the Standard Edition stream must have been consumed by another process."
+          "text": "Call INFER_SCHEMA with IGNORE_CASE => TRUE"
         },
         {
           "key": "D",
-          "text": "The stream is stale after 1 day, and SHOW STREAMS reports a stale stream as FALSE until the next query reads it."
+          "text": "Call INFER_SCHEMA with INFER_NESTED_TYPES => TRUE"
         }
       ],
       "correct": [
-        "B"
+        "A"
       ],
       "explanation": {
-        "correct": "When a stream is not consumed, Snowflake extends the source table's data retention to the stream's offset, up to MAX_DATA_EXTENSION_TIME_IN_DAYS, which defaults to 14 days. This applies regardless of edition and the extra retained history costs storage. Here 9 days is inside the 14-day window.",
+        "correct": "For CSV, INFER_SCHEMA returns generic names (c1, c2, ...) unless the file format sets PARSE_HEADER = TRUE. PARSE_HEADER replaces SKIP_HEADER.",
         "distractors": {
-          "A": "SYSTEM$STREAM_HAS_DATA prevents staleness only when the stream is empty and the function returns FALSE. This stream holds unconsumed changes, and nothing in the scenario calls the function.",
-          "C": "The retention extension applies regardless of edition. Nothing needs to have consumed the stream.",
-          "D": "SHOW STREAMS reports staleness directly through the STALE and STALE_AFTER columns. It doesn't wait for a query to mark a stream stale."
+          "B": "SKIP_HEADER cannot be combined with PARSE_HEADER = TRUE, so this file format is rejected.",
+          "C": "IGNORE_CASE only changes how returned column names are cased (uppercase) and the expression function used. It does not read the header.",
+          "D": "INFER_NESTED_TYPES controls whether nested data returns structured OBJECT, ARRAY and MAP types. It has no effect on CSV column names."
         }
       }
     },
     {
       "id": 2,
       "type": "single",
-      "domain": "stream-transactions",
-      "scenario": "A stream s_orders is defined on table orders and holds 100 unconsumed change rows. An engineer runs BEGIN; INSERT INTO audit_a SELECT * FROM s_orders; INSERT INTO audit_b SELECT * FROM s_orders; COMMIT;. After the transaction starts but before the first INSERT runs, another session inserts 20 new rows into orders and commits.",
-      "stem": "What happens when the transaction commits?",
+      "domain": "semi-structured-data",
+      "scenario": "A Data Engineer loads JSON events into a VARIANT column. Queries that filter on the event:amount element are much slower than queries on other elements. The Engineer finds that amount is stored as the number 12 in some documents and as the string \"12\" in others. None of the documents contain a JSON null, and the table is far below 200 distinct elements per partition.",
+      "stem": "Which action addresses the cause of the slow queries?",
       "options": [
         {
           "key": "A",
-          "text": "audit_a gets 100 rows and audit_b gets 0 rows, because the first INSERT moved the stream offset."
+          "text": "Set STRIP_NULL_VALUES = TRUE in the JSON file format and reload the data"
         },
         {
           "key": "B",
-          "text": "audit_a gets 100 rows and audit_b gets 120 rows, because tables and streams use read committed isolation."
+          "text": "Make amount carry a single native data type in the source data and reload"
         },
         {
           "key": "C",
-          "text": "audit_a and audit_b each get the same 100 rows, and the 20 new rows stay in the stream for the next consumption."
+          "text": "Ask Snowflake Support to raise the limit on extracted elements for the table"
         },
         {
           "key": "D",
-          "text": "audit_a and audit_b each get 120 rows, because a stream is read as of the time each statement runs."
-        }
-      ],
-      "correct": [
-        "C"
-      ],
-      "explanation": {
-        "correct": "Streams use repeatable read isolation. Within a transaction, every statement sees the stream as of the transaction start. The DML consumes the records only if the transaction commits, and changes committed by other transactions in the meantime appear after it.",
-        "distractors": {
-          "A": "The offset moves only when the transaction that uses the stream commits, not at the first INSERT. Both statements see the same records.",
-          "B": "Tables use read committed isolation but streams use repeatable read. The two statements can't see different record sets.",
-          "D": "A stream queried in an explicit transaction is read as of the transaction start, not the statement time, so the 20 later rows are excluded."
-        }
-      }
-    },
-    {
-      "id": 3,
-      "type": "single",
-      "domain": "triggered-tasks",
-      "scenario": "A team wants a task that loads rows from the stream s_events into a target table only when the stream has data. They want no polling schedule and no compute spent until changes arrive. They also want Snowflake to manage the compute, so no warehouse is named.",
-      "stem": "Which task definition meets these requirements?",
-      "options": [
-        {
-          "key": "A",
-          "text": "CREATE TASK t TARGET_COMPLETION_INTERVAL = '15 MINUTES' WHEN SYSTEM$STREAM_HAS_DATA('s_events') AS INSERT INTO tgt SELECT * FROM s_events;"
-        },
-        {
-          "key": "B",
-          "text": "CREATE TASK t WHEN SYSTEM$STREAM_HAS_DATA('s_events') AS INSERT INTO tgt SELECT * FROM s_events;"
-        },
-        {
-          "key": "C",
-          "text": "CREATE TASK t WAREHOUSE = etl_wh WHEN SYSTEM$STREAM_HAS_DATA('s_events') AS INSERT INTO tgt SELECT * FROM s_events;"
-        },
-        {
-          "key": "D",
-          "text": "CREATE TASK t SCHEDULE = '1 MINUTE' TARGET_COMPLETION_INTERVAL = '15 MINUTES' WHEN SYSTEM$STREAM_HAS_DATA('s_events') AS INSERT INTO tgt SELECT * FROM s_events;"
-        }
-      ],
-      "correct": [
-        "A"
-      ],
-      "explanation": {
-        "correct": "A triggered task has a WHEN clause on the stream and no SCHEDULE. A serverless triggered task omits WAREHOUSE and must set TARGET_COMPLETION_INTERVAL.",
-        "distractors": {
-          "B": "A serverless triggered task requires TARGET_COMPLETION_INTERVAL. Without it, and without a warehouse, the definition is incomplete.",
-          "C": "Naming a warehouse makes this a user-managed triggered task. The requirement was for Snowflake-managed compute.",
-          "D": "Adding SCHEDULE turns this into a scheduled task that checks the condition every minute and skips when empty. It is not event-triggered."
-        }
-      }
-    },
-    {
-      "id": 4,
-      "type": "single",
-      "domain": "task-graph-retry",
-      "scenario": "A scheduled task graph has a root task and five child tasks. The fourth task in the chain fails at 02:10 after the first three have succeeded. The nightly run cannot wait for the next schedule. The team wants to rerun only the failed part of that run, without rerunning the tasks that already succeeded.",
-      "stem": "Which action meets the requirement?",
-      "options": [
-        {
-          "key": "A",
-          "text": "Run EXECUTE TASK on the root task with no extra clause."
-        },
-        {
-          "key": "B",
-          "text": "Set TASK_AUTO_RETRY_ATTEMPTS = 1 on the failed child task and wait."
-        },
-        {
-          "key": "C",
-          "text": "Run EXECUTE TASK on the root task with RETRY LAST."
-        },
-        {
-          "key": "D",
-          "text": "Run ALTER TASK on the failed child to RESUME it, which reruns it."
-        }
-      ],
-      "correct": [
-        "C"
-      ],
-      "explanation": {
-        "correct": "EXECUTE TASK ... RETRY LAST reruns from the last failed task or tasks in the latest graph run, as a new run with the attempt number increased by one.",
-        "distractors": {
-          "A": "A plain EXECUTE TASK on the root starts a new full run of the graph, including the tasks that already succeeded.",
-          "B": "TASK_AUTO_RETRY_ATTEMPTS is set on the root, and when a child fails it retries the whole graph. It doesn't apply retroactively to the failed run.",
-          "D": "RESUME changes the task's state and doesn't rerun it. The graph version is set when the root is resumed or executed."
-        }
-      }
-    },
-    {
-      "id": 5,
-      "type": "multi",
-      "domain": "streams-on-views",
-      "scenario": "A data engineer owns several views and their underlying tables and has enabled change tracking on all of them. The engineer wants to create a stream on views that meet the requirements for streams on views.",
-      "stem": "Which TWO views can have a stream created on them? (Select TWO.)",
-      "options": [
-        {
-          "key": "A",
-          "text": "A view that aggregates order totals per customer with GROUP BY"
-        },
-        {
-          "key": "B",
-          "text": "A view that returns SELECT DISTINCT customer_id from a table"
-        },
-        {
-          "key": "C",
-          "text": "A view that inner joins orders to customers and filters on region"
-        },
-        {
-          "key": "D",
-          "text": "A view defined over an external table"
-        },
-        {
-          "key": "E",
-          "text": "A view that combines two tables with UNION ALL"
-        }
-      ],
-      "correct": [
-        "C",
-        "E"
-      ],
-      "explanation": {
-        "correct": "A stream on a view allows projections, filters, inner or cross joins, and UNION ALL.",
-        "distractors": {
-          "A": "GROUP BY is not allowed in a view that has a stream.",
-          "B": "DISTINCT is not allowed in a view that has a stream.",
-          "D": "Views over external tables and directory tables are not supported for streams."
-        }
-      }
-    },
-    {
-      "id": 6,
-      "type": "single",
-      "domain": "stream-types",
-      "scenario": "A pipeline reads files that land in an S3 bucket through an external table. The team wants a stream on the external table to drive a downstream load. Files are sometimes removed from the bucket by a lifecycle rule, and those removals must not appear as deleted rows in the stream.",
-      "stem": "Which statement creates a stream that works for this external table?",
-      "options": [
-        {
-          "key": "A",
-          "text": "CREATE STREAM s ON EXTERNAL TABLE ext_t;"
-        },
-        {
-          "key": "B",
-          "text": "CREATE STREAM s ON EXTERNAL TABLE ext_t APPEND_ONLY = TRUE;"
-        },
-        {
-          "key": "C",
-          "text": "CREATE STREAM s ON EXTERNAL TABLE ext_t SHOW_INITIAL_ROWS = TRUE;"
-        },
-        {
-          "key": "D",
-          "text": "CREATE STREAM s ON EXTERNAL TABLE ext_t INSERT_ONLY = TRUE;"
-        }
-      ],
-      "correct": [
-        "D"
-      ],
-      "explanation": {
-        "correct": "Streams on external tables must be insert-only. An insert-only stream records inserts only, so a file removed from cloud storage is not recorded as a delete.",
-        "distractors": {
-          "A": "A default stream is a standard stream, which also records deletes. External tables require INSERT_ONLY = TRUE.",
-          "B": "APPEND_ONLY applies to standard tables, dynamic tables, Snowflake-managed Iceberg tables and views. External tables use INSERT_ONLY instead.",
-          "C": "SHOW_INITIAL_ROWS only changes what the first consumption returns. It doesn't make the stream insert-only, so the stream type is still invalid for an external table."
-        }
-      }
-    },
-    {
-      "id": 7,
-      "type": "single",
-      "domain": "stream-types",
-      "scenario": "A table holds GPS pings in a GEOGRAPHY column. Rows are only ever inserted, and the table is truncated every night right after the load task consumes the new rows. A standard stream on this table does not return change data for the geospatial data. The team wants the cheapest stream that works.",
-      "stem": "Which stream option fits?",
-      "options": [
-        {
-          "key": "A",
-          "text": "A standard stream created with SHOW_INITIAL_ROWS = TRUE"
-        },
-        {
-          "key": "B",
-          "text": "A stream created with APPEND_ONLY = TRUE"
-        },
-        {
-          "key": "C",
-          "text": "A stream created with INSERT_ONLY = TRUE"
-        },
-        {
-          "key": "D",
-          "text": "A standard stream created AT (OFFSET => -3600)"
+          "text": "Run the queries on an X-Large warehouse instead of a Small warehouse"
         }
       ],
       "correct": [
         "B"
       ],
       "explanation": {
-        "correct": "Standard streams can't return change data for geospatial data, so an append-only stream is used. It records inserts only, is faster than a standard stream, and lets the source be truncated right after consumption without extra cost for the next query.",
+        "correct": "Snowflake extracts elements into columnar form when loading VARIANT data, but it does not extract an element that holds multiple data types. Queries on such an element must scan the whole structure for each row. Using one native type per element lets it be extracted.",
         "distractors": {
-          "A": "SHOW_INITIAL_ROWS affects only the first consumption. The stream is still a standard stream and still can't return geospatial change data.",
-          "C": "INSERT_ONLY is for external tables and externally managed Iceberg tables, and for some Delta Direct tables. It is not the option for a standard table.",
-          "D": "AT (OFFSET => ...) sets where the stream starts with Time Travel. It doesn't change the stream type."
+          "A": "STRIP_NULL_VALUES helps only with elements that contain JSON null. These documents contain none, and mixed types would still block extraction.",
+          "C": "The limit is 200 extracted elements per partition, per table, and it can be raised only through Support. The table is far below it, so the limit is not the cause.",
+          "D": "A larger warehouse does not change how the element is stored. The element remains unextracted and each row still needs a scan of the whole structure."
         }
       }
     },
     {
-      "id": 8,
+      "id": 3,
       "type": "single",
-      "domain": "stream-creation",
-      "scenario": "A deployment script runs CREATE OR REPLACE STREAM s_orders ON TABLE orders every release. The stream usually has unconsumed changes when the script runs. The team wants the replaced stream to keep the current offset, so that no pending changes are lost.",
-      "stem": "Which statement does this?",
+      "domain": "stage-encryption",
+      "scenario": "A Data Engineer creates an internal named stage with CREATE STAGE docs_stage and no other options, then uploads PDF files with PUT. A BI tool opens URLs produced by GET_PRESIGNED_URL for these files, and every download is corrupt. The same files open correctly when retrieved with GET.",
+      "stem": "What should the Engineer do?",
       "options": [
         {
           "key": "A",
-          "text": "CREATE OR REPLACE STREAM s_orders ON TABLE orders AT (STREAM => 's_orders');"
+          "text": "Run ALTER STAGE docs_stage SET ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE')"
         },
         {
           "key": "B",
-          "text": "CREATE OR REPLACE STREAM s_orders ON TABLE orders COPY GRANTS;"
+          "text": "Pass an expiration_time of 604800 seconds to GET_PRESIGNED_URL"
         },
         {
           "key": "C",
-          "text": "CREATE OR REPLACE STREAM s_orders ON TABLE orders SHOW_INITIAL_ROWS = TRUE;"
+          "text": "Create the stage with ENCRYPTION = (TYPE = 'SNOWFLAKE_FULL') and CLIENT_ENCRYPTION_KEY_SIZE = 256, then re-upload the files"
         },
         {
           "key": "D",
-          "text": "CREATE OR REPLACE STREAM s_orders ON TABLE orders;"
+          "text": "Create a new stage with ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE') and upload the files to it"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The default internal stage encryption is SNOWFLAKE_FULL, which encrypts files on the client during PUT. Such files are unreadable through pre-signed URLs. SNOWFLAKE_SSE encrypts on the server side, which pre-signed URLs require, and the type can only be chosen when the stage is created.",
+        "distractors": {
+          "A": "The encryption type of an existing stage cannot be changed, so the stage must be recreated.",
+          "B": "The expiration time controls how long the URL stays valid. It has no effect on whether the downloaded file can be read.",
+          "C": "SNOWFLAKE_FULL stays client-side encrypted whatever the key size, so pre-signed URLs would still return unreadable files."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "storage-integrations",
+      "scenario": "An administrator runs CREATE OR REPLACE STORAGE INTEGRATION s3_int with the same role ARN, only to change the allowed locations. The integration is enabled, and the stage URL has not changed and still falls inside the allowed locations. The next COPY INTO from the existing external stage fails with SQL error 003139: Integration associated with the stage cannot be found.",
+      "stem": "Which statement fixes the error?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ALTER STAGE ext_stage SET STORAGE_INTEGRATION = s3_int"
+        },
+        {
+          "key": "B",
+          "text": "GRANT USAGE ON INTEGRATION s3_int TO ROLE loader_role"
+        },
+        {
+          "key": "C",
+          "text": "ALTER STORAGE INTEGRATION s3_int SET ENABLED = TRUE"
+        },
+        {
+          "key": "D",
+          "text": "ALTER STAGE ext_stage SET URL = 's3://mybucket1/path1/'"
         }
       ],
       "correct": [
         "A"
       ],
       "explanation": {
-        "correct": "AT (STREAM => 'name') starts the new stream at the same offset as the named stream. With OR REPLACE it keeps the current offset when the stream is recreated.",
+        "correct": "CREATE OR REPLACE gives the integration a new hidden ID, and stages are linked to an integration by that ID, not by name. Setting STORAGE_INTEGRATION on the stage again links it to the new object.",
         "distractors": {
-          "B": "COPY GRANTS keeps the privileges, except OWNERSHIP. It doesn't carry over the offset.",
-          "C": "SHOW_INITIAL_ROWS makes the first consumption return all rows that existed at creation, which would reprocess data that was already consumed.",
-          "D": "A plain CREATE OR REPLACE starts a new stream at the current point. CREATE OR REPLACE STREAM is also a way to advance the offset without using the changes, so unconsumed changes are lost."
+          "B": "Grants are tied to the old object as well, and the error says the stage cannot find the integration, not that a role lacks access.",
+          "C": "The integration is already enabled. ENABLED does not reconnect a stage to a replaced integration.",
+          "D": "The URL was never the problem. Resetting it does not change which integration the stage points to."
         }
       }
     },
     {
-      "id": 9,
+      "id": 5,
       "type": "single",
-      "domain": "stream-privileges",
-      "scenario": "The table sales is owned by role DATA_OWNER. Change tracking has never been enabled on it and no stream exists on it. Role ETL_ROLE has CREATE STREAM on the schema, USAGE on the database and schema, and SELECT on sales. When ETL_ROLE runs CREATE STREAM s_sales ON TABLE sales, the statement fails.",
-      "stem": "What is the cause?",
+      "domain": "csv-options",
+      "scenario": "A file format sets FIELD_DELIMITER = '|' and FIELD_OPTIONALLY_ENCLOSED_BY = '\"'. A source system writes some records as | \"Hello world\" |, with a space before the opening quote. The Engineer wants these fields to load as Hello world and has not changed any other file format option.",
+      "stem": "Which file format option addresses the space before the opening quote?",
       "options": [
         {
           "key": "A",
-          "text": "ETL_ROLE also needs OPERATE on the table before it can create a stream."
+          "text": "TRIM_SPACE = TRUE"
         },
         {
           "key": "B",
-          "text": "ETL_ROLE needs USAGE on a warehouse, because creating a stream starts the change tracking job."
+          "text": "SKIP_BLANK_LINES = TRUE"
         },
         {
           "key": "C",
-          "text": "Change tracking isn't enabled yet, and only the table owner can create the first stream on the table. DATA_OWNER can create it."
+          "text": "EMPTY_FIELD_AS_NULL = TRUE"
         },
         {
           "key": "D",
-          "text": "A stream can't be created on a table unless the creator role owns the schema."
+          "text": "ESCAPE_UNENCLOSED_FIELD = NONE"
         }
       ],
       "correct": [
-        "C"
+        "A"
       ],
       "explanation": {
-        "correct": "If change tracking isn't yet enabled on the table, only the table owner can create the first stream. Creating that stream enables change tracking.",
+        "correct": "TRIM_SPACE = TRUE removes the leading space before the opening quote when the field is optionally enclosed, so | \"Hello world\" | loads as Hello world. It defaults to FALSE.",
         "distractors": {
-          "A": "OPERATE on a table is not a stream creation requirement. Creating a stream needs CREATE STREAM on the schema and SELECT on the source.",
-          "B": "A warehouse is billed only when the stream is queried. The object itself has no charge, and a warehouse isn't a creation requirement.",
-          "D": "The creator needs CREATE STREAM on the schema and some privilege on the database and schema, not ownership of the schema."
+          "B": "SKIP_BLANK_LINES controls whether blank lines in the file are skipped. It does not affect spaces inside a record.",
+          "C": "EMPTY_FIELD_AS_NULL already defaults to TRUE and applies to two successive delimiters, not to spaces.",
+          "D": "ESCAPE_UNENCLOSED_FIELD sets the escape character for unenclosed fields. It does not trim spaces."
         }
       }
     },
     {
-      "id": 10,
-      "type": "multi",
-      "domain": "serverless-tasks",
-      "scenario": "A team is moving several tasks to serverless compute and reviewing how serverless sizing and the related parameters behave.",
-      "stem": "Which THREE statements about serverless tasks are correct? (Select THREE.)",
+      "id": 6,
+      "type": "single",
+      "domain": "metadata-columns",
+      "scenario": "A Data Engineer wants each loaded row to carry the checksum of its source file, so that the same content re-staged under a different name can be detected later. The files are default-format CSV in a named external stage. The Engineer has already tried SELECT * FROM @ext_stage t and saw only the data columns.",
+      "stem": "Which approach stores the checksum with each row?",
       "options": [
         {
           "key": "A",
-          "text": "Serverless sizing history is discarded on suspend, so a resumed task starts again from its initial size."
+          "text": "COPY INTO from (SELECT * FROM @ext_stage t), then read the metadata columns from the target table"
         },
         {
           "key": "B",
-          "text": "USER_TASK_MANAGED_INITIAL_WAREHOUSE_SIZE defaults to MEDIUM and is ignored after a few successful runs."
+          "text": "COPY INTO from (SELECT METADATA$FILENAME, t.$1 FROM @ext_stage t)"
         },
         {
           "key": "C",
-          "text": "USER_TASK_MANAGED_INITIAL_WAREHOUSE_SIZE can be set together with WAREHOUSE to size the first run on that warehouse."
+          "text": "Load the rows first, then run an UPDATE that sets a column to METADATA$FILE_CONTENT_KEY"
         },
         {
           "key": "D",
-          "text": "TARGET_COMPLETION_INTERVAL has no effect once the task is already running at its maximum size."
-        },
-        {
-          "key": "E",
-          "text": "Serverless tasks are the right choice for workloads larger than XXLARGE."
-        },
-        {
-          "key": "F",
-          "text": "The maximum serverless size is XXLARGE, and SERVERLESS_TASK_MAX_STATEMENT_SIZE defaults to XXLARGE."
+          "text": "COPY INTO from (SELECT METADATA$FILE_CONTENT_KEY, t.$1 FROM @ext_stage t)"
         }
       ],
       "correct": [
-        "B",
-        "D",
-        "F"
+        "D"
       ],
       "explanation": {
-        "correct": "The initial size parameter defaults to MEDIUM and stops mattering after a few successful runs. TARGET_COMPLETION_INTERVAL is ignored once the task is at maximum size. The serverless maximum is XXLARGE, which is also the default of the max-size bound.",
+        "correct": "METADATA$FILE_CONTENT_KEY holds the checksum of the file. Metadata columns can only be selected by name, so they are loaded through a COPY INTO with a SELECT that names them.",
         "distractors": {
-          "A": "Serverless sizing history is kept across suspend and resume. It is removed only when the task is recreated with CREATE OR REPLACE.",
-          "C": "Setting USER_TASK_MANAGED_INITIAL_WAREHOUSE_SIZE together with WAREHOUSE is an error. The parameter applies only to serverless tasks.",
-          "E": "Workloads larger than XXLARGE are a case for a user-managed warehouse, because serverless tops out at XXLARGE."
+          "A": "Metadata columns are not part of SELECT *, which is why the Engineer saw only data columns.",
+          "B": "METADATA$FILENAME returns the file name with its full path. A renamed copy of the same content would not match.",
+          "C": "Metadata columns cannot be used to update existing rows. They must be loaded as part of the COPY INTO."
         }
       }
     }

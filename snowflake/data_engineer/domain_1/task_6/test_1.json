@@ -1,0 +1,341 @@
+{
+  "label": "Data Movement: Data Sharing and Consumption",
+  "order": 1,
+  "topic": "Data Movement: data sharing, consumption and Streamlit",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "direct-shares",
+      "scenario": "A provider shares the SALES_DB database with a partner account through a direct share named sales_s. During an audit, an administrator ran ALTER SHARE sales_s REMOVE ACCOUNTS = partner_acct to test an access change, and an hour later ran ALTER SHARE sales_s ADD ACCOUNTS = partner_acct. SHOW SHARES on the provider side lists partner_acct again, and the grants on the share have not changed. The partner's analysts now get errors when they query the database they created from the share before the audit.",
+      "stem": "What must happen for the partner to query the data again?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The provider re-grants USAGE on SALES_DB to the share sales_s"
+        },
+        {
+          "key": "B",
+          "text": "The partner creates a new database from the share sales_s"
+        },
+        {
+          "key": "C",
+          "text": "The partner runs GRANT IMPORTED PRIVILEGES on the existing database again for its analyst roles"
+        },
+        {
+          "key": "D",
+          "text": "The provider revokes and re-grants SELECT on every shared table to the share"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "Removing an account from a share invalidates the consumer's imported database at once, and re-adding the account does not restore it. The consumer has to create a new database from the share.",
+        "distractors": {
+          "A": "The grants on the share are unchanged and still valid. The problem is the consumer's invalidated database, not a missing grant on the share.",
+          "C": "IMPORTED PRIVILEGES controls which roles can use a working imported database. It cannot repair a database that has been invalidated.",
+          "D": "The share contents did not change, so re-granting objects does nothing for the consumer's invalidated database."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "reader-accounts",
+      "scenario": "A provider has a partner with no Snowflake account. The provider's ACCOUNTADMIN runs CREATE MANAGED ACCOUNT partner_reader ADMIN_NAME = padmin, ADMIN_PASSWORD = '...', TYPE = READER, adds the account to a share, and hands over the credentials. The partner's administrator signs in and wants to set up several objects in the reader account.",
+      "stem": "Which operation can the partner's administrator run in the reader account?",
+      "options": [
+        {
+          "key": "A",
+          "text": "INSERT INTO a local table to add the partner's own reference rows"
+        },
+        {
+          "key": "B",
+          "text": "COPY INTO a local table from a file the partner uploaded to a new stage"
+        },
+        {
+          "key": "C",
+          "text": "CREATE MATERIALIZED VIEW over the shared data to speed up a frequent aggregation"
+        },
+        {
+          "key": "D",
+          "text": "CREATE ROW ACCESS POLICY to limit which shared rows each partner user sees"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A reader account is for querying the provider's shared data. Querying and operations such as creating materialized views are allowed.",
+        "distractors": {
+          "A": "Reader accounts cannot load or change data. INSERT, UPDATE, DELETE and MERGE are not allowed.",
+          "B": "COPY INTO <table> and CREATE STAGE are both blocked in a reader account.",
+          "D": "Creating masking policies and row access policies is not allowed in a reader account. The provider must apply policies before sharing."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "share-multiple-databases",
+      "scenario": "A provider has a secure view sales_db.public.order_summary that joins sales_db.core.orders with crm_db.core.customers. Both databases are in the provider's account. The provider has created the share sales_s and wants to expose only this view, granting objects directly to the share without using database roles. USAGE on sales_db and on the schema sales_db.public have already been granted to the share. The next statement, GRANT SELECT ON VIEW sales_db.public.order_summary TO SHARE sales_s, would otherwise fail.",
+      "stem": "Which statement must be run before granting SELECT on the view?",
+      "options": [
+        {
+          "key": "A",
+          "text": "GRANT REFERENCE_USAGE ON DATABASE crm_db TO SHARE sales_s"
+        },
+        {
+          "key": "B",
+          "text": "GRANT USAGE ON DATABASE crm_db TO SHARE sales_s"
+        },
+        {
+          "key": "C",
+          "text": "GRANT REFERENCE_USAGE ON DATABASE crm_db TO DATABASE ROLE sales_db.dr1"
+        },
+        {
+          "key": "D",
+          "text": "GRANT REFERENCE_USAGE ON DATABASE sales_db TO SHARE sales_s"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "A secure view that references another database needs REFERENCE_USAGE on each referenced database, granted to the share before SELECT on the view. Here the referenced database is crm_db.",
+        "distractors": {
+          "B": "Only one database per share can have USAGE granted, and sales_db already holds it. REFERENCE_USAGE is the grant for a referenced database.",
+          "C": "REFERENCE_USAGE cannot be granted to a database role. Sharing from multiple databases needs privileges granted directly to the share.",
+          "D": "REFERENCE_USAGE goes on each referenced database, not on the database that holds the view. The referenced one is crm_db."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "secure-views-sharing",
+      "scenario": "A provider shares a secure view that returns rows by comparing a column against an access table that maps role names to rows: WHERE EXISTS (SELECT 1 FROM access_map m WHERE m.role_name = CURRENT_ROLE() AND m.access_id = t.access_id). Tests in the provider account return the expected rows for each role. After sharing, every consumer account reports that the view returns zero rows for all of its roles, even though the share grants and the imported database are correct.",
+      "stem": "Which change fixes the view?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Compare against CURRENT_USER() instead of CURRENT_ROLE(), keeping the same mapping table"
+        },
+        {
+          "key": "B",
+          "text": "Grant IMPORTED PRIVILEGES on the imported database to every consumer role"
+        },
+        {
+          "key": "C",
+          "text": "Convert the view to a standard view and set SECURE_OBJECTS_ONLY = FALSE on the share"
+        },
+        {
+          "key": "D",
+          "text": "Compare against CURRENT_ACCOUNT() and map consumer account identifiers to rows in the mapping table"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "In a consumer account, CURRENT_ROLE and CURRENT_USER return NULL for shared secure objects, because the provider does not control the consumer's roles or users. CURRENT_ACCOUNT returns the consumer account, so the mapping should be by account.",
+        "distractors": {
+          "A": "CURRENT_USER also returns NULL in the consumer account, so the comparison would still match nothing.",
+          "B": "Privileges are not the problem, since the consumer can already query the view. The condition on CURRENT_ROLE is evaluating to NULL.",
+          "C": "A standard view does not change how CURRENT_ROLE evaluates in the consumer. It would also lose the secure-view protection."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "auto-fulfillment",
+      "scenario": "A provider has a private listing with a share as the data product. Some of the listing's consumers are in other regions, so the provider wants Cross-Cloud Auto-Fulfillment. The provider's account has not used it before. The organization has a single ORGADMIN user. A custom role, LISTING_ADMIN, already holds MODIFY on the listing and will configure the refresh settings.",
+      "stem": "Which TWO actions are required before LISTING_ADMIN can configure auto-fulfillment? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Grant OVERRIDE SHARE RESTRICTIONS on the account to LISTING_ADMIN"
+        },
+        {
+          "key": "B",
+          "text": "Have ORGADMIN run SYSTEM$ENABLE_GLOBAL_DATA_SHARING_FOR_ACCOUNT for the provider account"
+        },
+        {
+          "key": "C",
+          "text": "Have ACCOUNTADMIN run SYSTEM$ENABLE_GLOBAL_DATA_SHARING_FOR_ACCOUNT for the provider account"
+        },
+        {
+          "key": "D",
+          "text": "Grant MANAGE SHARE TARGET on the account to LISTING_ADMIN"
+        },
+        {
+          "key": "E",
+          "text": "Grant MANAGE LISTING AUTO FULFILLMENT on the account to LISTING_ADMIN"
+        }
+      ],
+      "correct": [
+        "B",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Auto-fulfillment is enabled for an account by ORGADMIN with SYSTEM$ENABLE_GLOBAL_DATA_SHARING_FOR_ACCOUNT. After that, ACCOUNTADMIN can grant MANAGE LISTING AUTO FULFILLMENT to a custom role, which also needs OWNERSHIP or MODIFY on the listing. LISTING_ADMIN already has MODIFY.",
+        "distractors": {
+          "A": "OVERRIDE SHARE RESTRICTIONS lets a direct share go to a lower edition or non-HIPAA account. It has nothing to do with auto-fulfillment.",
+          "C": "ACCOUNTADMIN can set up auto-fulfillment only after ORGADMIN has enabled it. The enabling call belongs to ORGADMIN.",
+          "D": "MANAGE SHARE TARGET is for adding or removing consumer accounts on a direct share. It does not give control of listing auto-fulfillment."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "cloning",
+      "scenario": "A Data Engineer runs CREATE DATABASE test_db CLONE prod_db to build a test environment. prod_db contains a scheduled task that is currently started, a table clustered on (event_date) with Automatic Clustering running, and a pipe with AUTO_INGEST = TRUE that loads from an external stage. Immediately after the clone completes, the Engineer reviews the state of these three objects in test_db.",
+      "stem": "Which description of the cloned objects is correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The task is suspended, the pipe is running with AUTO_INGEST = TRUE, and Automatic Clustering is suspended"
+        },
+        {
+          "key": "B",
+          "text": "The task is started, the pipe is in STOPPED_CLONED state, and Automatic Clustering is suspended"
+        },
+        {
+          "key": "C",
+          "text": "The task is suspended, the pipe is in STOPPED_CLONED state, and Automatic Clustering is suspended"
+        },
+        {
+          "key": "D",
+          "text": "The task is suspended, the pipe is in STOPPED_CLONED state, and Automatic Clustering is running"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Tasks in a cloned database or schema are suspended. A pipe that references an external stage is cloned, and with AUTO_INGEST = TRUE it comes up as STOPPED_CLONED. A cloned table keeps its clustering key, but Automatic Clustering is suspended by default.",
+        "distractors": {
+          "A": "A cloned pipe with AUTO_INGEST = TRUE is not running. It is STOPPED_CLONED, which stops the clone from loading the same files as the source.",
+          "B": "Tasks in a clone are not started. They are suspended and must be resumed deliberately.",
+          "D": "The cloned table keeps its clustering key, but Automatic Clustering is suspended by default, even though it was running on the source."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "domain": "row-access-policies",
+      "scenario": "A sales table has a row access policy that filters rows by region. Dashboard queries run a heavy aggregation over the table, and the Data Engineer tries CREATE MATERIALIZED VIEW to precompute it. The statement fails because of the policy. The aggregated result must still respect the same row-level protection, and the Engineer must not remove the policy from the table.",
+      "stem": "Which approach meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Drop the policy, create the materialized view, then add the policy back to the base table"
+        },
+        {
+          "key": "B",
+          "text": "Create the materialized view as SECURE so that the base table policy is bypassed"
+        },
+        {
+          "key": "C",
+          "text": "Attach the same row access policy to a stream on the table and build the materialized view on the stream"
+        },
+        {
+          "key": "D",
+          "text": "Build a dynamic table over the policy-protected table instead of a materialized view"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "A materialized view can't be created on a table that has a row access policy. For a base table that has a policy, a dynamic table is the supported way to precompute the result.",
+        "distractors": {
+          "A": "A row access policy can't be added to a table that already has a materialized view, so the sequence fails at the last step, and the table is unprotected meanwhile.",
+          "B": "SECURE changes who can see the view definition and how the optimizer handles it. It does not make a materialized view on a protected table possible.",
+          "C": "A row access policy can't be attached to a stream. The table's policy is applied when the stream reads it, and a materialized view over a stream is not the supported alternative."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "domain": "streamlit",
+      "scenario": "A team builds a Streamlit in Snowflake dashboard for about 300 viewers. The app needs a Python package that is available on PyPI but not in the Snowflake Conda channel. The team wants one app instance shared by all viewers, so that cached results are reused across sessions, and wants the app's code to run on a compute pool, with a warehouse only for queries.",
+      "stem": "Which design meets these requirements?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Container runtime on a compute pool, dependencies in requirements.txt or pyproject.toml, and an external access integration that allows PyPI"
+        },
+        {
+          "key": "B",
+          "text": "Warehouse runtime, with the PyPI package listed in environment.yml"
+        },
+        {
+          "key": "C",
+          "text": "Container runtime on a compute pool, dependencies in requirements.txt, and no external access integration"
+        },
+        {
+          "key": "D",
+          "text": "Warehouse runtime with a custom sleep timer to keep one shared instance alive"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "The container runtime runs one dedicated instance shared by all viewers, caches across sessions unless session-scoped, and installs packages from PyPI and other indexes through an external access integration. App code runs on a compute pool node, and a warehouse runs the queries.",
+        "distractors": {
+          "B": "The warehouse runtime installs packages from the Snowflake Conda channel using environment.yml. A package that is only on PyPI cannot be installed this way.",
+          "C": "Installing from PyPI needs USAGE on an external access integration. Without it the container cannot reach the package index.",
+          "D": "The warehouse runtime creates a personal instance per viewer, and its caching is per session. A sleep timer only reduces idle billing and does not share an instance."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "resharing",
+      "scenario": "Account A in organization ORG1 imported a database from an outside provider through a direct share. The database contains tables, a view and a UDF. Account A's engineer wants to pass part of that data on. Account B is in ORG1 in the same region, and account C belongs to a different organization, ORG2.",
+      "stem": "Which TWO actions are possible under the rules for resharing a direct share? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Grant SELECT on an imported table directly to a new outbound share"
+        },
+        {
+          "key": "B",
+          "text": "Add account C in ORG2 to the new outbound share"
+        },
+        {
+          "key": "C",
+          "text": "Create a secure view in a database in account A over the imported data and grant SELECT on the view to a new share"
+        },
+        {
+          "key": "D",
+          "text": "Include the imported UDF in the new outbound share so that account B can call it"
+        },
+        {
+          "key": "E",
+          "text": "Add account B in ORG1 to the new outbound share"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "A direct share can be reshared only within the consumer's own organization. The consumer creates a secure view in its own database over the imported data, grants SELECT on the view to a new share, and adds accounts from the same organization.",
+        "distractors": {
+          "A": "Objects from an imported database cannot be attached to a share directly. A secure view in the consumer's own database is required.",
+          "B": "Resharing is allowed only within the consumer's own organization, so an account in another organization cannot be added.",
+          "D": "Only tables, dynamic tables and views can be reshared. UDFs and UDTFs cannot."
+        }
+      }
+    }
+  ]
+}

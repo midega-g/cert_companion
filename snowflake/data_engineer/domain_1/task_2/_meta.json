@@ -1,4 +1,4 @@
 {
-  "label": "Streams and Tasks",
-  "description": "Section 1.4 (1.4.1 to 1.4.12): streams, stream types and staleness, tasks, task graphs"
+  "label": "Ingest Data of Various Formats",
+  "description": "Section 1.2: file formats, semi-structured data, schema detection, storage integrations, encryption"
 }

@@ -1,0 +1,233 @@
+{
+  "label": "Data Movement: Table Types and Data Operations",
+  "order": 1,
+  "topic": "Data Movement: external, Iceberg and hybrid tables, schema evolution, unload",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "external-tables",
+      "scenario": "A Data Engineer owns an external table over Parquet files in an S3 bucket. The table was created with AUTO_REFRESH = TRUE, and the bucket event notification points to the SQS queue ARN shown in the notification_channel column of SHOW EXTERNAL TABLES. New files appeared in queries within a minute until last week. Then a security change moved the table's database to a new role with GRANT OWNERSHIP ... COPY CURRENT GRANTS. The event notification on the bucket has not been edited, and the SQS ARN has not changed. Files added since the change do not appear, although manual refreshes show them.",
+      "stem": "Which action restores automatic registration of new files?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set AWS_SNS_TOPIC on the external table to the ARN of an SNS topic that receives the bucket events"
+        },
+        {
+          "key": "B",
+          "text": "Run ALTER EXTERNAL TABLE ... REFRESH once, which registers the current files and re-enables event-driven registration"
+        },
+        {
+          "key": "C",
+          "text": "Run ALTER EXTERNAL TABLE ... SET AUTO_REFRESH = TRUE as the new owner"
+        },
+        {
+          "key": "D",
+          "text": "Delete the bucket event notification and recreate it with the ARN from the notification_channel column"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Transferring ownership of an external table, or of its parent database, with GRANT OWNERSHIP sets AUTO_REFRESH to FALSE. The notification setup is still valid, so setting AUTO_REFRESH back to TRUE with ALTER EXTERNAL TABLE restores event-driven registration.",
+        "distractors": {
+          "A": "AWS_SNS_TOPIC applies only when S3 events are routed through an SNS topic. The existing SQS notification still works, and the cause is the AUTO_REFRESH setting.",
+          "B": "A manual REFRESH registers the files that exist at that moment. It does not change AUTO_REFRESH, so later files would again go unregistered.",
+          "D": "The SQS queue ARN has not changed, so the existing event notification is still correct. Recreating it does not change the AUTO_REFRESH value that was reset."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "iceberg-tables",
+      "scenario": "A Data Engineer created an externally managed Iceberg table from an AWS Glue catalog integration with REFRESH_INTERVAL_SECONDS = 30, and set AUTO_REFRESH = TRUE on the table. Another team's Spark job ran ALTER TABLE ... ADD COLUMN on the Iceberg table in Glue. No new rows have been written since. Several hours later, Snowflake queries still do not show the new column, while rows written by earlier Spark jobs appeared within a minute of each write.",
+      "stem": "What is the correct way to make the new column visible in Snowflake now?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run ALTER ICEBERG TABLE ... REFRESH manually"
+        },
+        {
+          "key": "B",
+          "text": "Lower REFRESH_INTERVAL_SECONDS on the catalog integration to its minimum value"
+        },
+        {
+          "key": "C",
+          "text": "Set AUTO_REFRESH to FALSE and back to TRUE so the polling restarts"
+        },
+        {
+          "key": "D",
+          "text": "Configure an event notification on the underlying S3 bucket so Snowflake learns about metadata changes"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Automated refresh of an externally managed Iceberg table syncs schema changes only together with DML. A change that is DDL only, such as a new column with no new data, needs a manual ALTER ICEBERG TABLE ... REFRESH.",
+        "distractors": {
+          "B": "A shorter interval makes Snowflake poll more often, but the poll still does not pick up a DDL-only change.",
+          "C": "Toggling AUTO_REFRESH does not change what the poll syncs, and frequent toggling is documented as slowing refreshes.",
+          "D": "Automated refresh for Iceberg tables polls the catalog. It does not use cloud storage event notifications, so adding one has no effect."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "hybrid-tables",
+      "scenario": "A retail company keeps an order-tracking application on 40 hybrid tables in the PROD_APP database, spread over three schemas. Every table has a PRIMARY KEY and some have FOREIGN KEY constraints to each other. The Data Engineer must build a development copy that contains all hybrid tables with their data as of 08:00 this morning. The Time Travel retention of PROD_APP covers 08:00. The Engineer has the load's query ID but prefers a timestamp for the point in time.",
+      "stem": "Which statement meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CREATE SCHEMA dev_app.orders CLONE prod_app.orders AT (TIMESTAMP => '2026-11-23 08:00:00'::TIMESTAMP_LTZ);"
+        },
+        {
+          "key": "B",
+          "text": "CREATE HYBRID TABLE dev_app.orders.t1 CLONE prod_app.orders.t1 for each of the 40 tables"
+        },
+        {
+          "key": "C",
+          "text": "CREATE DATABASE dev_app CLONE prod_app AT (STATEMENT => '<query id of the 08:00 load>');"
+        },
+        {
+          "key": "D",
+          "text": "CREATE DATABASE dev_app CLONE prod_app AT (TIMESTAMP => '2026-11-23 08:00:00'::TIMESTAMP_LTZ);"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Hybrid tables can be cloned only as part of a database clone. A point-in-time database clone that includes hybrid tables accepts AT or BEFORE with TIMESTAMP or OFFSET, so the timestamp form copies all tables and their data.",
+        "distractors": {
+          "A": "A schema clone that contains hybrid tables fails unless IGNORE HYBRID TABLES is added, and that option leaves the hybrid tables out of the copy.",
+          "B": "CREATE HYBRID TABLE ... CLONE is not supported and fails with error 391411.",
+          "C": "A point-in-time database clone with hybrid tables does not accept STATEMENT. A clone at a statement requires IGNORE HYBRID TABLES, which again excludes the hybrid tables."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "unload-data",
+      "scenario": "A Data Engineer runs COPY INTO @exports/daily/ FROM (SELECT ...) FILE_FORMAT = (TYPE = CSV COMPRESSION = GZIP) SINGLE = TRUE FILE_EXTENSION = 'csv.gz' MAX_FILE_SIZE = 1073741824. A downstream job expects exactly one file named report.csv.gz in that location. The unload succeeds, but the stage contains a single file named data, with no extension. The result set is about 600 MB before compression.",
+      "stem": "What change produces report.csv.gz?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Add INCLUDE_QUERY_ID = TRUE so the file is named from the query ID, then rename it"
+        },
+        {
+          "key": "B",
+          "text": "Put the file name and extension in the path, as in @exports/daily/report.csv.gz, and keep the compression matching the extension"
+        },
+        {
+          "key": "C",
+          "text": "Remove FILE_EXTENSION and rely on COMPRESSION = GZIP to add .csv.gz"
+        },
+        {
+          "key": "D",
+          "text": "Raise MAX_FILE_SIZE to 5368709120 so Snowflake names the file from the file format"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "With SINGLE = TRUE, Snowflake writes one file named data and ignores FILE_EXTENSION. The name and extension must be part of the path, and the compression should match the extension.",
+        "distractors": {
+          "A": "INCLUDE_QUERY_ID = TRUE is not allowed with SINGLE = TRUE, and it would add a UUID to the name anyway.",
+          "C": "FILE_EXTENSION is already ignored with SINGLE = TRUE, so removing it changes nothing. The file still comes out as data.",
+          "D": "MAX_FILE_SIZE only sets the target size per file, up to 5 GB. It does not affect the name, and 600 MB already fits in the current 1 GB value."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "multi",
+      "domain": "schema-evolution",
+      "scenario": "A Snowpipe pipe loads Parquet files from an external stage into the RAW.EVENTS table. Upstream added a new top-level column, session_length, to the files. The pipe's COPY statement is COPY INTO raw.events FROM @ext/events FILE_FORMAT = (TYPE = PARQUET). The Data Engineer wants new columns added to the table automatically. Currently files load without errors, but session_length never appears in the table. The pipe is owned by role PIPE_OWNER, and files are uploaded by role UPLOADER.",
+      "stem": "Which THREE changes are required for the table to evolve automatically? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Set ON_ERROR = CONTINUE in the pipe so files with unknown columns are not skipped"
+        },
+        {
+          "key": "B",
+          "text": "Set ENABLE_SCHEMA_EVOLUTION = TRUE on the RAW.EVENTS table"
+        },
+        {
+          "key": "C",
+          "text": "Grant EVOLVE SCHEMA on the table to UPLOADER, the role that puts files in the stage"
+        },
+        {
+          "key": "D",
+          "text": "Recreate the pipe with MATCH_BY_COLUMN_NAME in its COPY statement"
+        },
+        {
+          "key": "E",
+          "text": "Set ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE in the Parquet file format"
+        },
+        {
+          "key": "F",
+          "text": "Grant EVOLVE SCHEMA (or OWNERSHIP) on the table to PIPE_OWNER"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Automatic evolution happens only when the table has ENABLE_SCHEMA_EVOLUTION = TRUE, the load uses MATCH_BY_COLUMN_NAME, and the loading role has EVOLVE SCHEMA or OWNERSHIP on the table. For Snowpipe the loading role is the role that owns the pipe.",
+        "distractors": {
+          "A": "ON_ERROR does not drive evolution. The files already load without errors, and the column is missing because the three conditions are not met.",
+          "C": "The role that uploads files to the stage plays no part in the load. For Snowpipe the privilege must be held by the pipe owner.",
+          "E": "ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE is needed only for CSV loads that combine MATCH_BY_COLUMN_NAME with PARSE_HEADER. It is not part of the requirements for Parquet."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "catalog-linked-databases",
+      "scenario": "A team links an external Iceberg REST catalog to Snowflake with a catalog integration and a catalog-linked database, using the default LINKED_CATALOG settings apart from the catalog name. During testing, an engineer runs DROP ICEBERG TABLE on a table in the linked database and finds that the table and its data are gone from the remote catalog as well. Production analysts must read the remote tables through Snowflake but must never be able to drop or write them.",
+      "stem": "Which setting meets the requirement when the linked database is created?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ALLOWED_WRITE_OPERATIONS = NONE in the LINKED_CATALOG parameters"
+        },
+        {
+          "key": "B",
+          "text": "BLOCKED_NAMESPACES listing every namespace that analysts should not change"
+        },
+        {
+          "key": "C",
+          "text": "SYNC_INTERVAL_SECONDS = 86400 so that Snowflake rarely contacts the remote catalog"
+        },
+        {
+          "key": "D",
+          "text": "CATALOG_CASE_SENSITIVITY = CASE_SENSITIVE"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "ALLOWED_WRITE_OPERATIONS defaults to ALL. With ALL, dropping a table propagates to the remote catalog and removes the table and data in both places. Setting it to NONE makes the linked database read-only.",
+        "distractors": {
+          "B": "BLOCKED_NAMESPACES excludes namespaces from the sync, so analysts could not read those tables at all. It does not make the remaining ones read-only.",
+          "C": "SYNC_INTERVAL_SECONDS only sets how often Snowflake polls the remote catalog (30 to 86400). It does not restrict drops or writes.",
+          "D": "CATALOG_CASE_SENSITIVITY controls how identifiers are matched. It has no effect on write operations."
+        }
+      }
+    }
+  ]
+}

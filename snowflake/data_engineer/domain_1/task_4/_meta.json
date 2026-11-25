@@ -1,4 +1,4 @@
 {
-  "label": "Connectors",
-  "description": "Section 1.5: Kafka, Spark, Python and native connectors"
+  "label": "Continuous Data Pipelines",
+  "description": "Section 1.4: streams and tasks (1.4.1 to 1.4.12), dynamic tables, materialized views, Snowpipe, Snowpipe Streaming, SQL API, Openflow (1.4.13 to 1.4.26)"
 }

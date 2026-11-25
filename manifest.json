@@ -423,45 +423,63 @@
               "children": [
                 {
                   "id": "task_1",
-                  "label": "Loading and Ingestion",
+                  "label": "Load Data",
                   "mode": "exam",
-                  "description": "Sections 1.1 to 1.3: load data, ingest data of various formats, troubleshoot ingestion",
+                  "description": "Section 1.1: load data into Snowflake",
                   "tests": [
                     {
                       "id": "test_1",
-                      "label": "Data Movement: Loading, Ingestion and Troubleshooting",
+                      "label": "Data Movement: Load Data",
                       "path": "snowflake/data_engineer/domain_1/task_1/test_1.json"
                     }
                   ]
                 },
                 {
                   "id": "task_2",
-                  "label": "Streams and Tasks",
+                  "label": "Ingest Data of Various Formats",
                   "mode": "exam",
-                  "description": "Section 1.4 (1.4.1 to 1.4.12): streams, stream types and staleness, tasks, task graphs",
+                  "description": "Section 1.2: file formats, semi-structured data, schema detection, storage integrations, encryption",
                   "tests": [
                     {
                       "id": "test_1",
-                      "label": "Data Movement: Streams and Tasks",
+                      "label": "Data Movement: Ingest Data Formats",
                       "path": "snowflake/data_engineer/domain_1/task_2/test_1.json"
                     }
                   ]
                 },
                 {
                   "id": "task_3",
-                  "label": "Continuous Pipelines",
+                  "label": "Troubleshoot Ingestion",
                   "mode": "exam",
-                  "description": "Section 1.4 (1.4.13 to 1.4.26): dynamic tables, materialized views, Snowpipe, Snowpipe Streaming, SQL API, Openflow",
+                  "description": "Section 1.3: bulk load and Snowpipe troubleshooting and recovery",
                   "tests": [
                     {
                       "id": "test_1",
-                      "label": "Data Movement: Continuous Pipelines",
+                      "label": "Data Movement: Troubleshoot Ingestion",
                       "path": "snowflake/data_engineer/domain_1/task_3/test_1.json"
                     }
                   ]
                 },
                 {
                   "id": "task_4",
+                  "label": "Continuous Data Pipelines",
+                  "mode": "exam",
+                  "description": "Section 1.4: streams and tasks (1.4.1 to 1.4.12), dynamic tables, materialized views, Snowpipe, Snowpipe Streaming, SQL API, Openflow (1.4.13 to 1.4.26)",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Data Movement: Streams and Tasks",
+                      "path": "snowflake/data_engineer/domain_1/task_4/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Data Movement: Continuous Pipelines",
+                      "path": "snowflake/data_engineer/domain_1/task_4/test_2.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_5",
                   "label": "Connectors",
                   "mode": "exam",
                   "description": "Section 1.5: Kafka, Spark, Python and native connectors",
@@ -469,20 +487,33 @@
                     {
                       "id": "test_1",
                       "label": "Data Movement: Connectors",
-                      "path": "snowflake/data_engineer/domain_1/task_4/test_1.json"
+                      "path": "snowflake/data_engineer/domain_1/task_5/test_1.json"
                     }
                   ]
                 },
                 {
-                  "id": "task_5",
-                  "label": "Sharing and Tables",
+                  "id": "task_6",
+                  "label": "Data Sharing and Consumption",
                   "mode": "exam",
-                  "description": "Sections 1.6 to 1.7: data sharing and consumption, table types and data operations",
+                  "description": "Section 1.6: direct shares, reader accounts, auto-fulfillment, views, row-level filtering, listings, Streamlit",
                   "tests": [
                     {
                       "id": "test_1",
-                      "label": "Data Movement: Sharing and Table Management",
-                      "path": "snowflake/data_engineer/domain_1/task_5/test_1.json"
+                      "label": "Data Movement: Data Sharing and Consumption",
+                      "path": "snowflake/data_engineer/domain_1/task_6/test_1.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_7",
+                  "label": "Tables and Data Operations",
+                  "mode": "exam",
+                  "description": "Section 1.7: external, Iceberg and hybrid tables, catalogs, schema evolution, unload",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Data Movement: Table Types and Data Operations",
+                      "path": "snowflake/data_engineer/domain_1/task_7/test_1.json"
                     }
                   ]
                 }

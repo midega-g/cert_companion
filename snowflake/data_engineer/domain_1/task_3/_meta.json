@@ -1,4 +1,4 @@
 {
-  "label": "Continuous Pipelines",
-  "description": "Section 1.4 (1.4.13 to 1.4.26): dynamic tables, materialized views, Snowpipe, Snowpipe Streaming, SQL API, Openflow"
+  "label": "Troubleshoot Ingestion",
+  "description": "Section 1.3: bulk load and Snowpipe troubleshooting and recovery"
 }
