@@ -372,6 +372,186 @@
           "D": "SUSPEND is a temporary stop that keeps the configuration, including TARGET_LAG. The permanent detach is SCHEDULER = DISABLE."
         }
       }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "dynamic-tables-supported-queries",
+      "scenario": "A Data Engineer runs the statement below. It fails at creation. The business requires the subtotals and grand total that ROLLUP produces, and the table does not have to refresh incrementally.\n\nCREATE DYNAMIC TABLE dt_sales\n  TARGET_LAG = '15 minutes'\n  WAREHOUSE = transform_wh\n  REFRESH_MODE = INCREMENTAL\nAS\nSELECT region, product, SUM(amount) AS total\nFROM sales\nGROUP BY ROLLUP (region, product);",
+      "stem": "What should the Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Recreate it with REFRESH_MODE = ADAPTIVE"
+        },
+        {
+          "key": "B",
+          "text": "Recreate it with INITIALIZE = ON_SCHEDULE"
+        },
+        {
+          "key": "C",
+          "text": "Recreate it with REFRESH_MODE = FULL"
+        },
+        {
+          "key": "D",
+          "text": "Recreate it as a TRANSIENT dynamic table"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "ROLLUP, CUBE and GROUPING SETS are not supported by incremental refresh. An explicit INCREMENTAL mode makes creation fail when the definition contains an unsupported construct. FULL re-runs the whole query on each refresh and supports ROLLUP, so the definition can stay as it is.",
+        "distractors": {
+          "A": "ADAPTIVE has the same construct requirements as INCREMENTAL, so creation fails in the same way.",
+          "B": "INITIALIZE only controls whether the first refresh runs at creation or on schedule. It does not change which constructs the refresh mode supports.",
+          "D": "TRANSIENT only reduces Fail-safe storage for the table. It has no effect on which constructs the refresh mode supports."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "dynamic-tables-monitoring",
+      "scenario": "A Data Engineer manages about 40 dynamic tables in one schema. Analysts complain that some of them are often staler than their target lag. The Engineer wants one query that lists the tables that miss their target lag most of the time.",
+      "stem": "Which approach should the Engineer use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Query INFORMATION_SCHEMA.DYNAMIC_TABLES() for time_within_target_lag_ratio below 0.90"
+        },
+        {
+          "key": "B",
+          "text": "Run SHOW DYNAMIC TABLES and filter the results on the refresh_mode_reason column"
+        },
+        {
+          "key": "C",
+          "text": "Query DYNAMIC_TABLE_GRAPH_HISTORY() and filter the results on the scheduling_state"
+        },
+        {
+          "key": "D",
+          "text": "Query QUERY_HISTORY and filter the refresh statements by their total_elapsed_time"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "The DYNAMIC_TABLES() table function reports target_lag_sec, maximum_lag_sec and time_within_target_lag_ratio for each table. A ratio below 0.90 means the table misses its target lag most of the time, so one query finds the affected tables.",
+        "distractors": {
+          "B": "refresh_mode_reason explains why a table resolved to FULL refresh. It says nothing about whether the table meets its target lag.",
+          "C": "DYNAMIC_TABLE_GRAPH_HISTORY() shows the dependency graph, the scheduling state and the target lag over time. It does not report how often the lag was met.",
+          "D": "Refresh statements can run long and the lag can still be met, so elapsed time is not a measure of staleness. It also needs custom filtering that DYNAMIC_TABLES() already provides."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "dynamic-tables-cost",
+      "scenario": "A dynamic table is created with TARGET_LAG = '1 minute' on a base table that receives new rows only a few times per day. DYNAMIC_TABLE_REFRESH_HISTORY shows hundreds of refreshes per day, most with refresh_action = NO_DATA. Warehouse credits are small, but Cloud Services credits for the table keep growing. The business accepts data that is up to 1 hour old.",
+      "stem": "How can the Engineer reduce the cost MOST cost effectively?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Resize the refresh warehouse down to a size of X-Small"
+        },
+        {
+          "key": "B",
+          "text": "Run ALTER DYNAMIC TABLE ... SET SCHEDULER = DISABLE"
+        },
+        {
+          "key": "C",
+          "text": "Recreate the table with an explicit REFRESH_MODE = FULL"
+        },
+        {
+          "key": "D",
+          "text": "Run ALTER DYNAMIC TABLE ... SET TARGET_LAG = '1 hour'"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Cloud Services work for change detection, compilation and scheduling runs on every refresh cycle, even when no data changed. A short lag on a table with rare changes therefore creates many NO_DATA refreshes. A longer target lag that the business accepts reduces the number of cycles and the Cloud Services cost.",
+        "distractors": {
+          "A": "The warehouse credits are already small, and the growing cost is Cloud Services work. A smaller warehouse does not reduce the number of refresh cycles.",
+          "B": "SCHEDULER = DISABLE detaches the table from scheduling, so it would no longer meet the requirement for data at most 1 hour old unless it is refreshed manually.",
+          "C": "A full refresh re-runs the whole query on each refresh. It does not reduce the number of cycles and can raise the warehouse cost."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "single",
+      "domain": "dynamic-tables-target-lag-pipeline",
+      "scenario": "A Data Engineer owns dt_a with TARGET_LAG = '15 minutes'. A new dashboard needs dt_b, which reads dt_a, to be no more than 5 minutes behind the source data. The Engineer must not run a second set of refreshes on a schedule.",
+      "stem": "What should the Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Create dt_b with TARGET_LAG = '5 minutes' and keep dt_a at 15 minutes"
+        },
+        {
+          "key": "B",
+          "text": "Set dt_a to DOWNSTREAM, then create dt_b with TARGET_LAG = '5 minutes'"
+        },
+        {
+          "key": "C",
+          "text": "Create dt_b with TARGET_LAG = DOWNSTREAM and keep dt_a at 15 minutes"
+        },
+        {
+          "key": "D",
+          "text": "Create dt_b with INITIALIZE = ON_SCHEDULE and a target lag of 5 minutes"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A downstream dynamic table cannot have a shorter lag than the table it reads. With dt_a set to DOWNSTREAM, it has no schedule of its own and refreshes as often as its consumer needs, so dt_a keeps pace with dt_b's 5-minute lag.",
+        "distractors": {
+          "A": "A downstream dynamic table must have a target lag greater than or equal to its upstream table's lag, so a 5-minute lag on dt_b above a 15-minute dt_a is an error.",
+          "C": "A DOWNSTREAM table with no consumer never refreshes automatically. dt_b would not meet the 5-minute requirement, and dt_a would stay at 15 minutes.",
+          "D": "INITIALIZE only decides whether the first refresh happens at creation. The lag rule between dt_b and dt_a still applies."
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "single",
+      "domain": "dynamic-tables-vs-streams-tasks",
+      "scenario": "A Data Engineer must build a pipeline that processes new orders every few minutes. For each batch, it has to call an external function for fraud scoring and then run a stored procedure that writes the results.",
+      "stem": "Which design meets the requirement?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A dynamic table whose SELECT calls the external function, using REFRESH_MODE = FULL"
+        },
+        {
+          "key": "B",
+          "text": "A materialized view over the orders table that calls the external function"
+        },
+        {
+          "key": "C",
+          "text": "A stream on the orders table with a task that runs the stored procedure"
+        },
+        {
+          "key": "D",
+          "text": "A dynamic table with a 1-minute target lag that calls the stored procedure"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Procedural logic, stored procedures and external function calls are the strengths of streams and tasks. A stream records the new orders and a task runs the stored procedure on a schedule when the stream has data.",
+        "distractors": {
+          "A": "External functions are not supported in a dynamic table definition, in any refresh mode.",
+          "B": "A materialized view is a single-table query accelerator, and it cannot call an external function or run procedural logic.",
+          "D": "Stored procedures are not supported in a dynamic table definition. A dynamic table is a SELECT, not a procedural job."
+        }
+      }
     }
   ]
 }
