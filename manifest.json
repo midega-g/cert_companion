@@ -514,6 +514,36 @@
                       "id": "test_1",
                       "label": "Data Movement: Table Types and Data Operations",
                       "path": "snowflake/data_engineer/domain_1/task_7/test_1.json"
+                    },
+                    {
+                      "id": "test_2",
+                      "label": "Data Movement: Iceberg Tables",
+                      "path": "snowflake/data_engineer/domain_1/task_7/test_2.json"
+                    },
+                    {
+                      "id": "test_3",
+                      "label": "Data Movement: Horizon Catalog",
+                      "path": "snowflake/data_engineer/domain_1/task_7/test_3.json"
+                    },
+                    {
+                      "id": "test_4",
+                      "label": "Data Movement: Hybrid Tables",
+                      "path": "snowflake/data_engineer/domain_1/task_7/test_4.json"
+                    },
+                    {
+                      "id": "test_5",
+                      "label": "Data Movement: Schema Evolution",
+                      "path": "snowflake/data_engineer/domain_1/task_7/test_5.json"
+                    },
+                    {
+                      "id": "test_6",
+                      "label": "Data Movement: General Table Management",
+                      "path": "snowflake/data_engineer/domain_1/task_7/test_6.json"
+                    },
+                    {
+                      "id": "test_7",
+                      "label": "Data Movement: Unload Data",
+                      "path": "snowflake/data_engineer/domain_1/task_7/test_7.json"
                     }
                   ]
                 }
@@ -535,6 +565,27 @@
                       "id": "test_1",
                       "label": "Troubleshoot Underperforming Queries",
                       "path": "snowflake/data_engineer/domain_2/task_1/test_1.json"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "domain_3",
+              "label": "Domain 3",
+              "mode": "exam",
+              "description": "Storage and Data Protection",
+              "children": [
+                {
+                  "id": "task_2",
+                  "label": "Micro-Partition and Clustering Analysis",
+                  "mode": "exam",
+                  "description": "Section 3.2: system functions to analyze micro-partitions, clustering keys and Automatic Clustering",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Clustering Analysis and Automatic Clustering",
+                      "path": "snowflake/data_engineer/domain_3/task_2/test_1.json"
                     }
                   ]
                 }
@@ -582,6 +633,19 @@
                       "id": "test_1",
                       "label": "Unstructured Data and Cortex",
                       "path": "snowflake/data_engineer/domain_5/task_5/test_1.json"
+                    }
+                  ]
+                },
+                {
+                  "id": "task_7",
+                  "label": "Snowpark Transformations",
+                  "mode": "exam",
+                  "description": "Section 5.7: Snowpark architecture, sessions, DataFrames, queries, filters, joins and aggregations",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Snowpark Transformations: Architecture, DataFrames and Aggregations",
+                      "path": "snowflake/data_engineer/domain_5/task_7/test_1.json"
                     }
                   ]
                 }
