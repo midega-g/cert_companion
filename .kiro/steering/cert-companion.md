@@ -116,6 +116,22 @@ This project uses `midega-g`. Verify with `gh auth status` before pushing.
 
 ## Question Generation Workflow
 
+### Do not reveal answers in chat
+
+When writing questions into a `test_N.json` file, do not print the questions,
+the correct answers, or answer keys in the chat reply. This includes lists such
+as "Q6 B, Q7 A" and any per-question answer or explanation. Write the file and
+report only what is needed: file path, question count, and the validation
+result. If the user wants to see a question, they will ask for it.
+
+This applies to every reply, not only the one that writes the file. Never
+state which option is correct for a numbered question, including summaries
+such as a table of question number against answer key, and including
+questions drafted for review. If asked for questions "here", show the stem and
+options without the answer and wait for the user to ask for the key. When
+reporting balance, give only aggregate counts per letter, never a letter per
+question.
+
 ### Source material
 
 1. User provides Snowflake documentation links
