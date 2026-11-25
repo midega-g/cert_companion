@@ -1487,10 +1487,20 @@ async function renderHistory(certId, tab) {
   }
 
   // ── Home history: exam-only, cert dropdown filter ──
-  setBreadcrumb([
-    { label: "Home", action: "renderHome()" },
-    { label: "History" },
-  ]);
+  const selCert = state._homeHistoryCert;
+  const selProv = selCert && selCert !== "all" ? providerOfCert(selCert) : null;
+  const crumbs = [{ label: "Home", action: "renderHome()" }];
+  if (selProv) {
+    const prov = state.manifest.providers.find((p) => p.id === selProv);
+    const cert = prov.children.find((c) => c.id === selCert);
+    crumbs.push({ label: prov.label, action: `openCert('${selProv}')` });
+    crumbs.push({
+      label: cert.label,
+      action: `openCert('${selProv}','${selCert}')`,
+    });
+  }
+  crumbs.push({ label: "History" });
+  setBreadcrumb(crumbs);
 
   const examRecords = history.filter((h) => recordMode(h) === "exam");
 
@@ -1520,6 +1530,7 @@ async function renderHistory(certId, tab) {
       : examRecords.filter((h) => recordCertId(h) === selected);
 
   el.innerHTML = `
+    ${HISTORY_BACK_BTN}
     <h1 class="page-title">Performance History</h1>
     <p class="page-subtitle">Exam Prep results across your certifications</p>
     <div class="history-filter">
@@ -1533,6 +1544,15 @@ function onHomeHistoryCertChange(value) {
   state._homeHistoryCert = value;
   renderHistory();
 }
+
+// Jump to a certification's page (its mode select / topic list).
+function openCert(providerId, certId) {
+  state.navPath = [];
+  navigateTo(providerId, 0);
+  if (certId) navigateTo(certId, 1);
+}
+
+const HISTORY_BACK_BTN = `<div class="home-actions"><button class="btn btn-secondary btn-sm" onclick="history.back()">← Back</button></div>`;
 
 function providerOfCert(certId) {
   const p = (state.manifest?.providers || []).find((p) =>
@@ -1559,11 +1579,19 @@ async function renderProviderHistory(providerId, certId, tab) {
   const certs = provider ? provider.children || [] : [];
   const selected = certs.some((c) => c.id === certId) ? certId : "all";
 
-  setBreadcrumb([
+  const provCrumbs = [
     { label: "Home", action: "renderHome()" },
-    { label: providerLabel, action: "navigateToDepth(0)" },
-    { label: "History" },
-  ]);
+    { label: providerLabel, action: `openCert('${providerId}')` },
+  ];
+  if (selected !== "all") {
+    const c = certs.find((c) => c.id === selected);
+    provCrumbs.push({
+      label: c.label,
+      action: `openCert('${providerId}','${selected}')`,
+    });
+  }
+  provCrumbs.push({ label: "History" });
+  setBreadcrumb(provCrumbs);
 
   const records = history.filter(
     (h) =>
@@ -1598,6 +1626,7 @@ async function renderProviderHistory(providerId, certId, tab) {
       : historySectionHTML(examRecords, history, "No Exam Prep attempts yet.");
 
   el.innerHTML = `
+    ${HISTORY_BACK_BTN}
     <h1 class="page-title">${providerLabel} — History</h1>
     <div class="history-filter">
       <label for="prov-hist-cert">Certification:</label>
