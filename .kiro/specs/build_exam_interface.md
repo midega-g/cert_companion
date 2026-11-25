@@ -355,6 +355,14 @@ Previous/Next repeatedly.
 * A small legend explains Answered / Current / Unanswered.
 * Navigator state is rebuilt on every `renderQuestion` call.
 
+### Escaping question content
+
+All question text (stem, scenario, options, explanations, domain, topic) is
+inserted through `esc()` before going into `innerHTML`. Questions legitimately
+contain placeholders such as `COPY INTO <table>`; unescaped, the browser parses
+them as tags, which hides text and nests later elements inside earlier ones.
+Any new rendering of JSON-provided text must use `esc()`.
+
 ### Browser Back/Forward
 
 `showView(name)` calls `trackView`, which pushes a `history` entry whose state

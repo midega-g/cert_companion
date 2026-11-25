@@ -418,6 +418,17 @@ window.addEventListener("popstate", async (e) => {
   }
 });
 
+// Escape text before inserting it into innerHTML. Question content often
+// contains placeholders such as COPY INTO <table>; unescaped, the browser
+// treats them as HTML tags, which swallows text and breaks the page layout.
+function esc(v) {
+  return String(v ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function showView(name) {
   trackView(name);
   ["home", "topic", "tests", "exam", "report", "auth", "history"].forEach(
@@ -990,12 +1001,12 @@ function renderQuestion(idx) {
   const header = `
     <div class="exam-header">
       <span class="exam-progress">Question ${idx + 1} of ${total}</span>
-      <span class="domain-badge">${q.domain}</span>
+      <span class="domain-badge">${esc(q.domain)}</span>
     </div>`;
 
   // Scenario
   const scenario = q.scenario
-    ? `<div class="scenario-block">${q.scenario}</div>`
+    ? `<div class="scenario-block">${esc(q.scenario)}</div>`
     : "";
 
   // Multi-select instruction (multi type, or scenario with multiple correct answers)
@@ -1041,7 +1052,7 @@ function renderQuestion(idx) {
                id="opt-${idx}-${opt.key}" />
         <span class="option-key">${opt.key}.</span>
         <div>
-          <div class="option-text">${opt.text}</div>
+          <div class="option-text">${esc(opt.text)}</div>
           ${missedHTML}
         </div>
       </li>`;
@@ -1055,7 +1066,7 @@ function renderQuestion(idx) {
       .map(
         ([key, text]) => `
         <div class="distractor-item">
-          <span class="distractor-key">${key}.</span>${text}
+          <span class="distractor-key">${key}.</span>${esc(text)}
         </div>`,
       )
       .join("");
@@ -1064,7 +1075,7 @@ function renderQuestion(idx) {
       <div class="feedback-block" id="fb-body-${idx}"
            ${state.feedbackOpen[idx] ? "" : 'style="display:none"'}>
         <div class="feedback-correct">
-          <strong>✓ Correct Answer:</strong> ${q.explanation.correct}
+          <strong>✓ Correct Answer:</strong> ${esc(q.explanation.correct)}
         </div>
         <div class="distractor-list">${distractors}</div>
       </div>`;
@@ -1120,7 +1131,7 @@ function renderQuestion(idx) {
       <div class="exam-main">
         <div class="question-card">
           ${scenario}
-          <div class="question-stem">${q.stem}</div>
+          <div class="question-stem">${esc(q.stem)}</div>
           ${instruction}
           <ul class="options-list">${optionsHTML}</ul>
           ${feedbackHTML}
@@ -1674,7 +1685,7 @@ function buildReportBody(topic, questions, answers, opts = {}) {
     .map(([d, v]) => {
       const missed = v.correct < v.total;
       return `<tr class="domain-row ${missed ? "missed" : ""}">
-      <td>${d}</td>
+      <td>${esc(d)}</td>
       <td>${v.correct} / ${v.total}</td>
     </tr>`;
     })
@@ -1687,7 +1698,7 @@ function buildReportBody(topic, questions, answers, opts = {}) {
       const userKeys = ans.selected.join(", ") || "—";
       const correctKeys = q.correct.join(", ");
       const scenarioHTML = q.scenario
-        ? `<div class="scenario-block" style="margin-bottom:10px">${q.scenario}</div>`
+        ? `<div class="scenario-block" style="margin-bottom:10px">${esc(q.scenario)}</div>`
         : "";
       const optionReviews = q.options
         .map((opt) => {
@@ -1700,10 +1711,10 @@ function buildReportBody(topic, questions, answers, opts = {}) {
             ? q.explanation.correct
             : q.explanation.distractors[opt.key] || "";
           return `<div class="review-option ${cls}">
-        <strong>${opt.key}. ${opt.text}</strong>
+        <strong>${opt.key}. ${esc(opt.text)}</strong>
         ${
           explanation
-            ? `<div style="margin-top:4px;color:var(--text-muted)">${explanation}</div>`
+            ? `<div style="margin-top:4px;color:var(--text-muted)">${esc(explanation)}</div>`
             : ""
         }
       </div>`;
@@ -1713,18 +1724,18 @@ function buildReportBody(topic, questions, answers, opts = {}) {
       <div class="review-item ${isCorrect ? "correct" : "incorrect"}">
         <div class="review-meta">
           <span class="review-number">Q${i + 1}</span>
-          <span class="domain-badge">${q.domain}</span>
+          <span class="domain-badge">${esc(q.domain)}</span>
           <span class="status-pill ${isCorrect ? "correct" : "incorrect"}">
             ${isCorrect ? "Correct" : "Incorrect"}
           </span>
         </div>
         ${scenarioHTML}
-        <div class="review-stem">${q.stem}</div>
+        <div class="review-stem">${esc(q.stem)}</div>
         <div class="review-answers">
           Your answer: <span>${userKeys}</span> &nbsp;|&nbsp;
           Correct: <span>${correctKeys}</span>
         </div>
-        <div class="review-explanation">${q.explanation.correct}</div>
+        <div class="review-explanation">${esc(q.explanation.correct)}</div>
         <div class="review-options">${optionReviews}</div>
       </div>`;
     })
@@ -1742,7 +1753,7 @@ function buildReportBody(topic, questions, answers, opts = {}) {
 
   return `
     <div class="report-header">
-      <div class="page-title">${topic}${opts.readOnly ? " — Review" : ""}</div>
+      <div class="page-title">${esc(topic)}${opts.readOnly ? " — Review" : ""}</div>
       <div class="score-display">${score} / ${total}</div>
       <div class="score-pct">${pct}%</div>
     </div>
