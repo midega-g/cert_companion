@@ -520,6 +520,27 @@
               ]
             },
             {
+              "id": "domain_2",
+              "label": "Domain 2",
+              "mode": "exam",
+              "description": "Performance Optimization",
+              "children": [
+                {
+                  "id": "task_1",
+                  "label": "Troubleshoot Underperforming Queries",
+                  "mode": "exam",
+                  "description": "Section 2.1: troubleshoot underperforming queries",
+                  "tests": [
+                    {
+                      "id": "test_1",
+                      "label": "Troubleshoot Underperforming Queries",
+                      "path": "snowflake/data_engineer/domain_2/task_1/test_1.json"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
               "id": "domain_5",
               "label": "Domain 5",
               "mode": "exam",

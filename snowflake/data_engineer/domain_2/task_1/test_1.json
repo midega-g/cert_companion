@@ -1,0 +1,536 @@
+{
+  "label": "Troubleshoot Underperforming Queries",
+  "order": 1,
+  "topic": "Performance Optimization: troubleshoot underperforming queries",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "query-hash",
+      "scenario": "A Data Engineer reviews SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY for a reporting warehouse. A web application runs SELECT * FROM orders WHERE customer_id = <value> thousands of times a day, with a different customer ID each time. Each execution is fast. The Engineer needs the total time this one statement shape used over the last 30 days.",
+      "stem": "Which grouping should the Engineer use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "GROUP BY query_id"
+        },
+        {
+          "key": "B",
+          "text": "GROUP BY query_parameterized_hash"
+        },
+        {
+          "key": "C",
+          "text": "GROUP BY query_hash"
+        },
+        {
+          "key": "D",
+          "text": "GROUP BY query_tag"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "query_parameterized_hash is computed after literals used with =, !=, >= or <= are replaced by parameters. All executions that differ only in the customer ID share one value, so grouping by it gives the total for the statement shape.",
+        "distractors": {
+          "A": "query_id is unique to every single execution, so grouping by it never combines runs.",
+          "C": "query_hash is computed from the normalized text including literals. Each customer ID produces a different value, so the executions fall into thousands of separate groups.",
+          "D": "query_tag only reflects what the application set in the QUERY_TAG session parameter. It does not identify a statement shape and may be empty."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "pruning",
+      "scenario": "A Data Engineer investigates a query that filters a 2 TB EVENTS table on EVENT_DATE and runs for several minutes. In the Query Profile, the TableScan on EVENTS shows Partitions scanned 9,850 and Partitions total 10,000. A Filter operator directly above the scan removes about 99% of the rows. The table is loaded from many sources in no particular date order.",
+      "stem": "What should the Engineer do to reduce the scan time?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Resize the warehouse from Medium to 2X-Large to scan more partitions in parallel"
+        },
+        {
+          "key": "B",
+          "text": "Rewrite the query to use UNION ALL instead of UNION"
+        },
+        {
+          "key": "C",
+          "text": "Raise the maximum cluster count on a multi-cluster warehouse"
+        },
+        {
+          "key": "D",
+          "text": "Define a clustering key on EVENT_DATE"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "Almost every micro-partition was read and then a Filter discarded nearly all rows, which means the storage order is not correlated with the filter column. A clustering key on EVENT_DATE organizes the data so that pruning can skip most partitions.",
+        "distractors": {
+          "A": "A larger warehouse reads the same 9,850 partitions faster at a higher cost. It does not reduce how many partitions are scanned.",
+          "B": "UNION versus UNION ALL affects duplicate elimination in queries that combine result sets. The profile shows a poor-pruning problem on a single table scan.",
+          "C": "More clusters help with concurrent queries that are queued. This is a single slow query and the clusters do not change what is scanned."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "spilling",
+      "scenario": "A nightly aggregation runs alone on an X-Small warehouse. Its Query Profile shows a large value for Bytes spilled to remote storage, and most of the time is in Remote Disk IO. No queries are queued.",
+      "stem": "Which change addresses the cause?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run the job on a larger warehouse, or in smaller batches"
+        },
+        {
+          "key": "B",
+          "text": "Convert the warehouse to multi-cluster with a higher maximum cluster count"
+        },
+        {
+          "key": "C",
+          "text": "Change the scaling policy from Economy to Standard on the warehouse"
+        },
+        {
+          "key": "D",
+          "text": "Raise STATEMENT_TIMEOUT_IN_SECONDS so the job can run longer"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "Spilling happens when intermediate results exceed warehouse memory and local disk. A larger warehouse provides more memory and local disk, and smaller batches reduce the size of the intermediate results. Both remove the spill.",
+        "distractors": {
+          "B": "Additional clusters add capacity for concurrent queries. A single job still runs on one cluster with the same memory.",
+          "C": "The scaling policy controls when a multi-cluster warehouse starts or shuts down clusters. It does not add memory to the query, and nothing is queued here.",
+          "D": "The timeout only decides when a long statement is cancelled. It does not reduce the spilling that makes the job slow."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "exploding-join",
+      "scenario": "A report query returns far more rows than expected and runs for 40 minutes. The Data Engineer sets the session variable lid to the report's query ID and runs: SELECT operator_id, operator_attributes, operator_statistics:output_rows / operator_statistics:input_rows AS row_multiple FROM TABLE(GET_QUERY_OPERATOR_STATS($lid)) WHERE operator_type = 'Join' ORDER BY step_id, operator_id; One join returns a row_multiple of about 116.",
+      "stem": "What does this indicate, and what should the Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The join prunes efficiently, so no tuning of the query is needed"
+        },
+        {
+          "key": "B",
+          "text": "The query uses UNION where UNION ALL is enough, so it must be rewritten"
+        },
+        {
+          "key": "C",
+          "text": "The join is exploding, so its join condition should be reviewed"
+        },
+        {
+          "key": "D",
+          "text": "The join spills to remote storage, so a larger warehouse is required"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "A Join that outputs about 116 rows for every input row is an exploding join. A typical cause is a missing or too loose join condition, such as an unintended Cartesian product, so the Engineer should review the condition.",
+        "distractors": {
+          "A": "Pruning is measured by partitions scanned versus partitions total on a TableScan. The ratio of output to input rows on a Join says nothing about pruning.",
+          "B": "UNION without ALL appears as a UnionAll operator with an extra Aggregate, not as a Join with a high row multiple.",
+          "D": "Spilling is reported in the spilling statistics as bytes spilled to local or remote storage. It is not indicated by the row multiple."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "queuing",
+      "scenario": "An Enterprise edition account has one Medium warehouse used by 60 analysts. Every morning at 9:00 the dashboards slow down. QUERY_HISTORY shows high queued_overload_time for those queries. Their execution_time is normal and nothing is spilled.",
+      "stem": "How can this be resolved MOST cost effectively?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Resize the warehouse to 4X-Large and keep a single cluster"
+        },
+        {
+          "key": "B",
+          "text": "Convert it to multi-cluster with a higher maximum cluster count"
+        },
+        {
+          "key": "C",
+          "text": "Enable the query acceleration service on the warehouse"
+        },
+        {
+          "key": "D",
+          "text": "Add a clustering key to each table the dashboards read"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "High queued_overload_time with normal execution time means the warehouse is overloaded by concurrency. A multi-cluster warehouse (Enterprise edition or higher) starts extra clusters when queries queue and shuts them down afterwards, so the cost is incurred only at peak times.",
+        "distractors": {
+          "A": "A larger size makes each query faster but pays for a 4X-Large around the clock, and execution times here are already normal. It is not the cost-effective way to add concurrency.",
+          "C": "Query acceleration offloads parts of large scans for individual queries. It does not add capacity for many concurrent short queries.",
+          "D": "Clustering reduces the data scanned by queries. The queries here run quickly once started, so the delay comes from queuing."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "multi",
+      "domain": "history-sources",
+      "scenario": "A Data Engineer's role has MONITOR on the warehouse ETL_WH. The role is not ACCOUNTADMIN and has no access to the shared SNOWFLAKE database. A user reports that something ran slowly on ETL_WH yesterday, and the Engineer wants to list the statements that other users ran on that warehouse during the last 3 days.",
+      "stem": "Which TWO approaches can the Engineer use?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Query the ACCOUNT_USAGE.QUERY_HISTORY view filtered on ETL_WH"
+        },
+        {
+          "key": "B",
+          "text": "Open Query History in Snowsight and filter on the warehouse ETL_WH"
+        },
+        {
+          "key": "C",
+          "text": "Query the ACCOUNT_USAGE.WAREHOUSE_LOAD_HISTORY view for ETL_WH"
+        },
+        {
+          "key": "D",
+          "text": "Open the Grouped Queries view in Snowsight and filter on ETL_WH"
+        },
+        {
+          "key": "E",
+          "text": "Call INFORMATION_SCHEMA.QUERY_HISTORY_BY_WAREHOUSE for ETL_WH"
+        }
+      ],
+      "correct": [
+        "B",
+        "E"
+      ],
+      "explanation": {
+        "correct": "MONITOR or OPERATE on a warehouse lets a role see other users' queries that ran on it, both in Snowsight Query History and through the INFORMATION_SCHEMA QUERY_HISTORY table functions. Neither needs access to the SNOWFLAKE database, and 3 days is inside the 7-day window of the table function.",
+        "distractors": {
+          "A": "ACCOUNT_USAGE views live in the shared SNOWFLAKE database. A role without access to that database cannot query them, and by default only ACCOUNTADMIN has it.",
+          "C": "WAREHOUSE_LOAD_HISTORY is also an ACCOUNT_USAGE view, and it reports average running and queued load per interval, not individual statements.",
+          "D": "Grouped Queries needs ACCOUNTADMIN, IMPORTED PRIVILEGES on the SNOWFLAKE database, or the GOVERNANCE_VIEWER database role. MONITOR on a warehouse does not grant that view."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "leading-wildcard",
+      "scenario": "A query runs SELECT * FROM products WHERE product_name LIKE '%trail%' against a 5 TB PRODUCTS table. Query Insights reports a LIKE filter with a leading wildcard, and nearly all micro-partitions are scanned. The business confirms that matching only names that start with \"trail\" would be acceptable.",
+      "stem": "Which TWO actions reduce the amount of data scanned?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Raise the maximum cluster count on the warehouse for the job"
+        },
+        {
+          "key": "B",
+          "text": "Change LIKE to ILIKE so the filter ignores letter case"
+        },
+        {
+          "key": "C",
+          "text": "Enable search optimization on the table for PRODUCT_NAME"
+        },
+        {
+          "key": "D",
+          "text": "Change the pattern to 'trail%' so it has no leading wildcard"
+        },
+        {
+          "key": "E",
+          "text": "Run the query on a Snowpark-optimized warehouse instead"
+        }
+      ],
+      "correct": [
+        "C",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A pattern that does not start with a wildcard can use the column's min and max metadata to skip micro-partitions. If a leading wildcard must stay, search optimization supports LIKE and ILIKE and speeds up the lookup. Both change how much data is read.",
+        "distractors": {
+          "A": "Extra clusters add capacity for concurrent queries. One query still reads the same micro-partitions.",
+          "B": "ILIKE only makes the comparison case-insensitive. The leading wildcard remains, so the same partitions are scanned.",
+          "E": "A Snowpark-optimized warehouse has more memory per node, which helps memory-bound workloads. It does not change which micro-partitions are read."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "insights-coverage",
+      "scenario": "A Data Engineer reviews Query Insights for several statements.",
+      "stem": "Which THREE of the following will NOT produce any Query Insights?",
+      "options": [
+        {
+          "key": "A",
+          "text": "A single-step join of two permanent tables with no join condition"
+        },
+        {
+          "key": "B",
+          "text": "A query whose result is served from the persisted query result"
+        },
+        {
+          "key": "C",
+          "text": "A single-step UNION of two permanent tables with disjoint rows"
+        },
+        {
+          "key": "D",
+          "text": "A SELECT against a hybrid table that filters on its primary key"
+        },
+        {
+          "key": "E",
+          "text": "An EXPLAIN statement for a query on two permanent tables"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "E"
+      ],
+      "explanation": {
+        "correct": "Query Insights are not produced for queries that reuse a persisted result, for hybrid table queries, or for EXPLAIN statements. They are also skipped for multi-step plans, secure objects, Native App queries and interactive tables.",
+        "distractors": {
+          "A": "A join with no join condition is a documented insight under the JOIN topic. A single step on permanent tables is eligible.",
+          "C": "UNION on inputs that never overlap is flagged as an unnecessary UNION DISTINCT, with the advice to use UNION ALL."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "history-retention",
+      "scenario": "A Data Engineer must find out whether a query that ran 30 days ago spilled to storage and how long it waited in the warehouse queue.",
+      "stem": "Which TWO statements are correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ACCOUNT_USAGE.QUERY_HISTORY still holds its spill and queue-time columns"
+        },
+        {
+          "key": "B",
+          "text": "The Snowsight Query Profile still shows the spilling statistics for it"
+        },
+        {
+          "key": "C",
+          "text": "The role needs access to the shared SNOWFLAKE database, held by ACCOUNTADMIN"
+        },
+        {
+          "key": "D",
+          "text": "GET_QUERY_OPERATOR_STATS can still return the operator statistics for it"
+        },
+        {
+          "key": "E",
+          "text": "The INFORMATION_SCHEMA.QUERY_HISTORY table function can still return its row"
+        }
+      ],
+      "correct": [
+        "A",
+        "C"
+      ],
+      "explanation": {
+        "correct": "The ACCOUNT_USAGE view keeps 365 days of history with bytes_spilled_to_* and queued_overload_time columns, so a 30-day-old query is covered. Reading it requires access to the shared SNOWFLAKE database, which by default only ACCOUNTADMIN has.",
+        "distractors": {
+          "B": "Query details and the Query Profile are available only for the last 14 days.",
+          "D": "GET_QUERY_OPERATOR_STATS works only for completed queries from the past 14 days.",
+          "E": "The INFORMATION_SCHEMA table functions cover only the last 7 days."
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "single",
+      "domain": "result-limit",
+      "scenario": "A Data Engineer runs the query below on a busy account. It returns no rows, although the Engineer knows several queries that ran longer than 10 minutes in the last 2 days.\n\nSELECT query_id, total_elapsed_time\nFROM TABLE(INFORMATION_SCHEMA.QUERY_HISTORY())\nWHERE total_elapsed_time > 600000\nORDER BY total_elapsed_time DESC;",
+      "stem": "Why does the query return no rows, and what should the Engineer change?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The function returns only the last 24 hours, so ACCOUNT_USAGE.QUERY_HISTORY is needed"
+        },
+        {
+          "key": "B",
+          "text": "total_elapsed_time cannot be filtered in a table function, so a view is needed"
+        },
+        {
+          "key": "C",
+          "text": "RESULT_LIMIT (default 100) is applied before the WHERE clause, so raise RESULT_LIMIT"
+        },
+        {
+          "key": "D",
+          "text": "The function ignores ORDER BY, so the filter must move into a HAVING clause"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "The table function first returns at most RESULT_LIMIT rows (default 100, maximum 10000) and only then applies the WHERE clause. On a busy account the 100 most recent queries contain none above 10 minutes. A larger RESULT_LIMIT, together with an END_TIME_RANGE_START, covers the period of interest.",
+        "distractors": {
+          "A": "The INFORMATION_SCHEMA table function covers the last 7 days, not 24 hours, so the 2-day period is in range.",
+          "B": "Table function output can be filtered on any returned column, including total_elapsed_time.",
+          "D": "ORDER BY and WHERE work normally on the output. HAVING applies to aggregates and would not change how many rows the function returns."
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "single",
+      "domain": "transaction-blocking",
+      "scenario": "A nightly MERGE into a 400 GB table takes 25 minutes on a Medium warehouse that only this job uses. In QUERY_HISTORY, transaction_blocked_time is about 1,350,000 ms, queued_overload_time is 0, compilation_time is small, and nothing spilled.",
+      "stem": "What should the Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Find the concurrent statement that changes the same table and stagger the schedules"
+        },
+        {
+          "key": "B",
+          "text": "Resize the warehouse to Large so the MERGE has more compute and finishes sooner"
+        },
+        {
+          "key": "C",
+          "text": "Convert the warehouse to multi-cluster so that the MERGE gets its own cluster"
+        },
+        {
+          "key": "D",
+          "text": "Enable the query acceleration service on the warehouse to speed up the MERGE"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "About 22 of the 25 minutes were spent blocked on a transaction, which means another statement held a lock on the table. The wait is removed by finding and rescheduling the competing DML, not by adding compute.",
+        "distractors": {
+          "B": "A larger warehouse speeds up execution, but the query is waiting on a lock and not using compute during that time.",
+          "C": "Extra clusters help when queries queue on an overloaded warehouse. The queue time here is 0 and the wait is on a table lock.",
+          "D": "Query acceleration offloads eligible scan work. It does not release a lock held by another transaction."
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "single",
+      "domain": "scaling-policy",
+      "scenario": "An Enterprise edition account has a multi-cluster warehouse with MIN_CLUSTER_COUNT 1, MAX_CLUSTER_COUNT 4 and the Economy scaling policy. Each morning, queries queue for several minutes while only one cluster runs.",
+      "stem": "What is the smallest change that reduces the queuing?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Raise MAX_CLUSTER_COUNT from 4 to 8 so that more clusters can start"
+        },
+        {
+          "key": "B",
+          "text": "Resize the warehouse to the next larger size so each query runs faster"
+        },
+        {
+          "key": "C",
+          "text": "Lower AUTO_SUSPEND to 60 seconds so the warehouse restarts more often"
+        },
+        {
+          "key": "D",
+          "text": "Change the scaling policy from Economy to Standard on the warehouse"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "The Economy policy starts an additional cluster only when there is enough load to keep it busy for a while, so queries can stay queued. The Standard policy starts clusters to prevent queuing. Only one of four clusters runs, so the maximum is not the limit.",
+        "distractors": {
+          "A": "The warehouse is using one of its four allowed clusters, so a higher maximum changes nothing.",
+          "B": "A larger size speeds up individual queries, but it changes neither the queue nor how clusters start, and it raises the cost of every cluster.",
+          "C": "AUTO_SUSPEND controls idle time before suspension. It has no effect on queuing while the warehouse is busy."
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "single",
+      "domain": "warehouse-cache",
+      "scenario": "A dashboard runs the same aggregate queries against the same tables every 10 minutes. The warehouse has AUTO_SUSPEND = 60, and percentage_scanned_from_cache is close to 0 for every run, so each run reads from remote storage. Result reuse is not possible because the data changes between runs.",
+      "stem": "What change MOST cost effectively reduces the scan time?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Resize the warehouse from Small to 2X-Large so each scan runs faster"
+        },
+        {
+          "key": "B",
+          "text": "Increase AUTO_SUSPEND so the warehouse keeps its cache between runs"
+        },
+        {
+          "key": "C",
+          "text": "Set USE_CACHED_RESULT = FALSE for the session that runs the dashboard"
+        },
+        {
+          "key": "D",
+          "text": "Enable the query acceleration service on the dashboard's warehouse"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "The warehouse cache holds data read from storage only while the warehouse is running. With a 60-second suspend, the cache is lost between runs, so a longer AUTO_SUSPEND lets later runs read from cache at the cost of some idle time.",
+        "distractors": {
+          "A": "A larger warehouse still starts every run with an empty cache and costs much more per second.",
+          "C": "USE_CACHED_RESULT controls reuse of persisted results. Turning it off removes a cache and cannot help.",
+          "D": "Query acceleration is billed for the serverless compute it uses and targets large scans of single queries. It does not fix a cache lost to suspension."
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "multi",
+      "domain": "union-vs-union-all",
+      "scenario": "The Query Profile of a monthly report shows an Aggregate node above a UnionAll node. The Aggregate node uses about 40% of the query time. The query combines three tables with UNION.",
+      "stem": "Which TWO statements are correct?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Query acceleration removes the Aggregate step from the query plan"
+        },
+        {
+          "key": "B",
+          "text": "The optimizer adds an Aggregate for every UNION, so it cannot be avoided"
+        },
+        {
+          "key": "C",
+          "text": "The Aggregate removes duplicate rows, which is what UNION requires"
+        },
+        {
+          "key": "D",
+          "text": "Replacing UNION with UNION ALL always returns exactly the same rows"
+        },
+        {
+          "key": "E",
+          "text": "If the tables hold no duplicates, UNION ALL returns the same rows without it"
+        }
+      ],
+      "correct": [
+        "C",
+        "E"
+      ],
+      "explanation": {
+        "correct": "UNION removes duplicates, which Snowflake performs as an Aggregate above a UnionAll. When the inputs cannot contain duplicates, UNION ALL returns the same rows and skips that step.",
+        "distractors": {
+          "A": "Query acceleration offloads parts of eligible scans and does not change the plan to remove the duplicate-elimination step.",
+          "B": "The Aggregate exists only because UNION is used. UNION ALL does not need it.",
+          "D": "UNION ALL keeps duplicates. It returns the same rows only when the inputs contain none."
+        }
+      }
+    }
+  ]
+}
