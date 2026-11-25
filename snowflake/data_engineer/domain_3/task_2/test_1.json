@@ -1,0 +1,356 @@
+{
+  "label": "Clustering Analysis and Automatic Clustering",
+  "order": 1,
+  "topic": "Storage and Data Protection: clustering depth, clustering keys, Automatic Clustering and cost",
+  "questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "domain": "clustering-system-functions",
+      "scenario": "A fact table named sales_fact has no clustering key. A Data Engineer wants to know how well it is clustered on order_date and region before deciding on a key.",
+      "stem": "Which statement returns the clustering depth for those two columns?",
+      "options": [
+        {
+          "key": "A",
+          "text": "SELECT SYSTEM$CLUSTERING_DEPTH('sales_fact', 'order_date, region');"
+        },
+        {
+          "key": "B",
+          "text": "SELECT SYSTEM$CLUSTERING_RATIO('sales_fact', '(order_date, region)') AS depth;"
+        },
+        {
+          "key": "C",
+          "text": "SELECT SYSTEM$CLUSTERING_DEPTH('sales_fact', '(order_date, region)');"
+        },
+        {
+          "key": "D",
+          "text": "SELECT SYSTEM$CLUSTERING_DEPTH('sales_fact');"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "For a table without a clustering key the column list is required, and it goes in parentheses. Any columns can be passed, which lets the engineer test a candidate key before defining it.",
+        "distractors": {
+          "A": "The column list must be inside parentheses, even for a single column.",
+          "B": "SYSTEM$CLUSTERING_RATIO is deprecated, and it returns a ratio from 0 to 100, not the depth.",
+          "D": "A table without a clustering key needs the column argument, and omitting it returns an error."
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "domain": "optima-clustering",
+      "scenario": "A table was clustered recently under Snowflake's newer clustering engine. A Data Engineer runs SYSTEM$CLUSTERING_INFORMATION on it and finds that total_constant_partition_count and partition_depth_histogram are missing from the output.",
+      "stem": "What explains the missing fields?",
+      "options": [
+        {
+          "key": "A",
+          "text": "The table uses Optima Clustering, and the version field of the report shows OPTIMA"
+        },
+        {
+          "key": "B",
+          "text": "The table has more than 2 million micro-partitions, so Snowflake leaves out the histogram for large tables"
+        },
+        {
+          "key": "C",
+          "text": "Automatic Clustering is suspended on the table, so the report leaves these fields empty"
+        },
+        {
+          "key": "D",
+          "text": "The histogram is returned only when a predicate is passed to the function as a third argument"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "For tables that use Optima Clustering, total_constant_partition_count and partition_depth_histogram are not available. The version field shows OPTIMA or CLASSIC.",
+        "distractors": {
+          "B": "For a table with more than 2 million micro-partitions the results are based on a subset, and total_partition_count reports 2 million. The histogram is still returned.",
+          "C": "Suspending Automatic Clustering does not remove fields from the report. The missing fields are specific to Optima Clustering.",
+          "D": "The predicate argument belongs to SYSTEM$CLUSTERING_DEPTH, and SYSTEM$CLUSTERING_INFORMATION does not take it."
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "domain": "clustering-keys",
+      "scenario": "An events table of about 30 TB is filtered by a date range and by event_type, which has about 25 distinct values. The column event_ts is a TIMESTAMP_NTZ that is almost unique for every row, and is_test is a Boolean that the queries do not filter on.",
+      "stem": "Which clustering key does Snowflake's guidance favor?",
+      "options": [
+        {
+          "key": "A",
+          "text": "CLUSTER BY (event_ts, event_type)"
+        },
+        {
+          "key": "B",
+          "text": "CLUSTER BY (TO_DATE(event_ts), event_type)"
+        },
+        {
+          "key": "C",
+          "text": "CLUSTER BY (is_test, event_type, TO_DATE(event_ts))"
+        },
+        {
+          "key": "D",
+          "text": "CLUSTER BY (event_type, TO_DATE(event_ts))"
+        }
+      ],
+      "correct": [
+        "D"
+      ],
+      "explanation": {
+        "correct": "A key should order columns from lowest to highest cardinality, and an expression such as TO_DATE reduces the cardinality of a timestamp while keeping its order.",
+        "distractors": {
+          "A": "A nearly unique timestamp has very high cardinality, is expensive to maintain, and placed first it weakens clustering on event_type.",
+          "B": "This puts the higher-cardinality date before event_type, and a high-cardinality column placed first reduces the effect of clustering on the next one.",
+          "C": "A Boolean has too few distinct values to prune well, and the queries do not filter on it."
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "domain": "automatic-clustering",
+      "scenario": "A Data Engineer clones a clustered 5 TB table for a development team. Weeks later, queries on the clone slow down as new data is loaded. The TABLES view shows AUTO_CLUSTERING_ON = OFF for the clone, and AUTO_CLUSTERING_ON = ON for the source.",
+      "stem": "What should the Data Engineer do?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Recreate the clone with CREATE TABLE ... AS SELECT, which copies the clustering key and keeps it running"
+        },
+        {
+          "key": "B",
+          "text": "Run ALTER TABLE ... RESUME RECLUSTER on the clone so that Automatic Clustering starts again"
+        },
+        {
+          "key": "C",
+          "text": "Increase the warehouse size used by the loads, so that the data is clustered as it is loaded"
+        },
+        {
+          "key": "D",
+          "text": "Wait for Snowflake to resume Automatic Clustering, which restarts on its own after a clone is used"
+        }
+      ],
+      "correct": [
+        "B"
+      ],
+      "explanation": {
+        "correct": "A clone keeps the clustering key, but Automatic Clustering is suspended on the clone and must be resumed with ALTER TABLE ... RESUME RECLUSTER.",
+        "distractors": {
+          "A": "CREATE TABLE ... AS SELECT does not carry the clustering key over, so the key would have to be defined again.",
+          "C": "Automatic Clustering is serverless and uses no warehouse, so warehouse size does not cluster the data.",
+          "D": "Automatic Clustering stays suspended on a clone until someone resumes it."
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "domain": "clustering-cost",
+      "scenario": "A 20 TB orders table has no clustering key. A manager asks for the estimated initial and maintenance credits to cluster it on order_date and region before approving the change.",
+      "stem": "Which approach gives the estimate before any key is defined?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Run SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS('orders', '(order_date, region)') and read the result"
+        },
+        {
+          "key": "B",
+          "text": "Query ACCOUNT_USAGE.AUTOMATIC_CLUSTERING_HISTORY for the table and add up the credits used"
+        },
+        {
+          "key": "C",
+          "text": "Run SYSTEM$CLUSTERING_INFORMATION('orders', '(order_date, region)') and read the cost field in the report"
+        },
+        {
+          "key": "D",
+          "text": "Run SYSTEM$CLUSTERING_RATIO('orders', '(order_date, region)') and convert the ratio into credits"
+        }
+      ],
+      "correct": [
+        "A"
+      ],
+      "explanation": {
+        "correct": "SYSTEM$ESTIMATE_AUTOMATIC_CLUSTERING_COSTS estimates the cost of clustering a table for the first time, and when possible of maintaining it. It is a best-effort estimate.",
+        "distractors": {
+          "B": "AUTOMATIC_CLUSTERING_HISTORY shows credits already used. A table without a key has no clustering history to add up.",
+          "C": "The report describes depth, overlap and errors. It has no cost field.",
+          "D": "SYSTEM$CLUSTERING_RATIO is deprecated, and it measures how well a table is clustered, not what clustering costs."
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "domain": "optima-clustering",
+      "scenario": "Under Optima Clustering, cost is the uncompressed data ingested times the rate per GB times an overlap factor between 0 and 1, which is the share of ingested data that needs active clustering. A team compares four workloads on clustered tables.",
+      "stem": "Which workload has the lowest cost under Optima Clustering?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Nightly UPDATE statements that change the values in the clustering key columns"
+        },
+        {
+          "key": "B",
+          "text": "Loads of late-arriving rows that fall into older date ranges and overlap existing partitions"
+        },
+        {
+          "key": "C",
+          "text": "Append-only loads of new rows into a table clustered by TO_DATE(ingestion_time)"
+        },
+        {
+          "key": "D",
+          "text": "Loads of rows in random key order, so that each load overlaps most existing partitions"
+        }
+      ],
+      "correct": [
+        "C"
+      ],
+      "explanation": {
+        "correct": "Append-only loads clustered by an ingestion timestamp have an overlap factor near 0, so they cost little or nothing.",
+        "distractors": {
+          "A": "Updates that change clustering key values usually have an overlap factor of 1, which is the full rate.",
+          "B": "Data that partly overlaps existing partitions has an overlap factor between 0 and 1, so it costs more than append-only loads.",
+          "D": "Rows in random key order overlap most existing partitions, so the overlap factor is high and so is the cost."
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "multi",
+      "domain": "micro-partitions-and-pruning",
+      "scenario": "A Data Engineer reviews how Snowflake stores a large fact table and how queries skip data before proposing a clustering key.",
+      "stem": "Which THREE statements are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "The engineer defines the micro-partition boundaries when the table is created"
+        },
+        {
+          "key": "B",
+          "text": "Each micro-partition keeps the minimum and maximum value of every column"
+        },
+        {
+          "key": "C",
+          "text": "A hybrid table can be given a clustering key to improve its pruning"
+        },
+        {
+          "key": "D",
+          "text": "A micro-partition holds 50 MB to 500 MB of uncompressed data"
+        },
+        {
+          "key": "E",
+          "text": "The value ranges of different micro-partitions can never overlap"
+        },
+        {
+          "key": "F",
+          "text": "A filter that contains a subquery is not used to prune micro-partitions"
+        }
+      ],
+      "correct": [
+        "B",
+        "D",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Micro-partitions hold 50 MB to 500 MB of uncompressed data and keep the minimum and maximum value of each column, which Snowflake uses for pruning. Snowflake does not prune on a predicate that contains a subquery, even if the subquery returns a constant.",
+        "distractors": {
+          "A": "Micro-partitions are formed automatically from the order in which data is inserted or loaded. Nobody defines them up front.",
+          "C": "Clustering keys are not supported on hybrid tables, whose data is always ordered by primary key.",
+          "E": "Micro-partitions can overlap in their range of values, and the amount of overlap is what clustering depth measures."
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "multi",
+      "domain": "clustering-keys",
+      "scenario": "A Data Engineer prepares clustering keys for three tables. One key uses a path inside a VARIANT column, one table is a copy made with CREATE TABLE ... AS SELECT, and one table has a text column that shares its first characters across rows.",
+      "stem": "Which TWO statements are correct? (Select TWO.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "Changing the clustering key rewrites all existing rows as soon as the statement runs"
+        },
+        {
+          "key": "B",
+          "text": "CREATE TABLE ... AS SELECT does not carry the clustering key over to the new table"
+        },
+        {
+          "key": "C",
+          "text": "On Clustering Classic, every character of a text column counts toward the key"
+        },
+        {
+          "key": "D",
+          "text": "A key on a VARIANT column needs a path and a type, such as v:\"Data\":id::NUMBER"
+        },
+        {
+          "key": "E",
+          "text": "A clustering key can be removed only by dropping and recreating the table"
+        }
+      ],
+      "correct": [
+        "B",
+        "D"
+      ],
+      "explanation": {
+        "correct": "A CTAS table does not keep the key, so it has to be defined afterward. A key cannot be put directly on a VARIANT column, so a path and a target type are given.",
+        "distractors": {
+          "A": "Changing the key does not affect existing rows until Snowflake reclusters the table.",
+          "C": "On Clustering Classic only the first 5 bytes of each text column are used, so a key can use a substring that starts after the shared characters.",
+          "E": "A key can be altered or dropped at any time with ALTER TABLE ... DROP CLUSTERING KEY."
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "multi",
+      "domain": "automatic-clustering",
+      "scenario": "A team runs Automatic Clustering on several large tables and reviews how it behaves, what it needs, and how to stop it before documenting the operating procedure.",
+      "stem": "Which THREE statements are correct? (Select THREE.)",
+      "options": [
+        {
+          "key": "A",
+          "text": "DML on a table is blocked while Snowflake reclusters the table"
+        },
+        {
+          "key": "B",
+          "text": "Defining a clustering key makes Snowflake start reclustering right away"
+        },
+        {
+          "key": "C",
+          "text": "Automatic Clustering is serverless, so it needs no virtual warehouse"
+        },
+        {
+          "key": "D",
+          "text": "A suspended table still accrues clustering credits, at a lower rate"
+        },
+        {
+          "key": "E",
+          "text": "Changing the key resumes Automatic Clustering if it was suspended"
+        },
+        {
+          "key": "F",
+          "text": "Dropping the clustering key stops all future reclustering on the table"
+        }
+      ],
+      "correct": [
+        "C",
+        "E",
+        "F"
+      ],
+      "explanation": {
+        "correct": "Automatic Clustering is serverless and uses no warehouse. Changing the key resumes it, and writing LINEAR counts as a change. Dropping the key stops all future reclustering.",
+        "distractors": {
+          "A": "DML is not blocked while a table is reclustered.",
+          "B": "Defining a key does not start reclustering at once. Snowflake monitors the table and reclusters only when it would benefit.",
+          "D": "While Automatic Clustering is suspended there is no automatic reclustering and no clustering credits."
+        }
+      }
+    }
+  ]
+}

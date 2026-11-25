@@ -38,7 +38,7 @@ Domains 2, 3 and 4 stay as separate folders. Each folder has a `_meta.json` (lab
 | 2.2 | Configure a solution for optimal performance | to do | to do |
 | 2.3 | Monitor continuous data pipelines | mostly covered by Domain 1 notes. Add a small note or section for the gaps | to do |
 | 3.1 | Data recovery features (Time Travel, Fail-safe, replication) | partly covered by Domain 1 notes. Add the gaps | to do |
-| 3.2 | System functions to analyze micro-partitions (clustering depth, cluster keys) | to do | to do |
+| 3.2 | System functions to analyze micro-partitions (clustering depth, cluster keys) | `domain_3/d3-clustering-analysis-concept.md` (draft, uncommitted) | `domain_3/task_2/test_1.json` (6 single, 3 multi, uncommitted) |
 | 3.3 | Time Travel and cloning for development environments | partly covered. Add the gaps | to do |
 | 4.1 | Monitor data (tags, classification, lineage, data quality) | to do | to do |
 | 4.2 | Establish and maintain data protection (masking, row access, clean rooms) | partly covered. Cover the gaps | to do |
